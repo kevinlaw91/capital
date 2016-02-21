@@ -1,0 +1,9 @@
+/* for small screen */
+@media only screen and (orientation: landscape) and (max-width: 799px) {
+
+    #surface{
+        height: 100%;
+        width: 100%;
+    }
+
+}

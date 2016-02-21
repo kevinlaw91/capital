@@ -1,0 +1,41 @@
+/* for notebook or widescreen */
+@media only screen and (orientation: landscape) and (min-width: 800px) and  (max-width: 999px) {
+    #surface{
+        height: 100%;
+        width: calc(100% - 100px);
+    }
+
+    #nav-bar {
+        display: block;
+    }
+}
+
+/* for widescreen */
+@media only screen and (orientation: landscape) and (min-width: 1000px) {
+
+    #game-frame {
+        max-width: 1366px;
+        margin: 0 auto;
+    }
+
+    #surface{
+        height: 100%;
+        width: calc(100% - 300px);
+    }
+
+    #stats-box {
+        display: block;
+    }
+}
+
+
+/* for laptop to HD */
+@media only screen and (orientation: landscape) and (min-width: 1200px) {
+
+    #player-box {
+        display: block;
+    }
+
+}
+
+	

@@ -1,0 +1,41 @@
+/* for HD or ultra-wide resolutions */
+@media only screen and (orientation: landscape) and  (min-width: 1600px) {
+
+    #game-frame {
+        max-width: 1920px;
+        margin: 0 auto;
+    }
+
+}
+
+
+	/*
+#ui-frame {
+	height: 100%;
+	min-height: 600px;
+	
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end; 
+}
+	
+#game-area {
+	height: 100%;
+	flex-grow: 1;
+	flex-shrink: 0;
+	display: flex;
+	justify-content: center;
+}
+
+#board-container {
+	height: 100vmin;
+	width: 100vmin;
+	min-height: 600px;
+	min-width: 600px;
+}
+	
+#player-bar-right {
+	flex-shrink: 0;
+	min-width: 10vw;
+}*/
+	

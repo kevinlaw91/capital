@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+    <symbol id="concrete-01" viewBox="0 0 64 64">
+        <path fill="#C6C6C6" d="M32 32L0 16 32 0l32 16z"/>
+        <path fill="#AEAEAE" d="M32 32v32l32-16V16z"/>
+        <path fill="#9E9E9E" d="M0 16v32l32 16V32z"/>
+        <path fill="#BC8542" d="M32 64l32-16V32L32 48z"/>
+        <path fill="#936727" d="M0 48l32 16V48L0 32z"/>
+    </symbol>
+    <symbol id="grass-01" viewBox="0 0 64 64">
+        <path fill="#89BF4B" d="M32 32L0 16 32 0l32 16z"/>
+        <path fill="#5A963B" d="M0 16v32l32 16V32z"/>
+        <path fill="#61A038" d="M32 32v32l32-16V16z"/>
+        <path fill="#936727" d="M0 48l32 16V48L0 32z"/>
+        <path fill="#BC8542" d="M32 64l32-16V32L32 48z"/>
+    </symbol>
+    <symbol id="grass-2x2-01" viewBox="0 0 128 96">
+        <path fill="#5A963B" d="M0 32v32l64 32V64z"/>
+        <path fill="#61A038" d="M64 64v32l64-32V32z"/>
+        <path fill="#936727" d="M0 64l64 32V80L0 48z"/>
+        <path fill="#BC8542" d="M64 80v16l64-32V48z"/>
+        <path fill="#89BF4B" d="M64 0L0 32l64 32 64-32z"/>
+    </symbol>
+    <symbol id="grass-3x3-01" viewBox="0 0 192 128">
+        <path fill="#61A038" d="M96 96v32l96-48V48z"/>
+        <path fill="#5A963B" d="M0 48v32l96 48V96z"/>
+        <path fill="#BC8542" d="M96 112v16l96-48V64z"/>
+        <path fill="#936727" d="M0 80l96 48v-16L0 64z"/>
+        <path fill="#89BF4B" d="M96 0L0 48l96 48 96-48z"/>
+    </symbol>
+    <symbol id="lot-east-01" viewBox="0 0 128 96">
+        <path fill="#89BF4B" d="M128 48L32 0 0 16l96 48z"/>
+        <path fill="#5A963B" d="M0 16v32l96 48V64z"/>
+        <path fill="#61A038" d="M96 64v32l32-16V48z"/>
+        <path fill="#936727" d="M0 32v16l96 48V80z"/>
+        <path fill="#BC8542" d="M96 96l32-16V64L96 80z"/>
+    </symbol>
+    <symbol id="lot-north-01" viewBox="0 0 128 96">
+        <path fill="#89BF4B" d="M0 48L96 0l32 16-96 48z"/>
+        <path fill="#61A038" d="M128 16v32L32 96V64z"/>
+        <path fill="#5A963B" d="M32 64v32L0 80V48z"/>
+        <path fill="#BC8542" d="M128 32v16L32 96V80z"/>
+        <path fill="#936727" d="M32 96L0 80V64l32 16z"/>
+    </symbol>
+    <symbol id="lot-south-01" viewBox="0 0 128 96">
+        <path fill="#89BF4B" d="M0 48L96 0l32 16-96 48z"/>
+        <path fill="#61A038" d="M128 16v32L32 96V64z"/>
+        <path fill="#5A963B" d="M32 64v32L0 80V48z"/>
+        <path fill="#BC8542" d="M128 32v16L32 96V80z"/>
+        <path fill="#936727" d="M32 96L0 80V64l32 16z"/>
+    </symbol>
+    <symbol id="lot-west-01" viewBox="0 0 128 96">
+        <path fill="#89BF4B" d="M128 48L32 0 0 16l96 48z"/>
+        <path fill="#5A963B" d="M0 16v32l96 48V64z"/>
+        <path fill="#61A038" d="M96 64v32l32-16V48z"/>
+        <path fill="#936727" d="M0 32v16l96 48V80z"/>
+        <path fill="#BC8542" d="M96 96l32-16V64L96 80z"/>
+    </symbol>
+</svg>

@@ -1,0 +1,13 @@
+{
+	"camera": {
+		"viewport": "#camera-viewport",
+		"zoom": {
+			"min": 0.8,
+			"max": 2,
+			"sensitivity": 0.3
+		},
+		"pan": {
+			"padding": 0.4 //in percent, how many contents should be left visible
+		}
+	}
+}

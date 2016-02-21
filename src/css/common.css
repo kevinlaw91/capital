@@ -1,0 +1,202 @@
+/* resets */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+*,
+*::before,
+*::after {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+html, body, #app-viewport, #game-frame {
+    width: 100vw;
+    height: 100vh;
+}
+
+/* helpers */
+
+.hidden {
+	display: none;
+}
+
+.pannable {
+	height: 100%;
+	width: 100%;
+	cursor: grab;
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
+}
+
+.pannable:active {
+	/*during panning*/
+	cursor: grabbing;
+	cursor: -moz-grabbing;
+	cursor: -webkit-grabbing;
+}
+
+.pannable * {
+	cursor: default;
+}
+
+.pannable:active * {
+	/*during panning*/
+	cursor: grabbing;
+	cursor: -moz-grabbing;
+	cursor: -webkit-grabbing;
+}
+
+.no-pointer-events {
+	pointer-events: none;
+}
+
+/* layout commons */
+
+body {
+	overflow: hidden;
+	color: #AAA;
+}
+
+#app-viewport {
+	display: block;
+	background-color: #000;
+}
+
+.screen {
+	background-color: #222;
+	width: 100%;
+	height: 100%;
+}
+
+/* UI styles */
+
+#game-frame {
+	display: flex;
+}
+
+#player-box {
+	display: none;
+	height: 100%;
+	width: 600px;
+	background-color: #333;
+	flex-grow: 0;
+	flex-shrink: 2;
+}
+
+#surface {
+	position: relative;
+	display: block;
+	height: 100%;
+	width: 100%;
+	background-color: #222;
+	flex-grow: 3;
+	flex-shrink: 1;
+}
+
+#nav-bar {
+	display: none;
+	height: 100%;
+	width: 100px;
+	background-color: #555;
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+
+#stats-box {
+	display: none;
+	height: 100%;
+	width: 250px;
+	flex-grow: 0;
+	flex-shrink: 0;
+	background-color: #333;
+}
+
+#player-action-box {
+	position: absolute;
+	bottom: 0;
+	display: block;
+	width: 100%;
+	padding: 1%;
+	pointer-events: none;
+}
+
+.player-action-box-layer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+}
+
+#player-action-button {
+	display: block;
+	margin: 0 auto;
+	height: 106px;
+	width: 106px;
+}
+
+.player-action-entry {
+	min-height: 100px;
+	width: 300px;
+	display: block;
+	border: 3px solid rgba(0, 0, 0, 0.5);
+	background-color: rgba(0, 0, 0, 0.8);
+	margin: 2px 0;
+}
+
+.player-action-entry H1 {
+	font-family: 'Roboto Light', sans-serif;
+	padding: 10px;
+}
+
+#btn-roll {
+	pointer-events: painted;
+	cursor: default;
+	fill: #bababa;
+	transition: fill 250ms, stroke 250ms;
+	stroke: white;
+	stroke-width: 5px;
+}
+
+#btn-roll:hover {
+	fill: #d8d8d8;
+}
+
+#btn-roll:active {
+	fill: #e6e6e6;
+	stroke: none;
+}
+
+/*
+ * Animations
+ */
+.player-token {
+	animation: player-token-rotate 1s linear infinite;
+	fill: none;
+	stroke: white;
+	stroke-width: 10;
+	stroke-dasharray: 22 7;
+}
+
+/* transition animation when showing player token active marker */
+.player-token-appear {
+	animation:  player-token-rotate 1s linear infinite,
+				ground-marker-fadein 300ms 1;
+}
+
+@keyframes player-token-rotate {
+	0% { stroke-dashoffset: 0 }
+	100% { stroke-dashoffset: 29 }
+}
+
+@keyframes ground-marker-fadein {
+	0% {
+		opacity: 0;
+		transform: translate(0,20px);
+	}
+	100% {
+		opacity: 1;
+		transform: translate(0,0px);
+	}
+}

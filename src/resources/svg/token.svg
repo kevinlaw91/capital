@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+	<symbol id="player-token-neutral" viewBox="0 0 32 37">
+		<polygon points="16 37 0 29 16 21 32 29 16 37" style="opacity:0.25"/>
+		<polygon points="0 8 0 24 16 32 32 24 32 8 16 0 0 8" style="fill:#b0b0b0"/>
+		<polygon points="16 16 0 8 16 0 32 8 16 16" style="fill:#d9d9d9"/>
+		<polygon points="0 8 0 24 16 32 16 16 0 8" style="fill:#b0b0b0"/>
+		<polygon points="16 16 16 32 32 24 32 8 16 16" style="fill:#c8ced1"/>
+	</symbol>
+	<symbol id="player-token-red" viewBox="0 0 32 37">
+		<polygon points="16 37 0 29 16 21 32 29 16 37" style="opacity:0.25" />
+		<polygon points="0 8 0 24 16 32 32 24 32 8 16 0 0 8" style="fill:#b03a2e" />
+		<polygon points="16 16 0 8 16 0 32 8 16 16" style="fill:#d93838" />
+		<polygon points="0 8 0 24 16 32 16 16 0 8" style="fill:#b03a2e" />
+		<polygon points="16 16 16 32 32 24 32 8 16 16" style="fill:#d1382d" />
+	</symbol>
+	<symbol id="player-token-blue" viewBox="0 0 32 37">
+		<polygon points="16 37 0 29 16 21 32 29 16 37" style="opacity:0.25"/>
+		<polygon points="0 8 0 24 16 32 32 24 32 8 16 0 0 8" style="fill:#2e82b0"/>
+		<polygon points="16 16 0 8 16 0 32 8 16 16" style="fill:#38c6d9"/>
+		<polygon points="0 8 0 24 16 32 16 16 0 8" style="fill:#2e82b0"/>
+		<polygon points="16 16 16 32 32 24 32 8 16 16" style="fill:#2da2d1"/>
+	</symbol>
+</svg>

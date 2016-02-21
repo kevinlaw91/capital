@@ -1,0 +1,104 @@
+/* portrait mode */
+@media only screen and (orientation: portrait) {
+
+    #game-frame {
+        flex-direction: column;
+    }
+    #nav-bar {
+        order: 1;
+        display: none;
+        height: 10vw;
+        min-height: 50px;
+        width: 100%;
+        flex-grow: 0;
+        flex-shrink: 0;
+    }
+
+    #surface {
+        order: 2;
+        height: 100%;
+        width: 100%;
+        flex-grow: 2;
+        flex-shrink: 1;
+    }
+
+    #player-box {
+        display: none;
+        order: 3;
+        width: 100%;
+        height: 300px;
+        flex-grow: 0;
+        flex-shrink: 0;
+        background-color: #999;
+    }
+
+    #stats-box {
+        order: 4;
+        display: none;
+        width: 100%;
+        height: 35vh;
+        flex-grow: 1;
+        flex-shrink: 0;
+    }
+
+}
+
+@media only screen and (orientation: portrait) and (min-height: 700px) {
+
+    #nav-bar {
+        display: block;
+    }
+
+    #surface {
+        height: 100%;
+    }
+
+    #player-box {
+        display: none;
+    }
+
+    #stats-box {
+        display: none;
+    }
+
+}
+
+@media only screen and (orientation: portrait) and (min-height: 1024px) {
+
+    #nav-bar {
+        display: none;
+    }
+
+    #surface {
+        height: 100%;
+    }
+
+    #player-box {
+        display: none;
+    }
+
+    #stats-box {
+        display: block;
+    }
+
+}
+
+@media only screen and (orientation: portrait) and (min-height: 1700px) {
+
+    #nav-bar {
+        display: none;
+    }
+
+    #surface {
+        height: 100%;
+    }
+
+    #player-box {
+        display: block;
+    }
+
+    #stats-box {
+        display: block;
+    }
+
+}

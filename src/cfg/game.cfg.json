@@ -1,0 +1,8 @@
+{
+	"player": {
+		"token": {
+			"stepTime": 400, // duration for step animations
+			"waitTime": 500  // time to wait before fire another
+		}
+	}
+}
