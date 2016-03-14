@@ -14,6 +14,12 @@ define(function() {
 	     * @returns {GameSession}
 	     */
 	    S = function() { return G.getSession(); },
+	    /**
+	     * Get player by index
+	     * @private
+	     * @returns {Player}
+	     */
+	    playerById = function(id) { return S().players[id]; },
 	    /** @lends module:engine/dev */
 	    dev = {
 		    /** @type {Engine} */
@@ -70,6 +76,11 @@ define(function() {
 			    }
 		    }
 	    };
+
+	/** Sell specified lot to a player */
+	dev.setLotOwner = function(lot, player) {
+		S().map[lot].sellTo(playerById(player));
+	};
 
 	return dev;
 });
