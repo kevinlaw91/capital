@@ -88,5 +88,13 @@ define(function() {
 		S().map[lot].sellTo(playerById(player));
 	};
 
+	/** Upgrade specified lot */
+	dev.upgradeLot = function(lot) {
+		var l = S().map[lot];
+		if(l.upgradeAvailable()){
+			l.upgrade();
+		}
+	};
+
 	return dev;
 });
