@@ -3,6 +3,15 @@ define([
 	"render/sprite/sprite"
 ], function(Renderer, Sprite) {
 	'use strict';
+
+	/** Resources for building */
+	var svgId = {
+		"HUT": "building-hut",
+		"SMALL": "building-laneway",
+		"MEDIUM": "building-ranch",
+		"VILLA": "building-villa"
+	};
+
 	/**
 	 * Marker sprite to indicate active player
 	 * @augments Sprite
@@ -10,12 +19,12 @@ define([
 	function House(){
 		// Inherits Sprite object
 		Sprite.apply(this, [
-			Renderer.layers.buildings.paper.use("house-normal"),
+			Renderer.layers.buildings.paper.use(svgId["HUT"]),
 			{
 				height: 64,
 				width: 64,
-				offsetX: 25,
-				offsetY: 25
+				offsetX: 30,
+				offsetY: 40
 			}
 		]);
 
