@@ -77,6 +77,12 @@ define(function() {
 		    }
 	    };
 
+	/** Instantly move player to starting position, completing a cycle */
+	dev.movePlayerToStartPosition = function(player) {
+		var lot = S().map[0];
+		playerById(player).moveTo(lot.x, lot.y);
+	};
+
 	/** Sell specified lot to a player */
 	dev.setLotOwner = function(lot, player) {
 		S().map[lot].sellTo(playerById(player));
