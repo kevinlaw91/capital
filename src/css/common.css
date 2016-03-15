@@ -129,13 +129,6 @@ body {
 	width: 100%;
 }
 
-#player-action-button {
-	display: block;
-	margin: 0 auto;
-	height: 106px;
-	width: 106px;
-}
-
 .player-action-entry {
 	min-height: 100px;
 	width: 300px;
@@ -148,6 +141,17 @@ body {
 .player-action-entry H1 {
 	font-family: 'Roboto Light', sans-serif;
 	padding: 10px;
+}
+
+#player-action-button {
+	display: block;
+	margin: 0 auto;
+	height: 106px;
+	width: 106px;
+}
+
+#player-action-button.moving {
+	animation: player-action-button-rotate 2s linear infinite;
 }
 
 #btn-roll {
@@ -166,6 +170,13 @@ body {
 #btn-roll:active {
 	fill: #e6e6e6;
 	stroke: none;
+}
+
+#player-action-button.moving #btn-roll {
+	stroke-dasharray: 1,250;
+	stroke-dashoffset: 0;
+	animation: btn-roll-spinning-stroke 2s ease-in-out infinite;
+	stroke-linecap: round;
 }
 
 /*
@@ -198,5 +209,27 @@ body {
 	100% {
 		opacity: 1;
 		transform: translate(0,0px);
+	}
+}
+
+/* dice button spinner when player moving */
+@keyframes btn-roll-spinning-stroke {
+	0% {
+		stroke-dasharray: 1,250;
+		stroke-dashoffset: 0;
+	}
+	50% {
+		stroke-dasharray: 180,250;
+		stroke-dashoffset: -55px;
+	}
+	100% {
+		stroke-dasharray: 180,250;
+		stroke-dashoffset: -250px;
+	}
+}
+
+@keyframes player-action-button-rotate {
+	100% {
+		transform: rotate(360deg);
 	}
 }
