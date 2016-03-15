@@ -57,6 +57,14 @@ define([
 		}
 	];
 
+	/**
+	 * Facing directions
+	 * @constant
+	 * @memberOf Lot.
+	 * @type {number}
+	 */
+	Lot.FACING_SOUTH = 0x0101;
+	Lot.FACING_EAST = 0x0102;
 
 	// Imports
 	var ScreenTransform = require("engine/transform");
@@ -74,6 +82,14 @@ define([
 		 * @type {string}
 		 */
 		this.id = props.id;
+
+		/**
+		 * Facing direction
+		 * @type {number}
+		 */
+		if(typeof props.direction !== "undefined"){
+			this.direction = props.direction;
+		}
 
 		/** XY Grid position in 2D map */
 		this.x = props.pos.x;
