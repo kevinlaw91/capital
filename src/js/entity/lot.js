@@ -6,28 +6,54 @@ define([
 ], function($) {
 	/** Resources for building */
 	var Upgrades = [
+		{ /*Empty Lot*/ },
 		{
-			resourceId: null
+			south: {
+				resourceId: "building-hut-south",
+				resourceOffsetX: 30,
+				resourceOffsetY: 40
+			},
+			east: {
+				resourceId: "building-hut-east",
+				resourceOffsetX: 20,
+				resourceOffsetY: 25
+			}
 		},
 		{
-			resourceId: "building-hut",
-			resourceOffsetX: 30,
-			resourceOffsetY: 40
+			south: {
+				resourceId: "building-laneway-south",
+				resourceOffsetX: 32,
+				resourceOffsetY: 40
+			},
+			east: {
+				resourceId: "building-laneway-east",
+				resourceOffsetX: 20,
+				resourceOffsetY: 25
+			}
 		},
 		{
-			resourceId: "building-laneway",
-			resourceOffsetX: 32,
-			resourceOffsetY: 40
+			south: {
+				resourceId: "building-ranch-south",
+				resourceOffsetX: 32,
+				resourceOffsetY: 42
+			},
+			east: {
+				resourceId: "building-ranch-east",
+				resourceOffsetX: 32,
+				resourceOffsetY: 30
+			}
 		},
 		{
-			resourceId: "building-ranch",
-			resourceOffsetX: 32,
-			resourceOffsetY: 42
-		},
-		{
-			resourceId: "building-villa",
-			resourceOffsetX: 30,
-			resourceOffsetY: 45
+			south: {
+				resourceId: "building-villa-south",
+				resourceOffsetX: 30,
+				resourceOffsetY: 45
+			},
+			east: {
+				resourceId: "building-villa-east",
+				resourceOffsetX: 35,
+				resourceOffsetY: 38
+			}
 		}
 	];
 
