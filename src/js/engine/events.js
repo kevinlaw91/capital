@@ -153,8 +153,8 @@ define([
 		 * @param {Player} data.player - Player that triggered the enter event
 		 * @param {Lot} data.lot - Player entered lot
 		 */
-		/** @type Lot */
 		var pos = data.player.position,
+		    /** @type Lot */
 		    lot = evt.data.session.getLot(pos.mapX, pos.mapY);
 		log("[GAME_EVENT] Player stopped at " + pos.mapX + "," + pos.mapY, "gameevent");
 
