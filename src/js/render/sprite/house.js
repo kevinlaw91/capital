@@ -7,19 +7,19 @@ define([
 	 * Marker sprite to indicate active player
 	 * @augments Sprite
 	 */
-	function House(resourceId){
+	function House(resourceId, offsetX, offsetY){
 		// Inherits Sprite object
 		Sprite.apply(this, [
 			Renderer.layers.buildings.paper.use(resourceId),
 			{
 				height: 64,
 				width: 64,
-				offsetX: 30,
-				offsetY: 40
+				offsetX: offsetX,
+				offsetY: offsetY
 			}
 		]);
 
-		this.replace = function(resourceId) {
+		this.replace = function(resourceId, offsetX, offsetY) {
 			var newEl = Renderer.layers.buildings.paper.use(resourceId);
 			this.view.after(newEl);
 			this.view.remove();
@@ -28,6 +28,7 @@ define([
 				width: this.width,
 				height: this.height
 			});
+			this.setOffset(offsetX, offsetY);
 			this.view.attr(this.getBoundingOffset(this.x,this.y));
 		};
 

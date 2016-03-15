@@ -5,12 +5,30 @@ define([
     "render/sprite/house",
 ], function($) {
 	/** Resources for building */
-	var buildingSvg = [
-		"", // placeholder
-		"building-hut",
-		"building-laneway",
-		"building-ranch",
-		"building-villa"
+	var Upgrades = [
+		{
+			resourceId: null
+		},
+		{
+			resourceId: "building-hut",
+			resourceOffsetX: 30,
+			resourceOffsetY: 40
+		},
+		{
+			resourceId: "building-laneway",
+			resourceOffsetX: 32,
+			resourceOffsetY: 40
+		},
+		{
+			resourceId: "building-ranch",
+			resourceOffsetX: 32,
+			resourceOffsetY: 42
+		},
+		{
+			resourceId: "building-villa",
+			resourceOffsetX: 30,
+			resourceOffsetY: 45
+		}
 	];
 
 	/**
@@ -92,16 +110,16 @@ define([
 
 	Lot.prototype.upgrade = function(){
 		//Update tier info
-		this.tier++;
+		var newTier = Upgrades[++this.tier];
 
 		if(this.house === null){
 			// Draw house for the first time
-			this.house = new House(buildingSvg[this.tier]);
+			this.house = new House(newTier.resourceId, newTier.resourceOffsetX, newTier.resourceOffsetY);
 			var pos = ScreenTransform.getTopFaceMidpoint(this.buildingY, this.buildingX);
 			this.house.moveTo(pos.x, pos.y);
 		} else {
 			// Redraw/upgrade house
-			this.house.replace(buildingSvg[this.tier]);
+			this.house.replace(newTier.resourceId, newTier.resourceOffsetX, newTier.resourceOffsetY);
 		}
 	};
 
