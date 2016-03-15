@@ -53,9 +53,6 @@ define([
 		//Pending steps
 		this.pendingSteps = 0;
 
-		//Pending offer
-		this.pendingOffer = null;
-
 		/**
 		 * Amount of cash player possesses
 		 * @member {number}
@@ -195,7 +192,7 @@ define([
 
 	Player.prototype.onIdle = function() {
 		this.showActiveMarker();
-		$.publish("PlayerStopped", { player: this, x: this.mapX, y: this.mapY });
+		$.publish("PlayerStopped", { player: this });
 	};
 
 	Player.prototype.bringToFront = function() {
