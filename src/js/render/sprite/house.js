@@ -3,23 +3,14 @@ define([
 	"render/sprite/sprite"
 ], function(Renderer, Sprite) {
 	'use strict';
-
-	/** Resources for building */
-	var svgId = {
-		"HUT": "building-hut",
-		"SMALL": "building-laneway",
-		"MEDIUM": "building-ranch",
-		"VILLA": "building-villa"
-	};
-
 	/**
 	 * Marker sprite to indicate active player
 	 * @augments Sprite
 	 */
-	function House(){
+	function House(resourceId){
 		// Inherits Sprite object
 		Sprite.apply(this, [
-			Renderer.layers.buildings.paper.use(svgId["HUT"]),
+			Renderer.layers.buildings.paper.use(resourceId),
 			{
 				height: 64,
 				width: 64,
@@ -27,6 +18,18 @@ define([
 				offsetY: 40
 			}
 		]);
+
+		this.replace = function(resourceId) {
+			var newEl = Renderer.layers.buildings.paper.use(resourceId);
+			this.view.after(newEl);
+			this.view.remove();
+			this.view = newEl;
+			this.view.attr({
+				width: this.width,
+				height: this.height
+			});
+			this.view.attr(this.getBoundingOffset(this.x,this.y));
+		};
 
 		/** @override */
 		this.moveTo = function(x,y){

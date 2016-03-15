@@ -4,6 +4,14 @@ define([
     "render/script/colormark",
     "render/sprite/house",
 ], function($) {
+	/** Resources for building */
+	var buildingSvg = [
+		"", // placeholder
+		"building-hut",
+		"building-laneway",
+		"building-ranch",
+		"building-villa"
+	];
 
 	/**
 	 * Type of lot
@@ -83,18 +91,23 @@ define([
 	}
 
 	Lot.prototype.upgrade = function(){
-		//Update sprite
-		this.house = new House();
-		var pos = ScreenTransform.getTopFaceMidpoint(this.buildingY, this.buildingX);
-		this.house.moveTo(pos.x, pos.y);
-
 		//Update tier info
 		this.tier++;
+
+		if(this.house === null){
+			// Draw house for the first time
+			this.house = new House(buildingSvg[this.tier]);
+			var pos = ScreenTransform.getTopFaceMidpoint(this.buildingY, this.buildingX);
+			this.house.moveTo(pos.x, pos.y);
+		} else {
+			// Redraw/upgrade house
+			this.house.replace(buildingSvg[this.tier]);
+		}
 	};
 
 	/** Checks if upgrade is possible */
 	Lot.prototype.upgradeAvailable = function() {
-		var maxTier = 2;
+		var maxTier = 4;
 		return this.tier<maxTier;
 	};
 
