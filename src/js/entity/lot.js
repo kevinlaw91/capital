@@ -57,16 +57,6 @@ define([
 		}
 	];
 
-	/**
-	 * Type of lot
-	 * @constant
-	 * @memberOf Lot.
-	 * @type {number}
-	 */
-	Lot.LOT_TYPE_GENERIC = 0x0000;
-	Lot.LOT_TYPE_VACANT = 0x0001;
-	Lot.LOT_TYPE_CORNER = 0x0002;
-	Lot.LOT_TYPE_SPECIAL = 0x0003;
 
 	// Imports
 	var ScreenTransform = require("engine/transform");
@@ -84,12 +74,6 @@ define([
 		 * @type {string}
 		 */
 		this.id = props.id;
-
-		/**
-		 * Type of lot
-		 * @type {number}
-		 */
-		this.type = Lot.LOT_TYPE_GENERIC; //Generic
 
 		/** XY Grid position in 2D map */
 		this.x = props.pos.x;
