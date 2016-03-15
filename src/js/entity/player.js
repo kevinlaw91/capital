@@ -181,18 +181,13 @@ define([
 		} else {
 			//Reach destination
 			setTimeout(
-				(function(player){
+				(function(p){
 					return function(){
-						player.onIdle();
+						$.publish("PlayerStopped", { player: p });
 					};
 				})(this),
 				Config.get("player.token.waitTime"));
 		}
-	};
-
-	Player.prototype.onIdle = function() {
-		this.showActiveMarker();
-		$.publish("PlayerStopped", { player: this });
 	};
 
 	Player.prototype.bringToFront = function() {

@@ -151,12 +151,16 @@ define([
 		/**
 		 * @param {GameSession} evt.data.session - Current game session
 		 * @param {Player} data.player - Player that triggered the enter event
-		 * @param {Lot} data.lot - Player entered lot
 		 */
 		var pos = data.player.position,
 		    /** @type Lot */
 		    lot = evt.data.session.getLot(pos.mapX, pos.mapY);
 		log("[GAME_EVENT] Player stopped at " + pos.mapX + "," + pos.mapY, "gameevent");
+
+		// Show active indicator if player is active
+		if(evt.data.session.getActivePlayer() === data.player){
+			data.player.showActiveMarker();
+		}
 
 		if(lot !== null){
 			switch(lot.id){

@@ -83,6 +83,13 @@ define(function() {
 		playerById(player).moveTo(lot.x, lot.y);
 	};
 
+	/** Step player forwards */
+	dev.movePlayerBySteps = function(player, steps) {
+		if(!steps){ steps = 1; }
+		playerById(player).hideActiveMarker();
+		playerById(player).moveBySteps(steps);
+	};
+
 	/** Sell specified lot to a player */
 	dev.setLotOwner = function(lot, player) {
 		S().map[lot].sellTo(playerById(player));
