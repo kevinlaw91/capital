@@ -9,50 +9,50 @@ define([
 		{ /*Empty Lot*/ },
 		{
 			south: {
-				resourceId: "building-hut-south",
-				resourceOffsetX: 30,
-				resourceOffsetY: 40
+				rsId: "building-hut-south",
+				rsOffsetX: 30,
+				rsOffsetY: 40
 			},
 			east: {
-				resourceId: "building-hut-east",
-				resourceOffsetX: 20,
-				resourceOffsetY: 25
+				rsId: "building-hut-east",
+				rsOffsetX: 20,
+				rsOffsetY: 25
 			}
 		},
 		{
 			south: {
-				resourceId: "building-laneway-south",
-				resourceOffsetX: 32,
-				resourceOffsetY: 40
+				rsId: "building-laneway-south",
+				rsOffsetX: 32,
+				rsOffsetY: 40
 			},
 			east: {
-				resourceId: "building-laneway-east",
-				resourceOffsetX: 20,
-				resourceOffsetY: 25
+				rsId: "building-laneway-east",
+				rsOffsetX: 20,
+				rsOffsetY: 25
 			}
 		},
 		{
 			south: {
-				resourceId: "building-ranch-south",
-				resourceOffsetX: 32,
-				resourceOffsetY: 42
+				rsId: "building-ranch-south",
+				rsOffsetX: 32,
+				rsOffsetY: 42
 			},
 			east: {
-				resourceId: "building-ranch-east",
-				resourceOffsetX: 32,
-				resourceOffsetY: 30
+				rsId: "building-ranch-east",
+				rsOffsetX: 32,
+				rsOffsetY: 30
 			}
 		},
 		{
 			south: {
-				resourceId: "building-villa-south",
-				resourceOffsetX: 30,
-				resourceOffsetY: 45
+				rsId: "building-villa-south",
+				rsOffsetX: 30,
+				rsOffsetY: 45
 			},
 			east: {
-				resourceId: "building-villa-east",
-				resourceOffsetX: 35,
-				resourceOffsetY: 38
+				rsId: "building-villa-east",
+				rsOffsetX: 35,
+				rsOffsetY: 38
 			}
 		}
 	];
@@ -136,16 +136,23 @@ define([
 
 	Lot.prototype.upgrade = function(){
 		//Update tier info
-		var newTier = Upgrades[++this.tier];
+		var resource = Upgrades[++this.tier];
+
+		if(this.direction == Lot.FACING_EAST){
+			resource = resource.east;
+		} else if(this.direction == Lot.FACING_SOUTH){
+			resource = resource.south;
+		}
+
 
 		if(this.house === null){
 			// Draw house for the first time
-			this.house = new House(newTier.resourceId, newTier.resourceOffsetX, newTier.resourceOffsetY);
+			this.house = new House(resource.rsId, resource.rsOffsetX, resource.rsOffsetY);
 			var pos = ScreenTransform.getTopFaceMidpoint(this.buildingY, this.buildingX);
 			this.house.moveTo(pos.x, pos.y);
 		} else {
 			// Redraw/upgrade house
-			this.house.replace(newTier.resourceId, newTier.resourceOffsetX, newTier.resourceOffsetY);
+			this.house.replace(resource.rsId, resource.rsOffsetX, resource.rsOffsetY);
 		}
 	};
 
