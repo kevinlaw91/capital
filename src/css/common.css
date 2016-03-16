@@ -199,6 +199,7 @@ body {
 	stroke: white;
 	stroke-width: 10;
 	stroke-dasharray: 22 7;
+	stroke-dashoffset: 29;
 }
 
 /* transition animation when showing player token active marker */
@@ -208,8 +209,8 @@ body {
 }
 
 @keyframes player-token-rotate {
-	0% { stroke-dashoffset: 0 }
-	100% { stroke-dashoffset: 29 }
+	0% { stroke-dashoffset: 29 }
+	100% { stroke-dashoffset: 0 }
 }
 
 @keyframes ground-marker-fadein {
