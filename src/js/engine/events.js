@@ -35,6 +35,9 @@ define([
 		//Hide active marker for current player
 		game_session.getActivePlayer().hideActiveMarker();
 
+		// Show dice button
+		$("#player-action-button").removeClass("show hide moving").addClass("show");
+
 		//Disable player buttons
 		//TODO: Polish
 		$("#btn-buy").prop('disabled', true);
@@ -85,6 +88,9 @@ define([
 	ev.onDiceRollComplete = function(evt, data){
 		// Decline any pending offer
 		var game_session = require("engine/game").getSession();
+
+		// Show moving status
+		$("#player-action-button").removeClass("show hide moving").addClass("moving");
 
 		//TODO:Polish
 		$("#btn-buy").prop('disabled', true);
@@ -161,6 +167,9 @@ define([
 		if(evt.data.session.getActivePlayer() === data.player){
 			data.player.showActiveMarker();
 		}
+
+		// Hide dice button
+		$("#player-action-button").removeClass("show hide moving").addClass("hide");
 
 		if(lot !== null){
 			switch(lot.id){

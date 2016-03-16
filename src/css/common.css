@@ -161,6 +161,7 @@ body {
 	transition: fill 250ms, stroke 250ms;
 	stroke: white;
 	stroke-width: 5px;
+	transform-origin: 50% 50%;
 }
 
 #btn-roll:hover {
@@ -177,6 +178,16 @@ body {
 	stroke-dashoffset: 0;
 	animation: btn-roll-spinning-stroke 2s ease-in-out infinite;
 	stroke-linecap: round;
+}
+
+#player-action-button.show #btn-roll {
+	animation: btn-roll-show 200ms ease-out forwards;
+	opacity: 1;
+}
+
+#player-action-button.hide #btn-roll {
+	animation: btn-roll-hide 200ms ease-out forwards;
+	stroke: none;
 }
 
 /*
@@ -231,5 +242,29 @@ body {
 @keyframes player-action-button-rotate {
 	100% {
 		transform: rotate(360deg);
+	}
+}
+
+/* dice button hide */
+@keyframes btn-roll-show {
+	0% {
+		transform: scale(0,0);
+	}
+	75% {
+		transform: scale(1.1,1.1);
+	}
+	100% {
+		transform: scale(1,1);
+	}
+}
+
+@keyframes btn-roll-hide {
+	25% {
+		transform: scale(1.1,1.1);
+		opacity: 1;
+	}
+	100% {
+		transform: scale(0,0);
+		opacity: 0;
 	}
 }
