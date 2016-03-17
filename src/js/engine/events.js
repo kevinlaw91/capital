@@ -43,6 +43,9 @@ define([
 		$("#btn-buy").prop('disabled', true);
 		$("#btn-build").prop('disabled', true);
 
+		// Hide action panel
+		$("#action-panel").slideUp({easing: "easeOutCubic"});
+
 		log("[GAME_EVENT] Current player ended his turn", "gameevent");
 
 		//Skip to next player
@@ -170,6 +173,9 @@ define([
 
 		// Hide dice button
 		$("#player-action-button").removeClass("show hide moving").addClass("hide");
+
+		// Show action panel
+		$("#action-panel").slideDown({easing: "easeOutCubic"});
 
 		if(lot !== null){
 			switch(lot.id){
