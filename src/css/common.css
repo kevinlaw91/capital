@@ -181,7 +181,7 @@ body {
 }
 
 #player-action-button.show #btn-roll {
-	animation: btn-roll-show 200ms ease-out forwards;
+	animation: btn-roll-show 200ms ease-in forwards;
 	opacity: 1;
 }
 
