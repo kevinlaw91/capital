@@ -169,6 +169,10 @@ body {
 	stroke-dasharray: 50, 50;
 }
 
+#action-panel section.done button .success-icon path {
+	animation: btn-result-draw-icon 400ms ease-in forwards;
+}
+
 #action-panel section button span {
 	transform-origin: 50% 50%;
 	display: inline-block;
@@ -383,6 +387,15 @@ body {
 	to {
 		transform: scale(1,1);
 		opacity: 1;
+	}
+}
+
+@keyframes btn-result-draw-icon {
+	from {
+		stroke-dashoffset: 50px
+	}
+	to {
+		stroke-dashoffset: 0px
 	}
 }
 
