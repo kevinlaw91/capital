@@ -218,6 +218,9 @@ define([
 
 					// Show action panel
 					UI.showUserActionPanel("upgrade");
+				} else {
+					//End current turn
+					ev.PlayerAction.EndTurn();
 				}
 			} else {
 				if(lot.owner === null){
