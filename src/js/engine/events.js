@@ -80,18 +80,15 @@ define([
 	ev.PlayerAction.Upgrade = function(){
 		var currentPlayer = require("engine/game").getSession().getActivePlayer();
 
-		//Attempt to buy current location
-		currentPlayer.upgrade();
-		
-		// Hide action panel
-		UI.hideUserActionPanel();
+		//Attempt to upgrade current location
+		if(currentPlayer.upgrade()){
+			// Success
+			UI.feedbackUserActionPanel();
 
-		//End current turn
-		ev.PlayerAction.EndTurn();
-
-		//Can only upgrade once every turn
-		//TODO: Polish
-		$(".player-action-btn-build").prop('disabled', true);
+			// Can only upgrade once every turn
+			//TODO: Polish
+			$(".player-action-btn-build").prop('disabled', true);
+		}
 	};
 
 	//
