@@ -65,13 +65,12 @@ define([
 	ev.PlayerAction.Buy = function() {
 		var currentPlayer = require("engine/game").getSession().getActivePlayer();
 
-		//Attempt to buy current location
-		var action = currentPlayer.buy();
-
-		//Disable buy option if success
-		if(action === true) {
+		// Attempt to buy current location
+		if(currentPlayer.buy()) {
+			// Success
 			UI.feedbackUserActionPanel(true);
 
+			// Disable buy option if success
 			//TODO: Polish
 			$("#btn-buy").prop('disabled', true);
 		}
