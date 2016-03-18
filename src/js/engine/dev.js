@@ -103,5 +103,10 @@ define(function() {
 		}
 	};
 
+	/** Define conditions for debugging */
+	dev.runPreset = function(){
+		//Write debug script here
+	};
+
 	return dev;
 });
