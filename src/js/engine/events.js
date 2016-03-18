@@ -1,12 +1,14 @@
 define([
 	"jquery",
+	"engine/ui",
 	"engine/game",
 	"engine/config",
     "entity/session"
 ], function($) {
 	'use strict';
 	/** Access to config */
-	var Config = require("engine/config");
+	var Config = require("engine/config"),
+		UI = require("engine/ui");
 
 	/**
 	 * @namespace
@@ -44,8 +46,7 @@ define([
 		$("#btn-build").prop('disabled', true);
 
 		// Hide action panel
-
-		$("#stage-box-slide").animate({ "bottom": 0 }, 250, "easeOutCubic");
+		UI.hideUserActionPanel();
 
 		log("[GAME_EVENT] Current player ended his turn", "gameevent");
 
@@ -176,7 +177,7 @@ define([
 		$("#player-action-button").removeClass("show hide moving").addClass("hide");
 
 		// Show action panel
-		$("#stage-box-slide").animate({ "bottom": $("#action-panel").height() }, 250, "easeOutCubic");
+		UI.showUserActionPanel();
 
 		if(lot !== null){
 			switch(lot.id){

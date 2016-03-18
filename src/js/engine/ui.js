@@ -47,5 +47,13 @@ define(["jquery", "snapsvg"], function( $, Snap ) {
 		return viewport;
 	};
 
+	UI.showUserActionPanel = function(){
+		$("#stage-box-slide").animate({ "bottom": $("#action-panel").height() }, 250, "easeOutCubic");
+	};
+
+	UI.hideUserActionPanel = function(){
+		$("#stage-box-slide").animate({ "bottom": 0 }, 250, "easeOutCubic");
+	};
+
 	return UI;
 });
