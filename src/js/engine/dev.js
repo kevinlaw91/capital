@@ -106,6 +106,34 @@ define(function() {
 		}
 	};
 
+	/** Generate random game state */
+	dev.randomState = function() {
+		var map = S().map;
+
+		for(var i=0; i<map.length; i++){
+			var currentLot = map[i]
+
+			if(currentLot.isTradable){
+				if(Math.random() < 0.7){
+					// 70% chance to be sold
+					// if sold, 50/50 chance for player 0 and 1
+					var player = Math.floor(Math.random() * 2);
+					dev.setLotOwner(i, player);
+
+					// 60% chance of upgrade
+					while(Math.random() < 0.60){
+						if(map[i].upgradeAvailable())
+						{
+							dev.upgradeLot(i);
+						}else{
+							break;
+						}
+					}
+				}
+			}
+		}
+	};
+
 	/** Define conditions for debugging */
 	dev.runPreset = function(){
 		//Write debug script here
