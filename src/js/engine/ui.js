@@ -61,8 +61,23 @@ define(["jquery", "snapsvg"], function( $, Snap ) {
 		$("#stage-box-slide").animate({ "bottom": 0 }, 250, "easeOutCubic", UI.resetUserActionPanel);
 	};
 
+	UI.feedbackUserActionPanel = function() {
+		// Show success animation
+		$("#action-panel").find("section").removeClass("done").addClass("done");
+
+		// Hide player action panel
+		window.setTimeout(UI.hideUserActionPanel, 2000);
+
+		// Ends turn
+		window.setTimeout(FireEvent_PlayerEndsTurn, 2500);
+	};
+
+	function FireEvent_PlayerEndsTurn(){
+		$.publish("PlayerEndsTurn");
+	}
+
 	UI.resetUserActionPanel = function() {
-		$("#action-panel").find("section").hide();
+		$("#action-panel").find("section").removeClass("done").hide();
 	};
 
 	return UI;

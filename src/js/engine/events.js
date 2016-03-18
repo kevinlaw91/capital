@@ -70,15 +70,11 @@ define([
 
 		//Disable buy option if success
 		if(action === true) {
+			UI.feedbackUserActionPanel(true);
+
 			//TODO: Polish
 			$("#btn-buy").prop('disabled', true);
 		}
-
-		// Hide action panel
-		UI.hideUserActionPanel();
-
-		//End current turn
-		ev.PlayerAction.EndTurn();
 	};
 
 	ev.PlayerAction.Upgrade = function(){

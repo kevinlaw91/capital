@@ -132,6 +132,7 @@ body {
 }
 
 #action-panel section button {
+	position: relative;
 	margin-top: 14px;
 	background-color: #546E7A;
 	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
@@ -140,7 +141,50 @@ body {
 	border: 0;
 	font-weight: 500;
 	font-size: 0.875rem;
+}
+
+#action-panel section button .success-icon {
+	opacity: 0;
+	transform-origin: 50% 50%;
+	width: 32px;
+	height: 32px;
+	position: absolute;
+	left: calc(50% - 16px);
+	top: calc(50% - 16px);
+}
+
+#action-panel section button:focus {
+	box-shadow: 0 0 1px 1px #FFF9C4;
+	outline: 0;
+}
+
+#action-panel section.done button .success-icon {
+	animation: btn-result-show 200ms ease-in forwards;
+}
+
+#action-panel section button .success-icon path {
+	fill: none;
+	stroke: white;
+	stroke-width: 3;
+	stroke-dasharray: 50, 50;
+}
+
+#action-panel section button span {
+	transform-origin: 50% 50%;
+	display: inline-block;
 	padding: 8px 16px;
+}
+
+#action-panel section.done button.main span {
+	animation: btn-result-hide 200ms ease-in forwards;
+}
+
+#action-panel section.done button.main {
+	animation: btn-result-hide 200ms ease-in forwards 2s;
+}
+
+#action-panel section.done button:not(.main) {
+	animation: btn-result-hide 200ms ease-in forwards;
 }
 
 #action-panel section button.main {
@@ -325,6 +369,29 @@ body {
 		opacity: 1;
 	}
 	100% {
+		transform: scale(0,0);
+		opacity: 0;
+	}
+}
+
+/* button result scale transition */
+@keyframes btn-result-show {
+	from {
+		transform: scale(1.5,1.5);
+		opacity: 0;
+	}
+	to {
+		transform: scale(1,1);
+		opacity: 1;
+	}
+}
+
+@keyframes btn-result-hide {
+	from {
+		transform: scale(1,1);
+		opacity: 1;
+	}
+	to {
 		transform: scale(0,0);
 		opacity: 0;
 	}
