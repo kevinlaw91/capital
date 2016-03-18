@@ -2,11 +2,11 @@ define(["jquery", "snapsvg"], function( $, Snap ) {
 
 	'use strict';
 
-	var module = {},
+	var UI = {},
 	    stage = null,
 		viewport = null;
 
-	module.getStage = function(stage_id) {
+	UI.getStage = function(stage_id) {
 
 		if (stage) return stage;
 
@@ -23,7 +23,7 @@ define(["jquery", "snapsvg"], function( $, Snap ) {
 		return stage;
 	};
 
-	module.getViewport = function(viewport_id){
+	UI.getViewport = function(viewport_id){
 		if (viewport) return viewport;
 
 		viewport = Snap(stage).g().attr({
@@ -37,15 +37,15 @@ define(["jquery", "snapsvg"], function( $, Snap ) {
 		});
 
 		// Method to remove the dummy object after first render
-		module.removePlaceholder = function(){
+		UI.removePlaceholder = function(){
 			placeholder.remove();
 			placeholder = null;
-			delete module.removePlaceholder;
+			delete UI.removePlaceholder;
 		};
 
 		viewport = viewport.node;
 		return viewport;
 	};
 
-	return module;
+	return UI;
 });
