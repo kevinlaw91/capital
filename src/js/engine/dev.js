@@ -79,8 +79,11 @@ define(function() {
 
 	/** Instantly move player to starting position, completing a cycle */
 	dev.movePlayerToStartPosition = function(player) {
-		var lot = S().map[0];
-		playerById(player).moveTo(lot.x, lot.y);
+		var lot = S().map[0],
+			p = playerById(player);
+		p.position.index = 0;
+		p.position.lot = lot;
+		p.moveTo(lot.x, lot.y);
 	};
 
 	/** Step player forwards */
