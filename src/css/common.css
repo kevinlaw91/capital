@@ -86,9 +86,10 @@ body {
 	flex-shrink: 2;
 }
 
-#canvas-box {
+#stage-box {
 	flex-grow: 3;
 	flex-shrink: 1;
+	position: relative;
 }
 
 #surface {
@@ -99,22 +100,18 @@ body {
 }
 
 #action-panel {
-	display: none;
 	width: 100%;
 	background-color: #006064;
 }
 
-#canvas-box .frame {
-	height: 100%;
-	width: 100%;
-	display: table;
+#stage-box-slide {
+	position: absolute;
+	bottom: 0;
 }
 
-#canvas-box .frame DIV.align-bottom {
+#stage-box-slide, #stage-box-slide .contents {
 	height: 100%;
 	width: 100%;
-	display: table-cell;
-	vertical-align: bottom;
 }
 
 #nav-bar {

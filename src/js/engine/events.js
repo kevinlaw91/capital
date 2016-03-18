@@ -44,7 +44,8 @@ define([
 		$("#btn-build").prop('disabled', true);
 
 		// Hide action panel
-		$("#action-panel").slideUp({easing: "easeOutCubic"});
+
+		$("#stage-box-slide").animate({ "bottom": 0 }, 250, "easeOutCubic");
 
 		log("[GAME_EVENT] Current player ended his turn", "gameevent");
 
@@ -175,7 +176,7 @@ define([
 		$("#player-action-button").removeClass("show hide moving").addClass("hide");
 
 		// Show action panel
-		$("#action-panel").slideDown({easing: "easeOutCubic"});
+		$("#stage-box-slide").animate({ "bottom": $("#action-panel").height() }, 250, "easeOutCubic");
 
 		if(lot !== null){
 			switch(lot.id){

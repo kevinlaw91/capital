@@ -1,6 +1,6 @@
 /* for notebook or widescreen */
 @media only screen and (orientation: landscape) and (min-width: 800px) and  (max-width: 999px) {
-    #canvas-box{
+    #stage-box{
         height: 100%;
         width: calc(100% - 100px);
     }
@@ -18,7 +18,7 @@
         margin: 0 auto;
     }
 
-    #canvas-box{
+    #stage-box{
         height: 100%;
         width: calc(100% - 300px);
     }
