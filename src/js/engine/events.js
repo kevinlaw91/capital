@@ -42,8 +42,8 @@ define([
 
 		//Disable player buttons
 		//TODO: Polish
-		$("#btn-buy").prop('disabled', true);
-		$("#btn-build").prop('disabled', true);
+		$(".player-action-btn-buy").prop('disabled', true);
+		$(".player-action-btn-build").prop('disabled', true);
 
 		// Hide action panel
 		UI.hideUserActionPanel();
@@ -73,6 +73,12 @@ define([
 			//TODO: Polish
 			$("#btn-buy").prop('disabled', true);
 		}
+
+		// Hide action panel
+		UI.hideUserActionPanel();
+
+		//End current turn
+		ev.PlayerAction.EndTurn();
 	};
 
 	ev.PlayerAction.Upgrade = function(){
@@ -80,10 +86,16 @@ define([
 
 		//Attempt to buy current location
 		currentPlayer.upgrade();
+		
+		// Hide action panel
+		UI.hideUserActionPanel();
+
+		//End current turn
+		ev.PlayerAction.EndTurn();
 
 		//Can only upgrade once every turn
 		//TODO: Polish
-		$("#btn-build").prop('disabled', true);
+		$(".player-action-btn-build").prop('disabled', true);
 	};
 
 	//
@@ -98,8 +110,8 @@ define([
 		$("#player-action-button").removeClass("show hide moving").addClass("moving");
 
 		//TODO:Polish
-		$("#btn-buy").prop('disabled', true);
-		$("#btn-build").prop('disabled', true);
+		$(".player-action-btn-buy").prop('disabled', true);
+		$(".player-action-btn-build").prop('disabled', true);
 
 		log("[GAME_EVENT] Dice roll result: " + data, "gameevent");
 		window.setTimeout(function(){
@@ -176,18 +188,23 @@ define([
 		// Hide dice button
 		$("#player-action-button").removeClass("show hide moving").addClass("hide");
 
-		// Show action panel
-		UI.showUserActionPanel();
-
 		if(lot !== null){
 			switch(lot.id){
 				case "MAP-CORNER-0":
+					//End current turn
+					ev.PlayerAction.EndTurn();
 					break;
 				case "MAP-CORNER-1":
+					//End current turn
+					ev.PlayerAction.EndTurn();
 					break;
 				case "MAP-CORNER-2":
+					//End current turn
+					ev.PlayerAction.EndTurn();
 					break;
 				case "MAP-CORNER-3":
+					//End current turn
+					ev.PlayerAction.EndTurn();
 					break;
 
 				//If no special identifier, treat as normal lot
@@ -201,7 +218,10 @@ define([
 				//Stopped at own property
 				if(lot.upgradeAvailable()){
 					//TODO: Polish
-					$("#btn-build").prop('disabled', false);
+					$(".player-action-btn-build").prop('disabled', false);
+
+					// Show action panel
+					UI.showUserActionPanel("upgrade");
 				}
 			} else {
 				if(lot.owner === null){
@@ -209,7 +229,10 @@ define([
 					log("[GAME_EVENT] This lot can be bought by current player", "gameevent");
 
 					//TODO: Polish
-					$("#btn-buy").prop('disabled', false);
+					$(".player-action-btn-buy").prop('disabled', false);
+
+					// Show action panel
+					UI.showUserActionPanel("buy");
 				} else {
 					//Stopped at others' property
 
@@ -217,6 +240,9 @@ define([
 					//popup for current player will appears on top.
 					$.publish("PlayerCashFlow", { player: lot.owner, add: lot.rent, source: "RENT" });
 					$.publish("PlayerCashFlow", { player: data.player, sub: lot.rent, source: "RENT" });
+
+					//End current turn
+					ev.PlayerAction.EndTurn();
 				}
 			}
 		}

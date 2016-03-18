@@ -47,12 +47,22 @@ define(["jquery", "snapsvg"], function( $, Snap ) {
 		return viewport;
 	};
 
-	UI.showUserActionPanel = function(){
+	var action_panels = {
+		buy: "#action-panel-buy",
+		upgrade: "#action-panel-upgrade"
+	};
+
+	UI.showUserActionPanel = function(panelId){
+		$(action_panels[panelId]).show();
 		$("#stage-box-slide").animate({ "bottom": $("#action-panel").height() }, 250, "easeOutCubic");
 	};
 
 	UI.hideUserActionPanel = function(){
-		$("#stage-box-slide").animate({ "bottom": 0 }, 250, "easeOutCubic");
+		$("#stage-box-slide").animate({ "bottom": 0 }, 250, "easeOutCubic", UI.resetUserActionPanel);
+	};
+
+	UI.resetUserActionPanel = function() {
+		$("#action-panel").find("section").hide();
 	};
 
 	return UI;
