@@ -66,10 +66,10 @@ define(["jquery", "snapsvg"], function( $, Snap ) {
 		$("#action-panel").find("section").removeClass("done").addClass("done");
 
 		// Hide player action panel
-		window.setTimeout(UI.hideUserActionPanel, 2000);
+		window.setTimeout(UI.hideUserActionPanel, 1000);
 
 		// Ends turn
-		window.setTimeout(FireEvent_PlayerEndsTurn, 2500);
+		window.setTimeout(FireEvent_PlayerEndsTurn, 1500);
 	};
 
 	function FireEvent_PlayerEndsTurn(){
