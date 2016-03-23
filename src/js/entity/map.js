@@ -103,7 +103,7 @@ define([
 						$.extend(tradable, generateCost(), {
 							pos: { x: i, y: 13},
 							b:   { x: i, y: 15},
-							direction: Lot.FACING_SOUTH
+							direction: Lot.FACING_NORTH
 						})
 					)
 				);
@@ -172,7 +172,7 @@ define([
 						$.extend(tradable, generateCost(), {
 							pos: { x: 13, y: i},
 							b:   { x: 15, y: i},
-							direction: Lot.FACING_EAST
+							direction: Lot.FACING_WEST
 						})
 					)
 				);

@@ -63,8 +63,10 @@ define([
 	 * @memberOf Lot.
 	 * @type {number}
 	 */
+	Lot.FACING_NORTH = 0x0100;
 	Lot.FACING_SOUTH = 0x0101;
 	Lot.FACING_EAST = 0x0102;
+	Lot.FACING_WEST = 0x0103;
 
 	// Imports
 	var ScreenTransform = require("engine/transform");
@@ -146,9 +148,9 @@ define([
 		//Update tier info
 		var resource = Upgrades[++this.tier];
 
-		if(this.direction == Lot.FACING_EAST){
+		if(this.direction == Lot.FACING_EAST || this.direction == Lot.FACING_WEST){
 			resource = resource.east;
-		} else if(this.direction == Lot.FACING_SOUTH){
+		} else if(this.direction == Lot.FACING_NORTH || this.direction == Lot.FACING_SOUTH){
 			resource = resource.south;
 		}
 
