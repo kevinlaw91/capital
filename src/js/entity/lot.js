@@ -102,14 +102,6 @@ define([
 		this.buildingY = props.b.y;
 
 		/**
-		 * Cost
-		 * @type {object}
-		 */
-		if(props.cost !== "undefined"){
-			this.cost = props.cost;
-		}
-
-		/**
 		 * Can the lot be traded?
 		 * @type {boolean}
 		 */
@@ -122,6 +114,14 @@ define([
 				y: this.y,
 				direction: this.direction
 			});
+		}
+		
+		/**
+		 * Cost
+		 * @type {object}
+		 */
+		if(props.cost !== "undefined"){
+			this.cost = props.cost;
 		}
 
 		/**
