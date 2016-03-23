@@ -111,7 +111,7 @@ define(function() {
 		var map = S().map;
 
 		for(var i=0; i<map.length; i++){
-			var currentLot = map[i]
+			var currentLot = map[i];
 
 			if(currentLot.isTradable){
 				if(Math.random() < 0.7){
@@ -125,7 +125,7 @@ define(function() {
 						if(map[i].upgradeAvailable())
 						{
 							dev.upgradeLot(i);
-						}else{
+						} else {
 							break;
 						}
 					}
