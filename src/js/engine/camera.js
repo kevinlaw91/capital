@@ -77,6 +77,9 @@ define([
 			}
 		});
 
+		//Set initial zoom
+		controller.zoom(Config.get("camera.zoom.initial"));
+
 		//Expose API methods to module
 		Camera.updateBBox = controller.updateBBox;
 		Camera.center = controller.center;
