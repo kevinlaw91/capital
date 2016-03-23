@@ -109,18 +109,20 @@ define([
 			this.cost = props.cost;
 		}
 
-		/** Color marker that shows the owner */
-		this.colorMark = require("render/script/colormark")({
-			x: this.x,
-			y: this.y,
-			direction: this.direction
-		});
-
 		/**
 		 * Can the lot be traded?
 		 * @type {boolean}
 		 */
 		this.isTradable = (!(typeof props.tradable !== "undefined" && props.tradable === false));
+
+		if(this.isTradable){
+			/** Color marker that shows the owner */
+			this.colorMark = require("render/script/colormark")({
+				x: this.x,
+				y: this.y,
+				direction: this.direction
+			});
+		}
 
 		/**
 		 * Upgraded levels
