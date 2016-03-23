@@ -141,6 +141,7 @@ body {
 	border: 0;
 	font-weight: 500;
 	font-size: 0.875rem;
+	margin-right: 5px;
 }
 
 #action-panel section button .success-icon {
