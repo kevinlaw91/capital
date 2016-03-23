@@ -192,7 +192,7 @@ define([
 
 	Lot.prototype.markColor = function(color) {
 		//Get color mark
-		var colorMark = this.colorMark || require("render/script/colormark")({x: this.x, y: this.y});
+		var colorMark = this.colorMark || require("render/script/colormark")({x: this.x, y: this.y, direction: this.direction});
 		//Set color
 		colorMark.attr({
 			fill: color
