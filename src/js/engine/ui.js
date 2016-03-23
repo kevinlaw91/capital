@@ -53,8 +53,14 @@ define(["jquery", "snapsvg"], function( $, Snap ) {
 	};
 
 	UI.showUserActionPanel = function(panelId){
-		$(action_panels[panelId]).show();
-		$("#stage-box-slide").animate({ "bottom": $("#action-panel").height() }, 250, "easeOutCubic");
+		var panel = $(action_panels[panelId]);
+		panel.show();
+		$("#stage-box-slide").animate(
+			{ "bottom": $("#action-panel").height() },
+			250,
+			"easeOutCubic",
+			function() { panel.find("button.main").focus(); }
+		);
 	};
 
 	UI.hideUserActionPanel = function(){
