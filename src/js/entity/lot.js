@@ -99,14 +99,13 @@ define([
 		this.buildingX = props.b.x;
 		this.buildingY = props.b.y;
 
-		/** Cost */
-		this.cost = {
-			land: 0,
-			upgrade1: 0,
-			upgrade2: 0,
-			upgrade3: 0,
-			upgrade4: 0
-		};
+		/**
+		 * Cost
+		 * @type {object}
+		 */
+		if(props.cost !== "undefined"){
+			this.cost = props.cost;
+		}
 
 		/**
 		 * Color marker that shows the owner
