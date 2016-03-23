@@ -3,7 +3,7 @@
 		"viewport": "#camera-viewport",
 		"zoom": {
 			"min": 0.8,
-			"max": 2,
+			"max": 3.5,
 			"sensitivity": 0.3
 		},
 		"pan": {
