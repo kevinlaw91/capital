@@ -109,11 +109,12 @@ define([
 			this.cost = props.cost;
 		}
 
-		/**
-		 * Color marker that shows the owner
-		 * @var colorMark
-		 * @memberOf Lot#
-		 */
+		/** Color marker that shows the owner */
+		this.colorMark = require("render/script/colormark")({
+			x: this.x,
+			y: this.y,
+			direction: this.direction
+		});
 
 		/**
 		 * Can the lot be traded?
@@ -191,10 +192,7 @@ define([
 	};
 
 	Lot.prototype.markColor = function(color) {
-		//Get color mark
-		var colorMark = this.colorMark || require("render/script/colormark")({x: this.x, y: this.y, direction: this.direction});
-		//Set color
-		colorMark.attr({
+		this.colorMark.attr({
 			fill: color
 		});
 	};
