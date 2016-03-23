@@ -61,6 +61,10 @@ define(["jquery", "snapsvg"], function( $, Snap ) {
 		$("#stage-box-slide").animate({ "bottom": 0 }, 250, "easeOutCubic", UI.resetUserActionPanel);
 	};
 
+	UI.updateUserActionPanel = function(panelId, data){
+		$(action_panels[panelId]).find("[data-label='cost']").text(data);
+	};
+
 	UI.feedbackUserActionPanel = function() {
 		// Show success animation
 		$("#action-panel").find("section").removeClass("done").addClass("done");

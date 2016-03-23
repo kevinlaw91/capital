@@ -212,7 +212,15 @@ define([
 					//TODO: Polish
 					$(".player-action-btn-build").prop('disabled', false);
 
+					var costPerTier = [
+						lot.cost.upgrade1,
+						lot.cost.upgrade2,
+						lot.cost.upgrade3,
+						lot.cost.upgrade4
+					];
+
 					// Show action panel
+					UI.updateUserActionPanel("upgrade", costPerTier[lot.tier]);
 					UI.showUserActionPanel("upgrade");
 				} else {
 					//End current turn
@@ -227,6 +235,7 @@ define([
 					$(".player-action-btn-buy").prop('disabled', false);
 
 					// Show action panel
+					UI.updateUserActionPanel("buy", lot.cost.land);
 					UI.showUserActionPanel("buy");
 				} else {
 					//Stopped at others' property

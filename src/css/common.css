@@ -173,7 +173,7 @@ body {
 	animation: btn-result-draw-icon 400ms ease-in forwards;
 }
 
-#action-panel section button span {
+#action-panel section button>span {
 	transform-origin: 50% 50%;
 	display: inline-block;
 	padding: 8px 16px;
