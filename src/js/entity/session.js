@@ -39,7 +39,11 @@ define([
 		this.players = [];
 		this.currentPlayerIndex = -1;
 
+		// Generate map
 		this.map = require("entity/map").generate();
+
+		// Draw map
+		require("render/script/map")();
 
 		//Register as active session
 		registerActiveSession(this);

@@ -38,9 +38,6 @@ define([
 			var GameSession = require("entity/session");
 			this.session    = new GameSession();
 
-			// Draw map
-			require("render/script/map")();
-
 			//TODO: Remove after testing
 			this.session.addPlayer("Player 1", "RED");
 			this.session.addPlayer("Player 2", "BLUE");
