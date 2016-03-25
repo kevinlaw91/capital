@@ -1,8 +1,9 @@
 define([
 	"jquery",
 	"entity/lot",
+	"entity/lot_tradable",
     "utils"
-], function($, Lot) {
+], function($, Lot, TradableLot) {
 	'use strict';
 	return {
 		/**
@@ -99,11 +100,11 @@ define([
 			// Lot in south west
 			for(i=12; i>=4; i--){
 				map.push(
-					new Lot(
+					new TradableLot(
 						$.extend(tradable, generateCost(), {
 							pos: { x: i, y: 13},
 							b:   { x: i, y: 15},
-							direction: Lot.FACING_NORTH
+							direction: Lot.prototype.FACING_NORTH
 						})
 					)
 				);
@@ -122,11 +123,11 @@ define([
 			// Lot in north west
 			for(i=12; i>=4; i--){
 				map.push(
-					new Lot(
+					new TradableLot(
 						$.extend(tradable, generateCost(), {
 							pos: { x: 3, y: i},
 							b:   { x: 1, y: i},
-							direction: Lot.FACING_EAST
+							direction: Lot.prototype.FACING_EAST
 						})
 					)
 				);
@@ -145,11 +146,11 @@ define([
 			// Lot in north east
 			for(i=4; i<=12; i++){
 				map.push(
-					new Lot(
+					new TradableLot(
 						$.extend(tradable, generateCost(), {
 							pos: { x: i, y: 3},
 							b:   { x: i, y: 1},
-							direction: Lot.FACING_SOUTH
+							direction: Lot.prototype.FACING_SOUTH
 						})
 					)
 				);
@@ -168,11 +169,11 @@ define([
 			// Lot in south east
 			for(i=4; i<=12; i++){
 				map.push(
-					new Lot(
+					new TradableLot(
 						$.extend(tradable, generateCost(), {
 							pos: { x: 13, y: i},
 							b:   { x: 15, y: i},
-							direction: Lot.FACING_WEST
+							direction: Lot.prototype.FACING_WEST
 						})
 					)
 				);

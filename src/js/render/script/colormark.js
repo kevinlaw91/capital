@@ -43,7 +43,7 @@ define([
 
 
 		switch(lot.direction){
-			case Lot.FACING_NORTH:
+			case Lot.prototype.FACING_NORTH:
 				//West to north path
 				path = createLinePath(tw, tn);
 				//Calculate length for once
@@ -57,7 +57,7 @@ define([
 				e = Snap.path.getPointAtLength(path, length); //Can reuse previously calculated length
 				e = [e.x, e.y];
 				break;
-			case Lot.FACING_EAST:
+			case Lot.prototype.FACING_EAST:
 				path = createLinePath(tn, te);
 				length = Snap.path.getTotalLength(path) * width;
 				e = Snap.path.getPointAtLength(path, length);
@@ -66,7 +66,7 @@ define([
 				s = Snap.path.getPointAtLength(path, length);
 				s = [s.x, s.y];
 				break;
-			case Lot.FACING_SOUTH:
+			case Lot.prototype.FACING_SOUTH:
 				path = createLinePath(tn, tw);
 				length = Snap.path.getTotalLength(path) * width;
 				w = Snap.path.getPointAtLength(path, length);
@@ -75,7 +75,7 @@ define([
 				s = Snap.path.getPointAtLength(path, length);
 				s = [s.x, s.y];
 				break;
-			case Lot.FACING_WEST:
+			case Lot.prototype.FACING_WEST:
 				path = createLinePath(te, tn);
 				length = Snap.path.getTotalLength(path) * width;
 				n = Snap.path.getPointAtLength(path, length);
