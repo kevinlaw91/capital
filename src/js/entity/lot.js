@@ -168,21 +168,25 @@ define([
 		// Update tier info
 		var resource = Upgrades[this.tier].sprites;
 
-		if(this.direction == Lot.FACING_EAST || this.direction == Lot.FACING_WEST){
-			resource = resource.east;
-		} else if(this.direction == Lot.FACING_NORTH || this.direction == Lot.FACING_SOUTH){
-			resource = resource.south;
-		}
+		//Check to see if building needs to be rendered
+		if(resource){
+			// Determine which resource to be used
+			if(this.direction == Lot.FACING_EAST || this.direction == Lot.FACING_WEST){
+				resource = resource.east;
+			} else if(this.direction == Lot.FACING_NORTH || this.direction == Lot.FACING_SOUTH){
+				resource = resource.south;
+			}
 
-
-		if(this.house === null){
-			// Draw house for the first time
-			this.house = new House(resource.rsId, resource.rsOffsetX, resource.rsOffsetY);
-			var pos = ScreenTransform.getTopFaceMidpoint(this.buildingY, this.buildingX);
-			this.house.moveTo(pos.x, pos.y);
-		} else {
-			// Redraw/upgrade house
-			this.house.replace(resource.rsId, resource.rsOffsetX, resource.rsOffsetY);
+			// Render resource
+			if(this.house === null){
+				// Draw house for the first time
+				this.house = new House(resource.rsId, resource.rsOffsetX, resource.rsOffsetY);
+				var pos = ScreenTransform.getTopFaceMidpoint(this.buildingY, this.buildingX);
+				this.house.moveTo(pos.x, pos.y);
+			} else {
+				// Redraw/upgrade house
+				this.house.replace(resource.rsId, resource.rsOffsetX, resource.rsOffsetY);
+			}
 		}
 	};
 
