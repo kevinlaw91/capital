@@ -56,7 +56,7 @@ define([
 			}
 		},
 		{
-			rent: 0.38,
+			rentFactor: 0.38,
 			sprites: {
 				south: {
 					rsId: "building-villa-south",
@@ -139,17 +139,23 @@ define([
 			this.cost = props.cost;
 
 			/**
+			 * Net Worth
+			 */
+			this.worth = this.cost[0];
+
+			/**
+			 * Upgraded levels
+			 * @type {number}
+			 */
+			this.tier = 0;
+
+			/**
 			 * Rent
 			 * @type {number}
 			 */
-			this.rent = this.cost[0] * Upgrades[0].rentFactor; // 15% of land price
+			this.rent = 0;
+			this.recalculateRent();
 		}
-
-		/**
-		 * Upgraded levels
-		 * @type {number}
-		 */
-		this.tier = 0;
 
 		/**
 		 * Owner of this lot
@@ -161,9 +167,18 @@ define([
 		this.house = null;
 	}
 
+	/** Recalculate rent based on current net worth and tier */
+	Lot.prototype.recalculateRent = function() {
+		this.rent = Math.round(this.worth * Upgrades[this.tier].rentFactor);
+	};
+
 	Lot.prototype.upgrade = function(){
 		// Increase tier
 		this.tier = Math.min(++this.tier, MaxTier);
+
+		// Update rent
+		this.worth += this.cost[this.tier];
+		this.recalculateRent();
 
 		//Check to see if building needs to be rendered
 		var resource = Upgrades[this.tier].sprites;
