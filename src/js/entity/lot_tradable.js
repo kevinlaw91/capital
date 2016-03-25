@@ -87,6 +87,9 @@ define([
 		// Calling superclass constructor
 		Lot.call(this, props);
 
+		/** Name */
+		this.name = props.name;
+
 		/** XY grid position for building */
 		this.buildingX = props.b.x;
 		this.buildingY = props.b.y;

@@ -5,6 +5,65 @@ define([
     "utils"
 ], function($, Lot, TradableLot) {
 	'use strict';
+
+	var LocationNames = [];
+
+	function resetLocationNamePool(){
+		//Must be at least 36 names
+		LocationNames = [
+			"AA",
+			"AB",
+			"AC",
+			"AD",
+			"AE",
+			"AF",
+			"AG",
+			"AH",
+			"AI",
+			"AJ",
+			"AK",
+			"AL",
+			"AM",
+			"AN",
+			"AO",
+			"AP",
+			"AQ",
+			"AR",
+			"AS",
+			"AT",
+			"AU",
+			"AV",
+			"AW",
+			"AX",
+			"AY",
+			"AZ",
+			"BA",
+			"BB",
+			"BC",
+			"BD",
+			"BE",
+			"BF",
+			"BG",
+			"BH",
+			"BI",
+			"BJ"
+		];
+	}
+
+	function getRandomName(){
+		//Reset name pool if no more unique name is available
+		if(LocationNames.length === 0){
+			resetLocationNamePool();
+		}
+
+		//Get a unique name from pool
+		var randomId = Math.floor(Math.random()*LocationNames.length),
+		    randomName = LocationNames.splice(randomId,1);
+
+		console.dir(LocationNames);
+		return randomName[0];
+	}
+
 	return {
 		/**
 		 * Generates and return a map definition array
@@ -101,7 +160,8 @@ define([
 			for(i=12; i>=4; i--){
 				map.push(
 					new TradableLot(
-						$.extend(tradable, generateCost(), {
+						$.extend(generateCost(), {
+							name: getRandomName(),
 							pos: { x: i, y: 13},
 							b:   { x: i, y: 15},
 							direction: Lot.prototype.FACING_NORTH
@@ -124,7 +184,8 @@ define([
 			for(i=12; i>=4; i--){
 				map.push(
 					new TradableLot(
-						$.extend(tradable, generateCost(), {
+						$.extend(generateCost(), {
+							name: getRandomName(),
 							pos: { x: 3, y: i},
 							b:   { x: 1, y: i},
 							direction: Lot.prototype.FACING_EAST
@@ -147,7 +208,8 @@ define([
 			for(i=4; i<=12; i++){
 				map.push(
 					new TradableLot(
-						$.extend(tradable, generateCost(), {
+						$.extend(generateCost(), {
+							name: getRandomName(),
 							pos: { x: i, y: 3},
 							b:   { x: i, y: 1},
 							direction: Lot.prototype.FACING_SOUTH
@@ -170,7 +232,8 @@ define([
 			for(i=4; i<=12; i++){
 				map.push(
 					new TradableLot(
-						$.extend(tradable, generateCost(), {
+						$.extend(generateCost(), {
+							name: getRandomName(),
 							pos: { x: 13, y: i},
 							b:   { x: 15, y: i},
 							direction: Lot.prototype.FACING_WEST
