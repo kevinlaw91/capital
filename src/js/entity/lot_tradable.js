@@ -8,8 +8,10 @@ define([
 	var ScreenTransform = require("engine/transform");
 	var House = require("render/sprite/house");
 
-	/** Constants for upgrades */
+	// Constants for upgrades
+		/** Maximum upgrade */
 	var MaxTier = 4,
+	    /** Upgrade configurations */
 	    Upgrades = [
 		    {
 			    rentFactor: 0.15
@@ -79,7 +81,7 @@ define([
 	/**
 	 * Represents a tradable lot in the map
 	 * @namespace TradableLot
-	 * @param {object} props Properties to be applied to the lot
+	 * @param {object} props - Properties to be applied to the lot
 	 * @constructor
 	 * @augments Lot
 	 */
@@ -102,20 +104,12 @@ define([
 		});
 
 		/**
-		 * Lot is tradable
-		 * @override
-		 */
-		this.isTradable = true;
-
-		/**
 		 * Cost
 		 * @type {object}
 		 */
 		this.cost = props.cost;
 
-		/**
-		 * Net Worth
-		 */
+		/** Net Worth */
 		this.worth = this.cost[0];
 
 		/**
@@ -145,6 +139,9 @@ define([
 	//Inherits prototype
 	TradableLot.prototype = Object.create(Lot.prototype);
 	TradableLot.prototype.constructor = TradableLot;
+
+	/** Lot is tradable */
+	TradableLot.prototype.isTradable = true;
 
 	/** Recalculate rent based on current net worth and tier */
 	TradableLot.prototype.recalculateRent = function() {

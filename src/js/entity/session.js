@@ -77,7 +77,7 @@ define([
 
 		/**
 		 * Current session map data
-		 * @type {Lot[]}
+		 * @type {Array.<Lot|TradableLot>}
 		 */
 		var MapData = evt.data.session.map;
 

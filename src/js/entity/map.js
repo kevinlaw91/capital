@@ -55,19 +55,16 @@ define([
 		if(LocationNames.length === 0){
 			resetLocationNamePool();
 		}
-
 		//Get a unique name from pool
 		var randomId = Math.floor(Math.random()*LocationNames.length),
 		    randomName = LocationNames.splice(randomId,1);
-
-		console.dir(LocationNames);
 		return randomName[0];
 	}
 
 	return {
 		/**
 		 * Generates and return a map definition array
-		 * @returns {Lot[]}
+		 * @returns {Array.<Lot|TradableLot>}
 		 */
 		generate: function(){
 			// Import Utils
@@ -106,13 +103,12 @@ define([
 
 			/**
 			 * Map definition
-			 * @type {Lot[]}
+			 * @type {Array.<Lot|TradableLot>}
 			 */
 			var map = [];
 
 			// Constants
-			var tradable = { tradable: true },
-			    nd = {
+			var nd = {
 				    /**
 				     * Normal distributions
 				     *

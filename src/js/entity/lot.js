@@ -3,7 +3,7 @@ define(function() {
 	/**
 	 * Represents a lot in the map
 	 * @namespace Lot
-	 * @param {object} props Properties to be applied to the lot
+	 * @param {object} props - Properties to be applied to the lot
 	 * @constructor
 	 */
 	function Lot(props){
