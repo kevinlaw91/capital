@@ -213,7 +213,7 @@ define([
 					$(".player-action-btn-build").prop('disabled', false);
 
 					// Show action panel
-					UI.updateUserActionPanel("upgrade", lot.getNextUpgradeCost());
+					UI.updateUserActionPanel("upgrade", { cost: lot.getNextUpgradeCost() });
 					UI.showUserActionPanel("upgrade");
 				} else {
 					//End current turn
@@ -228,7 +228,7 @@ define([
 					$(".player-action-btn-buy").prop('disabled', false);
 
 					// Show action panel
-					UI.updateUserActionPanel("buy", lot.getPrice());
+					UI.updateUserActionPanel("buy", { title: lot.name, cost: lot.getPrice() });
 					UI.showUserActionPanel("buy");
 				} else {
 					//Stopped at others' property

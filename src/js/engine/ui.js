@@ -70,10 +70,11 @@ define(["jquery", "snapsvg"], function( $, Snap ) {
 	UI.updateUserActionPanel = function(panelId, data){
 		var panels = {
 			buy: function(){
-				$(action_panels[panelId]).find("[data-label='cost']").text(data);
+				$(action_panels[panelId]).find("[data-label='title']").text(data.title);
+				$(action_panels[panelId]).find("[data-label='cost']").text(data.cost);
 			},
 			upgrade: function() {
-				$(action_panels[panelId]).find("[data-label='cost']").text(data);
+				$(action_panels[panelId]).find("[data-label='cost']").text(data.cost);
 			}
 		};
 
