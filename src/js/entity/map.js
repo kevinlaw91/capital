@@ -74,13 +74,13 @@ define([
 				cost_upgrade4 = cost_upgrade3 + randomAmount(nd.upg4,1500,4000);
 
 				return {
-					cost: {
-						land: cost_land,
-						upgrade1: cost_upgrade1,
-						upgrade2: cost_upgrade2,
-						upgrade3: cost_upgrade3,
-						upgrade4: cost_upgrade4
-					}
+					cost: [
+						cost_land,
+						cost_upgrade1,
+						cost_upgrade2,
+						cost_upgrade3,
+						cost_upgrade4
+					]
 				};
 			}
 

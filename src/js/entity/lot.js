@@ -142,7 +142,7 @@ define([
 			 * Rent
 			 * @type {number}
 			 */
-			this.rent = this.cost.land * Upgrades[0].rentFactor; // 15% of land price
+			this.rent = this.cost[0] * Upgrades[0].rentFactor; // 15% of land price
 		}
 
 		/**
@@ -188,6 +188,16 @@ define([
 				this.house.replace(resource.rsId, resource.rsOffsetX, resource.rsOffsetY);
 			}
 		}
+	};
+
+	/** Get the price of current lot */
+	Lot.prototype.getPrice = function() {
+		return (this.cost)?this.cost[0]:-1;
+	};
+
+	/** Get the cost of performing next upgrade */
+	Lot.prototype.getNextUpgradeCost = function(){
+		return (this.cost)?this.cost[this.tier + 1]:-1;
 	};
 
 	/** Checks if upgrade is possible */
