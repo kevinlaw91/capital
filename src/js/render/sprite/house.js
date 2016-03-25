@@ -7,17 +7,30 @@ define([
 	 * Marker sprite to indicate active player
 	 * @augments Sprite
 	 */
-	function House(){
+	function House(resourceId, offsetX, offsetY){
 		// Inherits Sprite object
 		Sprite.apply(this, [
-			Renderer.layers.buildings.paper.use("house-normal"),
+			Renderer.layers.buildings.paper.use(resourceId),
 			{
 				height: 64,
 				width: 64,
-				offsetX: 25,
-				offsetY: 25
+				offsetX: offsetX,
+				offsetY: offsetY
 			}
 		]);
+
+		this.replace = function(resourceId, offsetX, offsetY) {
+			var newEl = Renderer.layers.buildings.paper.use(resourceId);
+			this.view.after(newEl);
+			this.view.remove();
+			this.view = newEl;
+			this.view.attr({
+				width: this.width,
+				height: this.height
+			});
+			this.setOffset(offsetX, offsetY);
+			this.view.attr(this.getBoundingOffset(this.x,this.y));
+		};
 
 		/** @override */
 		this.moveTo = function(x,y){

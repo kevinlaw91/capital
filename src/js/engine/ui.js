@@ -2,11 +2,11 @@ define(["jquery", "snapsvg"], function( $, Snap ) {
 
 	'use strict';
 
-	var module = {},
+	var UI = {},
 	    stage = null,
 		viewport = null;
 
-	module.getStage = function(stage_id) {
+	UI.getStage = function(stage_id) {
 
 		if (stage) return stage;
 
@@ -23,7 +23,7 @@ define(["jquery", "snapsvg"], function( $, Snap ) {
 		return stage;
 	};
 
-	module.getViewport = function(viewport_id){
+	UI.getViewport = function(viewport_id){
 		if (viewport) return viewport;
 
 		viewport = Snap(stage).g().attr({
@@ -37,15 +37,58 @@ define(["jquery", "snapsvg"], function( $, Snap ) {
 		});
 
 		// Method to remove the dummy object after first render
-		module.removePlaceholder = function(){
+		UI.removePlaceholder = function(){
 			placeholder.remove();
 			placeholder = null;
-			delete module.removePlaceholder;
+			delete UI.removePlaceholder;
 		};
 
 		viewport = viewport.node;
 		return viewport;
 	};
 
-	return module;
+	var action_panels = {
+		buy: "#action-panel-buy",
+		upgrade: "#action-panel-upgrade"
+	};
+
+	UI.showUserActionPanel = function(panelId){
+		var panel = $(action_panels[panelId]);
+		panel.show();
+		$("#stage-box-slide").animate(
+			{ "bottom": $("#action-panel").height() },
+			250,
+			"easeOutCubic",
+			function() { panel.find("button.main").focus(); }
+		);
+	};
+
+	UI.hideUserActionPanel = function(){
+		$("#stage-box-slide").animate({ "bottom": 0 }, 250, "easeOutCubic", UI.resetUserActionPanel);
+	};
+
+	UI.updateUserActionPanel = function(panelId, data){
+		$(action_panels[panelId]).find("[data-label='cost']").text(data);
+	};
+
+	UI.feedbackUserActionPanel = function() {
+		// Show success animation
+		$("#action-panel").find("section").removeClass("done").addClass("done");
+
+		// Hide player action panel
+		window.setTimeout(UI.hideUserActionPanel, 1000);
+
+		// Ends turn
+		window.setTimeout(FireEvent_PlayerEndsTurn, 1500);
+	};
+
+	function FireEvent_PlayerEndsTurn(){
+		$.publish("PlayerEndsTurn");
+	}
+
+	UI.resetUserActionPanel = function() {
+		$("#action-panel").find("section").removeClass("done").hide();
+	};
+
+	return UI;
 });

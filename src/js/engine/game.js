@@ -64,9 +64,10 @@ define([
 	//
 
 	$("#btn-roll").on("click", GameEventCallback.PlayerAction.DiceRoll);
-	$("#btn-done").on("click", GameEventCallback.PlayerAction.EndTurn);
-	$("#btn-buy").on("click", GameEventCallback.PlayerAction.Buy).prop('disabled', true);
-	$("#btn-build").on("click", GameEventCallback.PlayerAction.Upgrade).prop('disabled', true);
+	$(".player-action-btn-done").on("click", GameEventCallback.PlayerAction.EndTurn);
+	$.subscribe("PlayerEndsTurn", GameEventCallback.PlayerAction.EndTurn);
+	$(".player-action-btn-buy").on("click", GameEventCallback.PlayerAction.Buy).prop('disabled', true);
+	$(".player-action-btn-build").on("click", GameEventCallback.PlayerAction.Upgrade).prop('disabled', true);
 
 	return Game;
 });

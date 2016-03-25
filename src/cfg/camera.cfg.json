@@ -2,8 +2,9 @@
 	"camera": {
 		"viewport": "#camera-viewport",
 		"zoom": {
+			"initial": 2.0,
 			"min": 0.8,
-			"max": 2,
+			"max": 3.5,
 			"sensitivity": 0.3
 		},
 		"pan": {

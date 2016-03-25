@@ -53,9 +53,6 @@ define([
 		//Pending steps
 		this.pendingSteps = 0;
 
-		//Pending offer
-		this.pendingOffer = null;
-
 		/**
 		 * Amount of cash player possesses
 		 * @member {number}
@@ -184,18 +181,13 @@ define([
 		} else {
 			//Reach destination
 			setTimeout(
-				(function(player){
+				(function(p){
 					return function(){
-						player.onIdle();
+						$.publish("PlayerStopped", { player: p });
 					};
 				})(this),
 				Config.get("player.token.waitTime"));
 		}
-	};
-
-	Player.prototype.onIdle = function() {
-		this.showActiveMarker();
-		$.publish("PlayerStopped", { player: this, x: this.mapX, y: this.mapY });
 	};
 
 	Player.prototype.bringToFront = function() {

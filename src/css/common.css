@@ -12,6 +12,10 @@
 	box-sizing: border-box;
 }
 
+html {
+	font-size: 100%;
+}
+
 html, body, #app-viewport, #game-frame {
     width: 100vw;
     height: 100vh;
@@ -86,14 +90,120 @@ body {
 	flex-shrink: 2;
 }
 
+#stage-box {
+	flex-grow: 3;
+	flex-shrink: 1;
+	position: relative;
+}
+
 #surface {
 	position: relative;
-	display: block;
 	height: 100%;
 	width: 100%;
 	background-color: #222;
-	flex-grow: 3;
-	flex-shrink: 1;
+}
+
+#action-panel {
+	width: 100%;
+	background-color: #006064;
+}
+
+#action-panel section {
+	display: none;
+	padding: 5px 20px 20px 20px;
+	font-family: 'Roboto', sans-serif;
+	color: white;
+}
+
+#action-panel section h1 {
+	margin-top: 14px;
+	font-size: 1.5rem;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 400;
+	opacity: 0.87;
+}
+
+#action-panel section p {
+	margin-top: 14px;
+	font-size: 0.875rem;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 400;
+	opacity: 0.87;
+}
+
+#action-panel section button {
+	position: relative;
+	margin-top: 14px;
+	background-color: #546E7A;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+	font-family: 'Roboto', sans-serif;
+	color: white;
+	border: 0;
+	font-weight: 500;
+	font-size: 0.875rem;
+	margin-right: 5px;
+}
+
+#action-panel section button .success-icon {
+	opacity: 0;
+	transform-origin: 50% 50%;
+	width: 32px;
+	height: 32px;
+	position: absolute;
+	left: calc(50% - 16px);
+	top: calc(50% - 16px);
+}
+
+#action-panel section button:focus {
+	box-shadow: 0 0 1px 1px #FFF9C4;
+	outline: 0;
+}
+
+#action-panel section.done button .success-icon {
+	animation: btn-result-show 200ms ease-in forwards;
+}
+
+#action-panel section button .success-icon path {
+	fill: none;
+	stroke: white;
+	stroke-width: 3;
+	stroke-dasharray: 50, 50;
+}
+
+#action-panel section.done button .success-icon path {
+	animation: btn-result-draw-icon 400ms ease-in forwards;
+}
+
+#action-panel section button>span {
+	transform-origin: 50% 50%;
+	display: inline-block;
+	padding: 8px 16px;
+}
+
+#action-panel section.done button.main span {
+	animation: btn-result-hide 200ms ease-in forwards;
+}
+
+#action-panel section.done button.main {
+	animation: btn-result-hide 200ms ease-in forwards 2s;
+}
+
+#action-panel section.done button:not(.main) {
+	animation: btn-result-hide 200ms ease-in forwards;
+}
+
+#action-panel section button.main {
+	background-color: #FF5722;
+}
+
+#stage-box-slide {
+	position: absolute;
+	bottom: 0;
+}
+
+#stage-box-slide, #stage-box-slide .contents {
+	height: 100%;
+	width: 100%;
 }
 
 #nav-bar {
@@ -119,7 +229,6 @@ body {
 	bottom: 0;
 	display: block;
 	width: 100%;
-	padding: 1%;
 	pointer-events: none;
 }
 
@@ -127,13 +236,6 @@ body {
 	position: absolute;
 	bottom: 0;
 	width: 100%;
-}
-
-#player-action-button {
-	display: block;
-	margin: 0 auto;
-	height: 106px;
-	width: 106px;
 }
 
 .player-action-entry {
@@ -150,6 +252,17 @@ body {
 	padding: 10px;
 }
 
+#player-action-button {
+	display: block;
+	margin: 0 auto;
+	height: 106px;
+	width: 106px;
+}
+
+#player-action-button.moving {
+	animation: player-action-button-rotate 2s linear infinite;
+}
+
 #btn-roll {
 	pointer-events: painted;
 	cursor: default;
@@ -157,6 +270,7 @@ body {
 	transition: fill 250ms, stroke 250ms;
 	stroke: white;
 	stroke-width: 5px;
+	transform-origin: 50% 50%;
 }
 
 #btn-roll:hover {
@@ -165,6 +279,23 @@ body {
 
 #btn-roll:active {
 	fill: #e6e6e6;
+	stroke: none;
+}
+
+#player-action-button.moving #btn-roll {
+	stroke-dasharray: 1,250;
+	stroke-dashoffset: 0;
+	animation: btn-roll-spinning-stroke 2s ease-in-out infinite;
+	stroke-linecap: round;
+}
+
+#player-action-button.show #btn-roll {
+	animation: btn-roll-show 200ms ease-in forwards;
+	opacity: 1;
+}
+
+#player-action-button.hide #btn-roll {
+	animation: btn-roll-hide 200ms ease-out forwards;
 	stroke: none;
 }
 
@@ -177,6 +308,7 @@ body {
 	stroke: white;
 	stroke-width: 10;
 	stroke-dasharray: 22 7;
+	stroke-dashoffset: 29;
 }
 
 /* transition animation when showing player token active marker */
@@ -186,8 +318,8 @@ body {
 }
 
 @keyframes player-token-rotate {
-	0% { stroke-dashoffset: 0 }
-	100% { stroke-dashoffset: 29 }
+	0% { stroke-dashoffset: 29 }
+	100% { stroke-dashoffset: 0 }
 }
 
 @keyframes ground-marker-fadein {
@@ -198,5 +330,83 @@ body {
 	100% {
 		opacity: 1;
 		transform: translate(0,0px);
+	}
+}
+
+/* dice button spinner when player moving */
+@keyframes btn-roll-spinning-stroke {
+	0% {
+		stroke-dasharray: 1,250;
+		stroke-dashoffset: 0;
+	}
+	50% {
+		stroke-dasharray: 180,250;
+		stroke-dashoffset: -55px;
+	}
+	100% {
+		stroke-dasharray: 180,250;
+		stroke-dashoffset: -250px;
+	}
+}
+
+@keyframes player-action-button-rotate {
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+/* dice button hide */
+@keyframes btn-roll-show {
+	0% {
+		transform: scale(0,0);
+	}
+	75% {
+		transform: scale(1.1,1.1);
+	}
+	100% {
+		transform: scale(1,1);
+	}
+}
+
+@keyframes btn-roll-hide {
+	25% {
+		transform: scale(1.1,1.1);
+		opacity: 1;
+	}
+	100% {
+		transform: scale(0,0);
+		opacity: 0;
+	}
+}
+
+/* button result scale transition */
+@keyframes btn-result-show {
+	from {
+		transform: scale(1.5,1.5);
+		opacity: 0;
+	}
+	to {
+		transform: scale(1,1);
+		opacity: 1;
+	}
+}
+
+@keyframes btn-result-draw-icon {
+	from {
+		stroke-dashoffset: 50px
+	}
+	to {
+		stroke-dashoffset: 0px
+	}
+}
+
+@keyframes btn-result-hide {
+	from {
+		transform: scale(1,1);
+		opacity: 1;
+	}
+	to {
+		transform: scale(0,0);
+		opacity: 0;
 	}
 }

@@ -20,6 +20,7 @@ define([
 	/** Set up camera on stage */
 	Camera.setup = function() {
 		var Config = require("engine/config");
+		var Utils = require("utils");
 
 		controller = svgPanZoom(Config.get("draw.svg"), {
 			viewportSelector: Config.get("camera.viewport"),
@@ -50,8 +51,8 @@ define([
 			        bottomLimit  = sizes.height - (vb.height * rZ) + zH;
 
 				return {
-					x: Math.max(leftLimit, Math.min(rightLimit, newPan.x)),
-					y: Math.max(topLimit, Math.min(bottomLimit, newPan.y))
+					x: Utils.clamp(newPan.x, leftLimit, rightLimit),
+					y: Utils.clamp(newPan.y, topLimit, bottomLimit)
 				};
 			},
 
@@ -75,6 +76,9 @@ define([
 				}
 			}
 		});
+
+		//Set initial zoom
+		controller.zoom(Config.get("camera.zoom.initial"));
 
 		//Expose API methods to module
 		Camera.updateBBox = controller.updateBBox;

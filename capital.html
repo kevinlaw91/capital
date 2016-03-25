@@ -3,14 +3,13 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="initial-scale=1.0">
-	<title>Engine</title>
+	<title>Capital</title>
 	<link rel="stylesheet" href="src/css/html5reset-1.6.1.css">
 	<link rel="stylesheet" href="src/css/common.css">
 	<link rel="stylesheet" href="src/css/screen-small.css">
 	<link rel="stylesheet" href="src/css/screen-wide.css">
 	<link rel="stylesheet" href="src/css/screen-ultra.css">
 	<link rel="stylesheet" href="src/css/screen-tall.css">
-	<!-- link href='https://fonts.googleapis.com/css?family=Merriweather+Sans:400,800,300,700' rel='stylesheet' type='text/css' -->
 	<script data-main="src/js/requirejs-run.js" src="src/js/lib/require.js"></script>
 </head>
 <body>
@@ -21,24 +20,45 @@
 		<div id="game-screen" class="screen">
 			<div id="game-frame">
 				<section id="player-box">
-					<input type="button" value="DONE" id="btn-done" style="padding: 1em;">
-					<br /><br />
-					<input type="button" value="BUY" id="btn-buy" style="padding: 1em;">&nbsp;
-					<input type="button" value="BUILD" id="btn-build" style="padding: 1em;">
 				</section>
-				<section id="surface">
-					<section id="player-action-box">
-						<div class="player-action-box-layer">
-							<svg id="player-action-button" version="1.1" xmlns="http://www.w3.org/2000/svg">
-								<circle id="btn-roll" cx="53" cy="53" r="40"></circle>
-							</svg>
+				<section id="stage-box">
+					<div id="stage-box-slide">
+						<div class="contents">
+							<section id="surface">
+								<section id="player-action-box">
+									<div class="player-action-box-layer">
+										<svg id="player-action-button" version="1.1" xmlns="http://www.w3.org/2000/svg">
+											<circle id="btn-roll" cx="53" cy="53" r="40"></circle>
+										</svg>
+									</div>
+								</section>
+							</section>
+							<section id="action-panel">
+								<section id="action-panel-buy">
+									<h1>Unowned Lot</h1>
+									<p>Cost: $<span data-label="cost">0</span></p>
+									<button type="button" class="player-action-btn-buy main">
+										<svg xmlns="http://www.w3.org/2000/svg" class="success-icon">
+											<path d="M2.093 18.192l7.808 7.79L29.908 6.018"/>
+										</svg>
+										<span>BUY FOR $<span data-label="cost">0</span></span>
+									</button>
+									<button type="button" class="player-action-btn-done"><span>DECLINE</span></button>
+								</section>
+								<section id="action-panel-upgrade">
+									<h1>Upgrade Property</h1>
+									<p>Cost: $<span data-label="cost">0</span></p>
+									<button type="button" class="player-action-btn-build main">
+										<svg xmlns="http://www.w3.org/2000/svg" class="success-icon">
+											<path d="M2.093 18.192l7.808 7.79L29.908 6.018"/>
+										</svg>
+										<span>UPGRADE FOR $<span data-label="cost">0</span></span>
+									</button>
+									<button type="button" class="player-action-btn-done"><span>DECLINE</span></button>
+								</section>
+							</section>
 						</div>
-						<div class="player-action-box-layer">
-							<!-- <section class="player-action-entry">
-								<h1>[ACTION-BOX-TITLE]</h1>
-							</section> -->
-						</div>
-					</section>
+					</div>
 				</section>
 				<section id="nav-bar"></section>
 				<section id="stats-box"></section>

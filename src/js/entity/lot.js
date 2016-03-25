@@ -4,17 +4,69 @@ define([
     "render/script/colormark",
     "render/sprite/house",
 ], function($) {
+	/** Resources for building */
+	var Upgrades = [
+		{ /*Empty Lot*/ },
+		{
+			south: {
+				rsId: "building-hut-south",
+				rsOffsetX: 30,
+				rsOffsetY: 40
+			},
+			east: {
+				rsId: "building-hut-east",
+				rsOffsetX: 20,
+				rsOffsetY: 25
+			}
+		},
+		{
+			south: {
+				rsId: "building-laneway-south",
+				rsOffsetX: 32,
+				rsOffsetY: 40
+			},
+			east: {
+				rsId: "building-laneway-east",
+				rsOffsetX: 20,
+				rsOffsetY: 25
+			}
+		},
+		{
+			south: {
+				rsId: "building-ranch-south",
+				rsOffsetX: 32,
+				rsOffsetY: 42
+			},
+			east: {
+				rsId: "building-ranch-east",
+				rsOffsetX: 32,
+				rsOffsetY: 30
+			}
+		},
+		{
+			south: {
+				rsId: "building-villa-south",
+				rsOffsetX: 30,
+				rsOffsetY: 45
+			},
+			east: {
+				rsId: "building-villa-east",
+				rsOffsetX: 35,
+				rsOffsetY: 38
+			}
+		}
+	];
 
 	/**
-	 * Type of lot
+	 * Facing directions
 	 * @constant
 	 * @memberOf Lot.
 	 * @type {number}
 	 */
-	Lot.LOT_TYPE_GENERIC = 0x0000;
-	Lot.LOT_TYPE_VACANT = 0x0001;
-	Lot.LOT_TYPE_CORNER = 0x0002;
-	Lot.LOT_TYPE_SPECIAL = 0x0003;
+	Lot.FACING_NORTH = 0x0100;
+	Lot.FACING_SOUTH = 0x0101;
+	Lot.FACING_EAST = 0x0102;
+	Lot.FACING_WEST = 0x0103;
 
 	// Imports
 	var ScreenTransform = require("engine/transform");
@@ -34,10 +86,12 @@ define([
 		this.id = props.id;
 
 		/**
-		 * Type of lot
+		 * Facing direction
 		 * @type {number}
 		 */
-		this.type = Lot.LOT_TYPE_GENERIC; //Generic
+		if(typeof props.direction !== "undefined"){
+			this.direction = props.direction;
+		}
 
 		/** XY Grid position in 2D map */
 		this.x = props.pos.x;
@@ -48,16 +102,27 @@ define([
 		this.buildingY = props.b.y;
 
 		/**
-		 * Color marker that shows the owner
-		 * @var colorMark
-		 * @memberOf Lot#
-		 */
-
-		/**
 		 * Can the lot be traded?
 		 * @type {boolean}
 		 */
 		this.isTradable = (!(typeof props.tradable !== "undefined" && props.tradable === false));
+
+		if(this.isTradable){
+			/** Color marker that shows the owner */
+			this.colorMark = require("render/script/colormark")({
+				x: this.x,
+				y: this.y,
+				direction: this.direction
+			});
+		}
+		
+		/**
+		 * Cost
+		 * @type {object}
+		 */
+		if(props.cost !== "undefined"){
+			this.cost = props.cost;
+		}
 
 		/**
 		 * Upgraded levels
@@ -83,18 +148,30 @@ define([
 	}
 
 	Lot.prototype.upgrade = function(){
-		//Update sprite
-		this.house = new House();
-		var pos = ScreenTransform.getTopFaceMidpoint(this.buildingY, this.buildingX);
-		this.house.moveTo(pos.x, pos.y);
-
 		//Update tier info
-		this.tier++;
+		var resource = Upgrades[++this.tier];
+
+		if(this.direction == Lot.FACING_EAST || this.direction == Lot.FACING_WEST){
+			resource = resource.east;
+		} else if(this.direction == Lot.FACING_NORTH || this.direction == Lot.FACING_SOUTH){
+			resource = resource.south;
+		}
+
+
+		if(this.house === null){
+			// Draw house for the first time
+			this.house = new House(resource.rsId, resource.rsOffsetX, resource.rsOffsetY);
+			var pos = ScreenTransform.getTopFaceMidpoint(this.buildingY, this.buildingX);
+			this.house.moveTo(pos.x, pos.y);
+		} else {
+			// Redraw/upgrade house
+			this.house.replace(resource.rsId, resource.rsOffsetX, resource.rsOffsetY);
+		}
 	};
 
 	/** Checks if upgrade is possible */
 	Lot.prototype.upgradeAvailable = function() {
-		var maxTier = 2;
+		var maxTier = 4;
 		return this.tier<maxTier;
 	};
 
@@ -117,10 +194,7 @@ define([
 	};
 
 	Lot.prototype.markColor = function(color) {
-		//Get color mark
-		var colorMark = this.colorMark || require("render/script/colormark")({x: this.x, y: this.y});
-		//Set color
-		colorMark.attr({
+		this.colorMark.attr({
 			fill: color
 		});
 	};
