@@ -172,6 +172,7 @@ define([
 		this.rent = Math.round(this.worth * Upgrades[this.tier].rentFactor);
 	};
 
+	/** Perform upgrade */
 	Lot.prototype.upgrade = function(){
 		// Increase tier
 		this.tier = Math.min(++this.tier, MaxTier);
