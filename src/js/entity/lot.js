@@ -4,8 +4,9 @@ define([
     "render/script/colormark",
     "render/sprite/house",
 ], function($) {
-	/** Resources for building */
-	var Upgrades = [
+	/** Constants for upgrades */
+	var MaxTier = 4,
+	    Upgrades = [
 		{
 			rentFactor: 0.15
 		},
@@ -55,7 +56,6 @@ define([
 			}
 		},
 		{
-
 			rent: 0.38,
 			sprites: {
 				south: {
@@ -162,8 +162,11 @@ define([
 	}
 
 	Lot.prototype.upgrade = function(){
+		// Increase tier
+		this.tier = Math.min(++this.tier, MaxTier);
+
 		// Update tier info
-		var resource = Upgrades[++this.tier].sprites;
+		var resource = Upgrades[this.tier].sprites;
 
 		if(this.direction == Lot.FACING_EAST || this.direction == Lot.FACING_WEST){
 			resource = resource.east;
@@ -185,8 +188,7 @@ define([
 
 	/** Checks if upgrade is possible */
 	Lot.prototype.upgradeAvailable = function() {
-		var maxTier = 4;
-		return this.tier<maxTier;
+		return this.tier<MaxTier;
 	};
 
 	/**
