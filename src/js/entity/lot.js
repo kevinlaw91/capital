@@ -165,10 +165,9 @@ define([
 		// Increase tier
 		this.tier = Math.min(++this.tier, MaxTier);
 
-		// Update tier info
+		//Check to see if building needs to be rendered
 		var resource = Upgrades[this.tier].sprites;
 
-		//Check to see if building needs to be rendered
 		if(resource){
 			// Determine which resource to be used
 			if(this.direction == Lot.FACING_EAST || this.direction == Lot.FACING_WEST){
