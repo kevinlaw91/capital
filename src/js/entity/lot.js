@@ -6,53 +6,68 @@ define([
 ], function($) {
 	/** Resources for building */
 	var Upgrades = [
-		{ /*Empty Lot*/ },
 		{
-			south: {
-				rsId: "building-hut-south",
-				rsOffsetX: 30,
-				rsOffsetY: 40
-			},
-			east: {
-				rsId: "building-hut-east",
-				rsOffsetX: 20,
-				rsOffsetY: 25
+			rentFactor: 0.15
+		},
+		{
+			rentFactor: 0.25,
+			sprites: {
+				south: {
+					rsId: "building-hut-south",
+					rsOffsetX: 30,
+					rsOffsetY: 40
+				},
+				east: {
+					rsId: "building-hut-east",
+					rsOffsetX: 20,
+					rsOffsetY: 25
+				}
 			}
 		},
 		{
-			south: {
-				rsId: "building-laneway-south",
-				rsOffsetX: 32,
-				rsOffsetY: 40
-			},
-			east: {
-				rsId: "building-laneway-east",
-				rsOffsetX: 20,
-				rsOffsetY: 25
+			rentFactor: 0.28,
+			sprites: {
+				south: {
+					rsId: "building-laneway-south",
+					rsOffsetX: 32,
+					rsOffsetY: 40
+				},
+				east: {
+					rsId: "building-laneway-east",
+					rsOffsetX: 20,
+					rsOffsetY: 25
+				}
 			}
 		},
 		{
-			south: {
-				rsId: "building-ranch-south",
-				rsOffsetX: 32,
-				rsOffsetY: 42
-			},
-			east: {
-				rsId: "building-ranch-east",
-				rsOffsetX: 32,
-				rsOffsetY: 30
+			rentFactor: 0.3,
+			sprites: {
+				south: {
+					rsId: "building-ranch-south",
+					rsOffsetX: 32,
+					rsOffsetY: 42
+				},
+				east: {
+					rsId: "building-ranch-east",
+					rsOffsetX: 32,
+					rsOffsetY: 30
+				}
 			}
 		},
 		{
-			south: {
-				rsId: "building-villa-south",
-				rsOffsetX: 30,
-				rsOffsetY: 45
-			},
-			east: {
-				rsId: "building-villa-east",
-				rsOffsetX: 35,
-				rsOffsetY: 38
+
+			rent: 0.38,
+			sprites: {
+				south: {
+					rsId: "building-villa-south",
+					rsOffsetX: 30,
+					rsOffsetY: 45
+				},
+				east: {
+					rsId: "building-villa-east",
+					rsOffsetX: 35,
+					rsOffsetY: 38
+				}
 			}
 		}
 	];
@@ -115,13 +130,19 @@ define([
 				direction: this.direction
 			});
 		}
-		
-		/**
-		 * Cost
-		 * @type {object}
-		 */
-		if(props.cost !== "undefined"){
+
+		if(typeof props.cost !== "undefined"){
+			/**
+			 * Cost
+			 * @type {object}
+			 */
 			this.cost = props.cost;
+
+			/**
+			 * Rent
+			 * @type {number}
+			 */
+			this.rent = this.cost.land * Upgrades[0].rentFactor; // 15% of land price
 		}
 
 		/**
@@ -137,19 +158,12 @@ define([
 		 */
 		this.owner = null;
 
-		/**
-		 * Rent
-		 * @type {number}
-		 */
-		//TODO: values for different states
-		this.rent = 1234;
-
 		this.house = null;
 	}
 
 	Lot.prototype.upgrade = function(){
-		//Update tier info
-		var resource = Upgrades[++this.tier];
+		// Update tier info
+		var resource = Upgrades[++this.tier].sprites;
 
 		if(this.direction == Lot.FACING_EAST || this.direction == Lot.FACING_WEST){
 			resource = resource.east;
