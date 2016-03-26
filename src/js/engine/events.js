@@ -256,36 +256,25 @@ define([
 		 * @param {number} [data.sub] - Amount to subtract
 		 * @param {string} [data.source] - Source of income/debt
 		 */
-		var icon = {
-			"ROUND_TRIP": "icon-cycle",
-			"RENT": "icon-house"
-		}[data.source];
-
-		var options = icon ? {icon: icon}:{};
-
 		if(typeof data.add != "undefined"){
 			data.player.addCash(data.add);
-			data.player.token.popup("$" + data.add,
-				$.extend(options, {
-					color: "#3C4894",
-					iconColor: "#2363A0",
-					prefix: "+",
-					prefixColor: "#3C4894"
-				})
-			);
+			data.player.token.popup("$" + data.add, {
+				color: "#3C4894",
+				iconColor: "#2363A0",
+				prefix: "+",
+				prefixColor: "#3C4894"
+			});
 			log("[GAME_EVENT] Player earned $" + data.add + " (Now: $" + data.player.cash + ")", "gameevent");
 		}
 
 		if(typeof data.sub != "undefined"){
 			data.player.deductCash(data.sub);
-			data.player.token.popup("$" + data.sub,
-				$.extend(options, {
-					color: "#901717",
-					iconColor: "#D22A2A",
-					prefix: "-",
-					prefixColor: "#901717"
-				})
-			);
+			data.player.token.popup("$" + data.sub, {
+				color: "#901717",
+				iconColor: "#D22A2A",
+				prefix: "−",
+				prefixColor: "#901717"
+			});
 			log("[GAME_EVENT] Player losses $" + data.sub + " (Now: $" + data.player.cash + ")", "gameevent");
 		}
 	};
