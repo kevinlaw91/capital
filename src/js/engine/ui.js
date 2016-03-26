@@ -1,5 +1,8 @@
-define(["jquery", "snapsvg"], function( $, Snap ) {
-
+define([
+	"jquery",
+	"snapsvg",
+	"jquery.pub-sub"
+], function( $, Snap ) {
 	'use strict';
 
 	var UI = {},
