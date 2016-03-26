@@ -1,0 +1,48 @@
+Index: src/js/lib/svg-pan-zoom.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/js/lib/svg-pan-zoom.js	(date 1458993688000)
++++ src/js/lib/svg-pan-zoom.js	(revision )
+@@ -1165,6 +1165,39 @@
+                 this.width = boundingClientRectNormalized.width
+                 this.height = boundingClientRectNormalized.height
+ 
++                // Recalculate original state
++                var viewport = this.viewport,
++                    vpOptions = viewport.options,
++                    vpViewbox = viewport.viewBox;
++                vpOptions.width = this.width;
++                vpOptions.height = this.height;
++
++                var newCTM = viewport.getCTM();
++
++                if (vpOptions.fit || vpOptions.contain) {
++                    var newScale;
++                    if (vpOptions.fit) {
++                        newScale = Math.min(vpOptions.width / vpViewbox.width, vpOptions.height / vpViewbox.height);
++                    } else {
++                        newScale = Math.max(vpOptions.width / vpViewbox.width, vpOptions.height / vpViewbox.height);
++                    }
++
++                    newCTM.a = newScale; //x-scale
++                    newCTM.d = newScale; //y-scale
++                    newCTM.e = -vpViewbox.x * newScale; //x-transform
++                    newCTM.f = -vpViewbox.y * newScale; //y-transform
++                }
++
++                if (vpOptions.center) {
++                    newCTM.e = (vpOptions.width - (vpViewbox.width + vpViewbox.x * 2) * newCTM.a) * 0.5;
++                    newCTM.f = (vpOptions.height - (vpViewbox.height + vpViewbox.y * 2) * newCTM.a) * 0.5;
++                }
++
++                // Cache initial values. Based on activeState and fix+center opitons
++                viewport.originalState.zoom = newCTM.a;
++                viewport.originalState.x = newCTM.e;
++                viewport.originalState.y = newCTM.f;
++
+                 // Reposition control icons by re-enabling them
+                 if (this.options.controlIconsEnabled) {
+                     this.getPublicInstance().disableControlIcons()
+\ No newline at end of file
