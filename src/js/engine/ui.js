@@ -103,15 +103,32 @@ define([
 		$("#action-panel").find("section").removeClass("done").hide();
 	};
 
-	UI.DiceButton = function(evt, data){
-		if(data.enabled){
+	/**
+	 * @namespace DiceButton
+	 * @memberOf UI.
+	 */
+	UI.DiceButton = {
+		/** Enable DiceButton */
+		enable: function() {
 			$("#btn-roll").removeClass("disabled");
-		}else{
+		},
+		/** Disable DiceButton */
+		disable: function() {
 			$("#btn-roll").addClass("disabled");
+		},
+		/** Control events dedicated for DiceButton */
+		handler: function( evt, data ) {
+			// Handle enable/disable
+			if(typeof data.enabled !== "undefined" && data.enabled) {
+				UI.DiceButton.enable();
+			} else {
+				UI.DiceButton.disable();
+			}
 		}
 	};
 
-	$.subscribe("UI.DiceButton",UI.DiceButton);
+	// Register handler for DiceButton
+	$.subscribe("UI.DiceButton", UI.DiceButton.handler);
 
 	return UI;
 });
