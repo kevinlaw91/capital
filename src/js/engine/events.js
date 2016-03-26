@@ -27,8 +27,12 @@ define([
 	//
 
 	ev.PlayerAction.DiceRoll = function(){
-		var result = 1 + Math.floor(Math.random() * 6);
-		$.publish("DiceRollComplete", result);
+		var session = require("engine/game").getSession();
+		if(session.awaitingDiceRoll){
+			var result = 1 + Math.floor(Math.random() * 6);
+			$.publish("DiceRollComplete", result);
+			session.waitForDiceRoll(false);
+		}
 	};
 
 	ev.PlayerAction.EndTurn = function(){
@@ -247,6 +251,8 @@ define([
 
 	ev.onPlayerSwitched = function(evt, data){
 		log("[GAME_EVENT] Player " + data.playerIndex + " is now active", "gameevent");
+		var session = require("engine/game").getSession();
+		session.waitForDiceRoll(true);
 	};
 
 	ev.onCashFlow = function(evt, data) {
