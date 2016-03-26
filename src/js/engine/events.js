@@ -50,7 +50,7 @@ define([
 		$(".player-action-btn-build").prop('disabled', true);
 
 		// Hide action panel
-		UI.hideUserActionPanel();
+		UI.UserActionPanel.close(UI.UserActionPanel.reset);
 
 		log("[GAME_EVENT] Current player ended his turn", "gameevent");
 
@@ -72,7 +72,7 @@ define([
 		// Attempt to buy current location
 		if(currentPlayer.buy()) {
 			// Success
-			UI.feedbackUserActionPanel(true);
+			UI.UserActionPanel.Panels.PROPERTY_BUY.onComplete();
 
 			// Disable buy option if success
 			//TODO: Polish
@@ -86,7 +86,7 @@ define([
 		//Attempt to upgrade current location
 		if(currentPlayer.upgrade()){
 			// Success
-			UI.feedbackUserActionPanel();
+			UI.UserActionPanel.Panels.PROPERTY_UPGRADE.onComplete();
 
 			// Can only upgrade once every turn
 			//TODO: Polish
@@ -217,8 +217,12 @@ define([
 					$(".player-action-btn-build").prop('disabled', false);
 
 					// Show action panel
-					UI.updateUserActionPanel("upgrade", { cost: lot.getNextUpgradeCost() });
-					UI.showUserActionPanel("upgrade");
+					$.publish("UI.UserActionPanel", {
+						show: "PROPERTY_UPGRADE",
+						info: {
+							cost: lot.getNextUpgradeCost()
+						}
+					});
 				} else {
 					//End current turn
 					ev.PlayerAction.EndTurn();
@@ -232,8 +236,13 @@ define([
 					$(".player-action-btn-buy").prop('disabled', false);
 
 					// Show action panel
-					UI.updateUserActionPanel("buy", { title: lot.name, cost: lot.getPrice() });
-					UI.showUserActionPanel("buy");
+					$.publish("UI.UserActionPanel", {
+						show: "PROPERTY_BUY",
+						info: {
+							title: lot.name,
+							cost: lot.getPrice()
+						}
+					});
 				} else {
 					//Stopped at others' property
 

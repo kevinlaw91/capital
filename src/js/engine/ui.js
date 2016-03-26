@@ -50,58 +50,173 @@ define([
 		return viewport;
 	};
 
-	var action_panels = {
-		buy: "#action-panel-buy",
-		upgrade: "#action-panel-upgrade"
-	};
+	/**
+	 * @param selector - Selector that points to the panel's DOM node
+	 * @constructor
+	 */
+	function Panel( selector ) {
+		this.node = $(selector);
 
-	UI.showUserActionPanel = function(panelId){
-		var panel = $(action_panels[panelId]);
-		panel.show();
-		$("#stage-box-slide").animate(
-			{ "bottom": $("#action-panel").height() },
-			250,
-			"easeOutCubic",
-			function() { panel.find("button.main").focus(); }
-		);
-	};
+		/**
+		 * @member {string} selector
+		 */
 
-	UI.hideUserActionPanel = function(){
-		$("#stage-box-slide").animate({ "bottom": 0 }, 250, "easeOutCubic", UI.resetUserActionPanel);
-	};
+		/**
+		 * To be called when the panel's default action is completed
+		 * @function
+		 * @name onComplete
+		 * @instance
+		 */
 
-	UI.updateUserActionPanel = function(panelId, data){
-		var panels = {
-			buy: function(){
-				$(action_panels[panelId]).find("[data-label='title']").text(data.title);
-				$(action_panels[panelId]).find("[data-label='cost']").text(data.cost);
-			},
-			upgrade: function() {
-				$(action_panels[panelId]).find("[data-label='cost']").text(data.cost);
+		/**
+		 * To be called when the panel is fully shown
+		 * @function
+		 * @name onVisible
+		 * @instance
+		 */
+	}
+
+	/** Populate data into the fields inside the panel */
+	Panel.prototype.populate = function( data ) {
+		for(var field in data) {
+			if(data.hasOwnProperty(field)) {
+				this.node.find("[data-label='" + field + "']")
+				    .text(data[field]);
 			}
-		};
-
-		panels[panelId]();
+		}
 	};
 
-	UI.feedbackUserActionPanel = function() {
-		// Show success animation
-		$("#action-panel").find("section").removeClass("done").addClass("done");
-
-		// Hide player action panel
-		window.setTimeout(UI.hideUserActionPanel, 1000);
-
-		// Ends turn
-		window.setTimeout(FireEvent_PlayerEndsTurn, 1500);
+	/** Display the panel */
+	Panel.prototype.show = function() {
+		// Hide all
+		$("#action-panel").find("section").hide();
+		// Then show only this
+		this.node.show();
+		// Mark it as active panel
+		UI.UserActionPanel.activePanel = this;
 	};
 
-	function FireEvent_PlayerEndsTurn(){
+	/**
+	 * @namespace UserActionPanel
+	 * @memberOf UI.
+	 */
+	UI.UserActionPanel = {
+		/** @type {Panel[]} */
+		Panels: [],
+		/** Current active panel */
+		activePanel: null,
+		/**
+		 * Use slide animation to reveal UserActionPanel
+		 * @param {function} callback - Function to be called when show animation is completed
+		 */
+		open: function( callback ) {
+			var c = $.Callbacks();
+			c.add(UI.UserActionPanel.activePanel.onVisible);
+			if(typeof callback==="function") {
+				c.add(callback());
+			}
+
+			$("#stage-box-slide").animate(
+				{ "bottom": $("#action-panel") .height()},
+				250,
+				"easeOutCubic",
+				$.proxy(c.fire, this.activePanel)
+			);
+		},
+		/**
+		 * Use slide animation to hide UserActionPanel
+		 * @param {function} callback - Function to be called when hide animation is completed
+		 */
+		close: function( callback ) {
+			$("#stage-box-slide").animate(
+				{"bottom": 0},
+				250,
+				"easeOutCubic",
+				callback
+			);
+		},
+		/** Reset panels in UserActionPanel */
+		reset: function() {
+			$("#action-panel").find("section").removeClass("done").hide();
+		},
+		/**
+		 * Control events dedicated for UserActionPanel
+		 * @param {string} data.show - Identifier of the panel to show
+		 * @param {object} [data.info] - Data to populate to UI
+		 */
+		handler: function( evt, data ) {
+			//Handle panel display
+			if(typeof data.show !== "undefined" && UI.UserActionPanel.Panels.hasOwnProperty(data.show)) {
+				// Identify panel
+				var panel = UI.UserActionPanel.Panels[data.show];
+				//Populate data
+				if(typeof data.info !== "undefined"){
+					panel.populate(data.info);
+				}
+				// Display panel
+				panel.show();
+				// Slide open UserActionPanel
+				UI.UserActionPanel.open();
+			}
+		}
+	};
+
+	// Register handler for UserActionPanel
+	$.subscribe("UI.UserActionPanel", UI.UserActionPanel.handler);
+
+	// Signals player's turn ended
+	function Evt_Fire_PlayerEndsTurn(){
 		$.publish("PlayerEndsTurn");
 	}
 
-	UI.resetUserActionPanel = function() {
-		$("#action-panel").find("section").removeClass("done").hide();
+	var Panels = /** @lends UI.UserActionPanel.Panels */{
+		"PROPERTY_BUY": /** @type {Panel} */{
+			selector: "#action-panel-buy",
+			onVisible: function() {
+				// Focus default button
+				this.node.find("button.main").focus();
+			},
+			onComplete: function() {
+				// Show success animation
+				this.node.removeClass("done").addClass("done");
+				// Hide player action panel
+				window.setTimeout(UI.UserActionPanel.close, 1000);
+				// Ends turn
+				window.setTimeout(Evt_Fire_PlayerEndsTurn, 1500);
+			}
+		},
+		"PROPERTY_UPGRADE": /** @type {Panel} */{
+			selector: "#action-panel-upgrade",
+			onVisible: function() {
+				// Focus default button
+				this.node.find("button.main").focus();
+			},
+			onComplete: function() {
+				// Show success animation
+				this.node.removeClass("done").addClass("done");
+				// Hide player action panel
+				window.setTimeout(UI.UserActionPanel.close, 1000);
+				// Ends turn
+				window.setTimeout(Evt_Fire_PlayerEndsTurn, 1500);
+			}
+		}
 	};
+
+	// Register panels using the definitions
+	for(var id in Panels) {
+		if(Panels.hasOwnProperty(id)){
+			var panel = Panels[id];
+			// Define panel instance
+			UI.UserActionPanel.Panels[id] = new Panel(panel.selector);
+
+			// Attach customizations
+			for(var prop in panel) {
+				if(panel.hasOwnProperty(prop)) {
+					UI.UserActionPanel.Panels[id][prop] = panel[prop];
+				}
+			}
+		}
+	}
 
 	/**
 	 * @namespace DiceButton
