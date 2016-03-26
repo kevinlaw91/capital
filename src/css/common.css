@@ -273,11 +273,11 @@ body {
 	transform-origin: 50% 50%;
 }
 
-#btn-roll:hover {
+#btn-roll:not(.disabled):hover {
 	fill: #d8d8d8;
 }
 
-#btn-roll:active {
+#btn-roll:not(.disabled):active {
 	fill: #e6e6e6;
 	stroke: none;
 }

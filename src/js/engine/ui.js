@@ -100,5 +100,15 @@ define(["jquery", "snapsvg"], function( $, Snap ) {
 		$("#action-panel").find("section").removeClass("done").hide();
 	};
 
+	UI.DiceButton = function(evt, data){
+		if(data.enabled){
+			$("#btn-roll").removeClass("disabled");
+		}else{
+			$("#btn-roll").addClass("disabled");
+		}
+	};
+
+	$.subscribe("UI.DiceButton",UI.DiceButton);
+
 	return UI;
 });

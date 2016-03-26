@@ -132,6 +132,7 @@ define([
 	 * @param {boolean} bool - True/False
 	 */
 	GameSession.prototype.waitForDiceRoll = function(bool) {
+		$.publish("UI.DiceButton", { enabled: bool });
 		this.awaitingDiceRoll = bool;
 	};
 
