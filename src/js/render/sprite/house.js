@@ -29,7 +29,7 @@ define([
 				height: this.height
 			});
 			this.setOffset(offsetX, offsetY);
-			this.view.attr(this.getBoundingOffset(this.x,this.y));
+			this.moveTo(this.x,this.y);
 		};
 
 		/** @override */
