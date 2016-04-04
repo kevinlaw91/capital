@@ -14,7 +14,7 @@
         flex-shrink: 0;
     }
 
-    #surface {
+    #canvas-frame {
         order: 2;
         height: 100%;
         width: 100%;
@@ -49,7 +49,7 @@
         display: block;
     }
 
-    #surface {
+    #canvas-frame {
         height: 100%;
     }
 
@@ -69,7 +69,7 @@
         display: none;
     }
 
-    #surface {
+    #canvas-frame {
         height: 100%;
     }
 
@@ -89,7 +89,7 @@
         display: none;
     }
 
-    #surface {
+    #canvas-frame {
         height: 100%;
     }
 

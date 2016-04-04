@@ -3,6 +3,7 @@ define([
 	"svg-pan-zoom",
 	"jquery",
 	"jquery.easing",
+	"engine/ui",
 	"engine/config"
 ], function(Snap, svgPanZoom, $) {
 	'use strict';
@@ -19,11 +20,33 @@ define([
 
 	/** Set up camera on stage */
 	Camera.setup = function() {
-		var Config = require("engine/config");
-		var Utils = require("utils");
+		var Config = require("engine/config"),
+		    UI = require("engine/ui"),
+		    Utils = require("utils");
 
-		controller = svgPanZoom(Config.get("draw.svg"), {
-			viewportSelector: Config.get("camera.viewport"),
+		// Add a <g> element
+		var canvas = UI.Stage.container.g().attr({
+			"id": Config.getAsId("canvas.id")
+		});
+
+		// Store reference to UI Module
+		UI.Stage.canvas = canvas;
+
+		// Create dummy scene for SVGPanZoom
+		var _DummyScene = canvas.rect(0,0,1024,768).attr({
+			"opacity": "0",
+			"class": "no-pointer-events"
+		});
+
+		// Method to remove the dummy object after first render
+		Camera.removeDummyScene = function(){
+			_DummyScene.remove();
+			_DummyScene = null;
+			delete Camera.removeDummyScene;
+		};
+
+		controller = svgPanZoom(Config.get("canvas.svg"), {
+			viewportSelector: Config.get("canvas.id"),
 			minZoom: Config.get("camera.zoom.min"),
 			maxZoom: Config.get("camera.zoom.max"),
 			zoomScaleSensitivity: Config.get("camera.zoom.sensitivity"),

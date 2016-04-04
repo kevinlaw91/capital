@@ -12,11 +12,11 @@ define([
 ],function($) {
 
 	// Load modules
-	var Config = require("engine/config");
-	var Renderer = require("engine/renderer");
-	var UI = require("engine/ui");
-	var Camera = require("engine/camera");
-	var AssetManager = require("engine/assets");
+	var Config = require("engine/config"),
+	    Renderer = require("engine/renderer"),
+	    UI = require("engine/ui"),
+	    Camera = require("engine/camera"),
+	    AssetManager = require("engine/assets");
 
 	/**
 	 * @namespace Engine
@@ -60,18 +60,18 @@ define([
 		require("engine/dev").init(this);
 
 		log("Preparing stage...");
-		// Construct SVG stage and attach to ui
-		var svg = UI.getStage(Config.getAsId("draw.svg"));
-		$(svg).appendTo($(Config.get("draw.container")));
+		// Construct SVG stage
+		UI.Stage.init();
 
 		// Construct camera viewport for stage
-		var viewport = UI.getViewport(Config.getAsId("camera.viewport"));
-		Renderer.setCanvas(viewport);
 		Camera.setup();
+
+		// Point stage reference to renderer
+		Renderer.setCanvas(UI.Stage.canvas);
 
 		// Async load game assets
 		log("Loading game assets...");
-		AssetManager.setStorage(svg);
+		AssetManager.setStorage(UI.Stage.container.node);
 		AssetManager.preload().done(onAssetLoaded);
 
 		// Build render layers
