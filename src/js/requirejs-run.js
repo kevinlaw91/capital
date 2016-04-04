@@ -37,9 +37,9 @@ require([
 
 		// Generate projection transform matrix
 		require("engine/transform").generate({
-			column: Config.get("world.col"),
-			row: Config.get("world.row"),
-			tileSize: Config.get("world.tile_size")
+			column: 17,
+			row: 17,
+			tileSize: 64
 		});
 
 		// Async wait for dom to get ready
