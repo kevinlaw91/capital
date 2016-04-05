@@ -1,11 +1,10 @@
 define([
 	"engine/assets",
-	"engine/config",
 	"engine/renderer"
-	], function(AssetManager, Config) {
+	], function(AssetManager) {
 	// Defaults, constants
 	var default_position = { x: 0, y: 0 },
-	    default_size = Config.get("world.tile_size"),
+	    default_size = 64,
 	    default_tile_size = {
 		    height: default_size,
 		    width: default_size
