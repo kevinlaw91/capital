@@ -13,7 +13,16 @@ define([
 		isPanning: false,
 
 		/** Flag to determine camera was panned through last mouse release event */
-	    panned: false
+	    panned: false,
+
+		/** Resets the pan status flags */
+		panCompleted: function(){
+			// Reset flags
+			// Use every time after triggering pan action by code
+			// to prevent click not registering
+			Camera.isPanning = false;
+			Camera.panned = false;
+		}
 	};
 
 	var controller;
