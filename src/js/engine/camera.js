@@ -157,7 +157,7 @@ define([
 		//Wrap old function with panning condition check
 		function fn_new( callable ) {
 			return function() {
-				if(!Camera.panned) { callable(); }
+				if(!Camera.panned) { callable.call(this); }
 				Camera.panned = false;
 			};
 		}
