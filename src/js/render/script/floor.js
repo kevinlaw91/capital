@@ -21,7 +21,22 @@ define([
 		    columns = ScreenTransform.column;
 
 		// Iterators & vars
-		var r, c, count, type, offset;
+		var lotSprite, r, c, count, type, offset;
+
+		// Filters
+		var filter_onhover = Renderer.canvas.filter(Snap.filter.brightness(1.3));
+
+		function Lot_onHoverEnter(){
+			this.attr({
+				filter: filter_onhover
+			});
+		}
+
+		function Lot_onHoverLeave(){
+			this.attr({
+				filter: null
+			});
+		}
 
 		//
 		// Begin render map tiles
@@ -56,7 +71,9 @@ define([
 			offset = ScreenTransform.getBoundingOffset(r, c,
 				{rowSize: 3, colSize: 1}
 			);
-			DrawTile(type, offset);
+			lotSprite = DrawTile(type, offset);
+			// Hover filter effect
+			lotSprite.hover(Lot_onHoverEnter, Lot_onHoverLeave);
 			c++; //proceed to next lot
 		}
 
@@ -73,7 +90,8 @@ define([
 			offset = ScreenTransform.getBoundingOffset(r, c,
 				{rowSize: 1, colSize: 3}
 			);
-			DrawTile(type, offset);
+			lotSprite = DrawTile(type, offset);
+			lotSprite.hover(Lot_onHoverEnter, Lot_onHoverLeave);
 			r++; //proceed to next lot
 		}
 
@@ -110,7 +128,9 @@ define([
 			offset = ScreenTransform.getBoundingOffset(r, c,
 				{rowSize: 3, colSize: 1}
 			);
-			DrawTile(type, offset);
+			lotSprite = DrawTile(type, offset);
+			// Hover filter effect
+			lotSprite.hover(Lot_onHoverEnter, Lot_onHoverLeave);
 			c++; //proceed to next lot
 		}
 
@@ -120,7 +140,9 @@ define([
 			offset = ScreenTransform.getBoundingOffset(r, c,
 				{rowSize: 1, colSize: 3}
 			);
-			DrawTile(type, offset);
+			lotSprite = DrawTile(type, offset);
+			// Hover filter effect
+			lotSprite.hover(Lot_onHoverEnter, Lot_onHoverLeave);
 			r++; //proceed to next lot
 		}
 
