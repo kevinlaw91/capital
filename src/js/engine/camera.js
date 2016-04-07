@@ -145,8 +145,10 @@ define([
 					x: from.x + ((toX - from.x) * now),
 					y: from.y + ((toY - from.y) * now)
 				});
+			},
+			complete: function() {
+				Camera.panCompleted();
 			}
-			// complete: function() {}
 		});
 	};
 
