@@ -12,12 +12,15 @@ define([
 	return function() {
 		time("Draw Map");
 
-		var Renderer = require("engine/renderer");
-		var ScreenTransform = require("engine/transform");
+		// Imports
+		var Renderer = require("engine/renderer"),
+		    ScreenTransform = require("engine/transform");
 
+		// Map params
 		var rows    = ScreenTransform.row,
 		    columns = ScreenTransform.column;
 
+		// Iterators & vars
 		var r, c, count, type, offset;
 
 		//
