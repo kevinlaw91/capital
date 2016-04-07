@@ -2,7 +2,8 @@ define([
 	"jquery",
 	"snapsvg",
 	"jquery.pub-sub",
-	"engine/config"
+	"engine/config",
+	"engine/core"
 ], function( $, Snap ) {
 	'use strict';
 
@@ -232,6 +233,54 @@ define([
 
 	// Register handler for DiceButton
 	$.subscribe("UI.DiceButton", UI.DiceButton.handler);
+
+	/**
+	 * @namespace InfoPanel
+	 * @memberOf UI.
+	 */
+	UI.InfoPanel = {
+		activePanel: null,
+		show: function(evt, data){
+			// Identify panel to be shown
+			var Panel = {
+				"lot": $("#info-panel-lot")
+			}[evt.data.panelId];
+
+			// Fetch live info from game session
+			var info = fetchInfo(data.contents.id);
+
+			// Definition of fields to be updated and its value
+			var fields = {
+				"title": info.name,
+				"cost": "$" + info.cost[0]
+			};
+
+			// Update fields
+			Object.keys(fields).forEach(function (key) {
+				Panel.find("[data-label='" + key + "']")
+				     .text(fields[key]);
+			});
+
+			// Show panel
+			Panel.show();
+
+		}
+	};
+
+	/**
+	 * Fetch live info from game session
+	 * @private
+	 * @returns {Object}
+	 */
+	function fetchInfo(id){
+		var Session = require("engine/core").getSession(),
+		    Entity = Session.map[id];
+
+		return Entity;
+	}
+
+	// Register handler for Lot sprite onClick
+	$.subscribe("UI.InfoPanel.LotInfo", { panelId: "lot"}, UI.InfoPanel.show);
 
 	return UI;
 });

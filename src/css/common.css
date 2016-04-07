@@ -81,7 +81,7 @@ body {
 	display: flex;
 }
 
-#player-box {
+#info-panel {
 	display: none;
 	height: 100%;
 	width: 600px;

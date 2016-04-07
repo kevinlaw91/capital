@@ -22,7 +22,7 @@
         flex-shrink: 1;
     }
 
-    #player-box {
+    #info-panel {
         display: none;
         order: 3;
         width: 100%;
@@ -53,7 +53,7 @@
         height: 100%;
     }
 
-    #player-box {
+    #info-panel {
         display: none;
     }
 
@@ -73,7 +73,7 @@
         height: 100%;
     }
 
-    #player-box {
+    #info-panel {
         display: none;
     }
 
@@ -93,7 +93,7 @@
         height: 100%;
     }
 
-    #player-box {
+    #info-panel {
         display: block;
     }
 

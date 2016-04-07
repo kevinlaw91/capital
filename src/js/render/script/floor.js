@@ -1,8 +1,10 @@
 define([
+	"jquery",
+	"jquery.pub-sub",
 	"engine/renderer",
 	"engine/transform",
 	"render/script/tile"
-], function() {
+], function($) {
 	/**
 	 * Script to draw floor tiles
 	 * @function
@@ -21,11 +23,12 @@ define([
 		    columns = ScreenTransform.column;
 
 		// Iterators & vars
-		var lotSprite, r, c, count, type, offset;
+		var lotSprite, id, r, c, count, type, offset;
 
 		// Filters
 		var filter_onhover = Renderer.canvas.filter(Snap.filter.brightness(1.3));
 
+		// Event handlers
 		function Lot_onHoverEnter(){
 			this.attr({
 				filter: filter_onhover
@@ -35,6 +38,15 @@ define([
 		function Lot_onHoverLeave(){
 			this.attr({
 				filter: null
+			});
+		}
+
+		function Lot_onClick(){
+			$.publish("UI.InfoPanel.LotInfo", {
+				"class": "LOT.INFO",
+				"contents": {
+					id: this.data("lot.id")
+				}
 			});
 		}
 
@@ -65,8 +77,8 @@ define([
 		);
 		DrawTile(type, offset);
 
-		//(lot) north, 1x3 per lot, 9 lots in total
-		r = 1; c = 4; count = 9; type = "lot-north-01";
+		//(lot) north, 1x3 per lot, 9 lots in total, id from 21-29
+		r = 1; c = 4; id = 21; count = 9; type = "lot-north-01";
 		while(count--) {
 			offset = ScreenTransform.getBoundingOffset(r, c,
 				{rowSize: 3, colSize: 1}
@@ -74,7 +86,13 @@ define([
 			lotSprite = DrawTile(type, offset);
 			// Hover filter effect
 			lotSprite.hover(Lot_onHoverEnter, Lot_onHoverLeave);
+			// Add pointer reference to game instance
+			lotSprite.data("lot.id", id);
+			// Add click handler
+			lotSprite.click(Lot_onClick);
+
 			c++; //proceed to next lot
+			id++;
 		}
 
 		//(corner) north east 3x3
@@ -84,15 +102,18 @@ define([
 		);
 		DrawTile(type, offset);
 
-		//(lot) west, 3x1 per lot, 9 lots in total
-		r = 4; c = 1; count = 9; type = "lot-west-01";
+		//(lot) west, 3x1 per lot, 9 lots in total, id from 11-19
+		r = 4; c = 1; id = 19; count = 9; type = "lot-west-01";
 		while(count--) {
 			offset = ScreenTransform.getBoundingOffset(r, c,
 				{rowSize: 1, colSize: 3}
 			);
 			lotSprite = DrawTile(type, offset);
 			lotSprite.hover(Lot_onHoverEnter, Lot_onHoverLeave);
+			lotSprite.data("lot.id", id);
+			lotSprite.click(Lot_onClick);
 			r++; //proceed to next lot
+			id--;
 		}
 
 		//(corner) south west 3x3
@@ -122,8 +143,8 @@ define([
 			fill: "#9ACF5C"
 		});
 
-		//(lot) south, 1x3 per lot, 9 lots in total
-		r = 13; c = 4; count = 9; type = "lot-south-01";
+		//(lot) south, 1x3 per lot, 9 lots in total, id from 1-9
+		r = 13; c = 4; id = 9; count = 9; type = "lot-south-01";
 		while(count--) {
 			offset = ScreenTransform.getBoundingOffset(r, c,
 				{rowSize: 3, colSize: 1}
@@ -131,11 +152,14 @@ define([
 			lotSprite = DrawTile(type, offset);
 			// Hover filter effect
 			lotSprite.hover(Lot_onHoverEnter, Lot_onHoverLeave);
+			lotSprite.data("lot.id", id);
+			lotSprite.click(Lot_onClick);
 			c++; //proceed to next lot
+			id--;
 		}
 
-		//(lot) east, 3x1 per lot, 9 lots in total
-		r = 4; c = 13; count = 9; type = "lot-east-01";
+		//(lot) east, 3x1 per lot, 9 lots in total, id from 31-39
+		r = 4; c = 13; id = 31; count = 9; type = "lot-east-01";
 		while(count--) {
 			offset = ScreenTransform.getBoundingOffset(r, c,
 				{rowSize: 1, colSize: 3}
@@ -143,7 +167,10 @@ define([
 			lotSprite = DrawTile(type, offset);
 			// Hover filter effect
 			lotSprite.hover(Lot_onHoverEnter, Lot_onHoverLeave);
+			lotSprite.data("lot.id", id);
+			lotSprite.click(Lot_onClick);
 			r++; //proceed to next lot
+			id++;
 		}
 
 		//(corner) south east 3x3
