@@ -11,5 +11,8 @@ define([
 		Renderer.createLayer("tokens");
 		Renderer.createLayer("buildings");
 		Renderer.createLayer("popups");
+
+		// Ignore pointer events
+		Renderer.layers.buildings.paper.addClass("no-pointer-events");
 	};
 });
