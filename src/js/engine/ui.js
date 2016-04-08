@@ -252,7 +252,19 @@ define([
 			// Definition of fields to be updated and its value
 			var fields = {
 				"title": info.name,
-				"cost": "$" + info.cost[0]
+				"tier": info.tier,
+				"tier-title": [
+					"Empty Lot",
+					"Tier 1",
+					"Tier 2",
+					"Tier 3",
+					"Tier 4"
+				][info.tier],
+				"cost": "$" + info.cost[0],
+				"upgrade1": "$" + info.cost[1],
+				"upgrade2": "$" + info.cost[2],
+				"upgrade3": "$" + info.cost[3],
+				"upgrade4": "$" + info.cost[4]
 			};
 
 			// Update fields
