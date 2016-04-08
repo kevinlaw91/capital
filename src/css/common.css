@@ -96,6 +96,10 @@ body {
 	padding-right: 10px;
 }
 
+#info-panel-lot {
+	display: none;
+}
+
 #info-panel-lot HEADER {
 	display: table-cell;
 	vertical-align: middle;
