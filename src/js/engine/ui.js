@@ -96,7 +96,7 @@ define([
 		activePanel: null,
 		/**
 		 * Use slide animation to reveal UserActionPanel
-		 * @param {function} callback - Function to be called when show animation is completed
+		 * @param {function} [callback] - Function to be called when show animation is completed
 		 */
 		open: function( callback ) {
 			var c = $.Callbacks();
