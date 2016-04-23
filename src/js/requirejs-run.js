@@ -6,6 +6,7 @@ require.config({
 			'jquery.easing': 'lib/jquery.easing.1.3',
 			'jquery.raf': 'lib/jquery.requestAnimationFrame',
 			'jquery.pub-sub': 'lib/jquery.tinypubsub',
+			'opentype': 'lib/opentype',
 			'snapsvg': 'lib/snap.svg',
 			'svg-pan-zoom': 'lib/svg-pan-zoom', //namespace must be svg-pan-zoom
 			utils: 'lib/utils'
