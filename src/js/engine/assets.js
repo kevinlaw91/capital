@@ -1,4 +1,8 @@
-define(["jquery", "snapsvg"], function( $, Snap) {
+define([
+	"jquery",
+	"opentype",
+	"snapsvg"
+], function( $, OpenType, Snap) {
 
 	/** @namespace */
 	var AssetManager = {};
@@ -92,6 +96,63 @@ define(["jquery", "snapsvg"], function( $, Snap) {
 		};
 	})();
 
+	/** @namespace */
+	AssetManager.FontStore = (function(){
+		/**
+		 * Cache loaded fonts
+		 * @private
+		 */
+		var fonts = new Map();
+
+		return {
+			/**
+			 * Loads a font file
+			 * @param path
+			 */
+			loadFromFile: function(path){
+				// Define object to track progress
+				var tracking = $.Deferred();
+
+				// Push to monitoring stacks
+				loading_tasks.push(tracking);
+
+				// Load file
+				OpenType.load( path,
+					(function ( progress ) {
+						return function(errorMsg, font) {
+							if (!errorMsg) {
+								// Font loaded successfully
+
+								// Obtaining font metadata
+								var fontFamily = font.names.fontFamily.en,
+								    fontSubfamily = font.names.fontSubfamily.en;
+
+								// Register to font collection
+								if (fonts.has(fontFamily)){
+									fonts.get(fontFamily).set(fontSubfamily, font);
+								} else {
+									fonts.set(fontFamily, new Map().set(fontSubfamily, font));
+								}
+
+								// Mark task as completed
+								progress.resolve();
+							} else {
+								err(errorMsg);
+							}
+						};
+					})(tracking)
+				);
+			},
+
+			/**
+			 * Get a Font object from collection
+			 * @returns {Font}
+			 */
+			getFont: function (family, subFamily) {
+				return fonts.get(family).get(subFamily);
+			}
+		};
+	})();
 
 	/** Stores file load promise objects */
 	var loading_tasks = [];
@@ -108,6 +169,12 @@ define(["jquery", "snapsvg"], function( $, Snap) {
 			"src/resources/svg/icons.svg",
 			"src/resources/svg/houses.svg"
 		].forEach(AssetManager.SymbolStore.loadFromFile);
+
+		// Load Fonts
+		[
+			"src/resources/fonts/passion-one-regular.woff",
+			"src/resources/fonts/pathway-gothic-one-regular.woff"
+		].forEach(AssetManager.FontStore.loadFromFile);
 
 		// Mark task as resolved when all asset files are loaded
 		$.when.apply($, loading_tasks).done(function() {
