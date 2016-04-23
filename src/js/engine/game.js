@@ -44,6 +44,8 @@ define([
 
 			//Start game
 			this.session.startGame();
+
+			dev.runPreset();
 		},
 
 		/**
