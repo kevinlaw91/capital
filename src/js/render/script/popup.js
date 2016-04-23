@@ -5,7 +5,63 @@ define([
 ], function(Snap, AssetManager) {
 	'use strict';
 
-	var customEaseIn = function(n) { return Math.pow(n,0.68); };
+	// Shadow filter
+	var filter_shadow,
+	    customEaseIn = function(n) { return Math.pow(n,0.68); },
+	    createSVGPathText = function(text, font, options) {
+			var x = options.x || 0,
+			    y = options.y || 0,
+			    fontSize = options.fontSize || 16, // in px
+			    kerning = options.kerning || true,
+			    precision = options.precision || 5, // decimal points
+			    fontScale = 1 / font.unitsPerEm * fontSize;
+
+			// Calculate bounding box
+			var width = 0, glyphs = font.stringToGlyphs(text);
+			for (var i = 0, len = glyphs.length; i < len; i++) {
+				var glyph = glyphs[i];
+
+				if (glyph.advanceWidth) {
+					width += glyph.advanceWidth * fontScale;
+				}
+
+				if (kerning && i < len - 1) {
+					var kerningValue = font.getKerningValue(glyph, glyphs[i + 1]);
+					width += kerningValue * fontScale;
+				}
+			}
+
+			var height = (font.ascender + font.descender) * fontScale;
+
+			// Apply anchor offsets
+			if('align' in options) {
+				switch(options.align){
+					case "middle":
+					case "center":
+						x -= width / 2;
+						break;
+					case "right":
+						x -= width;
+						break;
+				}
+			}
+
+			if('baseline' in options) {
+				switch(options.baseline){
+					case "middle":
+					case "center":
+						y += height / 2;
+						break;
+					case "top":
+						y += height;
+						break;
+				}
+			}
+
+			return font
+				.getPath(text, x, y, fontSize, { kerning: kerning })
+				.toPathData(precision);
+		};
 
 	/**
 	 * @function
@@ -23,7 +79,9 @@ define([
 		var posX = (options && options.x) || 0,
 		    posY = (options && options.y) || 0;
 
-		var newGroup = require("engine/renderer").layers.popups.paper.g();
+		var Renderer = require("engine/renderer");
+
+		var newGroup = Renderer.layers.popups.paper.g();
 
 		//
 		// Create Animation Path
@@ -48,32 +106,20 @@ define([
 		//
 		var animateGroup = newGroup.g().attr({ opacity: 0});
 
+		//
 		// Draw message
+		//
 
-		// Shadow (behind) will be drawn first
-		var textShadow = animateGroup.text(0, 0, msg).attr({
-			//Styles
-			dominantBaseline: "central",
-			textAnchor: "middle",
-			fontFamily: 'Passion One',
-			fontSize: "12px",
-			fontWeight: 400,
-			letterSpacing: "-0.25px",
-			fill: "rgba(0, 0, 0, 0.33)"
-		});
+		// Font
+		var font = AssetManager.FontStore.getFont("Passion One", "Regular");
 
-		// Text (foreground) will be drawn later
-		var text = animateGroup.text(0, 0, msg).attr({
-			//Styles
-			dominantBaseline: "central",
-			textAnchor: "middle",
-			fontFamily: 'Passion One',
-			fontSize: "12px",
-			fontWeight: 400,
-			letterSpacing: "-0.25px",
-			fill: "white"
-		});
-
+		var text = animateGroup.path(
+			createSVGPathText(msg, font, {
+				fontSize: 16,
+				align: "right",
+				baseline: "middle"
+			})
+		);
 
 		// Change color
 		if(options && options.color) {
@@ -82,26 +128,25 @@ define([
 			});
 		}
 
-		// Shadow offset
-		textShadow.transform("translate(0, 1)");
-
 		// Use text bounding box as anchor point for other elements
 		var anchor = text.getBBox();
 
+		// Add shadow
+		filter_shadow = filter_shadow || Renderer.canvas.filter(Snap.filter.shadow(0, 1, 0.3, "black", 0.3));
+		text.attr({
+			filter: filter_shadow
+		});
+
 		// Draw prefix
 		if(options && typeof options.prefix != "undefined"){
-			//Draw at baseline
-			var prefix_text = animateGroup.text(0, 0, options.prefix).attr({
-				//Styles
-				dominantBaseline: "central",
-				textAnchor: "end",
-				fontFamily: 'Roboto',
-				fontSize: "18px",
-				fontWeight: 900,
-				fill: "white",
-				x: anchor.x - /* Extra right padding */ 2,
-				y: 0
-			});
+			var prefix_text = animateGroup.path(
+				createSVGPathText(options.prefix, font, {
+					fontSize: 18,
+					align: "right",
+					baseline: "middle",
+					x: anchor.x - /* Extra right padding */ 2
+				})
+			);
 
 			//Change color
 			if(options && options.prefixColor) {
