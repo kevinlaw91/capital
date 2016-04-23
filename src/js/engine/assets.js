@@ -16,47 +16,13 @@ define(["jquery", "snapsvg"], function( $, Snap) {
 
 	// Preload assets
 	module.preload = function(){
-		// Define a new file loading task
-		var currentFile = $.Deferred();
-		// Put the task to the ongoing list
-		task_preload_progress.push(currentFile);
-		// Perform async file load
-		Snap.load("src/resources/svg/floor.svg", (function(task){
-			return function(contents) {
-				loadSymbolsFromFile(contents);
-				task.resolve();
-			};
-		})(currentFile));
-
-		// Token
-		currentFile = $.Deferred();
-		task_preload_progress.push(currentFile);
-		Snap.load("src/resources/svg/token.svg", (function(task){
-			return function(contents) {
-				loadSymbolsFromFile(contents);
-				task.resolve();
-			};
-		})(currentFile));
-
-		//Icons
-		currentFile = $.Deferred();
-		task_preload_progress.push(currentFile);
-		Snap.load("src/resources/svg/icons.svg", (function(task){
-			return function(contents) {
-				loadSymbolsFromFile(contents);
-				task.resolve();
-			};
-		})(currentFile));
-
-		//Houses
-		currentFile = $.Deferred();
-		task_preload_progress.push(currentFile);
-		Snap.load("src/resources/svg/houses.svg", (function(task){
-			return function(contents) {
-				loadSymbolsFromFile(contents);
-				task.resolve();
-			};
-		})(currentFile));
+		// Load SVG symbols from file
+		[
+			"src/resources/svg/floor.svg",
+			"src/resources/svg/token.svg",
+			"src/resources/svg/icons.svg",
+			"src/resources/svg/houses.svg"
+		].forEach(loadSVGSymbolFromFile);
 
 		// Mark preload task as resolved when all asset files are loaded
 		$.when.apply($, task_preload_progress).done(function() {
@@ -71,10 +37,21 @@ define(["jquery", "snapsvg"], function( $, Snap) {
 	//
 	// For SVG Symbols
 	//
+	function loadSVGSymbolFromFile(path) {
+		// Define object to track progress
+		var tracking = $.Deferred();
 
-	// Extract symbols from a loaded svg file
-	function loadSymbolsFromFile(fragment){
-		fragment.selectAll("symbol").forEach(addSymbol);
+		// Push to monitoring stacks
+		task_preload_progress.push(tracking);
+
+		// Load file
+		Snap.load(path, (function( progress ) {
+			return function( fragment ) {
+				fragment.selectAll("symbol")
+				        .forEach(addSymbol);
+				progress.resolve();
+			};
+		})(tracking));
 	}
 
 	// Cache a loaded symbol and make it available to be rendered
