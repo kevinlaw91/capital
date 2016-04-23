@@ -9,7 +9,7 @@ define(["jquery", "snapsvg"], function( $, Snap) {
 	var dimensions = new Map();
 
 	// Define SVG element to store loaded symbols
-	module.setStorage = function(elem){
+	module.setSymbolStore = function(elem){
 		store = Snap(elem);
 		return module;
 	};
