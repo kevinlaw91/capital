@@ -137,12 +137,6 @@ define(function() {
 	/** Define conditions for debugging */
 	dev.runPreset = function(){
 		//Write debug script here
-		this.setLotOwner(1,1);
-		this.setLotOwner(2,1);
-		this.setLotOwner(3,1);
-		this.setLotOwner(4,1);
-		this.setLotOwner(5,1);
-		this.setLotOwner(6,1);
 	};
 
 	return dev;
