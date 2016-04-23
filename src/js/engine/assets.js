@@ -1,6 +1,6 @@
 define(["jquery", "snapsvg"], function( $, Snap) {
 
-	var module = {},
+	var AssetManager = {},
 		store,
 		task_preload = $.Deferred(),
 	    task_preload_progress = [];
@@ -9,13 +9,13 @@ define(["jquery", "snapsvg"], function( $, Snap) {
 	var dimensions = new Map();
 
 	// Define SVG element to store loaded symbols
-	module.setSymbolStore = function(elem){
+	AssetManager.setSymbolStore = function(elem){
 		store = Snap(elem);
 		return module;
 	};
 
 	// Preload assets
-	module.preload = function(){
+	AssetManager.preload = function(){
 		// Load SVG symbols from file
 		[
 			"src/resources/svg/floor.svg",
@@ -67,14 +67,14 @@ define(["jquery", "snapsvg"], function( $, Snap) {
 	}
 
 	// (Public) Get cached symbol size by id
-	module.getSymbolDimensions = function(id) {
+	AssetManager.getSymbolDimensions = function(id) {
 		return dimensions.get(id); //Return {x:, y:} or undefined
 	};
 
 	// (Public) Check availability of a symbol by id
-	module.hasSymbol = function(id) {
+	AssetManager.hasSymbol = function(id) {
 		return dimensions.has(id); //Return true if symbol is loaded
 	};
 
-	return module;
+	return AssetManager;
 });
