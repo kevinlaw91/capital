@@ -71,8 +71,8 @@ define([
 
 		// Async load game assets
 		log("Loading game assets...");
-		AssetManager.setSymbolStore(UI.Stage.container.node);
-		AssetManager.preload().done(onAssetLoaded);
+		AssetManager.SymbolStore.setSymbolStore(UI.Stage.container.node);
+		AssetManager.load().done(onAssetLoaded);
 
 		// Build render layers
 		require("render/script/layers")();

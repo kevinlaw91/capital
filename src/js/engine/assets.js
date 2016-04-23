@@ -1,79 +1,122 @@
 define(["jquery", "snapsvg"], function( $, Snap) {
 
-	var AssetManager = {},
-		store,
-		task_preload = $.Deferred(),
-	    task_preload_progress = [];
+	/** @namespace */
+	var AssetManager = {};
 
-	// cache dimensions of loaded symbols
-	var dimensions = new Map();
+	/** @namespace */
+	AssetManager.SymbolStore = (function(){
+		/**
+		 * Place to store loaded symbols
+		 * @private
+		 */
+		var store;
 
-	// Define SVG element to store loaded symbols
-	AssetManager.setSymbolStore = function(elem){
-		store = Snap(elem);
-		return module;
-	};
+	    /**
+	     * Cache info of loaded symbols
+	     * @private
+	     */
+		var list = new Map();
 
-	// Preload assets
-	AssetManager.preload = function(){
+		return {
+			/**
+			 * Set location to store loaded symbols
+			 * @public
+			 * @param {Snap} elem - Snap element
+			 */
+			setSymbolStore: function(elem){
+				store = Snap(elem);
+			},
+
+			/**
+			 * Check availability of a symbol by id
+			 * @public
+			 * @returns {boolean} Symbol is loaded into game, true/false
+			 */
+			hasSymbol: function(id) {
+				return list.has(id);
+			},
+
+			/**
+			 * Get cached symbol size by id
+			 * @public
+			 * @returns {{number,number}|undefined} Dimensions if symbol is loaded, 'undefined' otherwise
+			 */
+			getSymbolDimensions: function(id) {
+				return list.get(id);
+			},
+
+			/**
+			 * Loads a file
+			 * @public
+			 * @param path - Path of the file to be loaded
+			 */
+			loadFromFile: function(path){
+				// Define object to track progress
+				var tracking = $.Deferred();
+
+				// Push to monitoring stacks
+				loading_tasks.push(tracking);
+
+				// Load file
+				Snap.load( path,
+					(function( progress ) {
+						return function( fragment ) {
+							fragment.selectAll("symbol")
+							        .forEach(AssetManager.SymbolStore.onFileLoaded);
+							progress.resolve();
+						};
+					})(tracking)
+				);
+			},
+
+			/**
+			 * Extract symbols from a loaded file
+			 * @callback
+			 * @public
+			 * @param snapSymbol - Snap instance of a loaded symbol
+			 */
+			onFileLoaded: function(snapSymbol){
+				// Cache loaded symbol size
+				var symbolEl = snapSymbol.node,
+				    viewbox = symbolEl.viewBox.baseVal;
+				list.set( symbolEl.id,
+					{
+						height: Number(viewbox.height),
+						width: Number(viewbox.width)
+					}
+				);
+
+				//Attach symbol to canvas and put inside <defs>
+				snapSymbol.appendTo(store).toDefs();
+			}
+		};
+	})();
+
+
+	/** Stores file load promise objects */
+	var loading_tasks = [];
+
+	/** Pre-load assets */
+	AssetManager.load = function(){
+		// Track completion of task
+		var task = $.Deferred();
+
 		// Load SVG symbols from file
 		[
 			"src/resources/svg/floor.svg",
 			"src/resources/svg/token.svg",
 			"src/resources/svg/icons.svg",
 			"src/resources/svg/houses.svg"
-		].forEach(loadSVGSymbolFromFile);
+		].forEach(AssetManager.SymbolStore.loadFromFile);
 
-		// Mark preload task as resolved when all asset files are loaded
-		$.when.apply($, task_preload_progress).done(function() {
+		// Mark task as resolved when all asset files are loaded
+		$.when.apply($, loading_tasks).done(function() {
 			//Called when all assets are loaded
 			info("Game asset load complete");
-			task_preload.resolve();
+			task.resolve();
 		 });
 
-		return task_preload.promise();
-	};
-
-	//
-	// For SVG Symbols
-	//
-	function loadSVGSymbolFromFile(path) {
-		// Define object to track progress
-		var tracking = $.Deferred();
-
-		// Push to monitoring stacks
-		task_preload_progress.push(tracking);
-
-		// Load file
-		Snap.load(path, (function( progress ) {
-			return function( fragment ) {
-				fragment.selectAll("symbol")
-				        .forEach(addSymbol);
-				progress.resolve();
-			};
-		})(tracking));
-	}
-
-	// Cache a loaded symbol and make it available to be rendered
-	function addSymbol(symbolSnapObj){
-		//cache symbol size
-		var symbolEl = symbolSnapObj.node;
-		var viewbox = symbolEl.viewBox.baseVal;
-		dimensions.set( symbolEl.id, { height: viewbox.height,
-										width: viewbox.width } );
-
-		//Attach symbol to canvas and put inside <defs>
-		symbolSnapObj.appendTo(store).toDefs();
-	}
-
-	// (Public) Get cached symbol size by id
-	AssetManager.getSymbolDimensions = function(id) {
-		return dimensions.get(id); //Return {x:, y:} or undefined
-	};
-
-	// (Public) Check availability of a symbol by id
-	AssetManager.hasSymbol = function(id) {
-		return dimensions.has(id); //Return true if symbol is loaded
+		return task.promise();
 	};
 
 	return AssetManager;

@@ -37,7 +37,7 @@ define([
 	 * drawSymbol("sym", null, {col: 3}); // Same as {col: 3, row: 3}
 	 */
 	return function(id, position, size){
-		if(!AssetManager.hasSymbol(id)) {
+		if(!AssetManager.SymbolStore.hasSymbol(id)) {
 			err("Missing symbol: " + id);
 			throw Error("Symbol not loaded");
 		}
@@ -93,7 +93,7 @@ define([
 			// Size not specified
 			// perform lookup from asset manager cache
 			// if no record, use default size
-			calcSize = AssetManager.getSymbolDimensions(id) || default_tile_size;
+			calcSize = AssetManager.SymbolStore.getSymbolDimensions(id) || default_tile_size;
 		}
 
 		// Apply size
