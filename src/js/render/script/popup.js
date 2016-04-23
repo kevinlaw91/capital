@@ -55,9 +55,9 @@ define([
 			//Styles
 			dominantBaseline: "central",
 			textAnchor: "middle",
-			fontFamily: 'Roboto Condensed',
+			fontFamily: 'Passion One',
 			fontSize: "12px",
-			fontWeight: 900,
+			fontWeight: 400,
 			letterSpacing: "-0.25px",
 			fill: "rgba(0, 0, 0, 0.33)"
 		});
@@ -67,9 +67,9 @@ define([
 			//Styles
 			dominantBaseline: "central",
 			textAnchor: "middle",
-			fontFamily: 'Roboto Condensed',
+			fontFamily: 'Passion One',
 			fontSize: "12px",
-			fontWeight: 900,
+			fontWeight: 400,
 			letterSpacing: "-0.25px",
 			fill: "white"
 		});
