@@ -24,19 +24,29 @@ define([
 		    columns = ScreenTransform.column;
 
 		// Iterators & vars
-		var lotSprite, id, r, c, count, type, offset;
+		var lotSprite, id, r, c, count, type, offset, anchor;
 
 		// Filters
 		var filter_onhover = Renderer.canvas.filter(Snap.filter.brightness(1.3));
 
 		// Event handlers
 		function Lot_onHoverEnter(){
+			var bb = this.data("lot.anchor").node.getBoundingClientRect();
+			$.publish("UI.Tooltip.Show", {
+				"class": "LOT",
+				"id": this.data("lot.id"),
+				"position": {
+					"left": bb.left,
+					"top": bb.top
+				}
+			});
 			this.attr({
 				filter: filter_onhover
 			});
 		}
 
 		function Lot_onHoverLeave(){
+			$.publish("UI.Tooltip.Hide");
 			this.attr({
 				filter: null
 			});
@@ -85,6 +95,9 @@ define([
 				{rowSize: 3, colSize: 1}
 			);
 			lotSprite = DrawTile(type, offset);
+			// Draw anchor
+			anchor = ScreenTransform.getTopFaceMidpoint(2,c);
+			lotSprite.data("lot.anchor", Renderer.layers.anchors.paper.rect(anchor.x,anchor.y,1,1));
 			// Hover filter effect
 			lotSprite.hover(Lot_onHoverEnter, Lot_onHoverLeave);
 			// Add pointer reference to game instance
@@ -110,6 +123,8 @@ define([
 				{rowSize: 1, colSize: 3}
 			);
 			lotSprite = DrawTile(type, offset);
+			anchor = ScreenTransform.getTopFaceMidpoint(r,2);
+			lotSprite.data("lot.anchor", Renderer.layers.anchors.paper.rect(anchor.x,anchor.y,1,1));
 			lotSprite.hover(Lot_onHoverEnter, Lot_onHoverLeave);
 			lotSprite.data("lot.id", id);
 			lotSprite.click(Lot_onClick);
@@ -151,7 +166,8 @@ define([
 				{rowSize: 3, colSize: 1}
 			);
 			lotSprite = DrawTile(type, offset);
-			// Hover filter effect
+			anchor = ScreenTransform.getTopFaceMidpoint(14,c);
+			lotSprite.data("lot.anchor", Renderer.layers.anchors.paper.rect(anchor.x,anchor.y,1,1));
 			lotSprite.hover(Lot_onHoverEnter, Lot_onHoverLeave);
 			lotSprite.data("lot.id", id);
 			lotSprite.click(Lot_onClick);
@@ -166,7 +182,8 @@ define([
 				{rowSize: 1, colSize: 3}
 			);
 			lotSprite = DrawTile(type, offset);
-			// Hover filter effect
+			anchor = ScreenTransform.getTopFaceMidpoint(r,14);
+			lotSprite.data("lot.anchor", Renderer.layers.anchors.paper.rect(anchor.x,anchor.y,1,1));
 			lotSprite.hover(Lot_onHoverEnter, Lot_onHoverLeave);
 			lotSprite.data("lot.id", id);
 			lotSprite.click(Lot_onClick);

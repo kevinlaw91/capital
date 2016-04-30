@@ -5,6 +5,7 @@ define([
 	'use strict';
 	return function(){
 		//Define render layers
+		Renderer.createLayer("anchors");
 		Renderer.createLayer("floor");
 		Renderer.createLayer("floor_overlay");
 		Renderer.createLayer("markers");
