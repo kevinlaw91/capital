@@ -1,10 +1,11 @@
 define([
+	"snapsvg",
 	"jquery",
 	"jquery.pub-sub",
 	"engine/renderer",
 	"engine/transform",
 	"render/script/tile"
-], function($) {
+], function( Snap, $) {
 	/**
 	 * Script to draw floor tiles
 	 * @function
