@@ -235,6 +235,49 @@ define([
 	$.subscribe("UI.DiceButton", UI.DiceButton.handler);
 
 	/**
+	 * @namespace Tooltip
+	 * @memberOf UI.
+	 */
+	UI.Tooltip = {
+		show: function(){
+			$("#game-tooltip").show();
+		},
+		hide: function() {
+			$("#game-tooltip").hide();
+		},
+		redraw: function(data){
+			UI.Tooltip.setPosition(data.position.left, data.position.top);
+
+			// Fetch live info from game session
+			var info = fetchInfo(data.id);
+			$("#game-tooltip-contents").text(info.name);
+		},
+		setPosition: function( left, top ) {
+			$("#game-tooltip").css({
+				"left": left,
+				"top": top
+			});
+		},
+		controller: function(evt, data){
+			var actions = {
+				"show": function(){
+					UI.Tooltip.redraw(data);
+					UI.Tooltip.show();
+				},
+				"hide": function() {
+					UI.Tooltip.hide();
+				}
+			};
+
+			actions[evt.data.action]();
+		}
+	};
+
+	// Register handler for Lot sprite onHoverEnter
+	$.subscribe("UI.Tooltip.Show", { "action": "show" }, UI.Tooltip.controller);
+	$.subscribe("UI.Tooltip.Hide", { "action": "hide" }, UI.Tooltip.controller);
+
+	/**
 	 * @namespace InfoPanel
 	 * @memberOf UI.
 	 */

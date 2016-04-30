@@ -77,6 +77,29 @@ body {
 
 /* UI styles */
 
+#game-tooltip-layer {
+	position: absolute;
+}
+
+#game-tooltip {
+	z-index: 99;
+	position: absolute;
+	pointer-events: none;
+}
+
+#game-tooltip-contents {
+	position: relative;
+	left: -50%; /* centered */
+	margin-top: -25%;
+	padding: 8px;
+	color: #fff;
+	background-color: #006064;
+	white-space: nowrap;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 400;
+	border-radius: 3px;
+}
+
 #game-frame {
 	display: flex;
 }
