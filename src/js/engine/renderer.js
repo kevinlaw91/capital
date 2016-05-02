@@ -16,7 +16,7 @@ define([
 		 * Set reference to stage
 		 */
 		setCanvas: function(elem) {
-			this.canvas = Snap(elem);
+			this.canvas = elem;
 		}
 	};
 

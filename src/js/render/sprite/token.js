@@ -73,14 +73,10 @@ define([
 
 		// Tooltip offset from ground tile
 		var offsetX = 0,
-		    offsetY = -25;
+		    offsetY = -5;
 
-		// Render near player token with randomness
-		var randomX = Math.random() * 25,
-		    randomY = Math.random() * 20;
-
-		extras.x = this.x + offsetX + randomX;
-		extras.y = this.y + offsetY + randomY;
+		extras.x = this.x + offsetX;
+		extras.y = this.y + offsetY;
 
 		//Render tooltip as spatial element
 		require("render/script/popup")(msg, extras);

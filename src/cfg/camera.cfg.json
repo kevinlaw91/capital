@@ -1,6 +1,5 @@
 {
 	"camera": {
-		"viewport": "#camera-viewport",
 		"zoom": {
 			"initial": 2.0,
 			"min": 0.8,

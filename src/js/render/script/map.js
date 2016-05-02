@@ -1,5 +1,4 @@
 define([
-	"engine/ui",
 	"engine/camera",
 	"render/script/floor"
 ], function() {
@@ -7,12 +6,14 @@ define([
 		// Render floor
 		require("render/script/floor")();
 
-		// Remove dummy scene object
-		require("engine/ui").removePlaceholder();
+		var Camera = require("engine/camera");
 
-		// Update camera cache
-		var camera = require("engine/camera");
-		camera.updateBBox();
-		camera.center();
+		// Remove dummy scene if present
+		if(Camera.removeDummyScene) {
+			Camera.removeDummyScene();
+		}
+		// Re-calculates camera's boundary
+		Camera.updateBBox();
+		Camera.center();
 	};
 });

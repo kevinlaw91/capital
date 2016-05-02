@@ -32,6 +32,9 @@ define([
 		log("[EVENT] Created new game session", "event");
 		this.status = GameSession.GAME_STATE_NEW;
 
+		/** Waiting for dice roll to happen */
+		this.waitForDiceRoll(false);
+
 		/**
 		 * Players in current match
 		 * @type {Player[]}
@@ -39,7 +42,11 @@ define([
 		this.players = [];
 		this.currentPlayerIndex = -1;
 
+		// Generate map
 		this.map = require("entity/map").generate();
+
+		// Draw map
+		require("render/script/map")();
 
 		//Register as active session
 		registerActiveSession(this);
@@ -73,7 +80,7 @@ define([
 
 		/**
 		 * Current session map data
-		 * @type {Lot[]}
+		 * @type {Array.<Lot|TradableLot>}
 		 */
 		var MapData = evt.data.session.map;
 
@@ -116,7 +123,17 @@ define([
 		this.currentPlayerIndex = 0;
 		this.getActivePlayer().bringToFront();
 		this.getActivePlayer().showActiveMarker();
+		this.waitForDiceRoll(true);
 		log("[GAME_EVENT] Player 0 is now active", "gameevent");
+	};
+
+	/**
+	 * Set to or not to accept dice roll
+	 * @param {boolean} bool - True/False
+	 */
+	GameSession.prototype.waitForDiceRoll = function(bool) {
+		$.publish("UI.DiceButton", { enabled: bool });
+		this.awaitingDiceRoll = bool;
 	};
 
 	/**

@@ -27,8 +27,12 @@ define([
 	//
 
 	ev.PlayerAction.DiceRoll = function(){
-		var result = 1 + Math.floor(Math.random() * 6);
-		$.publish("DiceRollComplete", result);
+		var session = require("engine/game").getSession();
+		if(session.awaitingDiceRoll){
+			var result = 1 + Math.floor(Math.random() * 6);
+			$.publish("DiceRollComplete", result);
+			session.waitForDiceRoll(false);
+		}
 	};
 
 	ev.PlayerAction.EndTurn = function(){
@@ -46,7 +50,7 @@ define([
 		$(".player-action-btn-build").prop('disabled', true);
 
 		// Hide action panel
-		UI.hideUserActionPanel();
+		UI.UserActionPanel.close(UI.UserActionPanel.reset);
 
 		log("[GAME_EVENT] Current player ended his turn", "gameevent");
 
@@ -68,7 +72,7 @@ define([
 		// Attempt to buy current location
 		if(currentPlayer.buy()) {
 			// Success
-			UI.feedbackUserActionPanel(true);
+			UI.UserActionPanel.Panels.PROPERTY_BUY.onComplete();
 
 			// Disable buy option if success
 			//TODO: Polish
@@ -82,7 +86,7 @@ define([
 		//Attempt to upgrade current location
 		if(currentPlayer.upgrade()){
 			// Success
-			UI.feedbackUserActionPanel();
+			UI.UserActionPanel.Panels.PROPERTY_UPGRADE.onComplete();
 
 			// Can only upgrade once every turn
 			//TODO: Polish
@@ -168,7 +172,7 @@ define([
 		 * @param {Player} data.player - Player that triggered the enter event
 		 */
 		var pos = data.player.position,
-		    /** @type Lot */
+		    /** @type {Lot|TradableLot} */
 		    lot = evt.data.session.getLot(pos.mapX, pos.mapY);
 		log("[GAME_EVENT] Player stopped at " + pos.mapX + "," + pos.mapY, "gameevent");
 
@@ -212,16 +216,13 @@ define([
 					//TODO: Polish
 					$(".player-action-btn-build").prop('disabled', false);
 
-					var costPerTier = [
-						lot.cost.upgrade1,
-						lot.cost.upgrade2,
-						lot.cost.upgrade3,
-						lot.cost.upgrade4
-					];
-
 					// Show action panel
-					UI.updateUserActionPanel("upgrade", costPerTier[lot.tier]);
-					UI.showUserActionPanel("upgrade");
+					$.publish("UI.UserActionPanel", {
+						show: "PROPERTY_UPGRADE",
+						info: {
+							cost: lot.getNextUpgradeCost()
+						}
+					});
 				} else {
 					//End current turn
 					ev.PlayerAction.EndTurn();
@@ -235,8 +236,13 @@ define([
 					$(".player-action-btn-buy").prop('disabled', false);
 
 					// Show action panel
-					UI.updateUserActionPanel("buy", lot.cost.land);
-					UI.showUserActionPanel("buy");
+					$.publish("UI.UserActionPanel", {
+						show: "PROPERTY_BUY",
+						info: {
+							title: lot.name,
+							cost: lot.getPrice()
+						}
+					});
 				} else {
 					//Stopped at others' property
 
@@ -254,6 +260,8 @@ define([
 
 	ev.onPlayerSwitched = function(evt, data){
 		log("[GAME_EVENT] Player " + data.playerIndex + " is now active", "gameevent");
+		var session = require("engine/game").getSession();
+		session.waitForDiceRoll(true);
 	};
 
 	ev.onCashFlow = function(evt, data) {
@@ -263,36 +271,25 @@ define([
 		 * @param {number} [data.sub] - Amount to subtract
 		 * @param {string} [data.source] - Source of income/debt
 		 */
-		var icon = {
-			"ROUND_TRIP": "icon-cycle",
-			"RENT": "icon-house"
-		}[data.source];
-
-		var options = icon ? {icon: icon}:{};
-
 		if(typeof data.add != "undefined"){
 			data.player.addCash(data.add);
-			data.player.token.popup("$" + data.add,
-				$.extend(options, {
-					color: "#3C4894",
-					iconColor: "#2363A0",
-					prefix: "+",
-					prefixColor: "#3C4894"
-				})
-			);
+			data.player.token.popup("$" + data.add, {
+				color: "#3C4894",
+				iconColor: "#2363A0",
+				prefix: "+",
+				prefixColor: "#3C4894"
+			});
 			log("[GAME_EVENT] Player earned $" + data.add + " (Now: $" + data.player.cash + ")", "gameevent");
 		}
 
 		if(typeof data.sub != "undefined"){
 			data.player.deductCash(data.sub);
-			data.player.token.popup("$" + data.sub,
-				$.extend(options, {
-					color: "#901717",
-					iconColor: "#D22A2A",
-					prefix: "-",
-					prefixColor: "#901717"
-				})
-			);
+			data.player.token.popup("$" + data.sub, {
+				color: "#901717",
+				iconColor: "#D22A2A",
+				prefix: "−",
+				prefixColor: "#901717"
+			});
 			log("[GAME_EVENT] Player losses $" + data.sub + " (Now: $" + data.player.cash + ")", "gameevent");
 		}
 	};

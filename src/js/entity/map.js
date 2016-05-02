@@ -1,13 +1,70 @@
 define([
 	"jquery",
 	"entity/lot",
+	"entity/lot_tradable",
     "utils"
-], function($, Lot) {
+], function($, Lot, TradableLot) {
 	'use strict';
+
+	var LocationNames = [];
+
+	function resetLocationNamePool(){
+		//Must be at least 36 names
+		LocationNames = [
+			"Al Zaco Creek",
+			"Azral Canyon",
+			"Boulevard Road",
+			"Cape Loop",
+			"Cape Rolnard",
+			"Carole Bay",
+			"Cattown Road",
+			"Central Road",
+			"Chamont Town",
+			"Champs Pass",
+			"Cobbs Creek",
+			"Coin Road",
+			"Dorkov Bay",
+			"Downtown Troyes",
+			"East Lake",
+			"Esteryn Street",
+			"Fox Valley",
+			"Harbour Road",
+			"Juniper Bay",
+			"Miracle Hills",
+			"Mont Alice",
+			"Moon Hill",
+			"Mormont Valley",
+			"Newton Road",
+			"Northwood Valley",
+			"Ostgate Street",
+			"Ox River",
+			"Reed Lake",
+			"Ruby Valley",
+			"Saint Viborg",
+			"Sun Castle",
+			"Tales Lake",
+			"Vintage Creek",
+			"Weldon Park",
+			"Westway Town",
+			"Winter Lagoon"
+		];
+	}
+
+	function getRandomName(){
+		//Reset name pool if no more unique name is available
+		if(LocationNames.length === 0){
+			resetLocationNamePool();
+		}
+		//Get a unique name from pool
+		var randomId = Math.floor(Math.random()*LocationNames.length),
+		    randomName = LocationNames.splice(randomId,1);
+		return randomName[0];
+	}
+
 	return {
 		/**
 		 * Generates and return a map definition array
-		 * @returns {Lot[]}
+		 * @returns {Array.<Lot|TradableLot>}
 		 */
 		generate: function(){
 			// Import Utils
@@ -46,13 +103,12 @@ define([
 
 			/**
 			 * Map definition
-			 * @type {Lot[]}
+			 * @type {Array.<Lot|TradableLot>}
 			 */
 			var map = [];
 
 			// Constants
-			var tradable = { tradable: true },
-			    nd = {
+			var nd = {
 				    /**
 				     * Normal distributions
 				     *
@@ -74,13 +130,13 @@ define([
 				cost_upgrade4 = cost_upgrade3 + randomAmount(nd.upg4,1500,4000);
 
 				return {
-					cost: {
-						land: cost_land,
-						upgrade1: cost_upgrade1,
-						upgrade2: cost_upgrade2,
-						upgrade3: cost_upgrade3,
-						upgrade4: cost_upgrade4
-					}
+					cost: [
+						cost_land,
+						cost_upgrade1,
+						cost_upgrade2,
+						cost_upgrade3,
+						cost_upgrade4
+					]
 				};
 			}
 
@@ -99,11 +155,12 @@ define([
 			// Lot in south west
 			for(i=12; i>=4; i--){
 				map.push(
-					new Lot(
-						$.extend(tradable, generateCost(), {
+					new TradableLot(
+						$.extend(generateCost(), {
+							name: getRandomName(),
 							pos: { x: i, y: 13},
 							b:   { x: i, y: 15},
-							direction: Lot.FACING_NORTH
+							direction: Lot.prototype.FACING_NORTH
 						})
 					)
 				);
@@ -122,11 +179,12 @@ define([
 			// Lot in north west
 			for(i=12; i>=4; i--){
 				map.push(
-					new Lot(
-						$.extend(tradable, generateCost(), {
+					new TradableLot(
+						$.extend(generateCost(), {
+							name: getRandomName(),
 							pos: { x: 3, y: i},
 							b:   { x: 1, y: i},
-							direction: Lot.FACING_EAST
+							direction: Lot.prototype.FACING_EAST
 						})
 					)
 				);
@@ -145,11 +203,12 @@ define([
 			// Lot in north east
 			for(i=4; i<=12; i++){
 				map.push(
-					new Lot(
-						$.extend(tradable, generateCost(), {
+					new TradableLot(
+						$.extend(generateCost(), {
+							name: getRandomName(),
 							pos: { x: i, y: 3},
 							b:   { x: i, y: 1},
-							direction: Lot.FACING_SOUTH
+							direction: Lot.prototype.FACING_SOUTH
 						})
 					)
 				);
@@ -168,11 +227,12 @@ define([
 			// Lot in south east
 			for(i=4; i<=12; i++){
 				map.push(
-					new Lot(
-						$.extend(tradable, generateCost(), {
+					new TradableLot(
+						$.extend(generateCost(), {
+							name: getRandomName(),
 							pos: { x: 13, y: i},
 							b:   { x: 15, y: i},
-							direction: Lot.FACING_WEST
+							direction: Lot.prototype.FACING_WEST
 						})
 					)
 				);

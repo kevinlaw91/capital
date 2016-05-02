@@ -12,7 +12,7 @@ define(["jquery"], function($) {
 		//
 		var files = [
 			"engine",
-			"draw",
+			"ui",
 			"camera",
 		    "game"
 		];

@@ -1,0 +1,7 @@
+{
+	"canvas": {
+		"attach": "#canvas-frame", // element to attach svg tag to
+		"svg": "#canvas-svg", // id for svg element
+		"id": "#canvas-viewport" // pan group for camera
+	}
+}
