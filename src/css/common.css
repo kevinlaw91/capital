@@ -326,6 +326,10 @@ body {
 	width: 100%;
 }
 
+#canvas-viewport {
+	transition: transform 75ms ease;
+}
+
 #nav-bar {
 	display: none;
 	height: 100%;
