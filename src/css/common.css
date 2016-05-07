@@ -85,6 +85,7 @@ body {
 	z-index: 99;
 	position: absolute;
 	pointer-events: none;
+	display: none;
 }
 
 #game-tooltip-contents {
