@@ -274,7 +274,6 @@ define([
 		if(typeof data.add != "undefined"){
 			data.player.addCash(data.add);
 			data.player.token.popup("$" + data.add, {
-				iconColor: "#2363A0",
 				color: "#004d04",
 				prefix: "+",
 				prefixColor: "#004d04"
@@ -285,7 +284,6 @@ define([
 		if(typeof data.sub != "undefined"){
 			data.player.deductCash(data.sub);
 			data.player.token.popup("$" + data.sub, {
-				iconColor: "#D22A2A",
 				color: "#512309",
 				prefix: "−",
 				prefixColor: "#512309"
