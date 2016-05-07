@@ -274,10 +274,10 @@ define([
 		if(typeof data.add != "undefined"){
 			data.player.addCash(data.add);
 			data.player.token.popup("$" + data.add, {
-				color: "#3C4894",
 				iconColor: "#2363A0",
+				color: "#004d04",
 				prefix: "+",
-				prefixColor: "#3C4894"
+				prefixColor: "#004d04"
 			});
 			log("[GAME_EVENT] Player earned $" + data.add + " (Now: $" + data.player.cash + ")", "gameevent");
 		}
@@ -285,10 +285,10 @@ define([
 		if(typeof data.sub != "undefined"){
 			data.player.deductCash(data.sub);
 			data.player.token.popup("$" + data.sub, {
-				color: "#901717",
 				iconColor: "#D22A2A",
+				color: "#512309",
 				prefix: "−",
-				prefixColor: "#901717"
+				prefixColor: "#512309"
 			});
 			log("[GAME_EVENT] Player losses $" + data.sub + " (Now: $" + data.player.cash + ")", "gameevent");
 		}
