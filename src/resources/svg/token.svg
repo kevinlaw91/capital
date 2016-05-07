@@ -20,4 +20,11 @@
 		<polygon points="0 8 0 24 16 32 16 16 0 8" style="fill:#2e82b0"/>
 		<polygon points="16 16 16 32 32 24 32 8 16 16" style="fill:#2da2d1"/>
 	</symbol>
+	<symbol id="player-token-pink" viewBox="0 0 32 37">
+		<polygon points="16 37 0 29 16 21 32 29 16 37" style="opacity:0.25"/>
+		<polygon points="0 8 0 24 16 32 32 24 32 8 16 0 0 8" style="fill:#cb2c98"/>
+		<polygon points="16 16 0 8 16 0 32 8 16 16" style="fill:#fa6ccd"/>
+		<polygon points="0 8 0 24 16 32 16 16 0 8" style="fill:#cb2c98"/>
+		<polygon points="16 16 16 32 32 24 32 8 16 16" style="fill:#de49af"/>
+	</symbol>
 </svg>

@@ -14,7 +14,8 @@ define([
 
 	var markColors = {
 		"RED": "#BF4D4F",
-		"BLUE": "#2DB1B1"
+		"BLUE": "#2DB1B1",
+		"PINK": "#d163c8"
 	};
 
 	/**

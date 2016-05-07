@@ -12,7 +12,8 @@ define([
 	/** Resources for token */
 	var token_resources = {
 		"RED": "player-token-red",
-		"BLUE": "player-token-blue"
+		"BLUE": "player-token-blue",
+		"PINK": "player-token-pink"
 	};
 
 	/**

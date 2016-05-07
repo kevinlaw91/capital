@@ -41,6 +41,7 @@ define([
 			//TODO: Remove after testing
 			this.session.addPlayer("Player 1", "RED");
 			this.session.addPlayer("Player 2", "BLUE");
+			this.session.addPlayer("Player 3", "PINK");
 
 			//Start game
 			this.session.startGame();
