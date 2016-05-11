@@ -109,25 +109,6 @@ define([
 	};
 
 	/**
-	 * Attempt to buy a land lot
-	 * @param {Lot} [lot] - Target lot to be bought, use current position if unspecified
-	 * @return {boolean} True - if success
-	 */
-	Player.prototype.buy = function(lot) {
-		if(!lot){
-			lot = this.position.lot;
-		}
-
-		if(lot.owner === null && lot.isTradable){
-			lot.sellTo(this);
-			$.publish("PropertyTransfer", { lot: lot, player: this });
-			return true;
-		}else{
-			return false;
-		}
-	};
-
-	/**
 	 * Attempt to upgrade current lot
 	 * @return {boolean} True - if success
 	 */

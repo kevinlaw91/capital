@@ -70,16 +70,24 @@ define([
 	};
 
 	ev.PlayerAction.Buy = function() {
-		var currentPlayer = require("engine/game").getSession().getActivePlayer();
+		var currentPlayer = require("engine/game").getSession().getActivePlayer(),
+			currentLot = currentPlayer.position.lot;
 
-		// Attempt to buy current location
-		if(currentPlayer.buy()) {
-			// Success
-			UI.UserActionPanel.Panels.PROPERTY_BUY.onComplete();
+		if(currentLot && currentLot.isTradable) {
+			// If current lot is not null or undefined
+			// and it is open for trading
+			if(currentLot.owner === null) {
+				// Lot is currently unowned
+				// so player buys it
+				$.publish("PropertyTransfer", { lot: currentLot, player: currentPlayer });
 
-			// Disable buy option if success
-			//TODO: Polish
-			$("#btn-buy").prop('disabled', true);
+				// Show purchase success in UI
+				UI.UserActionPanel.Panels.PROPERTY_BUY.onComplete();
+
+				// Disable buy option if success
+				//TODO: Polish
+				$("#btn-buy").prop('disabled', true);
+			}
 		}
 	};
 
@@ -308,9 +316,11 @@ define([
 	ev.onPropertyTransfer = function(evt, data) {
 		/**
 		 *  @param {Player} data.player - New owner of the property
-		 *  @param {Lot} data.lot - The property sold to the new owner
+		 *  @param {TradableLot} data.lot - The property sold to the new owner
 		 */
 		log("[GAME_EVENT] " + data.player.name + " bought the unowned lot", "gameevent");
+		data.lot.sellTo(data.player);
+		data.player.deductCash(data.lot.getPrice());
 	};
 
 	ev.onPropertyUpgrade = function(evt, data) {
