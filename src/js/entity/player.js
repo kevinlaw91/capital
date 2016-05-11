@@ -60,6 +60,12 @@ define([
 		 */
 		this.cash = 0;
 
+		/**
+		 * Net worth of player
+		 * @member {number}
+		 */
+		this.netWorth = 0;
+
 		//Create view
 		this.token = new PlayerToken(color);
 
@@ -84,6 +90,22 @@ define([
 	 */
 	Player.prototype.deductCash = function(amount) {
 		this.cash -= amount;
+	};
+
+	/**
+	 * Adds an amount of net worth to player
+	 * @param {number} amount
+	 */
+	Player.prototype.addToNetWorth = function(amount) {
+		this.netWorth += amount;
+	};
+
+	/**
+	 * Deducts an amount of net worth from player
+	 * @param {number} amount
+	 */
+	Player.prototype.deductFromNetWorth = function(amount) {
+		this.netWorth -= amount;
 	};
 
 	/**

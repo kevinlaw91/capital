@@ -10,6 +10,9 @@ define([
 	var Config = require("engine/config"),
 		UI = require("engine/ui");
 
+	/** @external Leaderboard */
+	var Leaderboard = require("entity/leaderboard");
+
 	/**
 	 * @namespace
 	 * @alias GameEventCallback
@@ -273,6 +276,11 @@ define([
 		 */
 		if(typeof data.add != "undefined"){
 			data.player.addCash(data.add);
+			data.player.addToNetWorth(data.add);
+
+			// Update ranking
+			Leaderboard.sort();
+
 			data.player.token.popup("$" + data.add, {
 				color: "#004d04",
 				prefix: "+",
@@ -283,6 +291,11 @@ define([
 
 		if(typeof data.sub != "undefined"){
 			data.player.deductCash(data.sub);
+			data.player.deductFromNetWorth(data.sub);
+
+			// Update ranking
+			Leaderboard.sort();
+
 			data.player.token.popup("$" + data.sub, {
 				color: "#512309",
 				prefix: "−",

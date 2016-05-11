@@ -211,6 +211,41 @@ body {
 	font-size: 12px;
 }
 
+#info-panel-leaderboard {
+	font-family: 'Roboto', sans-serif;
+}
+
+#info-panel-leaderboard header h1 {
+	color: #e0e0e0;
+	font-size: 1.25rem;
+	margin-left: 25px;
+	margin-top: 25px;
+	margin-bottom: 10px;
+}
+
+.leaderboard-list {
+	margin-left: 25px;
+	margin-right: 25px;
+	list-style: none;
+}
+
+.leaderboard-list li {
+	margin-top: 25px;
+	margin-bottom: 25px;
+}
+
+.leaderboard-list .player-name {
+	font-size: 1rem;
+	font-weight: 300;
+	color: #cacaca;
+}
+
+.leaderboard-list .player-net-worth {
+	font-size: 2rem;
+	font-weight: 200;
+	color: #66f2f0;
+}
+
 #stage-box {
 	flex-grow: 3;
 	flex-shrink: 1;

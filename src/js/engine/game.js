@@ -4,6 +4,7 @@ define([
 	"engine/config",
 	"engine/events",
 	"entity/session",
+	"entity/leaderboard",
 	"render/script/map"
 ], function($) {
 	/** Access to config */
@@ -43,6 +44,12 @@ define([
 			this.session.addPlayer("Player 2", "BLUE");
 			this.session.addPlayer("Player 3", "PINK");
 
+			// Update leaderboard with players
+			this.leaderboard.populate(this.session.players);
+			$.publish("UI.InfoPanel.Leaderboard.Rebuild");
+			$.publish("UI.InfoPanel.Leaderboard.Refresh");
+			$.publish("UI.InfoPanel.Leaderboard.Show");
+
 			//Start game
 			this.session.startGame();
 		},
@@ -54,7 +61,9 @@ define([
 		 */
 		getSession: function() {
 			return this.session;
-		}
+		},
+
+		leaderboard: require("entity/leaderboard")
 	};
 
 	//

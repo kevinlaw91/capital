@@ -63,6 +63,9 @@ define([
 
 		//set starting cash
 		player.cash = 20000;
+
+		//set starting net worth
+		player.netWorth = 20000;
 	};
 
 	GameSession.prototype.getActivePlayer = function() {
