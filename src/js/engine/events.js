@@ -92,16 +92,23 @@ define([
 	};
 
 	ev.PlayerAction.Upgrade = function(){
-		var currentPlayer = require("engine/game").getSession().getActivePlayer();
+		var currentPlayer = require("engine/game").getSession().getActivePlayer(),
+		    currentLot = currentPlayer.position.lot;
 
-		//Attempt to upgrade current location
-		if(currentPlayer.upgrade()){
-			// Success
-			UI.UserActionPanel.Panels.PROPERTY_UPGRADE.onComplete();
+		if(currentLot && currentLot.isTradable && currentLot.isOwnedBy(currentPlayer)) {
+			// If current lot is owned by current player
+			if(currentLot.upgradeAvailable()) {
+				// and lot can be upgraded
+				// so just upgrade it
+				$.publish("PropertyUpgrade", { lot: currentLot, player: currentPlayer });
 
-			// Can only upgrade once every turn
-			//TODO: Polish
-			$(".player-action-btn-build").prop('disabled', true);
+				// Show upgrade success in UI
+				UI.UserActionPanel.Panels.PROPERTY_UPGRADE.onComplete();
+
+				// Disable upgrade option if success
+				//TODO: Polish
+				$(".player-action-btn-build").prop('disabled', true);
+			}
 		}
 	};
 
@@ -329,6 +336,10 @@ define([
 		 *  @param {Lot} data.lot - The upgraded property
 		 */
 		log("[GAME_EVENT] " + data.player.name + " upgraded the lot", "gameevent");
+		// Get upgrade cost and deduct from player cash
+		data.player.deductCash(data.lot.getNextUpgradeCost());
+		// Then only upgrades the land lot
+		data.lot.upgrade();
 	};
 
 	return ev;

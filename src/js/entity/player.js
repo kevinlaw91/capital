@@ -109,24 +109,6 @@ define([
 	};
 
 	/**
-	 * Attempt to upgrade current lot
-	 * @return {boolean} True - if success
-	 */
-	Player.prototype.upgrade = function() {
-		var lot = this.position.lot;
-
-		// Fail if
-		// - Player not standing on a lot
-		// - Player do not own the property
-		if(lot && lot.isOwnedBy(this) && lot.upgradeAvailable()){
-			lot.upgrade();
-			$.publish("PropertyUpgrade", { lot: lot, player: this });
-			return true;
-		}
-		return false;
-	};
-
-	/**
 	 * Move player to x, y position in map
 	 * @param {number} x Position in column (x)
 	 * @param {number} y Position in row (y)
