@@ -1,4 +1,7 @@
-define(["jquery"], function ($) {
+define([
+	"jquery",
+	"jquery.pub-sub"
+], function ($) {
 	'use strict';
 
 	/** @namespace Leaderboard */
@@ -32,7 +35,17 @@ define(["jquery"], function ($) {
 				this.ranking = newRanking;
 				this.onRankingChanged();
 			}
+			this.onUpdated();
 		},
+		/**
+		 * Called when leaderboard was updated
+		 * @function
+		 */
+		onUpdated: $.noop,
+		/**
+		 * Called when ranking had changed
+		 * @function
+		 */
 		onRankingChanged: $.noop,
 		reset: function() {
 			// Clear rankings

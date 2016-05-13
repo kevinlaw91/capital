@@ -1,5 +1,6 @@
 define([
 	"jquery",
+	"jquery.pub-sub",
 	"engine/ui",
 	"engine/game",
 	"engine/config",
@@ -293,9 +294,6 @@ define([
 			data.player.addCash(data.add);
 			data.player.addToNetWorth(data.add);
 
-			// Update ranking
-			Leaderboard.sort();
-
 			data.player.token.popup("$" + data.add, {
 				color: "#004d04",
 				prefix: "+",
@@ -308,9 +306,6 @@ define([
 			data.player.deductCash(data.sub);
 			data.player.deductFromNetWorth(data.sub);
 
-			// Update ranking
-			Leaderboard.sort();
-
 			data.player.token.popup("$" + data.sub, {
 				color: "#512309",
 				prefix: "−",
@@ -318,6 +313,9 @@ define([
 			});
 			log("[GAME_EVENT] Player losses $" + data.sub + " (Now: $" + data.player.cash + ")", "gameevent");
 		}
+
+		// Update ranking
+		Leaderboard.sort();
 	};
 
 	ev.onPropertyTransfer = function(evt, data) {

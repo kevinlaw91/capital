@@ -349,7 +349,7 @@ define([
 					// Store reference
 					Panel.entries = rows;
 
-					Leaderboard.onRankingChanged = Panel.refresh;
+					Leaderboard.onUpdated = Panel.refresh;
 				},
 				refresh: function() {
 					var Leaderboard = require("entity/leaderboard"),
