@@ -26,28 +26,31 @@
 			</section>
 			<div id="game-frame">
 				<section id="info-panel">
-					<section id="info-panel-lot">
-						<header>
-							<h1 data-label="title">PLACE_NAME</h1>
-						</header>
-						<section class="info-group tier-bar">
-							<span class="tier-badge" data-label="tier">0</span><span data-label="tier-title">Empty Lot</span>
-						</section>
-						<h2>PRICE</h2>
-						<section class="info-group">
-							<span data-label="cost">$0</span>
-						</section>
-						<h2>UPGRADES</h2>
-						<section class="info-group">
-							<ol class="upgrade-list">
-								<li><span class="upgrade-badge" title="Tier 1"></span><span data-label="upgrade1">$0</span></li>
-								<li><span class="upgrade-badge" title="Tier 2"></span><span data-label="upgrade2">$0</span></li>
-								<li><span class="upgrade-badge" title="Tier 3"></span><span data-label="upgrade3">$0</span></li>
-								<li><span class="upgrade-badge" title="Tier 4"></span><span data-label="upgrade4">$0</span></li>
-							</ol>
+					<section id="info-panel-tab"></section>
+					<section id="info-panel-info" role="tabpanel" aria-labelledby="info-panel-tab-info">
+						<section id="info-panel-lot">
+							<header>
+								<h1 data-label="title">PLACE_NAME</h1>
+							</header>
+							<section class="info-group tier-bar">
+								<span class="tier-badge" data-label="tier">0</span><span data-label="tier-title">Empty Lot</span>
+							</section>
+							<h2>PRICE</h2>
+							<section class="info-group">
+								<span data-label="cost">$0</span>
+							</section>
+							<h2>UPGRADES</h2>
+							<section class="info-group">
+								<ol class="upgrade-list">
+									<li><span class="upgrade-badge" title="Tier 1"></span><span data-label="upgrade1">$0</span></li>
+									<li><span class="upgrade-badge" title="Tier 2"></span><span data-label="upgrade2">$0</span></li>
+									<li><span class="upgrade-badge" title="Tier 3"></span><span data-label="upgrade3">$0</span></li>
+									<li><span class="upgrade-badge" title="Tier 4"></span><span data-label="upgrade4">$0</span></li>
+								</ol>
+							</section>
 						</section>
 					</section>
-					<section id="info-panel-leaderboard">
+					<section id="info-panel-leaderboard" role="tabpanel" aria-labelledby="info-panel-tab-leaderboard">
 						<header>
 							<h1>LEADERBOARD</h1>
 						</header>

@@ -282,117 +282,184 @@ define([
 	 * @memberOf UI.
 	 */
 	UI.InfoPanel = {
-		activePanel: null,
-		Panels: {
-			LotInfo: {
-				node: $("#info-panel-lot"),
-				refresh: function( evt, data ) {
+		init: function(){
+			var tablist = $("<ul/>").attr("role","tablist");
+            tablist.appendTo($("#info-panel-tab"));
+
+			$("<li/>")
+				.attr({
+					"id": "info-panel-tab-info",
+					"role": "tab",
+					"aria-controls": "info-panel-info",
+					"aria-selected": "false",
+					"tabindex": "0"
+				})
+				.append("<span>Info</span>")
+				.click(UI.InfoPanel.Tabs.Info.select)
+				.appendTo(tablist);
+
+			$("<li/>")
+				.attr({
+					"id": "info-panel-tab-leaderboard",
+					"role": "tab",
+					"aria-controls": "info-panel-leaderboard",
+					"aria-selected": "false",
+					"tabindex": "0"
+				})
+				.append("<span>Leaderboard</span>")
+				.click(UI.InfoPanel.Tabs.Leaderboard.select)
+				.appendTo(tablist);
+
+			delete UI.InfoPanel.init;
+		},
+		Tabs: {
+			Info: {
+				panels: {
+					LotInfo: {
+						node: $("#info-panel-lot"),
+						refresh: function( evt, data ) {
+							/**
+							 * @param {number} data.lot_id - Id of the lot
+							 */
+
+							// Fetch data from game session
+							var panel = UI.InfoPanel.Tabs.Info.panels.LotInfo.node,
+							    lot   = fetchActiveSession().map[data.lot_id];
+
+							// Definition of fields to be updated and its value
+							var fields = {
+								"title": lot.name,
+								"tier": lot.tier,
+								"tier-title": [
+									"Empty Lot",
+									"Tier 1",
+									"Tier 2",
+									"Tier 3",
+									"Tier 4"
+								][lot.tier],
+								"cost": "$" + lot.cost[0],
+								"upgrade1": "$" + lot.cost[1],
+								"upgrade2": "$" + lot.cost[2],
+								"upgrade3": "$" + lot.cost[3],
+								"upgrade4": "$" + lot.cost[4]
+							};
+
+							// Update fields
+							Object.keys(fields)
+							      .forEach(function( key ) {
+								      panel.find("[data-label='" + key + "']")
+								           .text(fields[key]);
+							      });
+						}
+					}
+				},
+				showPanel: function(evt, data){
 					/**
-					 * @param {number} data.lot_id - Id of the lot
+					 * @param {object} evt.data.panel - A panel object defined in UI.InfoPanel.Tabs.Info.panels
 					 */
 
-					// Fetch data from game session
-					var panel = UI.InfoPanel.Panels.LotInfo.node,
-						lot = fetchActiveSession().map[data.lot_id];
+					// Hide all panel
+					var panels = UI.InfoPanel.Tabs.Info.panels;
+					for(var p in panels) {
+						if(panels.hasOwnProperty(p)) {
+							panels[p].node.hide();
+						}
+					}
 
-					// Definition of fields to be updated and its value
-					var fields = {
-						"title": lot.name,
-						"tier": lot.tier,
-						"tier-title": [
-							"Empty Lot",
-							"Tier 1",
-							"Tier 2",
-							"Tier 3",
-							"Tier 4"
-						][lot.tier],
-						"cost": "$" + lot.cost[0],
-						"upgrade1": "$" + lot.cost[1],
-						"upgrade2": "$" + lot.cost[2],
-						"upgrade3": "$" + lot.cost[3],
-						"upgrade4": "$" + lot.cost[4]
-					};
-
-					// Update fields
-					Object.keys(fields)
-					      .forEach( function (key) {
-						      panel.find("[data-label='" + key + "']")
-						           .text(fields[key]);
-					      });
+					// Show only specified panel
+					evt.data.panel.node.show();
+				},
+				select: function(){
+					UI.InfoPanel.Tabs.select("#info-panel-tab-info");
 				}
 			},
 			Leaderboard: {
-				node: $("#info-panel-leaderboard"),
-				entries: [],
-				rebuild: function() {
-					var Leaderboard = require("entity/leaderboard"),
-						Panel = UI.InfoPanel.Panels.Leaderboard,
-						listNode = Panel.node.find(".leaderboard-list");
+				panels: {
+					Leaderboard: {
+						node: $("#info-panel-leaderboard"),
+						entries: [],
+						rebuild: function() {
+							var Leaderboard = require("entity/leaderboard"),
+							    Panel = UI.InfoPanel.Tabs.Leaderboard.panels.Leaderboard,
+							    listNode = Panel.node.find(".leaderboard-list");
 
-					// Start from clean node
-					var rows = [];
-					listNode.empty();
+							// Start from clean node
+							var rows = [];
+							listNode.empty();
 
-					// Rebuild leaderboard
-					while(rows.length < Leaderboard.ranking.length) {
-						// Construct DOM
-						var newRow = $("<li/>").append(
-							$("<div/>").addClass("player-name").text("PLAYER_NAME"),
-							$("<div/>").addClass("player-net-worth").text("PLAYER_CASH")
-						);
-						newRow.appendTo(listNode);
+							// Rebuild leaderboard
+							while(rows.length < Leaderboard.ranking.length) {
+								// Construct DOM
+								var newRow = $("<li/>").append(
+									$("<div/>").addClass("player-name").text("PLAYER_NAME"),
+									$("<div/>").addClass("player-net-worth").text("PLAYER_CASH")
+								);
+								newRow.appendTo(listNode);
 
-						// Store reference
-						rows.push(newRow);
-					}
+								// Store reference
+								rows.push(newRow);
+							}
 
-					// Store reference
-					Panel.entries = rows;
+							// Store reference
+							Panel.entries = rows;
 
-					Leaderboard.onUpdated = Panel.refresh;
-				},
-				refresh: function() {
-					var Leaderboard = require("entity/leaderboard"),
-						Rows = UI.InfoPanel.Panels.Leaderboard.entries;
+							Leaderboard.onUpdated = Panel.refresh;
+						},
+						refresh: function() {
+							var Leaderboard = require("entity/leaderboard"),
+							    Rows = UI.InfoPanel.Tabs.Leaderboard.panels.Leaderboard.entries;
 
-					// Fill data for all rankings
-					Leaderboard.ranking.forEach(
-						function (player, index) {
-							var row = Rows[index];
-							row.find(".player-name").text(player.name);
-							row.find(".player-net-worth").text("$" + player.netWorth);
+							// Fill data for all rankings
+							Leaderboard.ranking.forEach(
+								function (player, index) {
+									var row = Rows[index];
+									row.find(".player-name").text(player.name);
+									row.find(".player-net-worth").text("$" + player.netWorth);
+								}
+							);
 						}
-					);
+					}
+				},
+				select: function(){
+					UI.InfoPanel.Tabs.select("#info-panel-tab-leaderboard");
 				}
-			}
-		},
-		show: function( evt, data ){
-			/**
-			 * @param {string} evt.data.panel - Id of the panel
-			 * @param {boolean} [evt.data.refresh] - State whether to refresh view
-			 */
-			var panel = UI.InfoPanel.Panels[evt.data.panel];
+			},
+			select: function(elem){
+				// Deselect all tabs
+				$("#info-panel-tab")
+					.find("li[role='tab']")
+					.attr({"aria-selected": "false"})
+					.removeClass("selected");
 
-			// Hide current active panel
-			if(UI.InfoPanel.activePanel) {
-				UI.InfoPanel.activePanel.node.hide();
-				UI.InfoPanel.activePanel = null;
-			}
+				// Hide all panels
+				$("#info-panel")
+					.find("section[role='tabpanel']")
+					.attr("aria-hidden","true")
+					.hide();
 
-			// Show panel
-			panel.node.show();
-			UI.InfoPanel.activePanel = panel;
+				// Set specified tab as selected
+				$(elem)
+					.attr("aria-selected","true")
+					.addClass("selected");
+
+				// Get corresponding tabpanel id and make it visible
+				var tabpanelID = $(elem).attr("aria-controls");
+				$("#" + tabpanelID)
+					.attr("aria-hidden","false")
+					.show();
+			}
 		}
 	};
 
 	// Register handler for Lot sprite onClick
-	$.subscribe("UI.InfoPanel.LotInfo.Refresh", UI.InfoPanel.Panels.LotInfo.refresh);
-	$.subscribe("UI.InfoPanel.LotInfo.Show", { panel: "LotInfo" }, UI.InfoPanel.show);
+	$.subscribe("UI.InfoPanel.LotInfo.Refresh", UI.InfoPanel.Tabs.Info.panels.LotInfo.refresh);
+	$.subscribe("UI.InfoPanel.LotInfo.Show", { panel: UI.InfoPanel.Tabs.Info.panels.LotInfo }, UI.InfoPanel.Tabs.Info.showPanel);
+	$.subscribe("UI.InfoPanel.LotInfo.Show", UI.InfoPanel.Tabs.Info.select);
 
 	// Register handlers for leaderboard
-	$.subscribe("UI.InfoPanel.Leaderboard.Rebuild", UI.InfoPanel.Panels.Leaderboard.rebuild);
-	$.subscribe("UI.InfoPanel.Leaderboard.Refresh", UI.InfoPanel.Panels.Leaderboard.refresh);
-	$.subscribe("UI.InfoPanel.Leaderboard.Show", { panel: "Leaderboard" }, UI.InfoPanel.show);
+	$.subscribe("UI.InfoPanel.Leaderboard.Rebuild", UI.InfoPanel.Tabs.Leaderboard.panels.Leaderboard.rebuild);
+	$.subscribe("UI.InfoPanel.Leaderboard.Refresh", UI.InfoPanel.Tabs.Leaderboard.panels.Leaderboard.refresh);
+	$.subscribe("UI.InfoPanel.Leaderboard.Show", UI.InfoPanel.Tabs.Leaderboard.select);
 
 	/**
 	 * Fetch current active game session

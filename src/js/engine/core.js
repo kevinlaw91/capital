@@ -86,6 +86,9 @@ define([
 	//
 	
 	function onAssetLoaded(){
+		// Build UI
+		UI.InfoPanel.init();
+
 		//create new game session
 		Engine.getGame().newSession();
 	}

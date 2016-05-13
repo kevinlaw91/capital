@@ -115,13 +115,65 @@ body {
 	flex-shrink: 2;
 	font-family: 'Roboto', sans-serif;
 }
+
+#info-panel-tab ul {
+	display: flex;
+	list-style: none;
+	background-color: #222;
+}
+
+#info-panel-tab ul li {
+	display: inline-block;
+	position: relative;
+	cursor: default;
+	background-color: #292929;
+}
+
+#info-panel-tab ul li span {
+	font-family: 'Roboto Condensed', sans-serif;
+	text-transform: uppercase;
+	display: inline-block;
+	padding: 15px 20px;
+	font-weight: bold;
+	font-size: 0.8rem;
+	color: #888;
+	/*
+	 * Prevent text selection
+	 * Still experimental and not finalized
+	 */
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+#info-panel-tab ul li:hover span {
+	color: #aaa;
+}
+
+#info-panel-tab ul li:before {
+	content: '';
+	display: block;
+	position: absolute;
+	height: 2px;
+	width: 100%;
+}
+
+#info-panel-tab ul li.selected {
+	background-color: #333;
+}
+
+#info-panel-tab ul li.selected span {
+	color: #eee;
+}
+
+#info-panel-tab ul li.selected:before {
+	background-color: #66f2f0;
+}
+
 #info-panel SECTION.info-group {
 	padding-left: 10px;
 	padding-right: 10px;
-}
-
-#info-panel-lot {
-	display: none;
 }
 
 #info-panel-lot HEADER {
