@@ -286,34 +286,64 @@ define([
 			var tablist = $("<ul/>").attr("role","tablist");
             tablist.appendTo($("#info-panel-tab"));
 
-			$("<li/>")
-				.attr({
-					"id": "info-panel-tab-info",
-					"role": "tab",
-					"aria-controls": "info-panel-info",
-					"aria-selected": "false",
-					"tabindex": "0"
-				})
-				.append("<span>Info</span>")
-				.click(UI.InfoPanel.Tabs.Info.select)
-				.appendTo(tablist);
+			// Generate prototype select method for each tab
+			function generateSelectMethod(selectedTab){
+				return function() {
+					UI.InfoPanel.Tabs.select("#" + selectedTab.id);
+				};
+			}
 
-			$("<li/>")
-				.attr({
-					"id": "info-panel-tab-leaderboard",
-					"role": "tab",
-					"aria-controls": "info-panel-leaderboard",
-					"aria-selected": "false",
-					"tabindex": "0"
-				})
-				.append("<span>Leaderboard</span>")
-				.click(UI.InfoPanel.Tabs.Leaderboard.select)
-				.appendTo(tablist);
+			for(var t in UI.InfoPanel.Tabs) {
+				if(UI.InfoPanel.Tabs.hasOwnProperty(t)) {
+					var tab = UI.InfoPanel.Tabs[t];
+					tab.select = generateSelectMethod(tab);
+
+					$("<li/>")
+						.attr({
+							"id": tab.id,
+							"role": "tab",
+							"aria-controls": tab.container,
+							"aria-selected": "false",
+							"tabindex": "0"
+						})
+						.append("<span>" + tab.label + "</span>")
+						.click(tab.select)
+						.appendTo(tablist);
+				}
+			}
+
+			UI.InfoPanel.Tabs.select = function(elem){
+				// Deselect all tabs
+				$("#info-panel-tab")
+					.find("li[role='tab']")
+					.attr({"aria-selected": "false"})
+					.removeClass("selected");
+
+				// Hide all panels
+				$("#info-panel")
+					.find("section[role='tabpanel']")
+					.attr("aria-hidden","true")
+					.hide();
+
+				// Set specified tab as selected
+				$(elem)
+					.attr("aria-selected","true")
+					.addClass("selected");
+
+				// Get corresponding tabpanel id and make it visible
+				var tabpanelID = $(elem).attr("aria-controls");
+				$("#" + tabpanelID)
+					.attr("aria-hidden","false")
+					.show();
+			};
 
 			delete UI.InfoPanel.init;
 		},
 		Tabs: {
 			Info: {
+				id: "info-panel-tab-info",
+				container: "info-panel-info",
+				label: "Info",
 				panels: {
 					LotInfo: {
 						node: $("#info-panel-lot"),
@@ -368,12 +398,12 @@ define([
 
 					// Show only specified panel
 					evt.data.panel.node.show();
-				},
-				select: function(){
-					UI.InfoPanel.Tabs.select("#info-panel-tab-info");
 				}
 			},
 			Leaderboard: {
+				id: "info-panel-tab-leaderboard",
+				container: "info-panel-leaderboard",
+				label: "Leaderboard",
 				panels: {
 					Leaderboard: {
 						node: $("#info-panel-leaderboard"),
@@ -419,34 +449,7 @@ define([
 							);
 						}
 					}
-				},
-				select: function(){
-					UI.InfoPanel.Tabs.select("#info-panel-tab-leaderboard");
 				}
-			},
-			select: function(elem){
-				// Deselect all tabs
-				$("#info-panel-tab")
-					.find("li[role='tab']")
-					.attr({"aria-selected": "false"})
-					.removeClass("selected");
-
-				// Hide all panels
-				$("#info-panel")
-					.find("section[role='tabpanel']")
-					.attr("aria-hidden","true")
-					.hide();
-
-				// Set specified tab as selected
-				$(elem)
-					.attr("aria-selected","true")
-					.addClass("selected");
-
-				// Get corresponding tabpanel id and make it visible
-				var tabpanelID = $(elem).attr("aria-controls");
-				$("#" + tabpanelID)
-					.attr("aria-hidden","false")
-					.show();
 			}
 		}
 	};
@@ -454,12 +457,12 @@ define([
 	// Register handler for Lot sprite onClick
 	$.subscribe("UI.InfoPanel.LotInfo.Refresh", UI.InfoPanel.Tabs.Info.panels.LotInfo.refresh);
 	$.subscribe("UI.InfoPanel.LotInfo.Show", { panel: UI.InfoPanel.Tabs.Info.panels.LotInfo }, UI.InfoPanel.Tabs.Info.showPanel);
-	$.subscribe("UI.InfoPanel.LotInfo.Show", UI.InfoPanel.Tabs.Info.select);
+	$.subscribe("UI.InfoPanel.LotInfo.Show", function(){ UI.InfoPanel.Tabs.Info.select(); });
 
 	// Register handlers for leaderboard
 	$.subscribe("UI.InfoPanel.Leaderboard.Rebuild", UI.InfoPanel.Tabs.Leaderboard.panels.Leaderboard.rebuild);
 	$.subscribe("UI.InfoPanel.Leaderboard.Refresh", UI.InfoPanel.Tabs.Leaderboard.panels.Leaderboard.refresh);
-	$.subscribe("UI.InfoPanel.Leaderboard.Show", UI.InfoPanel.Tabs.Leaderboard.select);
+	$.subscribe("UI.InfoPanel.Leaderboard.Show", function(){ UI.InfoPanel.Tabs.Leaderboard.select(); });
 
 	/**
 	 * Fetch current active game session
