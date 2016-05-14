@@ -337,6 +337,9 @@ define([
 					.show();
 			};
 
+			// Show Default panel for Info Tab
+			$.publish("UI.InfoPanel.Default.Show");
+
 			delete UI.InfoPanel.init;
 		},
 		Tabs: {
@@ -345,6 +348,9 @@ define([
 				container: "info-panel-info",
 				label: "Info",
 				panels: {
+					Default: {
+						node: $("#info-panel-default")
+					},
 					LotInfo: {
 						node: $("#info-panel-lot"),
 						refresh: function( evt, data ) {
@@ -453,6 +459,9 @@ define([
 			}
 		}
 	};
+
+	// Register handler Default panel
+	$.subscribe("UI.InfoPanel.Default.Show", { panel: UI.InfoPanel.Tabs.Info.panels.Default }, UI.InfoPanel.Tabs.Info.showPanel);
 
 	// Register handler for Lot sprite onClick
 	$.subscribe("UI.InfoPanel.LotInfo.Refresh", UI.InfoPanel.Tabs.Info.panels.LotInfo.refresh);

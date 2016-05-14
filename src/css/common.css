@@ -171,9 +171,22 @@ body {
 	background-color: #66f2f0;
 }
 
+#info-panel section[role='tabpanel'] {
+	display: none;
+}
+
+#info-panel section .disabled {
+	color: #7B7B7B;
+}
+
 #info-panel SECTION.info-group {
 	padding-left: 10px;
 	padding-right: 10px;
+}
+
+#info-panel-default P {
+	font-size: 0.75rem;
+	padding: 20px;
 }
 
 #info-panel-lot HEADER {
