@@ -7,7 +7,8 @@ define([
     "entity/session"
 ], function($) {
 	'use strict';
-	/** Access to config */
+	
+	// Imports
 	var Config = require("engine/config"),
 		UI = require("engine/ui");
 
@@ -118,9 +119,6 @@ define([
 	//
 
 	ev.onDiceRollComplete = function(evt, data){
-		// Decline any pending offer
-		var game_session = require("engine/game").getSession();
-
 		// Show moving status
 		$("#player-action-button").removeClass("show hide moving").addClass("moving");
 

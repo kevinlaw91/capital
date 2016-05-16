@@ -7,9 +7,11 @@ define([
 ], function( $, Snap ) {
 	'use strict';
 
+	// Imports
+	var Config = require("engine/config");
+
 	/** @namespace UI */
-	var UI = {},
-	    Config = require("engine/config");
+	var UI = {};
 
 	/**
 	 * @namespace Stage
@@ -22,7 +24,7 @@ define([
 		canvas: null,
 		/** Construct stage */
 		init: function(){
-			//Create new Snap <svg> element
+			// Create new Snap <svg> element
 			var stage = new Snap().attr({
 				"id": Config.getAsId("canvas.svg"),
 				"class": "pannable"
@@ -128,17 +130,18 @@ define([
 		reset: function() {
 			$("#action-panel").find("section").removeClass("done").hide();
 		},
-		/**
-		 * Control events dedicated for UserActionPanel
-		 * @param {string} data.show - Identifier of the panel to show
-		 * @param {object} [data.info] - Data to populate to UI
-		 */
 		handler: function( evt, data ) {
-			//Handle panel display
+			/**
+			 * Control events dedicated for UserActionPanel
+			 * @param {string} data.show - Identifier of the panel to show
+			 * @param {object} [data.info] - Data to populate to UI
+			 */
+
+			// Handle panel display
 			if(typeof data.show !== "undefined" && UI.UserActionPanel.Panels.hasOwnProperty(data.show)) {
 				// Identify panel
 				var panel = UI.UserActionPanel.Panels[data.show];
-				//Populate data
+				// Populate data
 				if(typeof data.info !== "undefined"){
 					panel.populate(data.info);
 				}
@@ -283,6 +286,7 @@ define([
 	 */
 	UI.InfoPanel = {
 		init: function(){
+			// Construct tab bar
 			var tablist = $("<ul/>").attr("role","tablist");
             tablist.appendTo($("#info-panel-tab"));
 
@@ -293,6 +297,7 @@ define([
 				};
 			}
 
+			// Construct tabs
 			for(var t in UI.InfoPanel.Tabs) {
 				if(UI.InfoPanel.Tabs.hasOwnProperty(t)) {
 					var tab = UI.InfoPanel.Tabs[t];
@@ -312,6 +317,7 @@ define([
 				}
 			}
 
+			// Attach select() to UI.InfoPanel.Tabs
 			UI.InfoPanel.Tabs.select = function(elem){
 				// Deselect all tabs
 				$("#info-panel-tab")
@@ -353,14 +359,12 @@ define([
 					},
 					LotInfo: {
 						node: $("#info-panel-lot"),
-						refresh: function( evt, data ) {
-							/**
-							 * @param {number} data.lot_id - Id of the lot
-							 */
+						refresh: function( evt, lot_id ) {
+							/** @param {number} lot_id - Id of the lot */
 
 							// Fetch data from game session
 							var panel = UI.InfoPanel.Tabs.Info.panels.LotInfo.node,
-							    lot   = fetchActiveSession().map[data.lot_id];
+							    lot   = fetchActiveSession().map[lot_id];
 
 							// Definition of fields to be updated and its value
 							var fields = {
@@ -390,11 +394,13 @@ define([
 					},
 					PlayerInfo: {
 						node: $("#info-panel-player"),
+						/**
+						 * Last selected player
+						 * @type {Player}
+						 */
 						player: null,
 						refresh: function( evt, player ) {
-							/**
-							 * @param {Player} player - Reference to the player
-							 */
+							/** @param {Player} player - Reference to the player */
 
 							if(typeof player === "undefined") {
 								// Player is not specified
@@ -427,10 +433,8 @@ define([
 						}
 					}
 				},
-				showPanel: function(evt, data){
-					/**
-					 * @param {object} evt.data.panel - A panel object defined in UI.InfoPanel.Tabs.Info.panels
-					 */
+				showPanel: function(evt){
+					/** @param {object} evt.data.panel - A panel object defined in UI.InfoPanel.Tabs.Info.panels */
 
 					// Hide all panel
 					var panels = UI.InfoPanel.Tabs.Info.panels;
