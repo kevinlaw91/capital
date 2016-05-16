@@ -387,6 +387,34 @@ define([
 								           .text(fields[key]);
 							      });
 						}
+					},
+					PlayerInfo: {
+						node: $("#info-panel-player"),
+						refresh: function( evt, player ) {
+							/**
+							 * @param {Player} player - Reference to the player
+							 */
+
+							// Fetch data from game session
+							var panel  = UI.InfoPanel.Tabs.Info.panels.PlayerInfo.node;
+
+							// Render player color
+							panel.find("header").css("background-color", player.markColor);
+
+							// Definition of fields to be updated and its value
+							var fields = {
+								"name": player.name,
+								"cash": "$" + player.cash,
+								"net_worth": "$" + player.netWorth
+							};
+
+							// Update fields
+							Object.keys(fields)
+							      .forEach(function( key ) {
+								      panel.find("[data-label='" + key + "']")
+								           .text(fields[key]);
+							      });
+						}
 					}
 				},
 				showPanel: function(evt, data){
@@ -467,6 +495,11 @@ define([
 	$.subscribe("UI.InfoPanel.LotInfo.Refresh", UI.InfoPanel.Tabs.Info.panels.LotInfo.refresh);
 	$.subscribe("UI.InfoPanel.LotInfo.Show", { panel: UI.InfoPanel.Tabs.Info.panels.LotInfo }, UI.InfoPanel.Tabs.Info.showPanel);
 	$.subscribe("UI.InfoPanel.LotInfo.Show", function(){ UI.InfoPanel.Tabs.Info.select(); });
+
+	// Register handler for Player sprite onClick
+	$.subscribe("UI.InfoPanel.PlayerInfo.Refresh", UI.InfoPanel.Tabs.Info.panels.PlayerInfo.refresh);
+	$.subscribe("UI.InfoPanel.PlayerInfo.Show", { panel: UI.InfoPanel.Tabs.Info.panels.PlayerInfo }, UI.InfoPanel.Tabs.Info.showPanel);
+	$.subscribe("UI.InfoPanel.PlayerInfo.Show", function(){ UI.InfoPanel.Tabs.Info.select(); });
 
 	// Register handlers for leaderboard
 	$.subscribe("UI.InfoPanel.Leaderboard.Rebuild", UI.InfoPanel.Tabs.Leaderboard.panels.Leaderboard.rebuild);

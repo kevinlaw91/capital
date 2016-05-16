@@ -276,6 +276,76 @@ body {
 	font-size: 12px;
 }
 
+#info-panel-player header {
+	font-family: 'Roboto', sans-serif;
+	height: 120px;
+	padding-bottom: 20px; /* bottom border */
+}
+
+#info-panel-player header .shade {
+	background-color: rgba(50, 50, 50, 0.85);
+	height: 100%;
+	padding-top: 25px;
+	padding-bottom: 25px;
+}
+
+#info-panel-player header .shade * {
+	margin-left: 35px;
+	margin-right: 35px;
+}
+
+#info-panel-player header h1 {
+	line-height: 2rem;
+	font-size: 1.35rem;
+	font-weight: 500;
+	color: rgba(255, 255, 255, 0.95);
+	text-shadow: 0 2px 2px rgba(0, 0, 0, 0.45);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 230px;
+}
+
+#info-panel-player header .info-class {
+	text-transform: uppercase;
+	font-size: 0.7rem;
+	font-weight: 600;
+	color: rgba(255, 255, 255, 0.7);
+}
+
+#info-panel-player .metadata {
+	display: flex;
+	flex-direction: column;
+}
+
+#info-panel-player .metadata .row {
+	display: flex;
+	flex-direction: row;
+}
+
+#info-panel-player .metadata div.item {
+	display: block;
+	flex-grow: 1;
+	flex-basis: 0;
+	padding: 15px;
+}
+
+#info-panel-player .metadata span.label {
+	text-transform: uppercase;
+	display: block;
+	font-size: 0.7rem;
+	font-weight: 700;
+	color: #7d7d7d;
+}
+
+#info-panel-player .metadata span.data {
+	display: block;
+	font-size: 1.4rem;
+	line-height: 1.4;
+	font-weight: 300;
+	color: rgba(255, 255, 255, 0.8);
+}
+
 #info-panel-leaderboard {
 	font-family: 'Roboto', sans-serif;
 }

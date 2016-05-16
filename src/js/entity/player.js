@@ -69,6 +69,16 @@ define([
 		//Create view
 		this.token = new PlayerToken(color);
 
+		//Set view onclick event handler
+		this.token.setOnClick(
+			(function(player){
+				return function(){
+					$.publish("UI.InfoPanel.PlayerInfo.Refresh", player);
+					$.publish("UI.InfoPanel.PlayerInfo.Show");
+				};
+			})(this)
+		);
+
 		//Create marker
 		this.marker = new GroundMarker();
 

@@ -65,6 +65,10 @@ define([
 		return this;
 	}
 
+	PlayerToken.prototype.setOnClick = function(callback){
+		this.view.click(callback);
+	};
+
 	PlayerToken.prototype.bringToFront = function() {
 		this.view.appendTo(Renderer.layers.tokens.paper);
 	};
