@@ -1,6 +1,7 @@
 define([
 	"jquery",
 	"snapsvg",
+	"utils",
 	"jquery.pub-sub",
 	"engine/config",
 	"engine/core"
@@ -8,7 +9,8 @@ define([
 	'use strict';
 
 	// Imports
-	var Config = require("engine/config");
+	var Config = require("engine/config"),
+	    formatAsCurrency = require("utils").formatAsCurrency;
 
 	/** @namespace UI */
 	var UI = {};
@@ -377,11 +379,11 @@ define([
 									"Tier 3",
 									"Tier 4"
 								][lot.tier],
-								"cost": "$" + lot.cost[0],
-								"upgrade1": "$" + lot.cost[1],
-								"upgrade2": "$" + lot.cost[2],
-								"upgrade3": "$" + lot.cost[3],
-								"upgrade4": "$" + lot.cost[4]
+								"cost": formatAsCurrency(lot.cost[0]),
+								"upgrade1": formatAsCurrency(lot.cost[1]),
+								"upgrade2": formatAsCurrency(lot.cost[2]),
+								"upgrade3": formatAsCurrency(lot.cost[3]),
+								"upgrade4": formatAsCurrency(lot.cost[4])
 							};
 
 							// Update fields
@@ -425,8 +427,8 @@ define([
 							// Definition of fields to be updated and its value
 							var fields = {
 								"name": player.name,
-								"cash": "$" + player.cash,
-								"net_worth": "$" + player.netWorth
+								"cash": formatAsCurrency(player.cash),
+								"net_worth": formatAsCurrency(player.netWorth)
 							};
 
 							// Update fields
@@ -497,7 +499,7 @@ define([
 								function (player, index) {
 									var row = Rows[index];
 									row.find(".player-name").text(player.name);
-									row.find(".player-net-worth").text("$" + player.netWorth);
+									row.find(".player-net-worth").text(formatAsCurrency(player.netWorth));
 								}
 							);
 						}

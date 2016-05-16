@@ -10,7 +10,8 @@ define([
 	
 	// Imports
 	var Config = require("engine/config"),
-		UI = require("engine/ui");
+		UI = require("engine/ui"),
+		formatAsCurrency = require("utils").formatAsCurrency;
 
 	/** @external Leaderboard */
 	var Leaderboard = require("entity/leaderboard");
@@ -237,7 +238,7 @@ define([
 					$.publish("UI.UserActionPanel", {
 						show: "PROPERTY_UPGRADE",
 						info: {
-							cost: lot.getNextUpgradeCost()
+							cost: formatAsCurrency(lot.getNextUpgradeCost())
 						}
 					});
 				} else {
@@ -257,7 +258,7 @@ define([
 						show: "PROPERTY_BUY",
 						info: {
 							title: lot.name,
-							cost: lot.getPrice()
+							cost: formatAsCurrency(lot.getPrice())
 						}
 					});
 				} else {
