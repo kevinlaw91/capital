@@ -98,12 +98,16 @@ define([
 					};
 
 					for(var eventName in this.listeners) {
-						options.svgElement.addEventListener(eventName, this.listeners[eventName], false);
+						if(this.listeners.hasOwnProperty(eventName)){
+							options.svgElement.addEventListener(eventName, this.listeners[eventName], false);
+						}
 					}
 				},
 				destroy: function( options ) {
 					for(var eventName in this.listeners) {
-						options.svgElement.removeEventListener(eventName, this.listeners[eventName]);
+						if(this.listeners.hasOwnProperty(eventName)){
+							options.svgElement.removeEventListener(eventName, this.listeners[eventName]);
+						}
 					}
 				}
 			}
