@@ -92,6 +92,9 @@ define([
 	 */
 	Player.prototype.addCash = function(amount) {
 		this.cash += amount;
+
+		// Trigger player info panel refresh
+		$.publish("UI.InfoPanel.PlayerInfo.Refresh");
 	};
 
 	/**
@@ -100,6 +103,9 @@ define([
 	 */
 	Player.prototype.deductCash = function(amount) {
 		this.cash -= amount;
+
+		// Trigger player info panel refresh
+		$.publish("UI.InfoPanel.PlayerInfo.Refresh");
 	};
 
 	/**
@@ -108,6 +114,9 @@ define([
 	 */
 	Player.prototype.addToNetWorth = function(amount) {
 		this.netWorth += amount;
+
+		// Trigger player info panel refresh
+		$.publish("UI.InfoPanel.PlayerInfo.Refresh");
 	};
 
 	/**
@@ -116,6 +125,9 @@ define([
 	 */
 	Player.prototype.deductFromNetWorth = function(amount) {
 		this.netWorth -= amount;
+
+		// Trigger player info panel refresh
+		$.publish("UI.InfoPanel.PlayerInfo.Refresh");
 	};
 
 	/**

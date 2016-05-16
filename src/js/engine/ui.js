@@ -390,10 +390,20 @@ define([
 					},
 					PlayerInfo: {
 						node: $("#info-panel-player"),
+						player: null,
 						refresh: function( evt, player ) {
 							/**
 							 * @param {Player} player - Reference to the player
 							 */
+
+							if(typeof player === "undefined") {
+								// Player is not specified
+								// Force refresh usig last selected player
+								player = UI.InfoPanel.Tabs.Info.panels.PlayerInfo.player;
+							} else {
+								// Update last selected player
+								UI.InfoPanel.Tabs.Info.panels.PlayerInfo.player = player;
+							}
 
 							// Fetch data from game session
 							var panel  = UI.InfoPanel.Tabs.Info.panels.PlayerInfo.node;
