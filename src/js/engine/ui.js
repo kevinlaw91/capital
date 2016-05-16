@@ -404,8 +404,13 @@ define([
 
 							if(typeof player === "undefined") {
 								// Player is not specified
-								// Force refresh usig last selected player
+
+								// Force refresh using last selected player
 								player = UI.InfoPanel.Tabs.Info.panels.PlayerInfo.player;
+
+								// If not even one player was selected previously
+								// then do not refresh
+								if(UI.InfoPanel.Tabs.Info.panels.PlayerInfo.player === null) { return; }
 							} else {
 								// Update last selected player
 								UI.InfoPanel.Tabs.Info.panels.PlayerInfo.player = player;
