@@ -81,14 +81,14 @@ define([
 				// so player buys it
 				$.publish("PropertyTransfer", { lot: currentLot, player: currentPlayer });
 
-				// Show purchase success in UI
-				UI.UserActionPanel.Panels.PROPERTY_BUY.onComplete();
-
 				// Disable buy option if success
 				//TODO: Polish
 				$("#btn-buy").prop('disabled', true);
+
+				return true;
 			}
 		}
+		return false;
 	};
 
 	ev.PlayerAction.Upgrade = function(){
@@ -102,14 +102,14 @@ define([
 				// so just upgrade it
 				$.publish("PropertyUpgrade", { lot: currentLot, player: currentPlayer });
 
-				// Show upgrade success in UI
-				UI.UserActionPanel.Panels.PROPERTY_UPGRADE.onComplete();
-
 				// Disable upgrade option if success
 				//TODO: Polish
 				$(".player-action-btn-build").prop('disabled', true);
+
+				return true;
 			}
 		}
+		return false;
 	};
 
 	//
@@ -232,9 +232,8 @@ define([
 					$(".player-action-btn-build").prop('disabled', false);
 
 					// Show action panel
-					$.publish("UI.UserActionPanel.Show", {
-						show: "PROPERTY_UPGRADE",
-						info: {
+					$.publish("UI.UserActionPanel.PromptPropertyUpgrade", {
+						fields: {
 							cost: formatAsCurrency(lot.getNextUpgradeCost())
 						}
 					});
@@ -251,9 +250,8 @@ define([
 					$(".player-action-btn-buy").prop('disabled', false);
 
 					// Show action panel
-					$.publish("UI.UserActionPanel.Show", {
-						show: "PROPERTY_BUY",
-						info: {
+					$.publish("UI.UserActionPanel.PromptPropertyBuy", {
+						fields: {
 							title: lot.name,
 							cost: formatAsCurrency(lot.getPrice())
 						}
