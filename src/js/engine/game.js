@@ -2,16 +2,12 @@ define([
 	"jquery",
 	"jquery.pub-sub",
 	"engine/config",
-	"engine/events",
 	"entity/session",
 	"entity/leaderboard",
 	"render/script/map"
 ], function($) {
 	/** Access to config */
 	var Config = require("engine/config");
-
-	/** Game event callbacks */
-	var GameEventCallback = require("engine/events");
 
 	/**
 	 * Game definition object
@@ -66,9 +62,5 @@ define([
 		leaderboard: require("entity/leaderboard")
 	};
 
-	//
-	// Game events handling
-	//
-	$.subscribe("PlayerEndsTurn", GameEventCallback.PlayerAction.EndTurn);
 	return Game;
 });

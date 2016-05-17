@@ -69,6 +69,8 @@ define([
 		$.publish("PlayerActive", {player: game_session.getActivePlayer(), playerIndex: game_session.currentPlayerIndex});
 	};
 
+	$.subscribe("PlayerEndsTurn", ev.PlayerAction.EndTurn);
+
 	ev.PlayerAction.Buy = function() {
 		var currentPlayer = require("engine/game").getSession().getActivePlayer(),
 			currentLot = currentPlayer.position.lot;
