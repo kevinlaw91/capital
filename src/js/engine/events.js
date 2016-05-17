@@ -55,9 +55,6 @@ define([
 		$(".player-action-btn-buy").prop('disabled', true);
 		$(".player-action-btn-build").prop('disabled', true);
 
-		// Hide action panel
-		UI.UserActionPanel.close(UI.UserActionPanel.reset);
-
 		log("[GAME_EVENT] Current player ended his turn", "gameevent");
 
 		//Skip to next player
@@ -235,7 +232,7 @@ define([
 					$(".player-action-btn-build").prop('disabled', false);
 
 					// Show action panel
-					$.publish("UI.UserActionPanel", {
+					$.publish("UI.UserActionPanel.Show", {
 						show: "PROPERTY_UPGRADE",
 						info: {
 							cost: formatAsCurrency(lot.getNextUpgradeCost())
@@ -254,7 +251,7 @@ define([
 					$(".player-action-btn-buy").prop('disabled', false);
 
 					// Show action panel
-					$.publish("UI.UserActionPanel", {
+					$.publish("UI.UserActionPanel.Show", {
 						show: "PROPERTY_BUY",
 						info: {
 							title: lot.name,

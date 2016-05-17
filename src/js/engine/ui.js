@@ -105,7 +105,7 @@ define([
 		open: function( callback ) {
 			var c = $.Callbacks();
 			c.add(UI.UserActionPanel.activePanel.onVisible);
-			if(typeof callback==="function") {
+			if(typeof callback === "function") {
 				c.add(callback);
 			}
 
@@ -115,14 +115,18 @@ define([
 		},
 		/**
 		 * Use slide animation to hide UserActionPanel
-		 * @param {function} callback - Function to be called when hide animation is completed
+		 * @param {function} [callback] - Function to be called when hide animation is completed
 		 */
 		close: function( callback ) {
+			var c = $.Callbacks();
+			c.add(UI.UserActionPanel.reset);
+			if(typeof callback === "function") {
+				c.add(callback);
+			}
+
 			var panel = $("#stage-box-slide");
 			panel.css("top",0);
-			if(typeof callback !== "undefined") {
-				panel.one('transitionend', callback);
-			}
+			panel.one('transitionend', $.proxy(c.fire, this.activePanel));
 		},
 		/** Reset panels in UserActionPanel */
 		reset: function() {
@@ -152,11 +156,21 @@ define([
 	};
 
 	// Register handler for UserActionPanel
-	$.subscribe("UI.UserActionPanel", UI.UserActionPanel.handler);
+	$.subscribe("UI.UserActionPanel.Show", UI.UserActionPanel.handler);
+	$.subscribe("UI.UserActionPanel.Close", DelayedUserActionPanelClose);
 
 	// Signals player's turn ended
-	function Evt_Fire_PlayerEndsTurn(){
+	function Fire_PlayerEndsTurn(){
 		$.publish("PlayerEndsTurn");
+	}
+
+	// Signals player's turn ended
+	function DelayedUserActionPanelClose(){
+		// Hide action panel with reset
+		UI.UserActionPanel.close();
+
+		// Ends turn
+		window.setTimeout(Fire_PlayerEndsTurn, 500);
 	}
 
 	var Panels = /** @lends UI.UserActionPanel.Panels */{
@@ -170,9 +184,7 @@ define([
 				// Show success animation
 				this.node.removeClass("done").addClass("done");
 				// Hide player action panel
-				window.setTimeout(UI.UserActionPanel.close, 1000);
-				// Ends turn
-				window.setTimeout(Evt_Fire_PlayerEndsTurn, 1500);
+				window.setTimeout(DelayedUserActionPanelClose, 1000);
 			}
 		},
 		"PROPERTY_UPGRADE": /** @type {Panel} */{
@@ -185,9 +197,7 @@ define([
 				// Show success animation
 				this.node.removeClass("done").addClass("done");
 				// Hide player action panel
-				window.setTimeout(UI.UserActionPanel.close, 1000);
-				// Ends turn
-				window.setTimeout(Evt_Fire_PlayerEndsTurn, 1500);
+				window.setTimeout(DelayedUserActionPanelClose, 1000);
 			}
 		}
 	};

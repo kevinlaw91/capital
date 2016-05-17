@@ -71,7 +71,10 @@ define([
 	//
 
 	$("#btn-roll").on("click", GameEventCallback.PlayerAction.DiceRoll);
-	$(".player-action-btn-done").on("click", GameEventCallback.PlayerAction.EndTurn);
+	$(".player-action-btn-done").on("click", function(){
+		// Hide action panel
+		$.publish("UI.UserActionPanel.Close");
+	});
 	$.subscribe("PlayerEndsTurn", GameEventCallback.PlayerAction.EndTurn);
 	$(".player-action-btn-buy").on("click", GameEventCallback.PlayerAction.Buy).prop('disabled', true);
 	$(".player-action-btn-build").on("click", GameEventCallback.PlayerAction.Upgrade).prop('disabled', true);
