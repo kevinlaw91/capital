@@ -1,14 +1,9 @@
 define([
 	"jquery",
 	"jquery.pub-sub",
-	"engine/config",
 	"entity/session",
-	"entity/leaderboard",
-	"render/script/map"
+	"entity/leaderboard"
 ], function($) {
-	/** Access to config */
-	var Config = require("engine/config");
-
 	/**
 	 * Game definition object
 	 * @namespace

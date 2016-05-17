@@ -3,7 +3,8 @@ define([
 	"jquery.pub-sub",
 	"entity/map",
 	"engine/events",
-	"entity/player"
+	"entity/player",
+	"render/script/map"
 ], function($) {
 	'use strict';
 	// Import external entities

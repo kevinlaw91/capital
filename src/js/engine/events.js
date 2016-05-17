@@ -1,7 +1,6 @@
 define([
 	"jquery",
 	"jquery.pub-sub",
-	"engine/ui",
 	"engine/game",
 	"engine/config",
     "entity/session"
@@ -10,7 +9,6 @@ define([
 	
 	// Imports
 	var Config = require("engine/config"),
-		UI = require("engine/ui"),
 		formatAsCurrency = require("utils").formatAsCurrency;
 
 	/** @external Leaderboard */
