@@ -69,8 +69,6 @@ define([
 	//
 	// Game events handling
 	//
-
-	$("#btn-roll").on("click", GameEventCallback.PlayerAction.DiceRoll);
 	$.subscribe("PlayerEndsTurn", GameEventCallback.PlayerAction.EndTurn);
 	return Game;
 });

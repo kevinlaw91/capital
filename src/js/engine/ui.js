@@ -16,6 +16,7 @@ define([
 	/** @namespace UI */
 	var UI = {
 		init: function() {
+			UI.DiceButton.init();
 			UI.InfoPanel.init();
 			UI.UserActionPanel.init();
 		}
@@ -216,6 +217,11 @@ define([
 	 * @memberOf UI.
 	 */
 	UI.DiceButton = {
+		init: function() {
+			var GameEvents = require("engine/events");
+			$("#btn-roll").on("click", GameEvents.PlayerAction.DiceRoll);
+			delete UI.DiceButton.init;
+		},
 		/** Enable DiceButton */
 		enable: function() {
 			$("#btn-roll").removeClass("disabled");
