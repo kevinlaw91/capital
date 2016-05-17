@@ -26,7 +26,9 @@ define(function(){
 				style: "currency",
 				currency: "USD",
 				useGrouping: true,
-				maximumFractionDigits: 0 // Remove fractions
+				// Remove fractions
+				minimumFractionDigits: 0,
+				maximumFractionDigits: 0
 			});
 
 			return f.format;
