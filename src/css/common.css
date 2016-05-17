@@ -395,6 +395,7 @@ body {
 	flex-grow: 3;
 	flex-shrink: 1;
 	position: relative;
+	overflow: hidden;
 }
 
 #canvas-frame {
@@ -499,7 +500,8 @@ body {
 
 #stage-box-slide {
 	position: absolute;
-	bottom: 0;
+	top: 0;
+	transition: top 250ms cubic-bezier(0.215, 0.61, 0.355, 1); /* easeOutCubic */
 }
 
 #stage-box-slide, #stage-box-slide .contents {

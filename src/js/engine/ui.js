@@ -106,27 +106,23 @@ define([
 			var c = $.Callbacks();
 			c.add(UI.UserActionPanel.activePanel.onVisible);
 			if(typeof callback==="function") {
-				c.add(callback());
+				c.add(callback);
 			}
 
-			$("#stage-box-slide").animate(
-				{ "bottom": $("#action-panel") .height()},
-				250,
-				"easeOutCubic",
-				$.proxy(c.fire, this.activePanel)
-			);
+			var panel = $("#stage-box-slide");
+			panel.css("top", $("#action-panel").height() * -1);
+			panel.one('transitionend', $.proxy(c.fire, this.activePanel));
 		},
 		/**
 		 * Use slide animation to hide UserActionPanel
 		 * @param {function} callback - Function to be called when hide animation is completed
 		 */
 		close: function( callback ) {
-			$("#stage-box-slide").animate(
-				{"bottom": 0},
-				250,
-				"easeOutCubic",
-				callback
-			);
+			var panel = $("#stage-box-slide");
+			panel.css("top",0);
+			if(typeof callback !== "undefined") {
+				panel.one('transitionend', callback);
+			}
 		},
 		/** Reset panels in UserActionPanel */
 		reset: function() {
