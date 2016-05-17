@@ -508,7 +508,8 @@ body {
 }
 
 #canvas-viewport {
-	transition: transform 75ms ease;
+	/* disabled to reduce Firefox panning flickering */
+	/* transition: transform 75ms ease; */
 }
 
 #nav-bar {
