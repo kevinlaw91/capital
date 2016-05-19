@@ -29,6 +29,11 @@ define([
 		// Filters
 		var filter_onhover = Renderer.canvas.filter(Snap.filter.brightness(1.3));
 
+		// Bug in SnapSVG causing <use> with filter applied to appears as clipped
+		// Remove it or set value to "objectBoundingBox" will fix the issue
+		// See: https://github.com/adobe-webplatform/Snap.svg/issues/117
+		filter_onhover.attr("filterUnits", "");
+
 		// Event handlers
 		function Lot_onHoverEnter(){
 			var bb = this.data("lot.anchor").node.getBoundingClientRect();
