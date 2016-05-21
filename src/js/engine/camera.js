@@ -3,7 +3,7 @@ define([
 	"svg-pan-zoom",
 	"jquery",
 	"jquery.easing",
-	"engine/ui",
+	"ui/stage",
 	"engine/config"
 ], function(Snap, svgPanZoom, $) {
 	'use strict';
@@ -30,16 +30,16 @@ define([
 	/** Set up camera on stage */
 	Camera.setup = function() {
 		var Config = require("engine/config"),
-		    UI = require("engine/ui"),
+		    Stage = require("ui/stage"),
 		    Utils = require("utils");
 
 		// Add a <g> element
-		var canvas = UI.Stage.container.g().attr({
+		var canvas = Stage.container.g().attr({
 			"id": Config.getAsId("canvas.id")
 		});
 
 		// Store reference to UI Module
-		UI.Stage.canvas = canvas;
+		Stage.canvas = canvas;
 
 		// Create dummy scene for SVGPanZoom
 		var _DummyScene = canvas.rect(0,0,1024,768).attr({

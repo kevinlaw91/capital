@@ -59,9 +59,9 @@ define([
 		// Developer debug tool
 		require("engine/dev").init(this);
 
-		log("Preparing stage...");
-		// Construct SVG stage
-		UI.Stage.init();
+		// Initialize UI
+		log("Initializing UI...");
+		UI.init();
 
 		// Construct camera viewport for stage
 		Camera.setup();
@@ -86,9 +86,6 @@ define([
 	//
 	
 	function onAssetLoaded(){
-		// Build UI
-		UI.init();
-
 		//create new game session
 		Engine.getGame().newSession();
 	}
