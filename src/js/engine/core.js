@@ -1,54 +1,38 @@
 define([
-	"jquery",
-	"jquery.pub-sub",
-	"engine/config",
 	"engine/ui",
 	"engine/camera",
 	"engine/renderer",
 	"engine/assets",
-    "engine/game",
-    "engine/dev",
-	"render/script/layers"
-],function($) {
+	"engine/game",
+	"engine/dev",
+	"script/make-layers"
+],function() {
+	'use strict';
 
 	// Load modules
-	var Config = require("engine/config"),
-	    Renderer = require("engine/renderer"),
+	var Renderer = require("engine/renderer"),
 	    UI = require("engine/ui"),
 	    Camera = require("engine/camera"),
 	    AssetManager = require("engine/assets");
 
-	/**
-	 * @namespace Engine
-	 */
+	/** @namespace Engine */
 	var Engine = {
 		/**
 		 * Game definition
 		 * @type {Game}
+		 * @see module:engine/game
 		 */
 		game: require("engine/game"),
 
 		/** @returns {Game} Game definition object */
 		getGame: function(){
-			return this.game;
+			return Engine.game;
 		},
 
 		/** @returns {GameSession} Current game session */
 		getSession: function(){
-			return this.game.getSession();
-		},
-
-		/**
-		 * Expose config module to public
-		 * @require module:engine/config
-		 */
-		config: Config,
-
-		/**
-		 * Expose renderer module to public
-		 * @require module:engine/renderer
-		 */
-		renderer: Renderer
+			return Engine.game.getSession();
+		}
 	};
 
 	/**
@@ -75,7 +59,7 @@ define([
 		AssetManager.load().done(onAssetLoaded);
 
 		// Build render layers
-		require("render/script/layers")();
+		require("script/make-layers")();
 
 		// init() can run only once
 		delete Engine.init;
@@ -84,19 +68,12 @@ define([
 	//
 	// Event handling
 	//
-	
+
+	// Called when asset loading task is completed
 	function onAssetLoaded(){
-		//create new game session
+		// Create new game session
 		Engine.getGame().newSession();
 	}
-
-	// Window resize
-	function onWindowResize(){
-		log("[EVENT] Window re-sized", "event");
-		Camera.resize();
-	}
-
-	$(window).on("resize", onWindowResize);
 
 	return Engine;
 });

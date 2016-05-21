@@ -4,7 +4,7 @@ define([
 ], function ($) {
 	'use strict';
 
-	/** @namespace Leaderboard */
+	/** @exports game/leaderboard */
 	return {
 		ranking: null,
 		populate: function( playerList ) {

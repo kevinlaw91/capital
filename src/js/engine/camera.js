@@ -60,9 +60,7 @@ define([
 		 */
 		padding = 1 - Config.get("camera.pan.padding");
 
-		/*
-		 * Controller
-		 */
+		/* Controller */
 		controller = svgPanZoom(Config.get("canvas.svg"), {
 			viewportSelector: Config.get("canvas.id"),
 			minZoom: Config.get("camera.zoom.min"),
@@ -181,6 +179,15 @@ define([
 			};
 		}
 	});
+
+
+	// Window resize event
+	$(window).on("resize", onWindowResize);
+
+	function onWindowResize(){
+		log("[EVENT] Window re-sized", "event");
+		Camera.resize();
+	}
 
 	return Camera;
 });

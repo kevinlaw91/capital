@@ -87,7 +87,6 @@ define([
 		}
 
 		return layer.polygon(n, w, s, e)
-		            .attr({ fill: color || "white"})
-		            .addClass("no-pointer-events");
+		            .attr({ fill: color || "white"});
 	};
 });

@@ -3,7 +3,8 @@ define([
 	"jquery.pub-sub",
 	"engine/game",
 	"engine/config",
-    "entity/session"
+    "entity/session",
+    "game/leaderboard"
 ], function($) {
 	'use strict';
 	
@@ -11,8 +12,8 @@ define([
 	var Config = require("engine/config"),
 		formatAsCurrency = require("utils").formatAsCurrency;
 
-	/** @external Leaderboard */
-	var Leaderboard = require("entity/leaderboard");
+	/** @see module:game/leaderboard */
+	var Leaderboard = require("game/leaderboard");
 
 	/**
 	 * @namespace
@@ -69,6 +70,11 @@ define([
 
 	$.subscribe("PlayerEndsTurn", ev.PlayerAction.EndTurn);
 
+	/**
+	 * Buy active player's current position
+	 * @function
+	 * @returns {boolean} True if success
+	 */
 	ev.PlayerAction.Buy = function() {
 		var currentPlayer = require("engine/game").getSession().getActivePlayer(),
 			currentLot = currentPlayer.position.lot;
@@ -91,6 +97,11 @@ define([
 		return false;
 	};
 
+	/**
+	 * Upgrade active player's current position
+	 * @function
+	 * @returns {boolean} True if success
+	 */
 	ev.PlayerAction.Upgrade = function(){
 		var currentPlayer = require("engine/game").getSession().getActivePlayer(),
 		    currentLot = currentPlayer.position.lot;

@@ -1,7 +1,7 @@
 define([
 	"jquery",
 	"jquery.pub-sub",
-	"entity/leaderboard",
+	"game/leaderboard",
 	"engine/core",
 	"utils"
 ], function($) {
@@ -214,7 +214,7 @@ define([
 			node: $("#info-panel-leaderboard"),
 			entries: [],
 			rebuild: function() {
-				var leaderboard = require("entity/leaderboard"),
+				var leaderboard = require("game/leaderboard"),
 				    panel = Tab.LEADERBOARD.panel,
 				    listNode = panel.node.find(".leaderboard-list");
 
@@ -241,7 +241,7 @@ define([
 				leaderboard.onUpdated = panel.refresh;
 			},
 			refresh: function() {
-				var leaderboard = require("entity/leaderboard"),
+				var leaderboard = require("game/leaderboard"),
 				    rows = Tab.LEADERBOARD.panel.entries;
 
 				// Fill data for all rankings

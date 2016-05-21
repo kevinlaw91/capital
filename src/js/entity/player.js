@@ -4,13 +4,15 @@ define([
 	"engine/config",
 	"render/sprite/token",
     "engine/transform",
-	"render/sprite/marker",
-	"engine/core"
+	"render/sprite/marker"
 ], function($) {
-	var Config = require("engine/config");
-	var ScreenTransform = require("engine/transform");
-	var PlayerToken = require("render/sprite/token");
-	var GroundMarker = require("render/sprite/marker");
+	'use strict';
+
+	// Imports
+	var Config = require("engine/config"),
+	    ScreenTransform = require("engine/transform"),
+	    PlayerToken = require("render/sprite/token"),
+	    GroundMarker = require("render/sprite/marker");
 
 	var markColors = {
 		"RED": "#BF4D4F",

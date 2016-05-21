@@ -1,7 +1,7 @@
 define([
 	"jquery",
 	"entity/lot",
-	"entity/lot_tradable",
+	"entity/lot-tradable",
     "utils"
 ], function($, Lot, TradableLot) {
 	'use strict';

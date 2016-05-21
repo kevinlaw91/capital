@@ -18,7 +18,7 @@ define([
 
 				var group = Renderer.layers.markers.paper.g();
 				group.append(Snap.parse(
-					"<g transform='matrix(1,0,0,0.5,0,0)' class='no-pointer-events'>" +
+					"<g transform='matrix(1,0,0,0.5,0,0)'>" +
 						"<circle cx='42' cy='42' r='37' class='player-token' />" +
 					"</g>"
 				));

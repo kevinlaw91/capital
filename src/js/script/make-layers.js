@@ -1,6 +1,5 @@
 define([
-	"engine/renderer",
-	"render/script/tile"
+	"engine/renderer"
 ], function(Renderer) {
 	'use strict';
 	return function(){
@@ -14,6 +13,8 @@ define([
 		Renderer.createLayer("popups");
 
 		// Ignore pointer events
+		Renderer.layers.floor_overlay.paper.addClass("no-pointer-events");
+		Renderer.layers.markers.paper.addClass("no-pointer-events");
 		Renderer.layers.buildings.paper.addClass("no-pointer-events");
 	};
 });

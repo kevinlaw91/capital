@@ -1,60 +1,62 @@
 define([
 	"jquery",
-	"jquery.pub-sub",
 	"entity/session",
-	"entity/leaderboard"
+	"game/leaderboard"
 ], function($) {
+	'use strict';
+
+	// Imports
+	/**
+	 * Represents a game session object
+	 * @class
+	 */
+	var GameSession = require("entity/session");
+
 	/**
 	 * Game definition object
+	 * @exports module:engine/game
 	 * @namespace
-	 * @alias Game
 	 */
-	var Game = /** @lends Game# */{
+	var Game = {
 		/**
 		 * Current game session
-		 * @member {GameSession} session
-		 * @memberOf Game.
+		 * @type {GameSession}
 		 */
 		session: null,
 
-		/**
-		 * New game session
-		 * @memberOf Game.
-		 */
+		/** New game session */
 		newSession: function() {
-
-			/**
-			 * GameSession entity
-			 * @external GameSession
-			 */
-			var GameSession = require("entity/session");
-			this.session    = new GameSession();
+			// Create new session
+			Game.session = new GameSession();
 
 			//TODO: Remove after testing
-			this.session.addPlayer("Player 1", "RED");
-			this.session.addPlayer("Player 2", "BLUE");
-			this.session.addPlayer("Player 3", "PINK");
+			Game.session.addPlayer("Player 1", "RED");
+			Game.session.addPlayer("Player 2", "BLUE");
+			Game.session.addPlayer("Player 3", "PINK");
 
 			// Update leaderboard with players
-			this.leaderboard.populate(this.session.players);
+			Game.leaderboard.populate(this.session.players);
 			$.publish("UI.InfoPanel.Leaderboard.Rebuild");
 			$.publish("UI.InfoPanel.Leaderboard.Refresh");
 			$.publish("UI.InfoPanel.Leaderboard.Show");
 
-			//Start game
-			this.session.startGame();
+			// Start game
+			Game.session.startGame();
 		},
 
 		/**
 		 * Get current game session
-		 * @memberOf Game.
 		 * @returns {GameSession} Current game session
 		 */
 		getSession: function() {
-			return this.session;
+			return Game.session;
 		},
 
-		leaderboard: require("entity/leaderboard")
+		/**
+		 * Leaderboard object to track ranking of players
+		 * @see module:game/leaderboard
+		 */
+		leaderboard: require("game/leaderboard")
 	};
 
 	return Game;
