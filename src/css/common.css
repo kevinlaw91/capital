@@ -498,6 +498,7 @@ body {
 }
 
 #stage-box-slide {
+	transform: translateZ(0);
 	position: absolute;
 	top: 0;
 	transition: top 250ms cubic-bezier(0.215, 0.61, 0.355, 1); /* easeOutCubic */
@@ -532,6 +533,7 @@ body {
 }
 
 #player-action-box {
+	transform: translateZ(0);
 	position: absolute;
 	bottom: 0;
 	display: block;
