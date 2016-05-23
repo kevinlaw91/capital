@@ -9,13 +9,6 @@ define([
 	/** Duration of moving animation */
 	var animationDuration;
 
-	/** Resources for token */
-	var token_resources = {
-		"RED": "player-token-red",
-		"BLUE": "player-token-blue",
-		"PINK": "player-token-pink"
-	};
-
 	/**
 	 * Sprite to represent player token
 	 * @augments Sprite
@@ -26,7 +19,7 @@ define([
 	function PlayerToken(color){
 		// Inherits Sprite object
 		Sprite.apply(this, [
-			Renderer.layers.tokens.paper.use(token_resources[color]),
+			Renderer.layers.tokens.paper.use(color.TOKEN),
 			{
 				width: 32,
 				height: 37,

@@ -56,7 +56,7 @@ define([
 	}
 
 	GameSession.prototype.addPlayer = function(name, color){
-		var player = new Player(name, color);
+		var player = new Player(name, Player.COLOR[color]);
 		this.players.push(player);
 
 		// Move to starting point

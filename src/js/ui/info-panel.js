@@ -185,7 +185,7 @@ define([
 						panel.find("header").css("background-color", "");
 					} else {
 						// Mark as sold
-						panel.find("header").css("background-color", lot.owner.markColor);
+						panel.find("header").css("background-color", lot.owner.color.DARK);
 
 						// and highlight node by tier
 						tier.find("li:nth-child(-n +" + (lot.tier + 2) + ")")
@@ -225,7 +225,7 @@ define([
 					var panelNode = panel.node;
 
 					// Render player color
-					panelNode.find("header").css("background-color", player.markColor);
+					panelNode.find("header").css("background-color", player.color.DARK);
 
 					// Definition of fields to be updated and its value
 					var fields = {
@@ -308,7 +308,7 @@ define([
 					function (player, index) {
 						var row = rows[index];
 
-						row.find(".player-color").css("backgroundColor", player.markColor);
+						row.find(".player-color").css("backgroundColor", player.color.LIGHT);
 						row.find(".player-name").text(player.name);
 						row.find(".player-net-worth").text(formatAsCurrency(player.netWorth));
 					}

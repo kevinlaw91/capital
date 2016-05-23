@@ -14,32 +14,49 @@ define([
 	    PlayerToken = require("render/sprite/token"),
 	    GroundMarker = require("render/sprite/marker");
 
-	var markColors = {
-		"RED": "#BF4D4F",
-		"BLUE": "#2DB1B1",
-		"PINK": "#d163c8"
-	};
+	/**
+	 * Represents a player color definition
+	 * @typedef {object} PlayerColor
+	 * @property {string} LIGHT - Light variant of the color
+	 * @property {string} DARK - Dark variant of the color
+	 * @property {string} TOKEN - Token resource id
+	 */
 
 	/**
-	 * @constructor
+	 * Player color constants
+	 * @type {Object.<string, PlayerColor>}
 	 */
+	Player.COLOR = {
+		RED: {
+			LIGHT: "#f73134",
+			DARK: "#bf4d4f",
+			TOKEN: "player-token-red"
+		},
+		BLUE: {
+			LIGHT: "#2fb5ff",
+			DARK: "#2db1b1",
+			TOKEN: "player-token-blue"
+		},
+		PINK: {
+			LIGHT: "#f37ce8",
+			DARK: "#d163c8",
+			TOKEN: "player-token-pink"
+		}
+	};
+
+	/** @constructor */
 	function Player(name, color){
 		/**
 		 * Player name
 		 * @type {string}
 		 */
 		this.name = name;
-		/**
-		 * Player color
-		 * @type {string}
-		 */
-		this.color = color;
 
 		/**
 		 * Player color
-		 * @type {string}
+		 * @type {PlayerColor}
 		 */
-		this.markColor = markColors[color];
+		this.color = color;
 
 		/** Current position of player */
 		this.position = {

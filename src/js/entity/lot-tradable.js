@@ -202,7 +202,7 @@ define([
 	 */
 	TradableLot.prototype.sellTo = function(newOwner){
 		this.owner = newOwner;
-		this.markColor(newOwner.markColor);
+		this.markColor(newOwner.color.DARK);
 	};
 
 	/**
