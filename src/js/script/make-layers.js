@@ -2,8 +2,9 @@ define([
 	"engine/renderer"
 ], function(Renderer) {
 	'use strict';
+
 	return function(){
-		//Define render layers
+		// Define render layers
 		Renderer.createLayer("anchors");
 		Renderer.createLayer("floor");
 		Renderer.createLayer("floor_overlay");

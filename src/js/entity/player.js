@@ -85,10 +85,10 @@ define([
 		 */
 		this.netWorth = 0;
 
-		//Create view
+		// Create view
 		this.token = new PlayerToken(color);
 
-		//Set view onclick event handler
+		// Set view onclick event handler
 		this.token.setOnClick(
 			(function(player){
 				return function(){
@@ -98,10 +98,10 @@ define([
 			})(this)
 		);
 
-		//Create marker
+		// Create marker
 		this.marker = new GroundMarker();
 
-		//Set as inactive
+		// Set as inactive
 		this.hideActiveMarker();
 	}
 
@@ -167,7 +167,7 @@ define([
 		// Move ground marker
 		this.marker.moveTo(pos.x, pos.y);
 
-		//Generate callback based on player's context
+		// Generate callback based on player's context
 		var reached = (function(oPlayer){
 			return function(){
 				$.publish("PlayerMove", {player: oPlayer, x: x, y: y});

@@ -1,4 +1,6 @@
-define(["jquery"], function($){
+define(function(){
+	'use strict';
+
 	/**
 	 * An instance of 2D sprite object
 	 * @param spriteObj - Reference to a sprite element or a render script
@@ -57,7 +59,7 @@ define(["jquery"], function($){
 			this.x = x;
 			this.y = y;
 
-			//Update view
+			// Update view
 			this.view.attr(this.getBoundingOffset(x,y));
 		};
 

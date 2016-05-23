@@ -3,6 +3,7 @@ define([
 	"render/sprite/sprite"
 ], function(Renderer, Sprite) {
 	'use strict';
+
 	/**
 	 * Marker sprite to indicate active player
 	 * @augments Sprite

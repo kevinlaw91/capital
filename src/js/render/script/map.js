@@ -6,6 +6,8 @@ define([
 	"engine/transform",
 	"render/script/tile"
 ], function( Snap, $) {
+	'use strict';
+
 	/**
 	 * Script to draw floor tiles
 	 * @function
@@ -66,29 +68,29 @@ define([
 		//
 		var DrawTile = require("render/script/tile");
 
-		//(border) row 0 (north), full row
+		// (border) row 0 (north), full row
 		r = 0; c = 0; type = "concrete-01";
 		for(; c<columns; c++) {
 			offset = ScreenTransform.getBoundingOffset(r, c);
 			DrawTile(type, offset).attr({ "shape-rendering": "crispEdges"});
 		}
 
-		//(border) col 0 (west), full column
-		//skip row 0 because already rendered
+		// (border) col 0 (west), full column
+		// skip row 0 because already rendered
 		r = 1; c = 0; type = "concrete-01";
 		for(; r<rows; r++) {
 			offset = ScreenTransform.getBoundingOffset(r, c);
 			DrawTile(type, offset).attr({ "shape-rendering": "crispEdges"});
 		}
 
-		//(corner) north west 3x3
+		// (corner) north west 3x3
 		r = 1; c = 1; type = "grass-3x3-01";
 		offset = ScreenTransform.getBoundingOffset(r, c,
 			{rowSize: 3, colSize: 3}
 		);
 		DrawTile(type, offset);
 
-		//(lot) north, 1x3 per lot, 9 lots in total, id from 21-29
+		// (lot) north, 1x3 per lot, 9 lots in total, id from 21-29
 		r = 1; c = 4; id = 21; count = 9; type = "lot-north-01";
 		while(count--) {
 			offset = ScreenTransform.getBoundingOffset(r, c,
@@ -109,14 +111,14 @@ define([
 			id++;
 		}
 
-		//(corner) north east 3x3
+		// (corner) north east 3x3
 		r = 1; c = 13; type = "grass-3x3-01";
 		offset = ScreenTransform.getBoundingOffset(r, c,
 			{rowSize: 3, colSize: 3}
 		);
 		DrawTile(type, offset);
 
-		//(lot) west, 3x1 per lot, 9 lots in total, id from 11-19
+		// (lot) west, 3x1 per lot, 9 lots in total, id from 11-19
 		r = 4; c = 1; id = 19; count = 9; type = "lot-west-01";
 		while(count--) {
 			offset = ScreenTransform.getBoundingOffset(r, c,
@@ -132,14 +134,14 @@ define([
 			id--;
 		}
 
-		//(corner) south west 3x3
+		// (corner) south west 3x3
 		r = 13; c = 1; type = "grass-3x3-01";
 		offset = ScreenTransform.getBoundingOffset(r, c,
 			{rowSize: 3, colSize: 3}
 		);
 		DrawTile(type, offset);
 
-		//(center) center blank piece, bottom face
+		// (center) center blank piece, bottom face
 		Renderer.layers.floor.paper.polygon(
 			ScreenTransform.getVertexOffset(4,4,"S"),
 			ScreenTransform.getVertexOffset(4,12,"R"),
@@ -149,7 +151,7 @@ define([
 			fill: "#61a038"
 		});
 
-		//(center) center blank piece, top face
+		// (center) center blank piece, top face
 		Renderer.layers.floor.paper.polygon(
 			ScreenTransform.getVertexOffset(4,4,"N"),
 			ScreenTransform.getVertexOffset(4,12,"E"),
@@ -159,7 +161,7 @@ define([
 			fill: "#9ACF5C"
 		});
 
-		//(lot) south, 1x3 per lot, 9 lots in total, id from 1-9
+		// (lot) south, 1x3 per lot, 9 lots in total, id from 1-9
 		r = 13; c = 4; id = 9; count = 9; type = "lot-south-01";
 		while(count--) {
 			offset = ScreenTransform.getBoundingOffset(r, c,
@@ -175,7 +177,7 @@ define([
 			id--;
 		}
 
-		//(lot) east, 3x1 per lot, 9 lots in total, id from 31-39
+		// (lot) east, 3x1 per lot, 9 lots in total, id from 31-39
 		r = 4; c = 13; id = 31; count = 9; type = "lot-east-01";
 		while(count--) {
 			offset = ScreenTransform.getBoundingOffset(r, c,
@@ -191,24 +193,24 @@ define([
 			id++;
 		}
 
-		//(corner) south east 3x3
+		// (corner) south east 3x3
 		r = 13; c = 13; type = "grass-3x3-01";
 		offset = ScreenTransform.getBoundingOffset(r, c,
 			{rowSize: 3, colSize: 3}
 		);
 		DrawTile(type, offset);
 
-		//(border) row 16 (south), full row
-		//skip col 0 because already rendered
-		//skip last piece, let next loop draw it
+		// (border) row 16 (south), full row
+		// skip col 0 because already rendered
+		// skip last piece, let next loop draw it
 		r = 16; c = 1; type = "concrete-01";
 		for(; c<columns-1; c++) {
 			offset = ScreenTransform.getBoundingOffset(r, c);
 			DrawTile(type, offset).attr({ "shape-rendering": "crispEdges"});
 		}
 
-		//(border) col 16 (east), full column
-		//skip row 0 because already rendered
+		// (border) col 16 (east), full column
+		// skip row 0 because already rendered
 		r = 1; c = 16; type = "concrete-01";
 		for(; r<rows; r++) {
 			offset = ScreenTransform.getBoundingOffset(r, c);

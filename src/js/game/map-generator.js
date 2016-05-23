@@ -9,7 +9,7 @@ define([
 	var LocationNames = [];
 
 	function resetLocationNamePool(){
-		//Must be at least 36 names
+		// Must be at least 36 names
 		LocationNames = [
 			"Al Zaco Creek",
 			"Azral Canyon",
@@ -51,11 +51,11 @@ define([
 	}
 
 	function getRandomName(){
-		//Reset name pool if no more unique name is available
+		// Reset name pool if no more unique name is available
 		if(LocationNames.length === 0){
 			resetLocationNamePool();
 		}
-		//Get a unique name from pool
+		// Get a unique name from pool
 		var randomId = Math.floor(Math.random()*LocationNames.length),
 		    randomName = LocationNames.splice(randomId,1);
 		return randomName[0];

@@ -160,9 +160,9 @@ define([
 		// Icon
 		//
 
-		//Draw icon
+		// Draw icon
 		if(options && options.icon){
-			//Centered
+			// Centered
 			var iconSize = 24,
 			    iconPosition = {
 					x: -(iconSize / 2),
@@ -178,7 +178,7 @@ define([
 					width: iconSize
 				};
 
-				//Apply color
+				// Apply color
 				if(options && options.iconColor){
 					iconStyles.fill = options.iconColor;
 				}
@@ -197,11 +197,7 @@ define([
 		var life = r1 * 1500;
 
 		// Fade in for 1000ms
-		animateGroup.animate(
-			{ opacity: 1 },
-			1000,
-			mina.easeout
-		);
+		animateGroup.animate({opacity: 1 }, 1000, mina.easeout);
 
 		// Path animation function
 		var pathAnimation = (function(p){

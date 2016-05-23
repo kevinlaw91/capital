@@ -1,6 +1,8 @@
 define([
 	"engine/camera"
 ], function(Camera) {
+	'use strict';
+
 	return function() {
 		// Remove dummy scene if present
 		if(Camera.removeDummyScene) {

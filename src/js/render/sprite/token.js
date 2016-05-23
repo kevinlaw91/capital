@@ -5,6 +5,7 @@ define([
 	"engine/config",
 	"render/script/popup"
 ], function($, Sprite, Renderer) {
+	'use strict';
 
 	/** Duration of moving animation */
 	var animationDuration;
@@ -76,7 +77,7 @@ define([
 		extras.x = this.x + offsetX;
 		extras.y = this.y + offsetY;
 
-		//Render tooltip as spatial element
+		// Render tooltip as spatial element
 		require("render/script/popup")(msg, extras);
 	};
 

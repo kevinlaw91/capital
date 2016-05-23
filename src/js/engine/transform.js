@@ -1,5 +1,6 @@
 define(function(){
 	'use strict';
+
 	/**
 	 * Represents a tile position in a 2D map
 	 * @typedef {Object} Tile
