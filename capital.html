@@ -28,10 +28,10 @@
 				<section id="info-panel">
 					<section id="info-panel-tab"></section>
 					<section id="info-panel-info" role="tabpanel" aria-labelledby="info-panel-tab-info">
-						<section id="info-panel-default">
+						<section id="info-panel-default" class="panel-template">
 							<p class="disabled">No item selected.</p>
 						</section>
-						<section id="info-panel-player">
+						<section id="info-panel-player" class="panel-template">
 							<header>
 								<div class="shade">
 									<h1 data-label="name">PLAYER_NAME</h1>
@@ -51,32 +51,61 @@
 								</div>
 							</section>
 						</section>
-						<section id="info-panel-lot">
+						<section id="info-panel-lot" class="panel-template">
 							<header>
-								<h1 data-label="title">PLACE_NAME</h1>
+								<div class="shade">
+									<h1 data-label="name">PLACE_NAME</h1>
+									<div class="info-class">Place</div>
+								</div>
 							</header>
-							<section class="info-group tier-bar">
-								<span class="tier-badge" data-label="tier">0</span><span data-label="tier-title">Empty Lot</span>
-							</section>
-							<h2>PRICE</h2>
-							<section class="info-group">
-								<span data-label="cost">$0</span>
-							</section>
-							<h2>UPGRADES</h2>
-							<section class="info-group">
-								<ol class="upgrade-list">
-									<li><span class="upgrade-badge" title="Tier 1"></span><span data-label="upgrade1">$0</span></li>
-									<li><span class="upgrade-badge" title="Tier 2"></span><span data-label="upgrade2">$0</span></li>
-									<li><span class="upgrade-badge" title="Tier 3"></span><span data-label="upgrade3">$0</span></li>
-									<li><span class="upgrade-badge" title="Tier 4"></span><span data-label="upgrade4">$0</span></li>
-								</ol>
+							<section class="metadata">
+								<div class="row" style="box-shadow: inset 0 -5px 15px -5px rgba(0,0,0,0.75);">
+									<div class="item">
+										<ol class="stepper" data-label="tier" role="radiogroup">
+											<li title="Unowned" role="radio">
+												<span class="node">U</span>
+											</li>
+											<li title="Buy" role="radio">
+												<span class="node">B</span>
+											</li>
+											<li title="Upgraded to Tier 1" role="radio">
+												<span class="node">1</span>
+											</li>
+											<li title="Upgraded to Tier 2" role="radio">
+												<span class="node">2</span>
+											</li>
+											<li title="Upgraded to Tier 3" role="radio">
+												<span class="node">3</span>
+											</li>
+											<li title="Upgraded to Tier 4" role="radio">
+												<span class="node">4</span>
+											</li>
+										</ol>
+									</div>
+								</div>
+								<div class="row" style="background-color: #4e4e4e; box-shadow: 0 3px 3px rgba(0, 0, 0, 0.3)">
+									<div class="item">
+										<span class="label">Purchase</span>
+										<span class="data" data-label="cost">$0</span>
+									</div>
+									<div class="item">
+										<span class="label">Upgrades</span>
+										<div class="data small">
+											<span data-label="upgrade1">$0</span>
+											<span data-label="upgrade2">$0</span>
+											<span data-label="upgrade3">$0</span>
+											<span data-label="upgrade4">$0</span>
+										</div>
+									</div>
+									<div class="item">
+										<span class="label">Rent Value</span>
+										<span class="data" data-label="rent">$0</span>
+									</div>
+								</div>
 							</section>
 						</section>
 					</section>
 					<section id="info-panel-leaderboard" role="tabpanel" aria-labelledby="info-panel-tab-leaderboard">
-						<header>
-							<h1>LEADERBOARD</h1>
-						</header>
 						<section>
 							<ol class="leaderboard-list"></ol>
 						</section>
