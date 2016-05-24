@@ -8,6 +8,9 @@ define([
 	// Imports
 	var Config = require("engine/config");
 
+	// Promise
+	var append_node_task = $.Deferred();
+
 	var Stage = {
 		/** <svg> canvas container as Snap instance */
 		container: null,
@@ -31,7 +34,13 @@ define([
 			Stage.container = stage;
 
 			delete Stage.init;
-		}
+
+			// Notify node already appended into DOM
+			append_node_task.resolve();
+		},
+
+		/** Promise for stage node is being added to DOM */
+		nodeReady: append_node_task.promise()
 	};
 
 	return Stage;
