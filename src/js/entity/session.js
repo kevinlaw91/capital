@@ -5,7 +5,7 @@ define([
 	"engine/events",
 	"entity/player",
 	"render/script/map",
-	"script/map-recentering"
+	"engine/script/stage-cleanup"
 ], function($) {
 	'use strict';
 
@@ -49,7 +49,7 @@ define([
 
 		// Draw map
 		require("render/script/map")();
-		require("script/map-recentering")();
+		require("engine/script/stage-cleanup")();
 
 		// Register as active session
 		registerActiveSession(this);

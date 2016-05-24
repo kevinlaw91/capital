@@ -44,13 +44,13 @@ define([
 		require([
 			"ui/stage",
 			"engine/assets",
-			"game/script/stage-setup"
+			"engine/script/stage-setup"
 		], function(Stage, AssetManager) {
 			// Fired when stage SVG node was created
 			Stage.nodeReady.done(
 				function() {
 					// Set up stage
-					require("game/script/stage-setup")(Engine.loading.STAGE_READY);
+					require("engine/script/stage-setup")(Engine.loading.STAGE_READY);
 
 					// Async load game assets
 					log("Loading game assets...");

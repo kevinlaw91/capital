@@ -2,7 +2,7 @@ define([
 	"engine/camera",
 	"ui/stage",
 	"engine/renderer",
-	"script/make-layers"
+	"engine/script/make-layers"
 ], function(Camera, Stage, Renderer) {
 	'use strict';
 
@@ -14,7 +14,7 @@ define([
 		Renderer.setCanvas(Stage.canvas);
 
 		// Construct rendering layers
-		require("script/make-layers")();
+		require("engine/script/make-layers")();
 
 		// Notify stage is ready
 		deferred.resolve();
