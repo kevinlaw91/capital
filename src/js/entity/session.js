@@ -1,7 +1,7 @@
 define([
 	"jquery",
 	"jquery.pub-sub",
-	"game/map-generator",
+	"game/script/map-generator",
 	"engine/events",
 	"entity/player",
 	"render/script/map",
@@ -45,7 +45,7 @@ define([
 		this.currentPlayerIndex = -1;
 
 		// Generate map
-		this.map = require("game/map-generator").generate();
+		this.map = require("game/script/map-generator").generate();
 
 		// Draw map
 		require("render/script/map")();
