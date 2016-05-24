@@ -1,4 +1,4 @@
-define(function(){
+define(["engine/renderer"], function(Renderer){
 	'use strict';
 
 	/**
@@ -52,6 +52,28 @@ define(function(){
 				x: x - this.offset.x,
 				y: y - this.offset.y
 			};
+		};
+
+		/**
+		 * Get sprite registration with camera zoom/pan transformation applied
+		 * @returns {{x: number, y: number}}
+		 */
+		this.getRegistrationPoint = function() {
+			// Create a SVGPoint
+			var layerNode = Renderer.layers.anchors.paper.node,
+			    p         = layerNode.ownerSVGElement.createSVGPoint();
+			// Reposition SVGPoint to registration point
+			p.x = this.x;
+			p.y = this.y;
+
+			// Get current camera pan/zoom transform matrix
+			// and apply it to the point
+			var matrix = Renderer.canvas.node.getScreenCTM();
+			p = p.matrixTransform(matrix);
+			// Obtain registration point
+			var reg = { x: p.x, y: p.y };
+
+			return reg;
 		};
 
 		/** Move the sprite to x,y position */

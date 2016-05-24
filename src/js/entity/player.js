@@ -86,17 +86,7 @@ define([
 		this.netWorth = 0;
 
 		// Create view
-		this.token = new PlayerToken(color);
-
-		// Set view onclick event handler
-		this.token.setOnClick(
-			(function(player){
-				return function(){
-					$.publish("UI.InfoPanel.PlayerInfo.Refresh", player);
-					$.publish("UI.InfoPanel.PlayerInfo.Show");
-				};
-			})(this)
-		);
+		this.token = new PlayerToken(this);
 
 		// Create marker
 		this.marker = new GroundMarker();

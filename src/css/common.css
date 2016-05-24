@@ -77,28 +77,41 @@ body {
 
 /* UI styles */
 
+/* Tooltips */
+
 #game-tooltip-layer {
 	position: absolute;
 }
 
-#game-tooltip {
+#game-tooltip-layer > div[role='tooltip'] {
 	z-index: 99;
 	position: absolute;
 	pointer-events: none;
 	display: none;
 }
 
-#game-tooltip-contents {
+#game-tooltip-layer > div[role='tooltip'] > div.contents {
 	position: relative;
 	left: -50%; /* centered */
-	margin-top: -25%;
+}
+
+#tooltip-lotname > div.contents {
 	padding: 8px;
+	border-radius: 3px;
 	color: #fff;
 	background-color: #006064;
 	white-space: nowrap;
 	font-family: 'Yantramanav', sans-serif;
 	font-weight: 400;
-	border-radius: 3px;
+}
+
+#tooltip-playername > div.contents {
+	color: #fff;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.95), 0 2px 5px rgba(0, 0, 0, 0.25);
+	white-space: nowrap;
+	font-family: 'Yantramanav', sans-serif;
+	font-size: 1.2rem;
+	font-weight: 500;
 }
 
 #game-frame {
