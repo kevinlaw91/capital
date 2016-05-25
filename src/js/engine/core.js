@@ -1,54 +1,32 @@
 define([
 	"jquery",
-	"jquery.pub-sub",
-	"engine/config",
-	"engine/ui",
-	"engine/camera",
-	"engine/renderer",
-	"engine/assets",
-    "engine/game",
-    "engine/dev",
-	"render/script/layers"
+	"engine/game"
 ],function($) {
+	'use strict';
 
-	// Load modules
-	var Config = require("engine/config"),
-	    Renderer = require("engine/renderer"),
-	    UI = require("engine/ui"),
-	    Camera = require("engine/camera"),
-	    AssetManager = require("engine/assets");
-
-	/**
-	 * @namespace Engine
-	 */
+	/** @namespace Engine */
 	var Engine = {
 		/**
 		 * Game definition
 		 * @type {Game}
+		 * @see module:engine/game
 		 */
 		game: require("engine/game"),
 
 		/** @returns {Game} Game definition object */
 		getGame: function(){
-			return this.game;
+			return Engine.game;
 		},
 
 		/** @returns {GameSession} Current game session */
 		getSession: function(){
-			return this.game.getSession();
+			return Engine.game.getSession();
 		},
 
-		/**
-		 * Expose config module to public
-		 * @require module:engine/config
-		 */
-		config: Config,
-
-		/**
-		 * Expose renderer module to public
-		 * @require module:engine/renderer
-		 */
-		renderer: Renderer
+		loading: {
+			ASSET_LOADED: $.Deferred(),
+			STAGE_READY: $.Deferred()
+		}
 	};
 
 	/**
@@ -56,47 +34,56 @@ define([
 	 * This function will run after configs are loaded and dom is ready
 	 */
 	Engine.init = function() {
-		// Developer debug tool
-		require("engine/dev").init(this);
+		// Initializing app
+		log("[EVENT] Initializing engine...", "event");
 
-		log("Preparing stage...");
-		// Construct SVG stage
-		UI.Stage.init();
+		require(["engine/ui"], function(UI) {
+			UI.init();
+		});
 
-		// Construct camera viewport for stage
-		Camera.setup();
+		require([
+			"ui/stage",
+			"engine/assets",
+			"engine/script/stage-setup"
+		], function(Stage, AssetManager) {
+			// Fired when stage SVG node was created
+			Stage.nodeReady.done(
+				function() {
+					// Set up stage
+					require("engine/script/stage-setup")(Engine.loading.STAGE_READY);
 
-		// Point stage reference to renderer
-		Renderer.setCanvas(UI.Stage.canvas);
+					// Async load game assets
+					log("Loading game assets...");
+					AssetManager.SymbolStore.setSymbolStore(Stage.container.node);
+					AssetManager.load().done(function(){
+						// Notify assets ready
+						Engine.loading.ASSET_LOADED.resolve();
+					});
 
-		// Async load game assets
-		log("Loading game assets...");
-		AssetManager.setStorage(UI.Stage.container.node);
-		AssetManager.preload().done(onAssetLoaded);
+					log("[EVENT] Engine is running", "event");
+				}
+			);
+		});
 
-		// Build render layers
-		require("render/script/layers")();
+		$.when(
+			Engine.loading.ASSET_LOADED,
+			Engine.loading.STAGE_READY
+		).done(function(){
+			// Called when game engine is loaded
+			console.timeEnd("Game Loaded");
+
+			// Create new game session
+			Engine.getGame().newSession();
+		});
+
+		// Load developer module
+		require(["engine/dev"], function(Dev) {
+			Dev.init(Engine);
+		});
 
 		// init() can run only once
 		delete Engine.init;
 	};
-
-	//
-	// Event handling
-	//
-	
-	function onAssetLoaded(){
-		//create new game session
-		Engine.getGame().newSession();
-	}
-
-	// Window resize
-	function onWindowResize(){
-		log("[EVENT] Window re-sized", "event");
-		Camera.resize();
-	}
-
-	$(window).on("resize", onWindowResize);
 
 	return Engine;
 });

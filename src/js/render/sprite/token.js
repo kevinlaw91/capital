@@ -5,27 +5,22 @@ define([
 	"engine/config",
 	"render/script/popup"
 ], function($, Sprite, Renderer) {
+	'use strict';
 
 	/** Duration of moving animation */
 	var animationDuration;
 
-	/** Resources for token */
-	var token_resources = {
-		"RED": "player-token-red",
-		"BLUE": "player-token-blue"
-	};
-
 	/**
 	 * Sprite to represent player token
 	 * @augments Sprite
-	 * @param color - Token color
+	 * @param player - Player model
 	 * @returns {PlayerToken}
 	 * @constructor
 	 */
-	function PlayerToken(color){
+	function PlayerToken(player){
 		// Inherits Sprite object
 		Sprite.apply(this, [
-			Renderer.layers.tokens.paper.use(token_resources[color]),
+			Renderer.layers.tokens.paper.use(player.color.TOKEN),
 			{
 				width: 32,
 				height: 37,
@@ -33,6 +28,12 @@ define([
 				offsetY: 29
 			}
 		]);
+
+		// Set mouse event handlers
+		var view = this.view;
+		view.click(onClickFactory(player));
+		view.mouseover(onMouseOverFactory(this, player));
+		view.mouseout(hideTooltip);
 
 		// Cache animation duration
 		animationDuration = require("engine/config").get("player.token.stepTime");
@@ -78,9 +79,37 @@ define([
 		extras.x = this.x + offsetX;
 		extras.y = this.y + offsetY;
 
-		//Render tooltip as spatial element
+		// Render tooltip as spatial element
 		require("render/script/popup")(msg, extras);
 	};
+
+	function onClickFactory(player) {
+		return function() {
+			$.publish("UI.InfoPanel.PlayerInfo.Refresh", player);
+			$.publish("UI.InfoPanel.PlayerInfo.Show");
+		};
+	}
+
+	function onMouseOverFactory(token, player) {
+		return function() {
+			var reg = token.getRegistrationPoint();
+			$.publish(
+				"UI.Tooltip.Show",
+				{
+					"class": "PLAYER",
+					"entity": player,
+					"position": {
+						"left": reg.x,
+						"top": reg.y
+					}
+				}
+			);
+		};
+	}
+
+	function hideTooltip(){
+		$.publish("UI.Tooltip.Hide");
+	}
 
 	return PlayerToken;
 });

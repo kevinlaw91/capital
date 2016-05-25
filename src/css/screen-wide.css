@@ -32,7 +32,7 @@
 /* for laptop to HD */
 @media only screen and (orientation: landscape) and (min-width: 1200px) {
 
-    #player-box {
+    #info-panel {
         display: block;
     }
 

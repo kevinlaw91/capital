@@ -6,8 +6,9 @@ require.config({
 			'jquery.easing': 'lib/jquery.easing.1.3',
 			'jquery.raf': 'lib/jquery.requestAnimationFrame',
 			'jquery.pub-sub': 'lib/jquery.tinypubsub',
+			'opentype': 'lib/opentype',
 			'snapsvg': 'lib/snap.svg',
-			'svg-pan-zoom': 'lib/svg-pan-zoom', //namespace must be svg-pan-zoom
+			'svg-pan-zoom': 'lib/svg-pan-zoom', // namespace have to be svg-pan-zoom
 			utils: 'lib/utils'
 		},
 		shim: {
@@ -18,6 +19,9 @@ require.config({
 	}
 );
 
+// Benchmark game load time
+console.time("Game Loaded");
+
 // Call entry point
 require([
 	"domReady",
@@ -26,26 +30,23 @@ require([
 	"engine/core",
     "engine/transform",
 	"utils"
-], function(domReady, Config, Dev){
+], function(domReady, Config, Dev, Engine){
 	//Provide shortcut methods to console object
 	Dev.useShortLogging();
 
+	// Generate projection transform matrix
+	require("engine/transform").generate({
+		column: 17,
+		row: 17,
+		tileSize: 64
+	});
+
+	// Async wait for configs to load
 	Config.load().done(function() {
-		// Configs are loaded
-		// Start initialize app
-		log("[EVENT] App initializing", "event");
-
-		// Generate projection transform matrix
-		require("engine/transform").generate({
-			column: 17,
-			row: 17,
-			tileSize: 64
-		});
-
 		// Async wait for dom to get ready
 		domReady(function() {
-			// Dom is ready
-			var Engine = require("engine/core");
+			// DOM is ready
+			// Initialize engine
 			Engine.init();
 		});
 	});

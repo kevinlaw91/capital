@@ -1,70 +1,63 @@
 define([
 	"jquery",
-	"jquery.pub-sub",
-	"engine/config",
-	"engine/events",
 	"entity/session",
-	"render/script/map"
+	"game/leaderboard"
 ], function($) {
-	/** Access to config */
-	var Config = require("engine/config");
+	'use strict';
 
-	/** Game event callbacks */
-	var GameEventCallback = require("engine/events");
+	// Imports
+	/**
+	 * Represents a game session object
+	 * @class
+	 */
+	var GameSession = require("entity/session");
 
 	/**
 	 * Game definition object
+	 * @exports module:engine/game
 	 * @namespace
-	 * @alias Game
 	 */
-	var Game = /** @lends Game# */{
+	var Game = {
 		/**
 		 * Current game session
-		 * @member {GameSession} session
-		 * @memberOf Game.
+		 * @type {GameSession}
 		 */
 		session: null,
 
-		/**
-		 * New game session
-		 * @memberOf Game.
-		 */
+		/** New game session */
 		newSession: function() {
-
-			/**
-			 * GameSession entity
-			 * @external GameSession
-			 */
-			var GameSession = require("entity/session");
-			this.session    = new GameSession();
+			// Create new session
+			Game.session = new GameSession();
 
 			//TODO: Remove after testing
-			this.session.addPlayer("Player 1", "RED");
-			this.session.addPlayer("Player 2", "BLUE");
+			Game.session.addPlayer("Player 1", "RED");
+			Game.session.addPlayer("Player 2", "BLUE");
+			Game.session.addPlayer("Player 3", "PINK");
 
-			//Start game
-			this.session.startGame();
+			// Update leaderboard with players
+			Game.leaderboard.populate(this.session.players);
+			$.publish("UI.InfoPanel.Leaderboard.Rebuild");
+			$.publish("UI.InfoPanel.Leaderboard.Refresh");
+			$.publish("UI.InfoPanel.Leaderboard.Show");
+
+			// Start game
+			Game.session.startGame();
 		},
 
 		/**
 		 * Get current game session
-		 * @memberOf Game.
 		 * @returns {GameSession} Current game session
 		 */
 		getSession: function() {
-			return this.session;
-		}
+			return Game.session;
+		},
+
+		/**
+		 * Leaderboard object to track ranking of players
+		 * @see module:game/leaderboard
+		 */
+		leaderboard: require("game/leaderboard")
 	};
-
-	//
-	// Game events handling
-	//
-
-	$("#btn-roll").on("click", GameEventCallback.PlayerAction.DiceRoll);
-	$(".player-action-btn-done").on("click", GameEventCallback.PlayerAction.EndTurn);
-	$.subscribe("PlayerEndsTurn", GameEventCallback.PlayerAction.EndTurn);
-	$(".player-action-btn-buy").on("click", GameEventCallback.PlayerAction.Buy).prop('disabled', true);
-	$(".player-action-btn-build").on("click", GameEventCallback.PlayerAction.Upgrade).prop('disabled', true);
 
 	return Game;
 });

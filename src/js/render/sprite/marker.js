@@ -3,7 +3,9 @@ define([
 	"render/sprite/sprite",
 	"snapsvg",
 	"engine/renderer"
-], function($, Sprite, Snap) {
+], function($, Sprite, Snap, Renderer) {
+	'use strict';
+
 	/**
 	 * Marker sprite to indicate active player
 	 * @augments Sprite
@@ -13,9 +15,6 @@ define([
 		// Inherits Sprite object
 		Sprite.apply(this, [
 			function(){
-				var Renderer = require("engine/renderer"),
-				    Snap = require("snapsvg");
-
 				var group = Renderer.layers.markers.paper.g();
 				group.append(Snap.parse(
 					"<g transform='matrix(1,0,0,0.5,0,0)'>" +
@@ -69,14 +68,14 @@ define([
 	GroundMarker.prototype.show = function(){
 		this.view.attr({ display: ""});
 		var circleElem = this.view.select("circle").node;
-		//Play appear animation
+		// Play appear animation
 		$(circleElem).addClass("player-token-appear");
 	};
 
 	/** Hides the sprite */
 	GroundMarker.prototype.hide = function(){
 		this.view.attr({ display: "none"});
-		//Resets appear animation
+		// Resets appear animation
 		var circleElem = this.view.select("circle").node;
 		$(circleElem).removeClass("player-token-appear");
 	};

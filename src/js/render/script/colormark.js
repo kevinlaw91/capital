@@ -5,6 +5,7 @@ define([
 	"engine/transform"
 ], function(Snap) {
 	'use strict';
+
 	/**
 	 * Mark a land lot with color to indicate owner
 	 * @param {number} lot.x
@@ -13,7 +14,7 @@ define([
 	 * @param {string} [color=white] Color of marker
 	 */
 	return function(lot, color){
-			//Imports
+			// Imports
 		var Lot = require("entity/lot"),
 		    ScreenTransform = require("engine/transform"),
 
@@ -44,17 +45,17 @@ define([
 
 		switch(lot.direction){
 			case Lot.prototype.FACING_NORTH:
-				//West to north path
+				// West to north path
 				path = createLinePath(tw, tn);
-				//Calculate length for once
+				// Calculate length for once
 				length = Snap.path.getTotalLength(path) * width;
-				//Move north point closer to west point
+				// Move north point closer to west point
 				n = Snap.path.getPointAtLength(path, length);
 				n = [n.x, n.y];
-				//South to east path
+				// South to east path
 				path = createLinePath(ts, te);
-				//Move east point closer to south point
-				e = Snap.path.getPointAtLength(path, length); //Can reuse previously calculated length
+				// Move east point closer to south point
+				e = Snap.path.getPointAtLength(path, length); // Can reuse previously calculated length
 				e = [e.x, e.y];
 				break;
 			case Lot.prototype.FACING_EAST:
@@ -86,8 +87,7 @@ define([
 				break;
 		}
 
-		return layer.polygon(n, w, s, e).attr({
-			fill: color || "white"
-		});
+		return layer.polygon(n, w, s, e)
+		            .attr({ fill: color || "white"});
 	};
 });

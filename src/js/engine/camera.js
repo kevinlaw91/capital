@@ -3,7 +3,7 @@ define([
 	"svg-pan-zoom",
 	"jquery",
 	"jquery.easing",
-	"engine/ui",
+	"ui/stage",
 	"engine/config"
 ], function(Snap, svgPanZoom, $) {
 	'use strict';
@@ -13,24 +13,33 @@ define([
 		isPanning: false,
 
 		/** Flag to determine camera was panned through last mouse release event */
-	    panned: false
+	    panned: false,
+
+		/** Resets the pan status flags */
+		panCompleted: function(){
+			// Reset flags
+			// Use every time after triggering pan action by code
+			// to prevent click not registering
+			Camera.isPanning = false;
+			Camera.panned = false;
+		}
 	};
 
-	var controller;
+	var controller, padding;
 
 	/** Set up camera on stage */
 	Camera.setup = function() {
 		var Config = require("engine/config"),
-		    UI = require("engine/ui"),
+		    Stage = require("ui/stage"),
 		    Utils = require("utils");
 
 		// Add a <g> element
-		var canvas = UI.Stage.container.g().attr({
+		var canvas = Stage.container.g().attr({
 			"id": Config.getAsId("canvas.id")
 		});
 
 		// Store reference to UI Module
-		UI.Stage.canvas = canvas;
+		Stage.canvas = canvas;
 
 		// Create dummy scene for SVGPanZoom
 		var _DummyScene = canvas.rect(0,0,1024,768).attr({
@@ -45,33 +54,35 @@ define([
 			delete Camera.removeDummyScene;
 		};
 
+		/*
+		 * Padding config is a float between 0 - 1
+		 * If config = 0.4, at least 40% of the original contents will be visible
+		 */
+		padding = 1 - Config.get("camera.pan.padding");
+
+		/* Controller */
 		controller = svgPanZoom(Config.get("canvas.svg"), {
 			viewportSelector: Config.get("canvas.id"),
 			minZoom: Config.get("camera.zoom.min"),
 			maxZoom: Config.get("camera.zoom.max"),
 			zoomScaleSensitivity: Config.get("camera.zoom.sensitivity"),
 			beforePan: function( oldPan, newPan ) {
-				//Flag to disable child click event
+				// Flag to disable child click event
 				Camera.isPanning = true;
 
-				/*
-				 * Pan boundary
-				 *
-				 * Padding config is a float between 0 - 1
-				 * If config = 0.4, at least 40% of the original contents will be visible
-				 */
-
-				var padding = 1 - Config.get("camera.pan.padding"),
-				    sizes  = this.getSizes(),
+				// Set Pan boundary
+				var sizes  = this.getSizes(),
 				    vb = sizes.viewBox,
 				    rZ = sizes.realZoom,
-				    zW = vb.width * rZ * padding,
-				    zH = vb.height * rZ * padding,
+				    wrZ = vb.width * rZ,
+				    hrZ = vb.height * rZ,
+				    zW = wrZ * padding,
+				    zH = hrZ * padding,
 
 			        leftLimit    = vb.x - zW,
-			        rightLimit   = sizes.width - (vb.width * rZ) + zW,
+			        rightLimit   = sizes.width - wrZ + zW,
 			        topLimit     = vb.y - zH,
-			        bottomLimit  = sizes.height - (vb.height * rZ) + zH;
+			        bottomLimit  = sizes.height - hrZ + zH;
 
 				return {
 					x: Utils.clamp(newPan.x, leftLimit, rightLimit),
@@ -89,26 +100,30 @@ define([
 					};
 
 					for(var eventName in this.listeners) {
-						options.svgElement.addEventListener(eventName, this.listeners[eventName], false);
+						if(this.listeners.hasOwnProperty(eventName)){
+							options.svgElement.addEventListener(eventName, this.listeners[eventName], false);
+						}
 					}
 				},
 				destroy: function( options ) {
 					for(var eventName in this.listeners) {
-						options.svgElement.removeEventListener(eventName, this.listeners[eventName]);
+						if(this.listeners.hasOwnProperty(eventName)){
+							options.svgElement.removeEventListener(eventName, this.listeners[eventName]);
+						}
 					}
 				}
 			}
 		});
 
-		//Set initial zoom
+		// Set initial zoom
 		controller.zoom(Config.get("camera.zoom.initial"));
 
-		//Expose API methods to module
+		// Expose API methods to module
 		Camera.updateBBox = controller.updateBBox;
 		Camera.center = controller.center;
 		Camera.resize =	controller.resize;
 
-		//Setup can only run for once
+		// Setup can only run for once
 		delete Camera.setup;
 	};
 
@@ -136,8 +151,10 @@ define([
 					x: from.x + ((toX - from.x) * now),
 					y: from.y + ((toY - from.y) * now)
 				});
+			},
+			complete: function() {
+				Camera.panCompleted();
 			}
-			// complete: function() {}
 		});
 	};
 
@@ -148,20 +165,29 @@ define([
 	Snap.plugin(function(Snap, Element) {
 		var oClick = Element.prototype.click;
 
-		//Inject panning condition check to every function passed to Snap .click()
+		// Inject panning condition check to every function passed to Snap .click()
 		Element.prototype.click = function(fn) {
 			fn = fn_new(fn);
 			oClick.call(this, fn);
 		};
 
-		//Wrap old function with panning condition check
+		// Wrap old function with panning condition check
 		function fn_new( callable ) {
 			return function() {
-				if(!Camera.panned) { callable(); }
+				if(!Camera.panned) { callable.call(this); }
 				Camera.panned = false;
 			};
 		}
 	});
+
+
+	// Window resize event
+	$(window).on("resize", onWindowResize);
+
+	function onWindowResize(){
+		log("[EVENT] Window re-sized", "event");
+		Camera.resize();
+	}
 
 	return Camera;
 });

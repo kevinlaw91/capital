@@ -4,6 +4,7 @@ define([
 	"render/sprite/house"
 ], function(Lot) {
 	'use strict';
+
 	// Imports
 	var ScreenTransform = require("engine/transform");
 	var House = require("render/sprite/house");
@@ -157,7 +158,7 @@ define([
 		this.worth += this.cost[this.tier];
 		this.recalculateRent();
 
-		//Check to see if building needs to be rendered
+		// Check to see if building needs to be rendered
 		var resource = Upgrades[this.tier].sprites;
 
 		if(resource){
@@ -202,7 +203,7 @@ define([
 	 */
 	TradableLot.prototype.sellTo = function(newOwner){
 		this.owner = newOwner;
-		this.markColor(newOwner.markColor);
+		this.markColor(newOwner.color.DARK);
 	};
 
 	/**

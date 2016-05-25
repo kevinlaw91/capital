@@ -1,5 +1,6 @@
 define(function() {
 	'use strict';
+
 	/**
 	 * Represents a lot in the map
 	 * @namespace Lot

@@ -1,103 +1,190 @@
-define(["jquery", "snapsvg"], function( $, Snap) {
+define([
+	"jquery",
+	"opentype",
+	"snapsvg"
+], function( $, OpenType, Snap) {
 
-	var module = {},
-		store,
-		task_preload = $.Deferred(),
-	    task_preload_progress = [];
+	/** @namespace */
+	var AssetManager = {};
 
-	// cache dimensions of loaded symbols
-	var dimensions = new Map();
+	/** @namespace */
+	AssetManager.SymbolStore = (function(){
+		/**
+		 * Place to store loaded symbols
+		 * @private
+		 */
+		var store;
 
-	// Define SVG element to store loaded symbols
-	module.setStorage = function(elem){
-		store = Snap(elem);
-		return module;
-	};
+	    /**
+	     * Cache info of loaded symbols
+	     * @private
+	     */
+		var list = new Map();
 
-	// Preload assets
-	module.preload = function(){
-		// Define a new file loading task
-		var currentFile = $.Deferred();
-		// Put the task to the ongoing list
-		task_preload_progress.push(currentFile);
-		// Perform async file load
-		Snap.load("src/resources/svg/floor.svg", (function(task){
-			return function(contents) {
-				loadSymbolsFromFile(contents);
-				task.resolve();
-			};
-		})(currentFile));
+		return {
+			/**
+			 * Set location to store loaded symbols
+			 * @public
+			 * @param {Snap} elem - Snap element
+			 */
+			setSymbolStore: function(elem){
+				store = Snap(elem);
+			},
 
-		// Token
-		currentFile = $.Deferred();
-		task_preload_progress.push(currentFile);
-		Snap.load("src/resources/svg/token.svg", (function(task){
-			return function(contents) {
-				loadSymbolsFromFile(contents);
-				task.resolve();
-			};
-		})(currentFile));
+			/**
+			 * Check availability of a symbol by id
+			 * @public
+			 * @returns {boolean} Symbol is loaded into game, true/false
+			 */
+			hasSymbol: function(id) {
+				return list.has(id);
+			},
 
-		//Icons
-		currentFile = $.Deferred();
-		task_preload_progress.push(currentFile);
-		Snap.load("src/resources/svg/icons.svg", (function(task){
-			return function(contents) {
-				loadSymbolsFromFile(contents);
-				task.resolve();
-			};
-		})(currentFile));
+			/**
+			 * Get cached symbol size by id
+			 * @public
+			 * @returns {{number,number}|undefined} Dimensions if symbol is loaded, 'undefined' otherwise
+			 */
+			getSymbolDimensions: function(id) {
+				return list.get(id);
+			},
 
-		//Houses
-		currentFile = $.Deferred();
-		task_preload_progress.push(currentFile);
-		Snap.load("src/resources/svg/houses.svg", (function(task){
-			return function(contents) {
-				loadSymbolsFromFile(contents);
-				task.resolve();
-			};
-		})(currentFile));
+			/**
+			 * Loads a file
+			 * @public
+			 * @param path - Path of the file to be loaded
+			 */
+			loadFromFile: function(path){
+				// Define object to track progress
+				var tracking = $.Deferred();
 
-		// Mark preload task as resolved when all asset files are loaded
-		$.when.apply($, task_preload_progress).done(function() {
+				// Push to monitoring stacks
+				loading_tasks.push(tracking);
+
+				// Load file
+				Snap.load( path,
+					(function( progress ) {
+						return function( fragment ) {
+							fragment.selectAll("symbol")
+							        .forEach(AssetManager.SymbolStore.onFileLoaded);
+							progress.resolve();
+						};
+					})(tracking)
+				);
+			},
+
+			/**
+			 * Extract symbols from a loaded file
+			 * @callback
+			 * @public
+			 * @param snapSymbol - Snap instance of a loaded symbol
+			 */
+			onFileLoaded: function(snapSymbol){
+				// Cache loaded symbol size
+				var symbolEl = snapSymbol.node,
+				    viewbox = symbolEl.viewBox.baseVal;
+				list.set( symbolEl.id,
+					{
+						height: Number(viewbox.height),
+						width: Number(viewbox.width)
+					}
+				);
+
+				//Attach symbol to canvas and put inside <defs>
+				snapSymbol.appendTo(store).toDefs();
+			}
+		};
+	})();
+
+	/** @namespace */
+	AssetManager.FontStore = (function(){
+		/**
+		 * Cache loaded fonts
+		 * @private
+		 */
+		var fonts = new Map();
+
+		return {
+			/**
+			 * Loads a font file
+			 * @param path
+			 */
+			loadFromFile: function(path){
+				// Define object to track progress
+				var tracking = $.Deferred();
+
+				// Push to monitoring stacks
+				loading_tasks.push(tracking);
+
+				// Load file
+				OpenType.load( path,
+					(function ( progress ) {
+						return function(errorMsg, font) {
+							if (!errorMsg) {
+								// Font loaded successfully
+
+								// Obtaining font metadata
+								var fontFamily = font.names.fontFamily.en,
+								    fontSubfamily = font.names.fontSubfamily.en;
+
+								// Register to font collection
+								if (fonts.has(fontFamily)){
+									fonts.get(fontFamily).set(fontSubfamily, font);
+								} else {
+									fonts.set(fontFamily, new Map().set(fontSubfamily, font));
+								}
+
+								// Mark task as completed
+								progress.resolve();
+							} else {
+								err(errorMsg);
+							}
+						};
+					})(tracking)
+				);
+			},
+
+			/**
+			 * Get a Font object from collection
+			 * @returns {Font}
+			 */
+			getFont: function (family, subFamily) {
+				return fonts.get(family).get(subFamily);
+			}
+		};
+	})();
+
+	/** Stores file load promise objects */
+	var loading_tasks = [];
+
+	/** Pre-load assets */
+	AssetManager.load = function(){
+		// Track completion of task
+		var task = $.Deferred();
+
+		// Load SVG symbols from file
+		[
+			"src/resources/svg/floor.svg",
+			"src/resources/svg/token.svg",
+			"src/resources/svg/icons.svg",
+			"src/resources/svg/houses.svg"
+		].forEach(AssetManager.SymbolStore.loadFromFile);
+
+		// Load Fonts
+		[
+			"src/resources/fonts/passion-one-regular.woff",
+			"src/resources/fonts/pathway-gothic-one-regular.woff"
+		].forEach(AssetManager.FontStore.loadFromFile);
+
+		// Mark task as resolved when all asset files are loaded
+		$.when.apply($, loading_tasks).done(function() {
 			//Called when all assets are loaded
 			info("Game asset load complete");
-			task_preload.resolve();
+			task.resolve();
 		 });
 
-		return task_preload.promise();
+		return task.promise();
 	};
 
-	//
-	// For SVG Symbols
-	//
-
-	// Extract symbols from a loaded svg file
-	function loadSymbolsFromFile(fragment){
-		fragment.selectAll("symbol").forEach(addSymbol);
-	}
-
-	// Cache a loaded symbol and make it available to be rendered
-	function addSymbol(symbolSnapObj){
-		//cache symbol size
-		var symbolEl = symbolSnapObj.node;
-		var viewbox = symbolEl.viewBox.baseVal;
-		dimensions.set( symbolEl.id, { height: viewbox.height,
-										width: viewbox.width } );
-
-		//Attach symbol to canvas and put inside <defs>
-		symbolSnapObj.appendTo(store).toDefs();
-	}
-
-	// (Public) Get cached symbol size by id
-	module.getSymbolDimensions = function(id) {
-		return dimensions.get(id); //Return {x:, y:} or undefined
-	};
-
-	// (Public) Check availability of a symbol by id
-	module.hasSymbol = function(id) {
-		return dimensions.has(id); //Return true if symbol is loaded
-	};
-
-	return module;
+	return AssetManager;
 });

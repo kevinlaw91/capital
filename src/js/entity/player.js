@@ -4,39 +4,59 @@ define([
 	"engine/config",
 	"render/sprite/token",
     "engine/transform",
-	"render/sprite/marker",
-	"engine/core"
+	"render/sprite/marker"
 ], function($) {
-	var Config = require("engine/config");
-	var ScreenTransform = require("engine/transform");
-	var PlayerToken = require("render/sprite/token");
-	var GroundMarker = require("render/sprite/marker");
+	'use strict';
 
-	var markColors = {
-		"RED": "#BF4D4F",
-		"BLUE": "#2DB1B1"
-	};
+	// Imports
+	var Config = require("engine/config"),
+	    ScreenTransform = require("engine/transform"),
+	    PlayerToken = require("render/sprite/token"),
+	    GroundMarker = require("render/sprite/marker");
 
 	/**
-	 * @constructor
+	 * Represents a player color definition
+	 * @typedef {object} PlayerColor
+	 * @property {string} LIGHT - Light variant of the color
+	 * @property {string} DARK - Dark variant of the color
+	 * @property {string} TOKEN - Token resource id
 	 */
+
+	/**
+	 * Player color constants
+	 * @type {Object.<string, PlayerColor>}
+	 */
+	Player.COLOR = {
+		RED: {
+			LIGHT: "#f73134",
+			DARK: "#bf4d4f",
+			TOKEN: "player-token-red"
+		},
+		BLUE: {
+			LIGHT: "#2fb5ff",
+			DARK: "#2db1b1",
+			TOKEN: "player-token-blue"
+		},
+		PINK: {
+			LIGHT: "#f37ce8",
+			DARK: "#d163c8",
+			TOKEN: "player-token-pink"
+		}
+	};
+
+	/** @constructor */
 	function Player(name, color){
 		/**
 		 * Player name
 		 * @type {string}
 		 */
 		this.name = name;
-		/**
-		 * Player color
-		 * @type {string}
-		 */
-		this.color = color;
 
 		/**
 		 * Player color
-		 * @type {string}
+		 * @type {PlayerColor}
 		 */
-		this.markColor = markColors[color];
+		this.color = color;
 
 		/** Current position of player */
 		this.position = {
@@ -59,13 +79,19 @@ define([
 		 */
 		this.cash = 0;
 
-		//Create view
-		this.token = new PlayerToken(color);
+		/**
+		 * Net worth of player
+		 * @member {number}
+		 */
+		this.netWorth = 0;
 
-		//Create marker
+		// Create view
+		this.token = new PlayerToken(this);
+
+		// Create marker
 		this.marker = new GroundMarker();
 
-		//Set as inactive
+		// Set as inactive
 		this.hideActiveMarker();
 	}
 
@@ -75,6 +101,9 @@ define([
 	 */
 	Player.prototype.addCash = function(amount) {
 		this.cash += amount;
+
+		// Trigger player info panel refresh
+		$.publish("UI.InfoPanel.PlayerInfo.Refresh");
 	};
 
 	/**
@@ -83,43 +112,31 @@ define([
 	 */
 	Player.prototype.deductCash = function(amount) {
 		this.cash -= amount;
+
+		// Trigger player info panel refresh
+		$.publish("UI.InfoPanel.PlayerInfo.Refresh");
 	};
 
 	/**
-	 * Attempt to buy a land lot
-	 * @param {Lot} [lot] - Target lot to be bought, use current position if unspecified
-	 * @return {boolean} True - if success
+	 * Adds an amount of net worth to player
+	 * @param {number} amount
 	 */
-	Player.prototype.buy = function(lot) {
-		if(!lot){
-			lot = this.position.lot;
-		}
+	Player.prototype.addToNetWorth = function(amount) {
+		this.netWorth += amount;
 
-		if(lot.owner === null && lot.isTradable){
-			lot.sellTo(this);
-			$.publish("PropertyTransfer", { lot: lot, player: this });
-			return true;
-		}else{
-			return false;
-		}
+		// Trigger player info panel refresh
+		$.publish("UI.InfoPanel.PlayerInfo.Refresh");
 	};
 
 	/**
-	 * Attempt to upgrade current lot
-	 * @return {boolean} True - if success
+	 * Deducts an amount of net worth from player
+	 * @param {number} amount
 	 */
-	Player.prototype.upgrade = function() {
-		var lot = this.position.lot;
+	Player.prototype.deductFromNetWorth = function(amount) {
+		this.netWorth -= amount;
 
-		// Fail if
-		// - Player not standing on a lot
-		// - Player do not own the property
-		if(lot && lot.isOwnedBy(this) && lot.upgradeAvailable()){
-			lot.upgrade();
-			$.publish("PropertyUpgrade", { lot: lot, player: this });
-			return true;
-		}
-		return false;
+		// Trigger player info panel refresh
+		$.publish("UI.InfoPanel.PlayerInfo.Refresh");
 	};
 
 	/**
@@ -140,7 +157,7 @@ define([
 		// Move ground marker
 		this.marker.moveTo(pos.x, pos.y);
 
-		//Generate callback based on player's context
+		// Generate callback based on player's context
 		var reached = (function(oPlayer){
 			return function(){
 				$.publish("PlayerMove", {player: oPlayer, x: x, y: y});

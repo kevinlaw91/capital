@@ -1,14 +1,19 @@
 define([
 	"jquery",
-	"engine/ui",
+	"jquery.pub-sub",
 	"engine/game",
 	"engine/config",
-    "entity/session"
+    "entity/session",
+    "game/leaderboard"
 ], function($) {
 	'use strict';
-	/** Access to config */
+	
+	// Imports
 	var Config = require("engine/config"),
-		UI = require("engine/ui");
+		formatAsCurrency = require("utils").formatAsCurrency;
+
+	/** @see module:game/leaderboard */
+	var Leaderboard = require("game/leaderboard");
 
 	/**
 	 * @namespace
@@ -49,9 +54,6 @@ define([
 		$(".player-action-btn-buy").prop('disabled', true);
 		$(".player-action-btn-build").prop('disabled', true);
 
-		// Hide action panel
-		UI.UserActionPanel.close(UI.UserActionPanel.reset);
-
 		log("[GAME_EVENT] Current player ended his turn", "gameevent");
 
 		//Skip to next player
@@ -66,32 +68,59 @@ define([
 		$.publish("PlayerActive", {player: game_session.getActivePlayer(), playerIndex: game_session.currentPlayerIndex});
 	};
 
+	$.subscribe("PlayerEndsTurn", ev.PlayerAction.EndTurn);
+
+	/**
+	 * Buy active player's current position
+	 * @function
+	 * @returns {boolean} True if success
+	 */
 	ev.PlayerAction.Buy = function() {
-		var currentPlayer = require("engine/game").getSession().getActivePlayer();
+		var currentPlayer = require("engine/game").getSession().getActivePlayer(),
+			currentLot = currentPlayer.position.lot;
 
-		// Attempt to buy current location
-		if(currentPlayer.buy()) {
-			// Success
-			UI.UserActionPanel.Panels.PROPERTY_BUY.onComplete();
+		if(currentLot && currentLot.isTradable) {
+			// If current lot is not null or undefined
+			// and it is open for trading
+			if(currentLot.owner === null) {
+				// Lot is currently unowned
+				// so player buys it
+				$.publish("PropertyTransfer", { lot: currentLot, player: currentPlayer });
 
-			// Disable buy option if success
-			//TODO: Polish
-			$("#btn-buy").prop('disabled', true);
+				// Disable buy option if success
+				//TODO: Polish
+				$("#btn-buy").prop('disabled', true);
+
+				return true;
+			}
 		}
+		return false;
 	};
 
+	/**
+	 * Upgrade active player's current position
+	 * @function
+	 * @returns {boolean} True if success
+	 */
 	ev.PlayerAction.Upgrade = function(){
-		var currentPlayer = require("engine/game").getSession().getActivePlayer();
+		var currentPlayer = require("engine/game").getSession().getActivePlayer(),
+		    currentLot = currentPlayer.position.lot;
 
-		//Attempt to upgrade current location
-		if(currentPlayer.upgrade()){
-			// Success
-			UI.UserActionPanel.Panels.PROPERTY_UPGRADE.onComplete();
+		if(currentLot && currentLot.isTradable && currentLot.isOwnedBy(currentPlayer)) {
+			// If current lot is owned by current player
+			if(currentLot.upgradeAvailable()) {
+				// and lot can be upgraded
+				// so just upgrade it
+				$.publish("PropertyUpgrade", { lot: currentLot, player: currentPlayer });
 
-			// Can only upgrade once every turn
-			//TODO: Polish
-			$(".player-action-btn-build").prop('disabled', true);
+				// Disable upgrade option if success
+				//TODO: Polish
+				$(".player-action-btn-build").prop('disabled', true);
+
+				return true;
+			}
 		}
+		return false;
 	};
 
 	//
@@ -99,9 +128,6 @@ define([
 	//
 
 	ev.onDiceRollComplete = function(evt, data){
-		// Decline any pending offer
-		var game_session = require("engine/game").getSession();
-
 		// Show moving status
 		$("#player-action-button").removeClass("show hide moving").addClass("moving");
 
@@ -217,10 +243,9 @@ define([
 					$(".player-action-btn-build").prop('disabled', false);
 
 					// Show action panel
-					$.publish("UI.UserActionPanel", {
-						show: "PROPERTY_UPGRADE",
-						info: {
-							cost: lot.getNextUpgradeCost()
+					$.publish("UI.UserActionPanel.PromptPropertyUpgrade", {
+						fields: {
+							cost: formatAsCurrency(lot.getNextUpgradeCost())
 						}
 					});
 				} else {
@@ -236,11 +261,10 @@ define([
 					$(".player-action-btn-buy").prop('disabled', false);
 
 					// Show action panel
-					$.publish("UI.UserActionPanel", {
-						show: "PROPERTY_BUY",
-						info: {
+					$.publish("UI.UserActionPanel.PromptPropertyBuy", {
+						fields: {
 							title: lot.name,
-							cost: lot.getPrice()
+							cost: formatAsCurrency(lot.getPrice())
 						}
 					});
 				} else {
@@ -273,33 +297,40 @@ define([
 		 */
 		if(typeof data.add != "undefined"){
 			data.player.addCash(data.add);
+			data.player.addToNetWorth(data.add);
+
 			data.player.token.popup("$" + data.add, {
-				color: "#3C4894",
-				iconColor: "#2363A0",
+				color: "#004d04",
 				prefix: "+",
-				prefixColor: "#3C4894"
+				prefixColor: "#004d04"
 			});
 			log("[GAME_EVENT] Player earned $" + data.add + " (Now: $" + data.player.cash + ")", "gameevent");
 		}
 
 		if(typeof data.sub != "undefined"){
 			data.player.deductCash(data.sub);
+			data.player.deductFromNetWorth(data.sub);
+
 			data.player.token.popup("$" + data.sub, {
-				color: "#901717",
-				iconColor: "#D22A2A",
+				color: "#512309",
 				prefix: "−",
-				prefixColor: "#901717"
+				prefixColor: "#512309"
 			});
 			log("[GAME_EVENT] Player losses $" + data.sub + " (Now: $" + data.player.cash + ")", "gameevent");
 		}
+
+		// Update ranking
+		Leaderboard.sort();
 	};
 
 	ev.onPropertyTransfer = function(evt, data) {
 		/**
 		 *  @param {Player} data.player - New owner of the property
-		 *  @param {Lot} data.lot - The property sold to the new owner
+		 *  @param {TradableLot} data.lot - The property sold to the new owner
 		 */
 		log("[GAME_EVENT] " + data.player.name + " bought the unowned lot", "gameevent");
+		data.lot.sellTo(data.player);
+		data.player.deductCash(data.lot.getPrice());
 	};
 
 	ev.onPropertyUpgrade = function(evt, data) {
@@ -308,6 +339,10 @@ define([
 		 *  @param {Lot} data.lot - The upgraded property
 		 */
 		log("[GAME_EVENT] " + data.player.name + " upgraded the lot", "gameevent");
+		// Get upgrade cost and deduct from player cash
+		data.player.deductCash(data.lot.getNextUpgradeCost());
+		// Then only upgrades the land lot
+		data.lot.upgrade();
 	};
 
 	return ev;

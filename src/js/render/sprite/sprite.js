@@ -1,4 +1,6 @@
-define(["jquery"], function($){
+define(["engine/renderer"], function(Renderer){
+	'use strict';
+
 	/**
 	 * An instance of 2D sprite object
 	 * @param spriteObj - Reference to a sprite element or a render script
@@ -52,12 +54,34 @@ define(["jquery"], function($){
 			};
 		};
 
+		/**
+		 * Get sprite registration with camera zoom/pan transformation applied
+		 * @returns {{x: number, y: number}}
+		 */
+		this.getRegistrationPoint = function() {
+			// Create a SVGPoint
+			var layerNode = Renderer.layers.anchors.paper.node,
+			    p         = layerNode.ownerSVGElement.createSVGPoint();
+			// Reposition SVGPoint to registration point
+			p.x = this.x;
+			p.y = this.y;
+
+			// Get current camera pan/zoom transform matrix
+			// and apply it to the point
+			var matrix = Renderer.canvas.node.getScreenCTM();
+			p = p.matrixTransform(matrix);
+			// Obtain registration point
+			var reg = { x: p.x, y: p.y };
+
+			return reg;
+		};
+
 		/** Move the sprite to x,y position */
 		this.moveTo = function(x,y){
 			this.x = x;
 			this.y = y;
 
-			//Update view
+			// Update view
 			this.view.attr(this.getBoundingOffset(x,y));
 		};
 

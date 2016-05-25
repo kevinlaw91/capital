@@ -13,7 +13,26 @@ define(function(){
 			 * @returns {number} A number in the range [min, max]
 			 */
 			return Math.min(Math.max(value, min), max);
-		}
+		},
+
+		/**
+		 * Format a number as currency
+		 * @example
+		 * formatAsCurrency(-12345); // Returns "-$12,345"
+		 */
+		formatAsCurrency: (function() {
+			// Define currency formatting
+			var f = new Intl.NumberFormat("en-US", {
+				style: "currency",
+				currency: "USD",
+				useGrouping: true,
+				// Remove fractions
+				minimumFractionDigits: 0,
+				maximumFractionDigits: 0
+			});
+
+			return f.format;
+		})()
 	};
 
 	(function(global) {

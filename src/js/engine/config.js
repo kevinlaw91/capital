@@ -1,4 +1,7 @@
-define(["jquery"], function($) {
+define([
+	"jquery",
+	"utils"
+], function($) {
 	'use strict';
 
 	var configs = {},   // cache for configs during runtime
@@ -59,6 +62,7 @@ define(["jquery"], function($) {
 		var json, filename = this.url.match(/[^\/]*\.cfg(?=\.json$)/);
 
 		try {
+			require("utils"); // Import JSON.minify from utils
 			json = JSON.parse(JSON.minify(text));
 		} catch(e){
 			err("Could not parse " + filename + "\n-> " + e.name + ": " + e.message);

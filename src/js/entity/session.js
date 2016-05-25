@@ -1,16 +1,19 @@
 define([
 	"jquery",
 	"jquery.pub-sub",
-	"entity/map",
+	"game/script/map-generator",
 	"engine/events",
-	"entity/player"
+	"entity/player",
+	"render/script/map",
+	"engine/script/stage-cleanup"
 ], function($) {
 	'use strict';
-	// Import external entities
+
+	// Imports
 
 	/**
 	 * Player entity
-	 * @external Player
+	 * @class
 	 */
 	var Player = require("entity/player");
 
@@ -26,7 +29,6 @@ define([
 	/**
 	 * Game session that holds information about current match
 	 * @constructor
-	 * @alias GameSession
 	 */
 	function GameSession(){
 		log("[EVENT] Created new game session", "event");
@@ -43,26 +45,30 @@ define([
 		this.currentPlayerIndex = -1;
 
 		// Generate map
-		this.map = require("entity/map").generate();
+		this.map = require("game/script/map-generator").generate();
 
 		// Draw map
 		require("render/script/map")();
+		require("engine/script/stage-cleanup")();
 
-		//Register as active session
+		// Register as active session
 		registerActiveSession(this);
 	}
 
 	GameSession.prototype.addPlayer = function(name, color){
-		var player = new Player(name, color);
+		var player = new Player(name, Player.COLOR[color]);
 		this.players.push(player);
 
-		//move to starting point
+		// Move to starting point
 		player.position.index = 0;
 		player.position.lot = this.map[0];
 		player.moveTo(this.map[0].x, this.map[0].y, false);
 
-		//set starting cash
+		// Set starting cash
 		player.cash = 20000;
+
+		// Set starting net worth
+		player.netWorth = 20000;
 	};
 
 	GameSession.prototype.getActivePlayer = function() {
@@ -85,29 +91,29 @@ define([
 		var MapData = evt.data.session.map;
 
 		if(data.lot){
-			//Move player to specified lot in board
+			// Move player to specified lot in board
 			data.player.moveTo(MapData[data.lot].x, MapData[data.lot].y, true);
 		} else if(evt.data.forward) {
-			//Move player forward in board
+			// Move player forward in board
 			data.player.position.index = ++data.player.position.index % 40;
 			var newPosition = MapData[data.player.position.index];
 			data.player.position.lot = newPosition;
 			data.player.moveTo(newPosition.x, newPosition.y, true);
 		} else if(typeof data.x !== "undefined" && typeof data.y !== "undefined") {
-			//Move player to specified x, y location in map
+			// Move player to specified x, y location in map
 			data.player.moveTo(data.x, data.y, true);
 		}
 	};
 
 	GameSession.prototype.getLot = function(x, y) {
-		//Query for matching lot
-		//Not possible to have more than 1 result
+		// Query for matching lot
+		// Note: Impossible to have more than 1 result
 		var match = this.map.filter(
 			function(Lot){ return (Lot.x == x && Lot.y == y); }
 		);
 
 		//Result found
-		if(match.length>0){
+		if(match.length > 0){
 			return match[0];
 		} else {
 			return null;
@@ -115,7 +121,7 @@ define([
 	};
 
 	GameSession.prototype.startGame = function(){
-		//Update game status
+		// Update game status
 		this.status = GameSession.GAME_STATE_RUNNING;
 		log("[EVENT] Game session started", "event");
 
@@ -141,9 +147,7 @@ define([
 	 * @param {GameSession} cSession Current game session
 	 */
 	function registerActiveSession(cSession){
-		/**
-		 * Attach game event listener to current game session
-		 */
+		/** Attach game event listener to current game session */
 
 		// Load game event callbacks
 		var GameEventCallback = require("engine/events");
