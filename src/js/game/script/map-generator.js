@@ -61,12 +61,11 @@ define([
 		return randomName[0];
 	}
 
-	return {
-		/**
-		 * Generates and return a map definition array
-		 * @returns {Array.<Lot|TradableLot>}
-		 */
-		generate: function(){
+	/**
+	 * Generates and return a map definition array
+	 * @returns {Array.<Lot|TradableLot>}
+	 */
+	return function(){
 			// Import Utils
 			var Utils = require("utils");
 
@@ -240,6 +239,5 @@ define([
 
 			timeEnd("Generate Map For New Game");
 			return map;
-		}
-	};
+		};
 });

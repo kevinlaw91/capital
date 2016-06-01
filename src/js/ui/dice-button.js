@@ -1,37 +1,57 @@
 define([
 	"jquery",
-	"jquery.pub-sub",
-	"engine/events"
+	"jquery.pub-sub"
 ], function($) {
 	'use strict';
 
+	function roll(){
+		$.publish("Player.RollDice");
+	}
+
 	var DiceButton = {
-		init: function() {
-			var GameEvents = require("engine/events");
-			$("#btn-roll").on("click", GameEvents.PlayerAction.DiceRoll);
-			delete DiceButton.init;
-		},
 		/** Enable DiceButton */
 		enable: function() {
-			$("#btn-roll").removeClass("disabled");
+			$("#btn-roll")
+				.on("click", roll)
+				.removeClass("disabled");
 		},
 		/** Disable DiceButton */
 		disable: function() {
-			$("#btn-roll").addClass("disabled");
+			$("#btn-roll")
+				.off("click", roll)
+				.addClass("disabled");
 		},
-		/** Control events dedicated for DiceButton */
-		handler: function( evt, data ) {
-			// Handle enable/disable
-			if(typeof data.enabled !== "undefined" && data.enabled) {
-				DiceButton.enable();
-			} else {
-				DiceButton.disable();
-			}
+		/** Play moving animation */
+		setIndeterminate: function() {
+			$("#player-action-button")
+				.removeClass("show hide moving")
+				.addClass("moving");
+		},
+		/** Display dice button */
+		show: function() {
+			$("#player-action-button")
+				.removeClass("show hide moving")
+				.addClass("show");
+		},
+		/** Hide dice button */
+		hide: function() {
+			$("#player-action-button")
+				.removeClass("show hide moving")
+				.addClass("hide");
 		}
 	};
 
 	// Register handler for DiceButton
-	$.subscribe("UI.DiceButton", DiceButton.handler);
+	$.subscribe("UI.DiceButton.Enable", DiceButton.enable);
+	$.subscribe("UI.DiceButton.Disable", DiceButton.disable);
+
+	$.subscribe("UI.DiceButton.Show", DiceButton.show);
+	$.subscribe("UI.DiceButton.Show", DiceButton.enable); // Enable as well
+
+	$.subscribe("UI.DiceButton.Hide", DiceButton.hide);
+	$.subscribe("UI.DiceButton.Hide", DiceButton.disable); // Disable as well
+
+	$.subscribe("UI.DiceButton.Indeterminate", DiceButton.setIndeterminate);
 
 	return DiceButton;
 });

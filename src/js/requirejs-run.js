@@ -9,7 +9,7 @@ require.config({
 			'opentype': 'lib/opentype',
 			'snapsvg': 'lib/snap.svg',
 			'svg-pan-zoom': 'lib/svg-pan-zoom', // namespace have to be svg-pan-zoom
-			utils: 'lib/utils'
+			'polyfills': 'lib/polyfills'
 		},
 		shim: {
 			'jquery.easing': ['jquery'],
@@ -29,10 +29,14 @@ require([
 	"engine/dev",
 	"engine/core",
     "engine/transform",
-	"utils"
+	"utils",
+	"polyfills"
 ], function(domReady, Config, Dev, Engine){
-	//Provide shortcut methods to console object
+	// Provide shortcut methods to console object
 	Dev.useShortLogging();
+
+	// Inject polyfills
+	require("polyfills");
 
 	// Generate projection transform matrix
 	require("engine/transform").generate({

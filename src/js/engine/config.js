@@ -62,8 +62,8 @@ define([
 		var json, filename = this.url.match(/[^\/]*\.cfg(?=\.json$)/);
 
 		try {
-			require("utils"); // Import JSON.minify from utils
-			json = JSON.parse(JSON.minify(text));
+			// Import JSON.minify from utils
+			json = JSON.parse(require("utils").minifyJSON(text));
 		} catch(e){
 			err("Could not parse " + filename + "\n-> " + e.name + ": " + e.message);
 			task.reject();

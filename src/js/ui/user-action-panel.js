@@ -1,47 +1,31 @@
 define([
 	"jquery",
-	"jquery.pub-sub",
-	"engine/events"
+	"jquery.pub-sub"
 ], function($) {
 	'use strict';
-
+	
 	var UserActionPanel = {
 		init: function() {
-			var GameEvents = require("engine/events");
+			// Buy Panel
+			$("#action-panel-buy").on("click", "button", UserActionPanel.panels.PROPERTY_BUY.disable);
+			UserActionPanel.panels.PROPERTY_BUY.disable();
 
-			// Set default button action
-			var callback;
-
-			// Buy button
-			callback = $.Callbacks();
-			callback.add(GameEvents.PlayerAction.Buy)
-			        .add(function(success){
-				        if(success) {
-					        UserActionPanel.panels.PROPERTY_BUY.onComplete();
-				        }
-			        });
-			$(".player-action-btn-buy").on("click", callback.fire)
-			                           .prop('disabled', true);
-
-			// Upgrade button
-			callback = $.Callbacks();
-			callback.add(GameEvents.PlayerAction.Upgrade)
-			        .add(function(success){
-				        if(success) {
-					        UserActionPanel.panels.PROPERTY_UPGRADE.onComplete();
-				        }
-			        });
-			$(".player-action-btn-upgrade").on("click", callback.fire)
-			                               .prop('disabled', true);
-
-			// Decline buttons
-			$(".player-action-btn-done").on("click", UserActionPanel.onCancel);
+			// Upgrade Panel
+			$("#action-panel-upgrade").on("click", "button", UserActionPanel.panels.PROPERTY_BUY.disable);
+			UserActionPanel.panels.PROPERTY_UPGRADE.disable();
 
 			delete UserActionPanel.init;
 		},
 		panels: {
 			PROPERTY_BUY: {
 				node: $("#action-panel-buy"),
+				offer: null,
+				enable: function() {
+					UserActionPanel.panels.PROPERTY_BUY.node.find("button").prop('disabled', false);
+				},
+				disable: function() {
+					UserActionPanel.panels.PROPERTY_BUY.node.find("button").prop('disabled', true);
+				},
 				prompt: function(data) {
 					// Make target panel visible
 					UserActionPanel.selectPanel("PROPERTY_BUY");
@@ -56,6 +40,35 @@ define([
 						}
 					}
 
+					// Cache offer
+					panel.offer = data.offer;
+
+					// Set button actions
+					panel.node.find("button.main")
+					     .unbind("click.accept")
+					     .one(
+						     "click.accept",
+						     {
+							     panel: panel,
+							     onPanelClosed: data.onComplete
+						     },
+						     acceptOffer
+					     );
+
+					panel.node.find("button.decline")
+					     .unbind("click.decline")
+					     .one(
+						     "click.decline",
+						     {
+							     panel: panel,
+							     onPanelClosed: data.onComplete
+						     },
+						     declineOffer
+					     );
+
+					// Enable response buttons
+					panel.enable();
+
 					// Slide open
 					UserActionPanel.slideOpen().done(panel.onFocus);
 				},
@@ -63,18 +76,30 @@ define([
 					// Focus default button
 					UserActionPanel.panels.PROPERTY_BUY.node.find("button.main").focus();
 				},
-				onComplete: function() {
-					var node = UserActionPanel.panels.PROPERTY_BUY.node;
+				onComplete: function(prom) {
+					var panel = UserActionPanel.panels.PROPERTY_BUY;
+
+					// Clean up completed offer
+					panel.offer = null;
 
 					// Show success animation
-					node.removeClass("done").addClass("done");
+					panel.node.removeClass("done").addClass("done");
 
-					// Prompt finished with result
-					UserActionPanel.onResult();
+					// Hide panel after 1s delay
+					window.setTimeout(function() {
+						UserActionPanel.slideClose(prom);
+					}, 1000);
 				}
 			},
 			PROPERTY_UPGRADE: {
 				node: $("#action-panel-upgrade"),
+				offer: null,
+				enable: function() {
+					UserActionPanel.panels.PROPERTY_UPGRADE.node.find("button").prop('disabled', false);
+				},
+				disable: function() {
+					UserActionPanel.panels.PROPERTY_UPGRADE.node.find("button").prop('disabled', true);
+				},
 				prompt: function(data) {
 					// Make target panel visible
 					UserActionPanel.selectPanel("PROPERTY_UPGRADE");
@@ -82,12 +107,41 @@ define([
 					var panel = UserActionPanel.panels.PROPERTY_UPGRADE;
 
 					// Fill information
-					for(var field in data) {
-						if(data.hasOwnProperty(field)) {
+					for(var field in data.fields) {
+						if(data.fields.hasOwnProperty(field)) {
 							panel.node.find("[data-label='" + field + "']")
-							     .text(data[field]);
+							     .text(data.fields[field]);
 						}
 					}
+
+					// Cache offer
+					panel.offer = data.offer;
+
+					// Set button actions
+					panel.node.find("button.main")
+					     .unbind("click.accept")
+					     .one(
+						     "click.accept",
+						     {
+							     panel: panel,
+							     onPanelClosed: data.onComplete
+						     },
+						     acceptOffer
+					     );
+
+					panel.node.find("button.decline")
+					     .unbind("click.decline")
+					     .one(
+						     "click.decline",
+						     {
+							     panel: panel,
+							     onPanelClosed: data.onComplete
+						     },
+						     declineOffer
+					     );
+
+					// Enable response buttons
+					panel.enable();
 
 					// Slide open
 					UserActionPanel.slideOpen().done(panel.onFocus);
@@ -96,14 +150,19 @@ define([
 					// Focus default button
 					UserActionPanel.panels.PROPERTY_UPGRADE.node.find("button.main").focus();
 				},
-				onComplete: function() {
-					var node = UserActionPanel.panels.PROPERTY_UPGRADE.node;
+				onComplete: function(prom) {
+					var panel = UserActionPanel.panels.PROPERTY_UPGRADE;
+
+					// Clean up completed offer
+					panel.offer = null;
 
 					// Show success animation
-					node.removeClass("done").addClass("done");
+					panel.node.removeClass("done").addClass("done");
 
-					// Prompt finished with result
-					UserActionPanel.onResult();
+					// Hide panel after 1s delay
+					window.setTimeout(function(){
+						UserActionPanel.slideClose(prom);
+					}, 1000);
 				}
 			}
 		},
@@ -117,16 +176,16 @@ define([
 				panel.node.show();
 			}
 		},
-		slideOpen: function() {
-			var transition = $.Deferred(),
+		slideOpen: function(prom) {
+			var transition = prom || $.Deferred(),
 			    panel = $("#stage-box-slide");
 			panel.css("top", $("#action-panel").height() * -1);
 			panel.one('transitionend', transition.resolve);
 
 			return transition.promise();
 		},
-		slideClose: function() {
-			var transition = $.Deferred(),
+		slideClose: function(prom) {
+			var transition = prom || $.Deferred(),
 			    panel = $("#stage-box-slide");
 			panel.css("top",0);
 			panel.one('transitionend', transition.resolve);
@@ -137,32 +196,55 @@ define([
 			var panel = evt.data.panel;
 			panel.prompt(data);
 		},
-		onResult: function() {
-			// Hide player action panel after 1 second
-			window.setTimeout(actionCompleted, 1000);
-		},
-		onCancel: function() {
-			// Hide player action panel
-			actionCompleted();
+		onCancel: function(prom) {
+			// Hide player action panel after a very short delay
+			window.setTimeout(function(){
+				UserActionPanel.slideClose(prom);
+			}, 100);
 		}
 	};
 
 	// Register handlers for UserActionPanel
-	$.subscribe("UI.UserActionPanel.PromptPropertyBuy", { panel: UserActionPanel.panels.PROPERTY_BUY }, UserActionPanel.prompt);
-	$.subscribe("UI.UserActionPanel.PromptPropertyUpgrade", { panel: UserActionPanel.panels.PROPERTY_UPGRADE }, UserActionPanel.prompt);
+	$.subscribe(
+		"UI.UserActionPanel.PromptPropertyBuy",
+		{ panel: UserActionPanel.panels.PROPERTY_BUY },
+		UserActionPanel.prompt
+	);
 
-	// Slide close
-	function actionCompleted(){
-		UserActionPanel.slideClose().done(delayedPlayerEndsTurn);
+	$.subscribe(
+		"UI.UserActionPanel.PromptPropertyUpgrade",
+		{ panel: UserActionPanel.panels.PROPERTY_UPGRADE },
+		UserActionPanel.prompt
+	);
+
+	// Offer handlers
+	function acceptOffer(evt){
+		var panel = evt.data.panel;
+
+		// Accept offer
+		panel.offer.accept();
+
+		// Remove offer
+		panel.offer = null;
+
+		// Close prompt and then fires callback
+		var closeAnimation = $.Deferred();
+		panel.onComplete(closeAnimation);
+		closeAnimation.done(evt.data.onPanelClosed);
 	}
 
-	function delayedPlayerEndsTurn(){
-		// Delay end turn for 500ms after slide close animation ended
-		window.setTimeout(doPlayerEndsTurn, 500);
-	}
+	function declineOffer(evt){
+		var panel = evt.data.panel;
+		// Decline offer
+		panel.offer.decline();
 
-	function doPlayerEndsTurn() {
-		$.publish("PlayerEndsTurn");
+		// Remove offer
+		panel.offer = null;
+
+		// Close prompt and then fires callback
+		var closeAnimation = $.Deferred();
+		UserActionPanel.onCancel(closeAnimation);
+		closeAnimation.done(evt.data.onPanelClosed);
 	}
 
 	return UserActionPanel;

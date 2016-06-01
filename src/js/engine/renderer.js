@@ -10,7 +10,7 @@ define(function(){
 		this.paper = Renderer.canvas.g().attr({"id": "layer-" + id});
 	}
 
-	/** @exports engine/renderer */
+	/** @namespace */
 	var Renderer = {
 		/** Reference to stage */
 		canvas: null,
@@ -22,7 +22,7 @@ define(function(){
 
 		/**
 		 * Collection of rendering layers currently at the stage
-		 * @type {Layer[]}
+		 * @type {Array.<String,Layer>}
 		 */
 		layers: [],
 

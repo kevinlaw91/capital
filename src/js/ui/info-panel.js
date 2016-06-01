@@ -120,7 +120,7 @@ define([
 
 			// Add handlers to tier stepper
 			function highlightField(evt){
-				var field = panel.find("[data-label='" + evt.data.field + "']")
+				var field = panel.find("[data-label='" + evt.data.field + "']");
 				if (evt.data.highlight){
 					field.addClass("highlight");
 				} else {
@@ -151,7 +151,7 @@ define([
 
 					// Fetch data from game session
 					var panel = Tab.INFO.panels.LOTINFO.node,
-					    lot   = require("engine/core").getSession().map[lot_id];
+					    lot   = require("engine/core").getSession().map.lot[lot_id];
 
 					// Definition of fields to be updated and its value
 					var fields = {

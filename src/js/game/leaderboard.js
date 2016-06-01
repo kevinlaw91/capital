@@ -5,16 +5,16 @@ define([
 	'use strict';
 
 	/** @exports game/leaderboard */
-	return {
+	var Leaderboard = {
 		ranking: null,
 		populate: function( playerList ) {
 			// Clone player list
-			this.ranking = playerList.slice(0);
-			this.sort();
+			Leaderboard.ranking = playerList.slice(0);
+			Leaderboard.sort();
 		},
 		sort: function() {
 			// Perform sorting
-			var newRanking = this.ranking.slice(0);
+			var newRanking = Leaderboard.ranking.slice(0);
 			newRanking.sort(
 				function( a, b ) {
 					/**
@@ -28,14 +28,14 @@ define([
 			// Check if ranking changed
 			var same = newRanking.every(function( player, index ) {
 				// Compare each rank to check if still are the same players
-				return player === this.ranking[index];
-			}, this);
+				return player === Leaderboard.ranking[index];
+			}, Leaderboard);
 
 			if(!same) {
-				this.ranking = newRanking;
-				this.onRankingChanged();
+				Leaderboard.ranking = newRanking;
+				Leaderboard.onRankingChanged();
 			}
-			this.onUpdated();
+			Leaderboard.onUpdated();
 		},
 		/**
 		 * Called when leaderboard was updated
@@ -49,7 +49,11 @@ define([
 		onRankingChanged: $.noop,
 		reset: function() {
 			// Clear rankings
-			this.ranking = [];
+			Leaderboard.ranking = [];
 		}
 	};
+
+	$.subscribe("Leaderboard.sort", Leaderboard.sort);
+
+	return Leaderboard;
 });

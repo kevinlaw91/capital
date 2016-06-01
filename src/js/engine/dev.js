@@ -1,7 +1,9 @@
 define(function() {
 	'use strict';
 
-	var devMode = true;
+	// Dev Mode Switch
+	var devMode = true,
+		cheatEnabled = true;
 
 	/**
 	 * Reference to game engine
@@ -20,6 +22,13 @@ define(function() {
 	     * @returns {Player}
 	     */
 	    playerById = function(id) { return S().players[id]; },
+		/**
+		 * Secret access token for dev module to use cheat
+		 * @see dev.storeSecret
+		 * @type {string}
+		 */
+		SECRET_KEY = null,
+
 	    /** @lends module:engine/dev */
 	    dev = {
 		    /** @type {Engine} */
@@ -34,6 +43,17 @@ define(function() {
 			    }
 
 			    delete this.init;
+		    },
+		    /** Store secret key for cheat */
+		    storeSecret: function(key) {
+				SECRET_KEY = key;
+			    //Seal
+			    delete dev.storeSecret;
+		    },
+		    cheat: function(str) {
+			    if(cheatEnabled){
+				    $.publish("Cheat", { token: SECRET_KEY, cheat: str});
+			    }
 		    },
 		    enableLogging: function() {
 			    var style = {
@@ -79,28 +99,24 @@ define(function() {
 
 	/** Instantly move player to starting position, completing a cycle */
 	dev.movePlayerToStartPosition = function(player) {
-		var lot = S().map[0],
+		var startingPoint = S().map.startingPoint,
 			p = playerById(player);
-		p.position.index = 0;
-		p.position.lot = lot;
-		p.moveTo(lot.x, lot.y);
+			p.moveTo(startingPoint.x, startingPoint.y, false);
 	};
 
 	/** Step player forwards */
 	dev.movePlayerBySteps = function(player, steps) {
-		if(!steps){ steps = 1; }
-		playerById(player).hideActiveMarker();
-		playerById(player).moveBySteps(steps);
+		dev.cheat("move " + player + " " + steps);
 	};
 
 	/** Sell specified lot to a player */
 	dev.setLotOwner = function(lot, player) {
-		S().map[lot].sellTo(playerById(player));
+		S().map.lot[lot].sellTo(playerById(player));
 	};
 
 	/** Upgrade specified lot */
 	dev.upgradeLot = function(lot) {
-		var l = S().map[lot];
+		var l = S().map.lot[lot];
 		if(l.upgradeAvailable()){
 			l.upgrade();
 		}
@@ -108,7 +124,7 @@ define(function() {
 
 	/** Generate random game state */
 	dev.randomState = function() {
-		var map = S().map;
+		var map = S().map.lot;
 
 		for(var i=0; i<map.length; i++){
 			var currentLot = map[i];

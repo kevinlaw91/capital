@@ -70,10 +70,8 @@ define(["engine/renderer"], function(Renderer){
 			// and apply it to the point
 			var matrix = Renderer.canvas.node.getScreenCTM();
 			p = p.matrixTransform(matrix);
-			// Obtain registration point
-			var reg = { x: p.x, y: p.y };
-
-			return reg;
+			// Return registration point
+			return { x: p.x, y: p.y };
 		};
 
 		/** Move the sprite to x,y position */

@@ -29,7 +29,7 @@ define([
 			var updaters = {
 				/** @see Tooltips.LOT */
 				LOT: function(context) {
-					context.text(require("engine/core").getSession().map[data.id].name);
+					context.text(require("engine/core").getSession().map.lot[data.id].name);
 				},
 				/** @see Tooltips.PLAYER */
 				PLAYER: function(context) {

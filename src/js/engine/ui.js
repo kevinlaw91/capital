@@ -12,8 +12,7 @@ define([
 			UI.Stage = require("ui/stage");
 			UI.Stage.init();
 
-			UI.DiceButton = require("ui/dice-button");
-			UI.DiceButton.init();
+			require("ui/dice-button");
 
 			UI.InfoPanel = require("ui/info-panel");
 			UI.InfoPanel.init();

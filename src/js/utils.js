@@ -1,6 +1,6 @@
 define(function(){
-	/** @module lib/utils */
-	var Utils = {
+	/** @module utils */
+	return {
 		clamp: function(value, min, max) {
 			/**
 			 * Returns a number whose value is limited to the given range.
@@ -32,11 +32,12 @@ define(function(){
 			});
 
 			return f.format;
-		})()
-	};
+		})(),
 
-	(function(global) {
-		/** JSON.minify()
+		/**
+		 *  minifyJSON()
+		 *
+		 *  Adapted from JSON.minify
 		 *  v0.1 (c) Kyle Simpson
 		 *  GitHub: https://github.com/getify/JSON.minify/
 		 *  Released under MIT License
@@ -48,20 +49,16 @@ define(function(){
 		 *
 		 *  Usage
 		 *  =====
-		 *  Pipe JSON string through JSON.minify() before handing it to JSON parser, e.g.:
+		 *  Pipe JSON string through minifyJSON() before handing it to JSON parser, e.g.:
 		 *
-		 *  JSON.parse(JSON.minify(str))
+		 *  JSON.parse(minifyJSON(str))
 		 */
-		if (typeof global.JSON == "undefined" || !global.JSON) {
-			global.JSON = {};
-		}
-
-		global.JSON.minify = function(json) {
+		minifyJSON: function(json) {
 			var tokenizer = /"|(\/\*)|(\*\/)|(\/\/)|\n|\r/g,
-			    in_string = false,
-			    in_multiline_comment = false,
-			    in_singleline_comment = false,
-			    tmp, tmp2, new_str = [], ns = 0, from = 0, lc, rc;
+				in_string = false,
+				in_multiline_comment = false,
+				in_singleline_comment = false,
+				tmp, tmp2, new_str = [], ns = 0, from = 0, lc, rc;
 
 			tokenizer.lastIndex = 0;
 
@@ -79,7 +76,7 @@ define(function(){
 
 				if (tmp[0] == "\"" && !in_multiline_comment && !in_singleline_comment) {
 					tmp2 = lc.match(/(\\)*$/);
-					if (!in_string || !tmp2 || (tmp2[0].length % 2) == 0) {	// start of string with ", or unescaped " character found to end string
+					if (!in_string || !tmp2 || (tmp2[0].length % 2) === 0) {	// start of string with ", or unescaped " character found to end string
 						in_string = !in_string;
 					}
 					from--; // include " character in next catch
@@ -103,8 +100,6 @@ define(function(){
 			}
 			new_str[ns++] = rc;
 			return new_str.join("");
-		};
-	})(window); //export to window object
-
-	return Utils;
+		}
+	};
 });
