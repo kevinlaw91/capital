@@ -14,20 +14,9 @@
 	<script data-main="src/js/requirejs-run.js" src="src/js/lib/require.js"></script>
 </head>
 <body>
-	<div id="app-viewport">
-		<div id="game-splash" class="screen hidden">
-
-		</div>
-		<div id="game-screen" class="screen">
-			<section id="game-tooltip-layer">
-				<div id="tooltip-lotname" role="tooltip">
-					<div class="contents"></div>
-				</div>
-				<div id="tooltip-playername" role="tooltip">
-					<div class="contents"></div>
-				</div>
-			</section>
-			<div id="game-frame">
+	<div id="app-main">
+		<div id="app-windows-layer">
+			<div id="game-frame" class="window">
 				<section id="info-panel">
 					<section id="info-panel-tab"></section>
 					<section id="info-panel-info" role="tabpanel" aria-labelledby="info-panel-tab-info">
@@ -156,7 +145,19 @@
 				<section id="nav-bar"></section>
 				<section id="stats-box"></section>
 			</div>
+			<div class="lightbox hidden"></div>
+			<section id="app-splash" class="window fullscreen hidden">
+				<div class="container"></div>
+			</section>
 		</div>
+		<section id="game-tooltip-layer">
+			<div id="tooltip-lotname" role="tooltip">
+				<div class="contents"></div>
+			</div>
+			<div id="tooltip-playername" role="tooltip">
+				<div class="contents"></div>
+			</div>
+		</section>
 	</div>
 </body>
 </html>
