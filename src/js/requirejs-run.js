@@ -2,9 +2,8 @@ require.config({
 		baseUrl: 'js',
 		paths: {
 			domReady: 'lib/require.domReady',
-			jquery: 'lib/jquery-2.2.0',
+			jquery: 'lib/jquery-3.0.0',
 			'jquery.easing': 'lib/jquery.easing.1.3',
-			'jquery.raf': 'lib/jquery.requestAnimationFrame',
 			'jquery.pub-sub': 'lib/jquery.tinypubsub',
 			'opentype': 'lib/opentype',
 			'snapsvg': 'lib/snap.svg',
@@ -13,7 +12,6 @@ require.config({
 		},
 		shim: {
 			'jquery.easing': ['jquery'],
-			'jquery.raf': ['jquery'],
 			'jquery.pub-sub': ['jquery']
 		}
 	}
