@@ -1,7 +1,6 @@
 require.config({
 		baseUrl: 'js',
 		paths: {
-			domReady: 'lib/require.domReady',
 			jquery: 'lib/jquery-3.0.0',
 			'jquery.easing': 'lib/jquery.easing.1.3',
 			'jquery.pub-sub': 'lib/jquery.tinypubsub',
@@ -22,14 +21,14 @@ console.time("Game Loaded");
 
 // Call entry point
 require([
-	"domReady",
+	"jquery",
 	"engine/config",
 	"engine/dev",
 	"engine/core",
     "engine/transform",
 	"utils",
 	"polyfills"
-], function(domReady, Config, Dev, Engine){
+], function($, Config, Dev, Engine){
 	// Provide shortcut methods to console object
 	Dev.useShortLogging();
 
@@ -46,7 +45,7 @@ require([
 	// Async wait for configs to load
 	Config.load().done(function() {
 		// Async wait for dom to get ready
-		domReady(function() {
+		$(document).ready(function() {
 			// DOM is ready
 			// Initialize engine
 			Engine.init();
