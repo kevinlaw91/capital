@@ -22,12 +22,12 @@ define([
 
 		log("Loading configuration files...");
 
-		for(var i in files) {
-			loading.push(
-				$.ajax("src/cfg/" + files[i] + ".cfg.json", {dataType: 'text'})
-				 .done(load_success)
-				 .fail(load_error)
-			);
+		for(var i=0, l = files.length; i<l; i++) {
+				loading.push(
+					$.ajax("src/cfg/" + files[i] + ".cfg.json", { dataType: 'text' })
+					 .done(load_success)
+					 .fail(load_error)
+				);
 		}
 
 		// Mark task as resolved when all config files are loaded
@@ -53,7 +53,7 @@ define([
 		    this.url.match(/[^\/]*\.cfg(?=\.json$)/) +
 		    "]");
 		task.reject();
-		throw new Error("Unable to load configuration file: "+
+		throw new Error("Unable to load configuration file: " +
 		                this.url.match(/[^\/]*\.cfg(?=\.json$)/));
 	}
 
