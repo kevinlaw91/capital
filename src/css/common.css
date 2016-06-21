@@ -85,6 +85,25 @@ body {
 	background-color: rgba(0, 0, 0, 0.75);
 }
 
+#app-windows-layer .lightbox.animate_on {
+	animation: lightbox-reveal 2s ease-out forwards;
+}
+
+#app-windows-layer .lightbox.animate_off {
+	pointer-events: none;
+	animation: lightbox-hide 0.5s ease-out forwards;
+}
+
+@keyframes lightbox-reveal {
+	0% { opacity: 0; }
+	100% { opacity: 1; }
+}
+
+@keyframes lightbox-hide {
+	0% { opacity: 1; }
+	100% { opacity: 0; }
+}
+
 #app-windows-layer .window {
 	z-index: 0;
 	min-width: 50vw;
