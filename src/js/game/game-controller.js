@@ -4,13 +4,15 @@ define([
 	"engine/config",
 	"game/randomizer",
 	"engine/dev",
-    "utils"
+	"utils",
+	"game/minigames"
 ], function($) {
 	'use strict';
 
 	// Imports
 	var Config = require("engine/config"),
-		formatAsCurrency = require("utils").formatAsCurrency;
+	    MiniGames = require("game/minigames"),
+	    formatAsCurrency = require("utils").formatAsCurrency;
 
 	// Utils function
 	function getSession(){
@@ -211,8 +213,16 @@ define([
 						Player.turn();
 						break;
 					case "MAP-CORNER-1":
-						// End current turn
-						Player.turn();
+						// Treasure Hunt Mini Game
+						var TreasureHunt = MiniGames.TreasureHunt;
+						TreasureHunt.onResult({
+							success: function() {
+								CashFlow(player, { add: TreasureHunt.getPrize(), source: "PRIZE" });
+								Player.turn();
+							},
+							failed: Player.turn
+						});
+						TreasureHunt.showDialog();
 						break;
 					case "MAP-CORNER-2":
 						// End current turn

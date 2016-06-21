@@ -169,6 +169,11 @@ body {
 	position: absolute;
 	top: 0;
 	left: 0;
+	transition: transform 500ms
+}
+
+#game-frame.shrink {
+	transform: scale(0.9)
 }
 
 #info-panel {
@@ -755,6 +760,242 @@ body {
 #player-action-button.hide #btn-roll {
 	animation: btn-roll-hide 200ms ease-out forwards;
 	stroke: none;
+}
+
+/* Mini Game: Treasure Hunt */
+
+/* Dialog transitions */
+.treasurehunt.animate_on {
+	animation: treasurehunt-reveal 1s cubic-bezier(0.23, 1, 0.32, 1) forwards; /* easeOutQuint */
+	transform: scale(1.3) perspective( 1000px ) rotateX(-50deg) translateY(-100px);
+	opacity: 0;
+}
+
+.treasurehunt.animate_off {
+	animation: treasurehunt-dismiss 2s cubic-bezier(0.23, 1, 0.32, 1) forwards; /* easeOutQuint */
+	transform: none;
+	opacity: 1;
+	pointer-events: none;
+}
+
+@keyframes treasurehunt-reveal {
+	100% {
+		transform: none;
+		opacity: 1;
+	}
+}
+
+@keyframes treasurehunt-dismiss {
+	100% {
+		opacity: 0;
+		transform: scale(2);
+	}
+}
+
+/* Contents transitions */
+.treasurehunt.animate_on h1, .treasurehunt.animate_on h2 {
+	transform: translateY(-20px);
+	opacity: 0;
+	animation: treasurehunt-transition 500ms forwards;
+}
+
+.treasurehunt.animate_on .grid {
+	transform: translateY(-50px);
+	animation: treasurehunt-transition 500ms 300ms forwards;
+}
+
+@keyframes treasurehunt-transition {
+	100% {
+		opacity: unset;
+		transform: none;
+	}
+}
+
+.treasurehunt.animate_on .cell {
+	transform: scale(0.7);
+	opacity: 0;
+	animation: treasurehunt-cell-transition 500ms forwards;
+}
+
+@keyframes treasurehunt-cell-transition {
+	100% {
+		transform: unset;
+		opacity: unset;
+	}
+}
+
+.treasurehunt.animate_on .cell:nth-of-type(1) { animation-delay: 300ms; }
+.treasurehunt.animate_on .cell:nth-of-type(2) { animation-delay: 350ms; }
+.treasurehunt.animate_on .cell:nth-of-type(3) { animation-delay: 400ms; }
+.treasurehunt.animate_on .cell:nth-of-type(4) { animation-delay: 450ms; }
+.treasurehunt.animate_on .cell:nth-of-type(5) { animation-delay: 500ms; }
+.treasurehunt.animate_on .cell:nth-of-type(6) { animation-delay: 550ms; }
+.treasurehunt.animate_on .cell:nth-of-type(7) { animation-delay: 600ms; }
+.treasurehunt.animate_on .cell:nth-of-type(8) { animation-delay: 650ms; }
+.treasurehunt.animate_on .cell:nth-of-type(9) { animation-delay: 700ms; }
+
+/* Status text transitions */
+.treasurehunt h1 span {
+	transform: scale(1.3) rotate(0.02deg); /* Subtle rotation to prevent shaky transition */
+}
+
+.treasurehunt h2 span {
+	transform: translateY(10px);
+}
+
+.treasurehunt *[aria-role='status'] span.animate_on {
+	transform: none;
+	opacity: 1;
+}
+
+.treasurehunt h1 span.animate_off {
+	transform: scale(1.3);
+	opacity: 0;
+}
+
+.treasurehunt h2 span.animate_off {
+	transform: translateY(-10px);
+	opacity: 0;
+}
+
+/* Styling */
+.treasurehunt .container {
+	background-color: #00a4ff;
+	padding: 45px;
+}
+
+
+.treasurehunt h1, .treasurehunt h2 {
+	position: relative;
+	font-family: 'Merriweather Sans', sans-serif;
+	text-align: center;
+	font-weight: 600;
+}
+
+.treasurehunt h1 {
+	font-size: 1.3rem;
+	height: 1.0rem;
+	color: #fff;
+	animation-delay: 400ms !important;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.treasurehunt h2 {
+	font-size: 0.8rem;
+	height: 1.5rem;
+	color: rgba(255, 255, 255, 0.85);
+	animation-delay: 800ms !important;
+	line-height: 2rem;
+}
+
+.treasurehunt *[aria-role='status'] span {
+	display: block;
+	position: absolute;
+	width: 100%;
+	transition: transform, opacity;
+	transition-duration: 1000ms;
+	opacity: 0;
+}
+
+.treasurehunt .grid {
+	display: flex;
+	flex-flow: row wrap;
+	margin: 1rem auto;
+	width: 330px;
+}
+
+.treasurehunt .cell {
+	/* Cells */
+	position: relative;
+	display: inline-block;
+	margin: 5px;
+	width: 100px;
+	height: 100px;
+	overflow: hidden;
+	transition: box-shadow 250ms;
+	/* Fix pixel shifting */
+	backface-visibility: hidden;
+}
+
+.treasurehunt .cell div {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+}
+
+.treasurehunt .cell.correct {
+	/* Contain treasure */
+	background-color: #fff;
+	box-shadow: 0 0 15px 3px white, 0 0 3px 3px #adff8c;
+}
+
+.treasurehunt .cell span {
+	font-family: 'Pathway Gothic One', sans-serif;
+	font-size: 1.8rem;
+	color: #fff;
+}
+
+.treasurehunt .cell.masked span {
+	opacity: 0.75;
+}
+
+.treasurehunt .cell.correct span {
+	color: #1374ab;
+	transition: transform 1.5s;
+	transform: scale(1.3);
+}
+
+.treasurehunt .cell.empty {
+	/* Empty */
+	background-color: #3d5be2;
+	box-shadow: inset 0 9px 15px -5px rgba(0, 0, 0, 0.3);
+}
+
+.treasurehunt .cell:before {
+	/* Unmasked cell style */
+	position: absolute;
+	background-color: #eee;
+	content: '';
+	display: block;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	transform: scale(0);
+	opacity: 0;
+	transition: transform 300ms, opacity 300ms, background-color 300ms;
+}
+
+.treasurehunt .cell:hover::before {
+	/* Cell mouse over */
+	background-color: #fff;
+}
+
+.treasurehunt .cell:active::before {
+	/* Cell mouse down */
+	transition: background-color 100ms;
+	background-color: #d7fff7;
+}
+
+/* Masked cell style (before reveal) */
+.treasurehunt .grid:not(.reveal) .cell.masked {
+	box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15), 0 1px 8px rgba(0, 0, 0, 0.25);
+}
+
+.treasurehunt .grid:not(.reveal) .cell.masked::before {
+	transform: scale(2);
+	opacity: 1;
+}
+
+/* Masked cell style (when revealead) */
+.treasurehunt .grid.reveal .cell.masked {
+	/* Masked cell style */
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.treasurehunt .grid.reveal .cell.masked::before {
+	opacity: 0;
 }
 
 /* Splash screen */

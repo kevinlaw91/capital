@@ -58,12 +58,19 @@ define([
 						Engine.ASSET_LOADED,
 						Engine.STAGE_READY
 					).done(function() {
-						// Called when game engine is loaded
-						console.timeEnd("Game Loaded");
+						log("Unpacking assets...");
+						require(["ui/dialogs"], function(DialogManager) {
+							// Prepare Dialog
+							var getUIFragment = AssetManager.FragmentStore.get;
+							DialogManager.register("treasurehunt", getUIFragment("dialog-minigame-treasurehunt"));
 
-						// Create new game session
-						Engine.getGame()
-						      .newSession();
+							// Called when game engine is loaded
+							console.timeEnd("Game Loaded");
+
+							// Create new game session
+							Engine.getGame()
+							      .newSession();
+						});
 					});
 				});
 			});
