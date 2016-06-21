@@ -22,11 +22,8 @@ define([
 		getSession: function(){
 			return Engine.game.getSession();
 		},
-
-		loading: {
-			ASSET_LOADED: $.Deferred(),
-			STAGE_READY: $.Deferred()
-		}
+		ASSET_LOADED: $.Deferred(),
+		STAGE_READY: $.Deferred()
 	};
 
 	/**
@@ -38,42 +35,38 @@ define([
 		log("[EVENT] Initializing engine...", "event");
 
 		require(["engine/ui"], function(UI) {
+			// Init UI
 			UI.init();
-		});
 
-		require([
-			"ui/stage",
-			"engine/assets",
-			"engine/script/stage-setup"
-		], function(Stage, AssetManager) {
-			// Fired when stage SVG node was created
-			Stage.nodeReady.done(
-				function() {
+			require([
+				"ui/stage",
+				"engine/assets",
+				"engine/script/stage-setup"
+			], function(Stage, AssetManager) {
+				// Fired when stage SVG node was created
+				Stage.nodeReady.done(function() {
 					// Set up stage
-					require("engine/script/stage-setup")(Engine.loading.STAGE_READY);
+					require("engine/script/stage-setup")(Engine.STAGE_READY);
 
 					// Async load game assets
 					log("Loading game assets...");
 					AssetManager.SymbolStore.setSymbolStore(Stage.container.node);
-					AssetManager.load().done(function(){
-						// Notify assets ready
-						Engine.loading.ASSET_LOADED.resolve();
+					AssetManager.load()
+					            .done(Engine.ASSET_LOADED.resolve);
+
+					$.when(
+						Engine.ASSET_LOADED,
+						Engine.STAGE_READY
+					).done(function() {
+						// Called when game engine is loaded
+						console.timeEnd("Game Loaded");
+
+						// Create new game session
+						Engine.getGame()
+						      .newSession();
 					});
-
-					log("[EVENT] Engine is running", "event");
-				}
-			);
-		});
-
-		$.when(
-			Engine.loading.ASSET_LOADED,
-			Engine.loading.STAGE_READY
-		).done(function(){
-			// Called when game engine is loaded
-			console.timeEnd("Game Loaded");
-
-			// Create new game session
-			Engine.getGame().newSession();
+				});
+			});
 		});
 
 		// Load developer module
