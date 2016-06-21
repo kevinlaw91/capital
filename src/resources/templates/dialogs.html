@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<body>
+	<!--
+	"data-templateid" attribute value will be used for internal referencing
+	-->
+
+	<!-- Dialog for mini game treasure hunt -->
+	<template data-templateid="dialog-minigame-treasurehunt">
+		<div class="container">
+			<div>
+				<div>
+					<h1 aria-role="status">
+						<span class="animate_on">Find The Treasure</span>
+						<span>Well Done</span>
+						<span>Oops</span>
+					</h1>
+					<h2 aria-role="status">
+						<span>Last Attempt</span>
+						<span>2 Attempts Remaining</span>
+						<span class="animate_on">3 Attempts Remaining</span>
+					</h2>
+				</div>
+				<div class="grid">
+					<div data-pos="0" class="cell masked"></div>
+					<div data-pos="1" class="cell masked"></div>
+					<div data-pos="2" class="cell masked"></div>
+					<div data-pos="3" class="cell masked"></div>
+					<div data-pos="4" class="cell masked"></div>
+					<div data-pos="5" class="cell masked"></div>
+					<div data-pos="6" class="cell masked"></div>
+					<div data-pos="7" class="cell masked"></div>
+					<div data-pos="8" class="cell masked"></div>
+				</div>
+			</div>
+		</div>
+	</template>
+</body>
+</html>

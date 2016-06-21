@@ -3,6 +3,7 @@ define([
 	"opentype",
 	"snapsvg"
 ], function( $, OpenType, Snap) {
+	"use strict";
 
 	/** @namespace */
 	var AssetManager = {};
@@ -153,6 +154,67 @@ define([
 			}
 		};
 	})();
+	
+	/** @namespace */
+	AssetManager.FragmentStore = (function(){
+		/**
+		 * Place to store loaded fragments
+		 * @private
+		 */
+		var store = new Map();
+
+		/**
+		 * Check support for template element
+		 * @type {boolean}
+		 */
+		var supported = ("content" in document.createElement("template"));
+
+		/** @param el - A template element returned from ajax */
+		function cacheTemplate(index, el) {
+			// For browser that doesn't support <template>
+			if(!supported){
+				var fragment = document.createDocumentFragment(),
+					children = el.children;
+
+				for(var i=0, l=children.length; i<l; i++) {
+					fragment.appendChild(children[i]);
+				}
+
+				el.content = fragment;
+			}
+
+			store.set(el.getAttribute("data-templateid"), el.content);
+		}
+
+		return {
+			/**
+			 * Retrieve a DOM template
+			 * @param {string} id
+			 * @returns {DocumentFragment|undefined}
+			 */
+			get: function(id) {
+				return store.get(id);
+			},
+			/**
+			 * Load a file that contains DOM fragment
+			 * @param path - Path of the file to be loaded
+			 */
+			loadFromFile: function(path) {
+				// Promise to track progress
+				var tracking = $.Deferred();
+
+				// Push to monitoring stacks
+				loading_tasks.push(tracking);
+
+				$.get(path, "html").done(
+					function(contents) {
+						$(contents).filter("template").each(cacheTemplate);
+						tracking.resolve();
+					}
+				);
+			}
+		};
+	})();
 
 	/** Stores file load promise objects */
 	var loading_tasks = [];
@@ -175,6 +237,11 @@ define([
 			"src/resources/fonts/passion-one-regular.woff",
 			"src/resources/fonts/pathway-gothic-one-regular.woff"
 		].forEach(AssetManager.FontStore.loadFromFile);
+
+		// Load UI Fragments
+		[
+			"src/resources/templates/dialogs.html"
+		].forEach(AssetManager.FragmentStore.loadFromFile);
 
 		// Mark task as resolved when all asset files are loaded
 		$.when.apply($, loading_tasks).done(function() {
