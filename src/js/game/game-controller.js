@@ -24,15 +24,15 @@ define([
 	//
 
 	// Secret key for dev module to access controller
-	var SECRET_KEY = null;
+	var SECRET_KEY = {};
 
 	// Generate secret key
 	if(window.crypto && window.crypto.getRandomValues){
 		var byteArray = new Uint32Array(2);
 		window.crypto.getRandomValues(byteArray);
-		SECRET_KEY = byteArray[0].toString(36) + byteArray[1].toString(36);
+		SECRET_KEY.key = byteArray[0].toString(36) + byteArray[1].toString(36);
 	} else {
-		SECRET_KEY = (Math.random() * new Date().getTime()).toString(36).replace( /\./g , '');
+		SECRET_KEY.key = (Math.random() * new Date().getTime()).toString(36).replace( /\./g , '');
 	}
 
 	// Pass to dev module

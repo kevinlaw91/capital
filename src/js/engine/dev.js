@@ -27,7 +27,7 @@ define(function() {
 		 * @see dev.storeSecret
 		 * @type {string}
 		 */
-		SECRET_KEY = null,
+		SECRET_KEY,
 
 	    /** @lends module:engine/dev */
 	    dev = {
