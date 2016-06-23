@@ -1,4 +1,5 @@
-require.config({
+require.config(
+	{
 		baseUrl: 'js',
 		paths: {
 			jquery: 'lib/jquery-3.0.0',
@@ -12,7 +13,8 @@ require.config({
 		shim: {
 			'jquery.easing': ['jquery'],
 			'jquery.pub-sub': ['jquery']
-		}
+		},
+		defaultErrback: null
 	}
 );
 
@@ -25,7 +27,7 @@ require([
 	"engine/config",
 	"engine/dev",
 	"engine/core",
-    "engine/transform",
+	"engine/transform",
 	"utils",
 	"polyfills"
 ], function($, Config, Dev, Engine){
