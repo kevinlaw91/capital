@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<body>
+	<!--
+	-- Used in dialog boxes
+	-- "data-templateid" attribute value will be used for internal referencing
+	-->
+
+	<!-- Prompt to buy unowned lot -->
+	<template data-templateid="panel-prompt-buy">
+		<h1><span data-label="title"></span></h1>
+		<p>Cost: <span data-label="cost">$0</span></p>
+		<button type="button" class="main">
+			<svg xmlns="http://www.w3.org/2000/svg" class="success-icon">
+				<path d="M2.093 18.192l7.808 7.79L29.908 6.018"/>
+			</svg>
+			<span>BUY FOR <span data-label="cost">$0</span></span>
+		</button>
+		<button type="button" class="decline"><span>DECLINE</span></button>
+	</template>
+
+	<!-- Prompt to upgrade lot -->
+	<template data-templateid="panel-prompt-upgrade">
+		<h1>Upgrade Property</h1>
+		<p>Cost: <span data-label="cost">$0</span></p>
+		<button type="button" class="player-action-btn-upgrade main">
+			<svg xmlns="http://www.w3.org/2000/svg" class="success-icon">
+				<path d="M2.093 18.192l7.808 7.79L29.908 6.018"/>
+			</svg>
+			<span>UPGRADE FOR <span data-label="cost">$0</span></span>
+		</button>
+		<button type="button" class="decline"><span>DECLINE</span></button>
+	</template>
+</body>
+</html>

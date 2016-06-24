@@ -1,36 +1,55 @@
 define([
 	"jquery",
-	"jquery.pub-sub"
+	"jquery.pub-sub",
+	"engine/assets"
 ], function($) {
 	'use strict';
+
+	// Import
+	var getUIFragment = require("engine/assets").FragmentStore.get;
+
+	/** Prepare a fragment to be appended to other nodes */
+	function inflate(fragmentID){
+		return getUIFragment(fragmentID).cloneNode(true);
+	}
 	
 	var UserActionPanel = {
+		node: "#action-panel",
 		init: function() {
+			// Init panel
+			UserActionPanel.node = $(UserActionPanel.node);
+
 			// Buy Panel
-			$("#action-panel-buy").on("click", "button", UserActionPanel.panels.PROPERTY_BUY.disable);
-			UserActionPanel.panels.PROPERTY_BUY.disable();
+			PANEL_PROPERTY_BUY.node
+				.append(inflate("panel-prompt-buy"))
+				.on("click", "button", PANEL_PROPERTY_BUY.disable)
+				.appendTo(UserActionPanel.node);
+			PANEL_PROPERTY_BUY.disable();
 
 			// Upgrade Panel
-			$("#action-panel-upgrade").on("click", "button", UserActionPanel.panels.PROPERTY_BUY.disable);
-			UserActionPanel.panels.PROPERTY_UPGRADE.disable();
+			PANEL_PROPERTY_UPGRADE.node
+				.append(inflate("panel-prompt-upgrade"))
+				.on("click", "button", PANEL_PROPERTY_UPGRADE.disable)
+				.appendTo(UserActionPanel.node);
+			PANEL_PROPERTY_UPGRADE.disable();
 
 			delete UserActionPanel.init;
 		},
 		panels: {
 			PROPERTY_BUY: {
-				node: $("#action-panel-buy"),
+				node: $("<section />"),
 				offer: null,
 				enable: function() {
-					UserActionPanel.panels.PROPERTY_BUY.node.find("button").prop('disabled', false);
+					PANEL_PROPERTY_BUY.node.find("button").prop('disabled', false);
 				},
 				disable: function() {
-					UserActionPanel.panels.PROPERTY_BUY.node.find("button").prop('disabled', true);
+					PANEL_PROPERTY_BUY.node.find("button").prop('disabled', true);
 				},
 				prompt: function(data) {
 					// Make target panel visible
 					UserActionPanel.selectPanel("PROPERTY_BUY");
 
-					var panel = UserActionPanel.panels.PROPERTY_BUY;
+					var panel = PANEL_PROPERTY_BUY;
 
 					// Fill information
 					for(var field in data.fields) {
@@ -74,10 +93,10 @@ define([
 				},
 				onFocus: function() {
 					// Focus default button
-					UserActionPanel.panels.PROPERTY_BUY.node.find("button.main").focus();
+					PANEL_PROPERTY_BUY.node.find("button.main").focus();
 				},
 				onComplete: function(prom) {
-					var panel = UserActionPanel.panels.PROPERTY_BUY;
+					var panel = PANEL_PROPERTY_BUY;
 
 					// Clean up completed offer
 					panel.offer = null;
@@ -92,19 +111,19 @@ define([
 				}
 			},
 			PROPERTY_UPGRADE: {
-				node: $("#action-panel-upgrade"),
+				node: $("<section />"),
 				offer: null,
 				enable: function() {
-					UserActionPanel.panels.PROPERTY_UPGRADE.node.find("button").prop('disabled', false);
+					PANEL_PROPERTY_UPGRADE.node.find("button").prop('disabled', false);
 				},
 				disable: function() {
-					UserActionPanel.panels.PROPERTY_UPGRADE.node.find("button").prop('disabled', true);
+					PANEL_PROPERTY_UPGRADE.node.find("button").prop('disabled', true);
 				},
 				prompt: function(data) {
 					// Make target panel visible
 					UserActionPanel.selectPanel("PROPERTY_UPGRADE");
 
-					var panel = UserActionPanel.panels.PROPERTY_UPGRADE;
+					var panel = PANEL_PROPERTY_UPGRADE;
 
 					// Fill information
 					for(var field in data.fields) {
@@ -148,10 +167,10 @@ define([
 				},
 				onFocus: function() {
 					// Focus default button
-					UserActionPanel.panels.PROPERTY_UPGRADE.node.find("button.main").focus();
+					PANEL_PROPERTY_UPGRADE.node.find("button.main").focus();
 				},
 				onComplete: function(prom) {
-					var panel = UserActionPanel.panels.PROPERTY_UPGRADE;
+					var panel = PANEL_PROPERTY_UPGRADE;
 
 					// Clean up completed offer
 					panel.offer = null;
@@ -169,7 +188,7 @@ define([
 		selectPanel: function(id) {
 			if(UserActionPanel.panels.hasOwnProperty(id)){
 				// Hide and reset all panels first
-				$("#action-panel").find("section").removeClass("done").hide();
+				UserActionPanel.node.find("section").removeClass("done").hide();
 
 				// Show selected panel only
 				var panel = UserActionPanel.panels[id];
@@ -179,7 +198,7 @@ define([
 		slideOpen: function(prom) {
 			var transition = prom || $.Deferred(),
 			    panel = $("#stage-box-slide");
-			panel.css("top", $("#action-panel").height() * -1);
+			panel.css("top", UserActionPanel.node.height() * -1);
 			panel.one('transitionend', transition.resolve);
 
 			return transition.promise();
@@ -204,16 +223,20 @@ define([
 		}
 	};
 
+	// Reference
+	var PANEL_PROPERTY_BUY = UserActionPanel.panels.PROPERTY_BUY,
+	    PANEL_PROPERTY_UPGRADE = UserActionPanel.panels.PROPERTY_UPGRADE;
+
 	// Register handlers for UserActionPanel
 	$.subscribe(
 		"UI.UserActionPanel.PromptPropertyBuy",
-		{ panel: UserActionPanel.panels.PROPERTY_BUY },
+		{ panel: PANEL_PROPERTY_BUY },
 		UserActionPanel.prompt
 	);
 
 	$.subscribe(
 		"UI.UserActionPanel.PromptPropertyUpgrade",
-		{ panel: UserActionPanel.panels.PROPERTY_UPGRADE },
+		{ panel: PANEL_PROPERTY_UPGRADE },
 		UserActionPanel.prompt
 	);
 
