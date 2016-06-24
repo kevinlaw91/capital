@@ -1,8 +1,23 @@
 define([
 	"engine/game",
-	"utils"
+	"engine/ui",
+	"engine/assets",
+	"engine/camera",
+	"engine/renderer",
+	"ui/stage",
+	"ui/dialogs",
+	"engine/script/make-layers",
+	"engine/script/asset-load"
 ],function() {
 	'use strict';
+
+	// Imports
+	var AssetManager = require("engine/assets"),
+		Camera = require("engine/camera"),
+		DialogManager = require("ui/dialogs"),
+		Renderer = require("engine/renderer"),
+		Stage = require("ui/stage"),
+		UI = require("engine/ui");
 
 	/** @namespace Engine */
 	var Engine = {
@@ -36,9 +51,6 @@ define([
 		}
 	};
 
-	/** @see module:utils.runScript */
-	var runScript = require("utils").runScript;
-
 	/**
 	 * Entry point for app logic
 	 * This function will run after configs are loaded and dom is ready
@@ -48,66 +60,53 @@ define([
 		// Initializing app
 		log("[EVENT] Initializing engine...", "event");
 
-		require(["engine/ui"], function(UI) {
-			// Init UI
-			UI.init();
+		// Init UI
+		UI.init();
 
-			require([
-				"ui/stage",
-				"engine/assets"
-			], function(Stage, AssetManager) {
-				// Fired when stage SVG node was created
-				Stage.nodeReady.done(function() {
-					// Define SVG symbol defs container svg
-					AssetManager.SymbolStore.setSymbolStore(Stage.container.node);
+		// Fired when stage SVG node was created
+		Stage.nodeReady.done(function() {
+			// Define SVG symbol defs container svg
+			AssetManager.SymbolStore.setSymbolStore(Stage.container.node);
 
-					// Set up stage
-					var STATUS_STAGESETUP = Promise.all([
-						require(["engine/camera"], function(Camera){ Camera.setup(); }),
-						require(["engine/renderer"], function(Renderer) { Renderer.setCanvas(Stage.canvas); }),
-						require(["engine/script/make-layers"], runScript)
-					]);
+			// Set up stage
+			Camera.setup();
+			Renderer.setCanvas(Stage.canvas);
+			require("engine/script/make-layers")();
 
-					// Load game assets
-					log("Loading game assets...");
-					var STATUS_ASSETLOADED = new Promise(function(resolve) {
-						resolve(require(["engine/script/asset-load"], runScript));
-					});
-
-					var STATUS_PREPAREUI = new Promise(function(resolve, reject) {
-						STATUS_ASSETLOADED
-							.then(function() {
-								log("Unpacking assets...");
-							})
-							.then(function() {
-								// Prepare UI
-								UI.UserActionPanel.init();
-								UI.InfoPanel.init();
-							})
-							.then(function(){
-								// Prepare Dialog
-								return require(["ui/dialogs"],
-									function(DialogManager) {
-										try {
-											var getUIFragment = AssetManager.FragmentStore.get;
-											DialogManager.register("treasurehunt", getUIFragment("dialog-minigame-treasurehunt"));
-											return Promise.resolve();
-										} catch(e) {
-											return Promise.reject(new Error("(DialogManager) Failed when registering dialog boxes."));
-										}
-									});
-							})
-							.then(resolve, reject);
-					});
-
-					// Run in parallel
-					Promise.all([
-						STATUS_STAGESETUP,
-						STATUS_ASSETLOADED,
-						STATUS_PREPAREUI
-					]).then(Engine.onload);
-				});
+			// Load game assets
+			log("Loading game assets...");
+			var STATUS_ASSETLOADED = new Promise(function(resolve) {
+				resolve(require("engine/script/asset-load")());
 			});
+
+			var STATUS_PREPAREUI = new Promise(function(resolve, reject) {
+				STATUS_ASSETLOADED
+					.then(function() {
+						log("Unpacking assets...");
+					})
+					.then(function() {
+						// Prepare UI
+						UI.UserActionPanel.init();
+						UI.InfoPanel.init();
+					})
+					.then(function(){
+						// Prepare Dialog
+						try {
+							var getUIFragment = AssetManager.FragmentStore.get;
+							DialogManager.register("treasurehunt", getUIFragment("dialog-minigame-treasurehunt"));
+							return Promise.resolve();
+						} catch(e) {
+							return Promise.reject(new Error("(DialogManager) Failed when registering dialog boxes."));
+						}
+					})
+					.then(resolve, reject);
+			});
+
+			// Run in parallel
+			Promise.all([
+				STATUS_ASSETLOADED,
+				STATUS_PREPAREUI
+			]).then(Engine.onload);
 		});
 
 		// Load developer module

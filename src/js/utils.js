@@ -100,12 +100,6 @@ define(function(){
 			}
 			new_str[ns++] = rc;
 			return new_str.join("");
-		},
-
-		/**
-		 * Helper object to run loaded script
-		 * @callback
-		 */
-		runScript: function(s){ return s(); }
+		}
 	};
 });
