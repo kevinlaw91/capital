@@ -54,4 +54,12 @@ define(function() {
 			return -1;
 		};
 	}
+
+	// (ECMA2015) Promise
+	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+	if(typeof Promise === "undefined") {
+		require(["lib/promise"], function(polyfill) {
+			polyfill(window);
+		});
+	}
 });
