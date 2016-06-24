@@ -8,16 +8,13 @@ define([
 	'use strict';
 
 	var UI = {
+		InfoPanel: require("ui/info-panel"),
 		UserActionPanel: require("ui/user-action-panel"),
 		init: function() {
 			UI.Stage = require("ui/stage");
 			UI.Stage.init();
 
 			require("ui/dice-button");
-
-			UI.InfoPanel = require("ui/info-panel");
-			UI.InfoPanel.init();
-
 			require("ui/tooltip");
 
 			delete UI.init;

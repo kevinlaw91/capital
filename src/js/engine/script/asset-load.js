@@ -27,7 +27,8 @@ define(["engine/assets"], function(AssetManager) {
 		// Load UI Fragments
 		[
 			"src/resources/templates/dialogs.html",
-			"src/resources/templates/user-action-prompt.html"
+			"src/resources/templates/user-action-prompt.html",
+			"src/resources/templates/info-panel.html"
 		].forEach(function(url) {
 			assets.push(AssetManager.FragmentStore.loadFromFile(url));
 		});

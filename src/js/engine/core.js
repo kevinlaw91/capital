@@ -82,6 +82,7 @@ define([
 							.then(function() {
 								// Prepare UI
 								UI.UserActionPanel.init();
+								UI.InfoPanel.init();
 							})
 							.then(function(){
 								// Prepare Dialog

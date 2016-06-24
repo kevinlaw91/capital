@@ -3,38 +3,38 @@ define([
 	"jquery.pub-sub",
 	"game/leaderboard",
 	"engine/core",
-	"utils"
+	"utils",
+	"engine/assets"
 ], function($) {
 	'use strict';
 
 	// Imports
-	var formatAsCurrency = require("utils").formatAsCurrency;
+	var formatAsCurrency = require("utils").formatAsCurrency,
+	    getUIFragment = require("engine/assets").FragmentStore.get;
 
 	var InfoPanel = {
+		node: $("#info-panel"),
+		TabBar: $("<section/>", { id: "info-panel-tab"} ),
 		init: function(){
 			// Construct tab bar
-			var tablist = $("<ul/>").attr("role","tablist");
-			tablist.appendTo($("#info-panel-tab"));
-
-			// Generate prototype select method for each tab
-			function generateSelectMethod(tab){
-				return function() {
-					InfoPanel.selectTab(tab);
-				};
-			}
+			var tablist = $("<ul/>", { "role": "tablist" });
+			InfoPanel.TabBar
+			         .append(tablist)
+			         .appendTo(InfoPanel.node);
 
 			// Construct tabs
 			for(var t in InfoPanel.Tabs) {
 				if(InfoPanel.Tabs.hasOwnProperty(t)) {
 					// Generate select() method for each tab
 					var tab = InfoPanel.Tabs[t];
-					tab.select = generateSelectMethod(tab);
+					tab.select = InfoPanel.selectTab.bind(tab);
 
-					$("<li/>")
-						.attr({
+					// Render Tab
+					$("<li/>",
+						{
 							"id": tab.id,
 							"role": "tab",
-							"aria-controls": tab.container,
+							"aria-controls": tab.container.attr("id"),
 							"aria-selected": "false",
 							"tabindex": "0"
 						})
@@ -42,29 +42,36 @@ define([
 						.click(tab.select)
 						.appendTo(tablist);
 
+					// Set metadata for tabpanels
+					tab.container.attr({
+						"role": "tabpanel",
+						"aria-labelledby": tab.id
+					});
+
 					// Run tab setup() if available
-					if(tab.setup){
+					if(tab.setup) {
 						tab.setup();
 					}
+
+					// Attach only when ready
+					tab.container
+					   .insertAfter(InfoPanel.TabBar);
 				}
 			}
-
-			// Show Default panel for Info Tab
-			$.publish("UI.InfoPanel.Default.Show");
-
 			delete InfoPanel.init;
 		},
-	    selectTab: function(tab) {
-			var elem = "#" + tab.id;
+	    selectTab: function() {
+		    /** @this {InfoPanel.Tabs~Tab} Tab object */
+			var elem = "#" + this.id;
 
 			// Deselect all tabs
-			$("#info-panel-tab")
+			InfoPanel.TabBar
 				.find("li[role='tab']")
-				.attr({"aria-selected": "false"})
+				.attr({ "aria-selected": "false" })
 				.removeClass("selected");
 
 			// Hide all panels
-			$("#info-panel")
+			InfoPanel.node
 				.find("section[role='tabpanel']")
 				.attr("aria-hidden","true")
 				.hide();
@@ -74,11 +81,12 @@ define([
 				.attr("aria-selected","true")
 				.addClass("selected");
 
-			// Get corresponding tabpanel id and make it visible
-			var tabpanelID = $(elem).attr("aria-controls");
-			$("#" + tabpanelID).attr("aria-hidden","false")
-			                   .show();
+			// Make linked tabpanel visible
+			this.container
+			    .attr("aria-hidden","false")
+			    .show();
 		},
+		/** Collection of tabs */
 		Tabs: {}
 	};
 
@@ -86,41 +94,60 @@ define([
 	// Define tabs and panels
 	//
 
-	/** @alias InfoPanel.Tabs */
+	/** InfoPanel.Tabs */
 	var Tab = InfoPanel.Tabs;
 
 	/**
+	 * @typedef {object} InfoPanel.Tabs~Tab
+	 * @property {string} id - ID of the tab
+	 * @property {jQuery} container - Panel to be shown when tab is selected
+	 * @property {string} label - Label of the tab
+	 * @var {function} [setup] - Panel initialization script
+	 */
+
+	/**
 	 * Info tab
-	 * @lends InfoPanel.Tabs.INFO
+	 * @type InfoPanel.Tabs~Tab
+	 * @lends InfoPanel.Tabs~INFO
 	 */
 	Tab.INFO = {
 		id: "info-panel-tab-info",
-		container: "info-panel-info",
+		container: $("<section/>", { id: "info-panel-info" }),
 		label: "INFO",
-		showPanel: function(evt){
-			/** @param {object} evt.data.panel - A panel object defined in panels property */
+		showSubPanel: function(evt){
+			/** @param {object} evt.data.subpanel - Reference to a subpanel object */
 
 			// Hide all panel
-			var panels = Tab.INFO.panels;
-			for(var p in panels) {
-				if(panels.hasOwnProperty(p)) {
-					panels[p].node.hide();
+			var subpanels = Tab.INFO.subpanel;
+			for(var p in subpanels) {
+				if(subpanels.hasOwnProperty(p)) {
+					subpanels[p].node.hide();
 				}
 			}
 
-			// Show only specified panel
-			evt.data.panel.node.show();
+			// Show only selected subpanel
+			evt.data.subpanel.node.show();
 		},
 		setup: function(){
-			var panel;
-			/*
-			// Setup LOTINFO panel
-			*/
-			panel = Tab.INFO.panels.LOTINFO.node;
+			var subpanel;
+
+			// Load UI panel templates
+			for(var id in Tab.INFO.subpanel) {
+				if(Tab.INFO.subpanel.hasOwnProperty(id)) {
+					subpanel = Tab.INFO.subpanel[id];
+					subpanel.node
+					        .addClass("subpanel")
+					        .append(getUIFragment(subpanel.templateID))
+					        .appendTo(Tab.INFO.container);
+				}
+			}
+
+			// Customized setup for panels.LOTINFO
+			subpanel = Tab.INFO.subpanel.LOTINFO.node;
 
 			// Add handlers to tier stepper
 			function highlightField(evt){
-				var field = panel.find("[data-label='" + evt.data.field + "']");
+				var field = subpanel.find("[data-label='" + evt.data.field + "']");
 				if (evt.data.highlight){
 					field.addClass("highlight");
 				} else {
@@ -128,7 +155,7 @@ define([
 				}
 			}
 
-			var tierStepper = panel.find("[data-label='tier']");
+			var tierStepper = subpanel.find("[data-label='tier']");
 			tierStepper.find("li:nth-child(2)").mouseover({ field: "cost", highlight: true }, highlightField);
 			tierStepper.find("li:nth-child(2)").mouseout({ field: "cost", highlight: false }, highlightField);
 			tierStepper.find("li:nth-child(3)").mouseover({ field: "upgrade1", highlight: true }, highlightField);
@@ -139,18 +166,23 @@ define([
 			tierStepper.find("li:nth-child(5)").mouseout({ field: "upgrade3", highlight: false }, highlightField);
 			tierStepper.find("li:nth-child(6)").mouseover({ field: "upgrade4", highlight: true }, highlightField);
 			tierStepper.find("li:nth-child(6)").mouseout({ field: "upgrade4", highlight: false }, highlightField);
+
+			// Show default panel
+			$.publish("UI.InfoPanel.Default.Show");
 		},
-		panels: {
+		subpanel: {
 			DEFAULT: {
-				node: $("#info-panel-default")
+				node: $("<section/>", { id: "info-panel-default" }),
+				templateID: "panel-info-generic"
 			},
 			LOTINFO: {
-				node: $("#info-panel-lot"),
+				node: $("<section/>", { id: "info-panel-lot" }),
+				templateID: "panel-info-lot",
 				refresh: function( evt, lot_id ) {
 					/** @param {number} lot_id - Id of the lot */
 
 					// Fetch data from game session
-					var panel = Tab.INFO.panels.LOTINFO.node,
+					var panel = Tab.INFO.subpanel.LOTINFO.node,
 					    lot   = require("engine/core").getSession().map.lot[lot_id];
 
 					// Definition of fields to be updated and its value
@@ -196,7 +228,8 @@ define([
 				}
 			},
 			PLAYERINFO: {
-				node: $("#info-panel-player"),
+				node: $("<section/>", { id: "info-panel-player" }),
+				templateID: "panel-info-player",
 				/**
 				 * Last selected player
 				 * @type {Player}
@@ -205,7 +238,7 @@ define([
 				refresh: function( evt, player ) {
 					/** @param {Player} player - Reference to the player */
 
-					var panel = Tab.INFO.panels.PLAYERINFO;
+					var panel = Tab.INFO.subpanel.PLAYERINFO;
 
 					if(typeof player === "undefined") {
 						// Player is not specified
@@ -246,33 +279,37 @@ define([
 	};
 
 	// Register handler Default panel
-	$.subscribe("UI.InfoPanel.Default.Show", { panel: Tab.INFO.panels.DEFAULT }, Tab.INFO.showPanel);
+	$.subscribe("UI.InfoPanel.Default.Show", { subpanel: Tab.INFO.subpanel.DEFAULT }, Tab.INFO.showSubPanel);
 
 	// Register handler for Lot sprite onClick
-	$.subscribe("UI.InfoPanel.LotInfo.Refresh", Tab.INFO.panels.LOTINFO.refresh);
-	$.subscribe("UI.InfoPanel.LotInfo.Show", { panel: Tab.INFO.panels.LOTINFO }, Tab.INFO.showPanel);
+	$.subscribe("UI.InfoPanel.LotInfo.Refresh", Tab.INFO.subpanel.LOTINFO.refresh);
+	$.subscribe("UI.InfoPanel.LotInfo.Show", { subpanel: Tab.INFO.subpanel.LOTINFO }, Tab.INFO.showSubPanel);
 	$.subscribe("UI.InfoPanel.LotInfo.Show", function(){ Tab.INFO.select(); });
 
 	// Register handler for Player sprite onClick
-	$.subscribe("UI.InfoPanel.PlayerInfo.Refresh", Tab.INFO.panels.PLAYERINFO.refresh);
-	$.subscribe("UI.InfoPanel.PlayerInfo.Show", { panel: Tab.INFO.panels.PLAYERINFO }, Tab.INFO.showPanel);
+	$.subscribe("UI.InfoPanel.PlayerInfo.Refresh", Tab.INFO.subpanel.PLAYERINFO.refresh);
+	$.subscribe("UI.InfoPanel.PlayerInfo.Show", { subpanel: Tab.INFO.subpanel.PLAYERINFO }, Tab.INFO.showSubPanel);
 	$.subscribe("UI.InfoPanel.PlayerInfo.Show", function(){ Tab.INFO.select(); });
 
 	/**
 	 * Leaderboard tab
-	 * @lends InfoPanel.Tabs.LEADERBOARD
+	 * @lends InfoPanel.Tabs~LEADERBOARD
 	 */
 	Tab.LEADERBOARD = {
 		id: "info-panel-tab-leaderboard",
-		container: "info-panel-leaderboard",
+		container: $("<section/>", { id: "info-panel-leaderboard" }),
 		label: "Leaderboard",
+		setup: function(){
+			$("<section/>")
+				.append($("<ol/>", { "class": "leaderboard-list" }))
+				.appendTo(Tab.LEADERBOARD.container);
+		},
 		panel: {
-			node: $("#info-panel-leaderboard"),
 			entries: [],
 			rebuild: function() {
 				var leaderboard = require("game/leaderboard"),
 				    panel = Tab.LEADERBOARD.panel,
-				    listNode = panel.node.find(".leaderboard-list");
+				    listNode = Tab.LEADERBOARD.container.find(".leaderboard-list");
 
 				// Start from clean node
 				var rows = [];
@@ -282,10 +319,10 @@ define([
 				while(rows.length < leaderboard.ranking.length) {
 					// Construct DOM
 					var newRow = $("<li/>").append(
-						$("<div/>").addClass("player-color").css("backgroundColor", "white"),
-						$("<div/>").addClass("player-details").append(
-							$("<div/>").addClass("player-name").text("PLAYER_NAME"),
-							$("<div/>").addClass("player-net-worth").text("PLAYER_CASH")
+							$("<div/>", { "class": "player-color" }).css("backgroundColor", "white"),
+							$("<div/>", { "class": "player-details" }).append(
+							$("<div/>", { "class": "player-name" }).text("PLAYER_NAME"),
+							$("<div/>", { "class": "player-net-worth" }).text("PLAYER_CASH")
 						)
 					);
 					newRow.appendTo(listNode);
@@ -294,7 +331,7 @@ define([
 					rows.push(newRow);
 				}
 
-					// Store reference
+				// Store reference
 				panel.entries = rows;
 
 				leaderboard.onUpdated = panel.refresh;

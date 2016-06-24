@@ -261,29 +261,29 @@ body {
 
 /* Info Panel - Template */
 
-#info-panel-info .panel-template {
+#info-panel-info .subpanel {
 	font-family: 'Yantramanav', sans-serif;
 }
 
-#info-panel-info .panel-template header {
+#info-panel-info .subpanel header {
 	height: 120px;
 	background-color: #bdbdbd;
 	padding-bottom: 20px; /* bottom border */
 }
 
-#info-panel-info .panel-template header .shade {
+#info-panel-info .subpanel header .shade {
 	background-color: rgba(50, 50, 50, 0.85);
 	height: 100%;
 	padding-top: 25px;
 	padding-bottom: 25px;
 }
 
-#info-panel-info .panel-template header .shade * {
+#info-panel-info .subpanel header .shade * {
 	margin-left: 35px;
 	margin-right: 35px;
 }
 
-#info-panel-info .panel-template header h1 {
+#info-panel-info .subpanel header h1 {
 	line-height: 2rem;
 	font-size: 1.35rem;
 	font-weight: 500;
@@ -295,32 +295,31 @@ body {
 	max-width: 230px;
 }
 
-#info-panel-info .panel-template header .info-class {
+#info-panel-info .subpanel header .info-class {
 	text-transform: uppercase;
 	font-size: 0.7rem;
 	font-weight: 600;
 	color: rgba(255, 255, 255, 0.7);
 }
 
-
-#info-panel-info .panel-template .metadata {
+#info-panel-info .subpanel .metadata {
 	display: flex;
 	flex-direction: column;
 }
 
-#info-panel-info .panel-template .metadata .row {
+#info-panel-info .subpanel .metadata .row {
 	display: flex;
 	flex-direction: row;
 }
 
-#info-panel-info .panel-template .metadata div.item {
+#info-panel-info .subpanel .metadata div.item {
 	display: block;
 	flex-grow: 1;
 	flex-basis: 0;
 	padding: 15px;
 }
 
-#info-panel-info .panel-template .metadata span.label {
+#info-panel-info .subpanel .metadata span.label {
 	font-family: 'Merriweather Sans', sans-serif;
 	text-transform: uppercase;
 	display: block;
@@ -329,7 +328,7 @@ body {
 	color: #7d7d7d;
 }
 
-#info-panel-info .panel-template .metadata span.data {
+#info-panel-info .subpanel .metadata span.data {
 	display: block;
 	font-size: 1.4rem;
 	line-height: 1.4;
@@ -337,7 +336,7 @@ body {
 	color: rgba(255, 255, 255, 0.8);
 }
 
-#info-panel-info .panel-template .metadata div.data.small {
+#info-panel-info .subpanel .metadata div.data.small {
 	display: block;
 	font-size: 1rem;
 	line-height: 1;
@@ -346,7 +345,7 @@ body {
 	padding-top: 4px;
 }
 
-#info-panel-info .panel-template .metadata div.data.small span {
+#info-panel-info .subpanel .metadata div.data.small span {
 	line-height: 1.5;
 	display: block;
 }

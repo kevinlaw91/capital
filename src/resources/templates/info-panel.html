@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<body>
+	<!--
+	-- Used in InfoPanel
+	-- "data-templateid" attribute value will be used for internal referencing
+	-->
+
+	<!-- InfoPanel layout generic -->
+	<template data-templateid="panel-info-generic">
+		<p class="disabled">No item selected.</p>
+	</template>
+
+	<!-- InfoPanel layout for player info -->
+	<template data-templateid="panel-info-player">
+		<header>
+			<div class="shade">
+				<h1 data-label="name">PLAYER_NAME</h1>
+				<div class="info-class">Player</div>
+			</div>
+		</header>
+		<section class="metadata">
+			<div class="row">
+				<div class="item">
+					<span class="label">Cash</span>
+					<span class="data" data-label="cash">$0</span>
+				</div>
+				<div class="item">
+					<span class="label">Net Worth</span>
+					<span class="data" data-label="net_worth">$0</span>
+				</div>
+			</div>
+		</section>
+	</template>
+
+	<!-- InfoPanel layout for lot info -->
+	<template data-templateid="panel-info-lot">
+		<header>
+			<div class="shade">
+				<h1 data-label="name">PLACE_NAME</h1>
+				<div class="info-class">Place</div>
+			</div>
+		</header>
+		<section class="metadata">
+			<div class="row" style="box-shadow: inset 0 -5px 15px -5px rgba(0,0,0,0.75);">
+				<div class="item">
+					<ol class="stepper" data-label="tier" role="radiogroup">
+						<li title="Unowned" role="radio">
+							<span class="node">U</span>
+						</li>
+						<li title="Buy" role="radio">
+							<span class="node">B</span>
+						</li>
+						<li title="Upgraded to Tier 1" role="radio">
+							<span class="node">1</span>
+						</li>
+						<li title="Upgraded to Tier 2" role="radio">
+							<span class="node">2</span>
+						</li>
+						<li title="Upgraded to Tier 3" role="radio">
+							<span class="node">3</span>
+						</li>
+						<li title="Upgraded to Tier 4" role="radio">
+							<span class="node">4</span>
+						</li>
+					</ol>
+				</div>
+			</div>
+			<div class="row" style="background-color: #4e4e4e; box-shadow: 0 3px 3px rgba(0, 0, 0, 0.3)">
+				<div class="item">
+					<span class="label">Purchase</span>
+					<span class="data" data-label="cost">$0</span>
+				</div>
+				<div class="item">
+					<span class="label">Upgrades</span>
+					<div class="data small">
+						<span data-label="upgrade1">$0</span>
+						<span data-label="upgrade2">$0</span>
+						<span data-label="upgrade3">$0</span>
+						<span data-label="upgrade4">$0</span>
+					</div>
+				</div>
+				<div class="item">
+					<span class="label">Rent Value</span>
+					<span class="data" data-label="rent">$0</span>
+				</div>
+			</div>
+		</section>
+	</template>
+</body>
+</html>
