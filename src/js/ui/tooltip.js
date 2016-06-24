@@ -11,9 +11,15 @@ define([
 	 */
 	var Tooltips = {
 		/** @see updaters.LOT */
-		LOT: new Tooltip("#tooltip-lotname",0,-25),
+		LOT: new Tooltip(0, -25, function(node) {
+			node.attr({"id": "tooltip-lotname"})
+				.append($("<div/>", { "class": "contents" }));
+		}),
 		/** @see updaters.LOT */
-		PLAYER: new Tooltip("#tooltip-playername",0,-50)
+		PLAYER: new Tooltip(0, -50, function(node) {
+			node.attr({"id": "tooltip-playername"})
+			    .append($("<div/>", { "class": "contents" }));
+		})
 	};
 
 	/** Main tooltip controller */
@@ -55,25 +61,35 @@ define([
 
 	/**
 	 * Construct a tooltip controller object
-	 * @param {string} node - Selector string that points to the tooltip element
 	 * @param {number} offsetX - Default x offsets to be applied
 	 * @param {number} offsetY - Default y offsets to be applied
+	 * @param {function} setup - Script to render tooltip
 	 * @returns {Tooltip}
 	 * @constructor
 	 */
-	function Tooltip(node, offsetX, offsetY) {
-		this.node = $(node);
+	function Tooltip(offsetX, offsetY, setup) {
+		this.node = $("<div/>", { "role": "tooltip" });
 		this.offsetX = offsetX;
 		this.offsetY = offsetY;
+
+		// Run setup if available
+		if(setup) {
+			setup(this.node);
+		}
+
+		// Attach and hide
+		this.node.appendTo($("#game-tooltip-layer"))
+		    .attr("aria-hidden", "true")
+		    .hide();
 		return this;
 	}
 
 	Tooltip.prototype.hide = function() {
-		this.node.hide();
+		this.node.attr("aria-hidden","true").hide();
 	};
 
 	Tooltip.prototype.show = function() {
-		this.node.show();
+		this.node.attr("aria-hidden","false").show();
 	};
 
 	Tooltip.prototype.setPosition = function(left, top) {
