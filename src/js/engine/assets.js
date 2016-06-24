@@ -176,8 +176,8 @@ define([
 				var fragment = document.createDocumentFragment(),
 					children = el.children;
 
-				for(var i=0, l=children.length; i<l; i++) {
-					fragment.appendChild(children[i]);
+				while(children[0]) {
+					fragment.appendChild(children[0]);
 				}
 
 				el.content = fragment;
