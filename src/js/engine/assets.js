@@ -2,7 +2,7 @@ define([
 	"jquery",
 	"opentype",
 	"snapsvg"
-], function( $, OpenType, Snap) {
+], function($, OpenType, Snap) {
 	"use strict";
 
 	/** @namespace */
@@ -30,6 +30,7 @@ define([
 			 */
 			setSymbolStore: function(elem){
 				store = Snap(elem);
+				delete this.setSymbolStore;
 			},
 
 			/**
@@ -56,28 +57,23 @@ define([
 			 * @param path - Path of the file to be loaded
 			 */
 			loadFromFile: function(path){
-				// Define object to track progress
-				var tracking = $.Deferred();
-
-				// Push to monitoring stacks
-				loading_tasks.push(tracking);
-
-				// Load file
-				Snap.load( path,
-					(function( progress ) {
-						return function( fragment ) {
+				return new Promise(function(resolve, reject) {
+					// Load file
+					Snap.load(path, function(fragment) {
+						try {
 							fragment.selectAll("symbol")
 							        .forEach(AssetManager.SymbolStore.onFileLoaded);
-							progress.resolve();
-						};
-					})(tracking)
-				);
+							resolve();
+						} catch(e) {
+							reject(new Error("(SymbolStore) Failed to process [" + path + "]"));
+						}
+					});
+				});
 			},
 
 			/**
 			 * Extract symbols from a loaded file
 			 * @callback
-			 * @public
 			 * @param snapSymbol - Snap instance of a loaded symbol
 			 */
 			onFileLoaded: function(snapSymbol){
@@ -111,38 +107,39 @@ define([
 			 * @param path
 			 */
 			loadFromFile: function(path){
-				// Define object to track progress
-				var tracking = $.Deferred();
-
-				// Push to monitoring stacks
-				loading_tasks.push(tracking);
-
-				// Load file
-				OpenType.load( path,
-					(function ( progress ) {
-						return function(errorMsg, font) {
-							if (!errorMsg) {
+				return new Promise(function(resolve, reject) {
+					// Load file
+					OpenType.load(path, function(errorMsg, font) {
+						if (!errorMsg) {
+							try {
 								// Font loaded successfully
-
-								// Obtaining font metadata
-								var fontFamily = font.names.fontFamily.en,
-								    fontSubfamily = font.names.fontSubfamily.en;
-
-								// Register to font collection
-								if (fonts.has(fontFamily)){
-									fonts.get(fontFamily).set(fontSubfamily, font);
-								} else {
-									fonts.set(fontFamily, new Map().set(fontSubfamily, font));
-								}
-
-								// Mark task as completed
-								progress.resolve();
-							} else {
-								err(errorMsg);
+								AssetManager.FontStore.onFileLoaded(font);
+								resolve();
+							} catch(e) {
+								reject(new Error("(FontStore) Failed to process [" + path + "]"));
 							}
-						};
-					})(tracking)
-				);
+						} else {
+							reject(new Error("(FontStore) Failed to load [" + path + "]"));
+						}
+					});
+				});
+			},
+
+			/**
+			 * Handle loaded fonts
+			 * @callback
+			 */
+			onFileLoaded: function(font){
+				// Obtaining metadata
+				var fontFamily = font.names.fontFamily.en,
+					fontSubfamily = font.names.fontSubfamily.en;
+
+				// Register at font collection
+				if (fonts.has(fontFamily)){
+					fonts.get(fontFamily).set(fontSubfamily, font);
+				} else {
+					fonts.set(fontFamily, new Map().set(fontSubfamily, font));
+				}
 			},
 
 			/**
@@ -183,7 +180,12 @@ define([
 				el.content = fragment;
 			}
 
-			store.set(el.getAttribute("data-templateid"), el.content);
+			var templateID = el.getAttribute("data-templateid");
+			if(typeof templateID === "string" && templateID.length){
+				store.set(el.getAttribute("data-templateid"), el.content);
+			} else {
+				throw new Error("Template ID not found");
+			}
 		}
 
 		return {
@@ -200,58 +202,22 @@ define([
 			 * @param path - Path of the file to be loaded
 			 */
 			loadFromFile: function(path) {
-				// Promise to track progress
-				var tracking = $.Deferred();
-
-				// Push to monitoring stacks
-				loading_tasks.push(tracking);
-
-				$.get(path, "html").done(
-					function(contents) {
-						$(contents).filter("template").each(cacheTemplate);
-						tracking.resolve();
-					}
-				);
+				return new Promise(function(resolve, reject) {
+					$.get(path, "html").done(function(contents) {
+						try {
+							$(contents).filter("template")
+							           .each(cacheTemplate);
+							resolve();
+						} catch(e) {
+							reject(new Error("(FragmentStore) Failed to process [" + path + "]"));
+						}
+					}).fail(function(e) {
+						reject(new Error("(FragmentStore) " + e.status.toString() + " " + e.statusText + " [" + path + "]"));
+					});
+				});
 			}
 		};
 	})();
-
-	/** Stores file load promise objects */
-	var loading_tasks = [];
-
-	/** Pre-load assets */
-	AssetManager.load = function(){
-		// Track completion of task
-		var task = $.Deferred();
-
-		// Load SVG symbols from file
-		[
-			"src/resources/svg/floor.svg",
-			"src/resources/svg/token.svg",
-			"src/resources/svg/icons.svg",
-			"src/resources/svg/houses.svg"
-		].forEach(AssetManager.SymbolStore.loadFromFile);
-
-		// Load Fonts
-		[
-			"src/resources/fonts/passion-one-regular.woff",
-			"src/resources/fonts/pathway-gothic-one-regular.woff"
-		].forEach(AssetManager.FontStore.loadFromFile);
-
-		// Load UI Fragments
-		[
-			"src/resources/templates/dialogs.html"
-		].forEach(AssetManager.FragmentStore.loadFromFile);
-
-		// Mark task as resolved when all asset files are loaded
-		$.when.apply($, loading_tasks).done(function() {
-			//Called when all assets are loaded
-			info("Game asset load complete");
-			task.resolve();
-		 });
-
-		return task.promise();
-	};
 
 	return AssetManager;
 });
