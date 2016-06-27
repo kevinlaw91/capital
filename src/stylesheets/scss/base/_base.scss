@@ -1,0 +1,76 @@
+/* ============================================================================
+** Commons
+** ==========================================================================*/
+
+// Container size that fill whole screen
+.fullscreen {
+	width: 100vw;
+	height: 100vh;
+}
+
+// Disable selection
+.no-selection {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+// Truncate text with ellipsis
+.truncate-text {
+	white-space: nowrap;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+}
+
+// Ignore mouse events
+.no-pointer-events {
+	pointer-events: none;
+}
+
+/* ============================================================================
+** Base
+** ==========================================================================*/
+* {
+	margin: 0;
+	padding: 0;
+}
+
+*,
+*::before,
+*::after {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+html, body {
+	@extend .fullscreen;
+	font-size: 100%;
+}
+
+/* ============================================================================
+** Helpers
+** ==========================================================================*/
+
+.hidden {
+	display: none !important;
+}
+
+.pannable {
+	cursor: grab;
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
+
+	// Cursor for objects that can be clicked on
+	* {
+		cursor: default;
+	}
+
+	// During panning
+	&:active, &:active * {
+		cursor: grabbing;
+		cursor: -moz-grabbing;
+		cursor: -webkit-grabbing;
+	}
+}

@@ -1,0 +1,144 @@
+/* ============================================================================
+** App
+** ==========================================================================*/
+body {
+	overflow: hidden;
+	color: #AAA;
+}
+
+#app-main {
+	@extend .fullscreen;
+	background-color: #222;
+}
+
+#app-windows-layer {
+	@extend .fullscreen;
+	@include flex-center;
+	position: absolute;
+	z-index: 99;
+
+	.window {
+		z-index: 0;
+		min-width: 50vw;
+		min-height: 25vh;
+		display: flex;
+
+		> .container {
+			@include flex-center;
+			flex: 1 0 auto;
+		}
+	}
+
+	.lightbox {
+		@extend .fullscreen;
+		@include fixed(top 0 left 0);
+		display: block;
+		background-color: black(0.75);
+
+		&.animate_on {
+			animation: lightbox-reveal 2s ease-out forwards;
+			@at-root {
+				@keyframes lightbox-reveal {
+					0% { opacity: 0; }
+					100% { opacity: 1; }
+				}
+			}
+		}
+
+		&.animate_off {
+			pointer-events: none;
+			animation: lightbox-hide 0.5s ease-out forwards;
+			@at-root {
+				@keyframes lightbox-hide {
+					0% { opacity: 1; }
+					100% { opacity: 0; }
+				}
+			}
+		}
+	}
+}
+
+/* UI styles */
+#game-frame {
+	@extend .fullscreen;
+	@include absolute(top 0 left 0);
+	display: flex;
+	transition: transform 500ms;
+	margin: 0 auto;
+
+	&.shrink {
+		transform: scale(0.9);
+	}
+
+	@include screen-breakpoint(from 1000px until before ultra) {
+		max-width: 1599px;
+	}
+}
+
+#stage-box {
+	flex-grow: 3;
+	flex-shrink: 1;
+	position: relative;
+	overflow: hidden;
+
+	@include screen-breakpoint(before medium) {
+		@include size(100%);
+	}
+
+	@include screen-breakpoint(from medium until before 1000px) {
+		height: 100%;
+		width: calc(100% - 100px);
+	}
+
+	@include screen-breakpoint(after 1000px) {
+		height: 100%;
+		width: calc(100% - 300px);
+	}
+}
+
+#canvas-frame {
+	@include size(100%);
+	position: relative;
+	background-color: #222;
+}
+
+
+#stage-box-slide {
+	@include absolute(top 0);
+	@include size(100%);
+	transform: translateZ(0);
+	transition: top 250ms $easeOutCubic;
+
+	.contents {
+		@include size(100%);
+	}
+}
+
+#canvas-viewport {
+	// Disabled to reduce Firefox panning flickering
+	/* transition: transform 75ms ease; */
+}
+
+#nav-bar {
+	@include size(100px, 100%);
+	display: none;
+	flex-grow: 0;
+	flex-shrink: 0;
+	background-color: #555;
+
+	@include screen-breakpoint(from medium until before 1000px) {
+		display: block;
+	}
+}
+
+#stats-box {
+	@include size(250px, 100%);
+	display: none;
+	flex-grow: 0;
+	flex-shrink: 0;
+	background-color: #333;
+	
+	@include screen-breakpoint(after 1000px) {
+		display: block;
+	}
+}

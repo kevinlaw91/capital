@@ -1,0 +1,35 @@
+/* ============================================================================
+** Player tokens
+** ==========================================================================*/
+.player-token {
+	animation: player-token-rotate 1s linear infinite;
+	fill: none;
+	stroke: white {
+		width: 10;
+		dasharray: 22 7;
+		dashoffset: 29;
+	}
+}
+
+.player-token-appear {
+	// Animation when token changed as active
+	animation:  player-token-rotate 1s linear infinite,
+	            ground-marker-fadein 0.3s 1;
+	@at-root {
+		@keyframes player-token-rotate {
+			0% { stroke-dashoffset: 29 }
+			100% { stroke-dashoffset: 0 }
+		}
+
+		@keyframes ground-marker-fadein {
+			0% {
+				opacity: 0;
+				transform: translate(0, 20px);
+			}
+			100% {
+				opacity: 1;
+				transform: translate(0, 0px);
+			}
+		}
+	}
+}

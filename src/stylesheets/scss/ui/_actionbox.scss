@@ -1,0 +1,124 @@
+/* ============================================================================
+** Player Action Box
+** ==========================================================================*/
+#player-action-box {
+	@include absolute(bottom 0);
+	@extend .no-pointer-events;
+	transform: translateZ(0);
+	display: block;
+	width: 100%;
+}
+
+.player-action-box-layer {
+	@include absolute(bottom 0);
+	width: 100%;
+}
+
+.player-action-entry {
+	min-height: 100px;
+	width: 300px;
+	display: block;
+	border: 3px solid black(0.5);
+	background-color: black(0.8);
+	margin: 2px 0;
+
+	h1 {
+		font-family: 'Yantramanav', sans-serif;
+		font-weight: 200;
+		padding: 10px;
+	}
+}
+
+#btn-roll {
+	pointer-events: painted;
+	cursor: default;
+	fill: #bababa;
+	transition: fill 250ms, stroke 250ms;
+	stroke: white;
+	stroke-width: 5px;
+	transform-origin: 50% 50%;
+
+	&:not(.disabled) {
+		&:hover {
+			fill: #d8d8d8;
+		}
+
+		&:active {
+			fill: #e6e6e6;
+			stroke: none;
+		}
+	}
+}
+
+#player-action-button {
+	@include size(106px);
+	display: block;
+	margin: 0 auto;
+
+	// Dice button indeterminate state
+	&.moving {
+		animation: player-action-button-rotate 2s linear infinite;
+		@at-root {
+			@keyframes player-action-button-rotate {
+				100% {
+					transform: rotate(360deg);
+				}
+			}
+		}
+
+		#btn-roll {
+			stroke: {
+				dasharray: 1,250;
+				dashoffset: 0;
+				linecap: round;
+			}
+
+			animation: btn-roll-spinning-stroke 2s ease-in-out infinite;
+			@at-root {
+				@keyframes btn-roll-spinning-stroke {
+					0% {
+						stroke-dasharray: 1,250;
+						stroke-dashoffset: 0;
+					}
+					50% {
+						stroke-dasharray: 180,250;
+						stroke-dashoffset: -55px;
+					}
+					100% {
+						stroke-dasharray: 180,250;
+						stroke-dashoffset: -250px;
+					}
+				}
+			}
+		}
+	}
+
+	&.show #btn-roll {
+		opacity: 1;
+		animation: btn-roll-show 0.2s ease-in forwards;
+		@at-root {
+			@keyframes btn-roll-show {
+				0% { transform: scale(0,0); }
+				75% { transform: scale(1.1,1.1); }
+				100% { transform: scale(1,1); }
+			}
+		}
+	}
+
+	&.hide #btn-roll {
+		stroke: none;
+		animation: btn-roll-hide 0.2s ease-out forwards;
+		@at-root {
+			@keyframes btn-roll-hide {
+				25% {
+					transform: scale(1.1,1.1);
+					opacity: 1;
+				}
+				100% {
+					transform: scale(0,0);
+					opacity: 0;
+				}
+			}
+		}
+	}
+}

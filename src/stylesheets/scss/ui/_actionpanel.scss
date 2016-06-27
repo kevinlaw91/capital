@@ -1,0 +1,127 @@
+/* ============================================================================
+** Player Action Panel
+** ==========================================================================*/
+#action-panel {
+	width: 100%;
+	background-color: #006064;
+
+	section {
+		display: none;
+		padding: 5px 20px 20px;
+		font-family: "Yantramanav", sans-serif;
+		color: white;
+
+		h1 {
+			margin-top: 14px;
+			font-size: 1.5rem;
+			font-weight: 400;
+			opacity: 0.87;
+		}
+
+		p {
+			margin-top: 14px;
+			font-size: 1rem;
+			font-weight: 400;
+			opacity: 0.87;
+		}
+
+		button {
+			font-family: inherit;
+			position: relative;
+			background-color: #546e7a;
+			box-shadow: 0 2px 5px 0 black(0.26);
+			color: white;
+			border: 0;
+			font:{
+				weight: 500;
+				size: 1rem;
+			}
+			margin: {
+				top: 14px;
+				right: 5px;
+			}
+
+			&.main {
+				background-color: #ff5722;
+			}
+
+			.success-icon {
+				@include size(32px);
+				opacity: 0;
+				transform-origin: 50% 50%;
+				position: absolute;
+				left: calc(50% - 16px);
+				top: calc(50% - 16px);
+
+				path {
+					fill: none;
+					stroke: white {
+						width: 3;
+						dasharray: 50, 50;
+					}
+				}
+			}
+
+			&:focus {
+				box-shadow: 0 0 1px 1px #fff9c4;
+				outline: 0;
+			}
+
+			> span {
+				transform-origin: 50% 50%;
+				display: inline-block;
+				padding: 8px 16px;
+			}
+		}
+
+		&.done button {
+			animation: btn-result-hide 0.2s ease-in forwards;
+			@at-root {
+				@keyframes btn-result-hide {
+					from {
+						transform: scale(1,1);
+						opacity: 1;
+					}
+					to {
+						transform: scale(0,0);
+						opacity: 0;
+					}
+				}
+			}
+
+			.success-icon {
+				animation: btn-result-show 0.2s ease-in forwards;
+				@at-root {
+					@keyframes btn-result-show {
+						from {
+							transform: scale(1.5,1.5);
+							opacity: 0;
+						}
+						to {
+							transform: scale(1,1);
+							opacity: 1;
+						}
+					}
+				}
+
+				path {
+					animation: btn-result-draw-icon 0.4s ease-in forwards;
+					@at-root {
+						@keyframes btn-result-draw-icon {
+							from { stroke-dashoffset: 50px }
+							to { stroke-dashoffset: 0px }
+						}
+					}
+				}
+			}
+
+			&.main {
+				animation-delay: 2s;
+
+				span {
+					animation: btn-result-hide 0.2s ease-in forwards;
+				}
+			}
+		}
+	}
+}
