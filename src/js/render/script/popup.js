@@ -1,13 +1,13 @@
 define([
 	"snapsvg",
+	"velocity",
 	"engine/assets",
 	"engine/renderer"
-], function(Snap, AssetManager) {
+], function(Snap, Velocity, AssetManager) {
 	'use strict';
 
 	// Shadow filter
 	var filter_shadow,
-	    customEaseIn = function(n) { return Math.pow(n,0.68); },
 	    createSVGPathText = function(text, font, options) {
 			var x = options.x || 0,
 			    y = options.y || 0,
@@ -196,37 +196,36 @@ define([
 		// Randomize life span
 		var life = r1 * 1500;
 
-		// Fade in for 1000ms
-		animateGroup.animate({opacity: 1 }, 1000, mina.easeout);
+		// Fade in for 1s during start
+		Velocity(animateGroup.node, { opacity: 1, queue: false }, 1000, "ease-out");
 
-		// Path animation function
-		var pathAnimation = (function(p){
-			var l = p.node.getTotalLength();
+		// Tween along path animation
+		var pathLength = path.node.getTotalLength();
+		Velocity(animateGroup.node,
+			{ tween: [1] /* Dummy, from 0 to 1 */ }, {
+				queue: false,
+				duration: 4500 + life,
+				easing: "ease-out",
+				progress: function(elements, complete, remaining, start, val) {
+					var scale = 1.5 - Math.abs(val - 0.25),
+						point = path.getPointAtLength(pathLength * val);
 
-			return function(val){
-				var scale = 1.5-Math.abs(val - 0.25),
-				    length = l,
-				    point = path.getPointAtLength(length * val),
+					// Optimized transform matrix, included operations:
+					// matrix.scale(scale, scale, point.x, point.y);
+					// matrix.translate(point.x, point.y);
+					var matrix = Snap.matrix(scale,0,0,scale,point.x,point.y);
+					Snap(elements[0]).transform(matrix);
+			}
+		});
 
-				    // Optimized transform matrix, included operations:
-				    // matrix.scale(scale, scale, point.x, point.y);
-				    // matrix.translate(point.x, point.y);
-				    matrix = new Snap.matrix(scale,0,0,scale,point.x,point.y);
+		// Start fading out at 1s before finish
+		Velocity(animateGroup.node, { opacity: 0 }, {
+			queue: false,
+			delay: 4500 + life - 1000,
+			duration: 1000,
+			easing: "ease-out",
+			complete: function() { newGroup.remove(); }
+		});
 
-				animateGroup.transform(matrix);
-			};
-		})(path);
-		// Start path animation
-		Snap.animate(0, 1, pathAnimation, 4500 + life, customEaseIn);
-
-		// Fade out
-		window.setTimeout(function(){
-			animateGroup.animate(
-				{ opacity: 0 },
-				1000,
-				mina.easeout,
-				function(){ Snap(newGroup).remove(); }
-			);
-		}, 4500 + life - 1000);
 	};
 });

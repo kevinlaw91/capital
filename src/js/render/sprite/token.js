@@ -55,7 +55,8 @@ define([
 			var targetPos = this.getBoundingOffset(x,y);
 			var doCallback = callback || $.noop; // Define callback
 			if(animate){
-				this.view.animate(targetPos, animationDuration, mina.easeinout, doCallback);
+				$(this.view.node)
+					.velocity(targetPos, animationDuration, "ease-in-out", doCallback);
 			} else {
 				this.view.attr(targetPos);
 				doCallback();
