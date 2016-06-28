@@ -8,11 +8,13 @@ require.config(
 			'opentype': 'lib/opentype',
 			'snapsvg': 'lib/snap.svg',
 			'svg-pan-zoom': 'lib/svg-pan-zoom', // namespace have to be svg-pan-zoom
-			'polyfills': 'lib/polyfills'
+			'polyfills': 'lib/polyfills',
+			'velocity': 'lib/velocity'
 		},
 		shim: {
 			'jquery.easing': ['jquery'],
-			'jquery.pub-sub': ['jquery']
+			'jquery.pub-sub': ['jquery'],
+			'velocity': [ 'jquery' ]
 		},
 		defaultErrback: null
 	}
@@ -29,7 +31,8 @@ require([
 	"engine/core",
 	"engine/transform",
 	"utils",
-	"polyfills"
+	"polyfills",
+	"velocity"
 ], function($, Config, Dev, Engine){
 	// Provide shortcut methods to console object
 	Dev.useShortLogging();
