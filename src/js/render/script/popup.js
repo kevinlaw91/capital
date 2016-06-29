@@ -70,8 +70,6 @@ define([
 	 * @param {number} [options.x] - X screen coordinate to render
 	 * @param {number} [options.y] - Y screen coordinate to render
 	 * @param {string} [options.color=white] - Color for message text
-	 * @param {string} [options.iconColor] - Color for icon
-	 * @param {string} [options.icon] - Icon to be displayed on top of text (symbol id)
 	 * @param {string} [options.prefix] - Text to be appended before message
 	 * @param {string} [options.prefixColor=white] - Color for prefix text
 	 */
@@ -87,14 +85,13 @@ define([
 		// Create Animation Path
 		//
 		var r1 = Math.random(), r2 = Math.random(), r3 = Math.random(),
-			rise =  25 /* minimum */ + r1 * 15,
-		    horizontal_range = 20, // Move left or right (max to this amount)
-		    vertical_range = 45, // Move to bottom (max to this amount)
+		    horizontal_range = 15, // Move left or right (max to this amount)
+		    vertical_range = 35, // Move to bottom (max to this amount)
 		    end_dX = Math.floor(r2 * (horizontal_range * 2 + 1)) - (horizontal_range),
 		    end_dY = 15 + Math.floor(r3 * (vertical_range + 1)),
 		    path_str = "M" + posX + "," + posY +
-		               " C" + posX + "," + (posY - rise) + " " +
-		               (posX + end_dX) + "," + (posY - rise) + " " +
+		               " C" + posX + "," + posY + " " +
+		               (posX + end_dX) + "," + posY + " " +
 		               (posX + end_dX) + "," + (posY + end_dY),
 			path = newGroup.path(path_str).attr({
 				stroke: "none",
@@ -116,7 +113,7 @@ define([
 		var text = animateGroup.path(
 			createSVGPathText(msg, font, {
 				fontSize: 16,
-				align: "right",
+				align: "center",
 				baseline: "middle"
 			})
 		);
@@ -133,7 +130,7 @@ define([
 
 		// Add shadow
 		filter_shadow = filter_shadow || Renderer.canvas.filter(Snap.filter.shadow(0, 1, 0.3, "black", 0.3));
-		text.attr({
+		animateGroup.attr({
 			filter: filter_shadow
 		});
 
@@ -157,39 +154,6 @@ define([
 		}
 
 		//
-		// Icon
-		//
-
-		// Draw icon
-		if(options && options.icon){
-			// Centered
-			var iconSize = 24,
-			    iconPosition = {
-					x: -(iconSize / 2),
-					y: anchor.y - iconSize
-				};
-
-			if(AssetManager.hasSymbol(options.icon)) {
-				var icon = animateGroup.use(options.icon);
-				var iconStyles = {
-					x: iconPosition.x,
-					y: iconPosition.y,
-					height: iconSize,
-					width: iconSize
-				};
-
-				// Apply color
-				if(options && options.iconColor){
-					iconStyles.fill = options.iconColor;
-				}
-
-				icon.attr(iconStyles);
-			} else {
-				warn("Missing symbol: " + options.icon + ". Icon was not drawn to the popup.");
-			}
-		}
-
-		//
 		// Animations
 		//
 
@@ -206,9 +170,9 @@ define([
 				queue: false,
 				duration: 4500 + life,
 				easing: "ease-out",
-				progress: function(elements, complete, remaining, start, val) {
-					var scale = 1.5 - Math.abs(val - 0.25),
-						point = path.getPointAtLength(pathLength * val);
+				progress: function(elements, complete, remaining, start, x) {
+					var scale = -2 * Math.pow(x,2) + (1.7 * x) + 1, // y = -2x^2 + 1.7x + 1
+						point = path.getPointAtLength(pathLength * x);
 
 					// Optimized transform matrix, included operations:
 					// matrix.scale(scale, scale, point.x, point.y);
