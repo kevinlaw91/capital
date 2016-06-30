@@ -223,15 +223,13 @@ define([
 						break;
 					case "MAP-CORNER-1":
 						// Treasure Hunt Mini Game
-						var TreasureHunt = MiniGames.TreasureHunt;
-						TreasureHunt.onResult({
-							success: function() {
-								CashFlow(player, { add: TreasureHunt.getPrize(), source: "PRIZE" });
-								Player.turn();
-							},
-							failed: Player.turn
-						});
-						TreasureHunt.showDialog();
+						MiniGames.PlayTreasureHunt()
+						         .then(function(result){
+							         if(result.prize > 0) {
+								         CashFlow(player, { add: result.prize, source: "PRIZE" });
+							         }
+							         Player.turn();
+						         });
 						break;
 					case "MAP-CORNER-2":
 						// End current turn

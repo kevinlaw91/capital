@@ -3,7 +3,14 @@ define([
 ], function() {
 	'use strict';
 
+	// Imports
+	var gTreasureHunt = require("game/treasurehunt");
+
 	return {
-		TreasureHunt: require("game/treasurehunt")
+		PlayTreasureHunt: function() {
+			return new Promise(function(r) {
+				gTreasureHunt.onResult(r).showDialog();
+			});
+		}
 	};
 });

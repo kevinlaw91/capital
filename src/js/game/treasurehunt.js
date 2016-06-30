@@ -15,8 +15,7 @@ define([
 	var treasureMatrix,
 		solved,
 		chance,
-		_success,
-		_failed;
+		_onresult;
 
 	return {
 		getPrize: function() {
@@ -124,6 +123,7 @@ define([
 			DialogManager.get("treasurehunt")
 			  .reset(this.prepareDialog.bind(this))
 			  .show();
+			return this;
 		},
 		hideDialog: function() {
 			$("#game-frame").removeClass("shrink");
@@ -148,9 +148,9 @@ define([
 		},
 		/**
 		 * Called when game finished
-		 * @param {boolean} result - Success or fail
+		 * @param {boolean} won - Result
 		 */
-		onComplete: function(result) {
+		onComplete: function(won) {
 			// Reveal all treasure locations
 			this.revealAll();
 
@@ -161,11 +161,11 @@ define([
 			window.setTimeout(this.hideDialog, 2000);
 
 			// Publish result after certain delay
-			if(result){
-				window.setTimeout(_success, 2000);
-			} else {
-				window.setTimeout(_failed, 3000);
-			}
+			var response = { prize: (won)? this.getPrize(): 0 };
+			window.setTimeout(
+				function(){ _onresult(response); },
+				(won)? 2000: 3000
+			);
 		},
 		/**
 		 * Register callback actions when result is out
@@ -174,8 +174,8 @@ define([
 		 */
 		onResult: function(fn) {
 			//Register callbacks
-			_success = fn.success;
-			_failed = fn.failed;
+			_onresult = fn;
+			return this;
 		}
 	};
 });
