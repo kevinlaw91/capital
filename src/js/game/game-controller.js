@@ -57,10 +57,17 @@ define([
 	});
 
 	/**
-	 * Game states
+	 * Game flow controls
+	 * @namespace
 	 */
-	var GameState = {
-		LISTENING_DICE_ROLL: false
+	var Game = {
+		// Game states
+		state: {
+			LISTENING_DICE_ROLL: false
+		},
+
+		// Game events
+		onDiceRollCompleted: $.noop
 	};
 
 	/**
@@ -68,22 +75,24 @@ define([
 	 * @function
 	 */
 	$.subscribe("Player.RollDice", function () {
-		if(GameState.LISTENING_DICE_ROLL) {
+		if(Game.state.LISTENING_DICE_ROLL) {
 			// Perform dice roll and inform to UI
 			var result = require("game/randomizer").DiceRoll();
 
 			// Show moving status
 			$.publish("UI.DiceButton.Indeterminate");
 
-			window.setTimeout(function(){
-				var p = getSession().getActivePlayer();
-				p.hideActiveMarker();
-				Player.move(p, result);
-			}, Config.get("player.token.waitTime"));
+			// Emulate dice rolling time
+			new Promise(function(resolve) {
+				window.setTimeout(
+					function(){ resolve(result); },
+					Config.get("player.token.waitTime")
+				);
+			}).then(Game.onDiceRollCompleted);
 		}
 
 		// Stop listening for now
-		GameState.LISTENING_DICE_ROLL = false;
+		Game.state.LISTENING_DICE_ROLL = false;
 	});
 
 	/**
@@ -321,7 +330,7 @@ define([
 			$.publish("UI.DiceButton.Show");
 
 			// Accepting dice roll command from player
-			GameState.LISTENING_DICE_ROLL = true;
+			Game.state.LISTENING_DICE_ROLL = true;
 		}
 	};
 
@@ -439,6 +448,12 @@ define([
 	return {
 		// Game start entry point
 		start: function(){
+			Game.onDiceRollCompleted = function(result){
+				var p = getSession().getActivePlayer();
+				p.hideActiveMarker();
+				Player.move(p, result);
+			};
+
 			// First player's turn
 			Player.turn();
 		}
