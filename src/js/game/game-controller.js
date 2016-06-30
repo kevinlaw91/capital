@@ -101,66 +101,59 @@ define([
 	var Player = {
 		/**
 		 * Move a player to new position
-		 * @param player
-		 * @param {(number|{number, number}|Lot|TradableLot)} newPosition
+		 * @param {object} player
+		 * @param {(number|{x: number, y: number}|Lot|TradableLot)} newPosition
+		 * @param {function} [onPassBy=$.noop] - Called when passing by a location
 		 */
-		move: function(player, newPosition){
-			var t = typeof newPosition,
-				Session = getSession();
+		move: function(player, newPosition, onPassBy){
+			// Defaults
+			onPassBy = onPassBy || $.noop;
 
-			if(typeof player !== "undefined" && t !== "undefined"){
-				if(t == "number"){
-					// Step counts
-					var step = newPosition;
-					step--; // Reduce step by 1
+			var Session = getSession(),
+				waitTime = 75; // Delay time for each steps
+			var posType = typeof newPosition,
+				step = (posType === "number")? newPosition: null,
+				reached,
+				lot;
 
-					var nextLot = Player.findNextMove(player);
+			// Determine next position
+			if( step !== null ){
+				// Steps
+				lot = Player.findNextMove(player);
+				step--; // Reduce step by 1
+				reached = (step === 0); // Determine if reached destination
+			} else if( posType == "object" &&
+			           "x" in newPosition &&
+			           "y" in newPosition ) {
+				// Accept {x: number, y: number} or Lot instances
+				lot = Session.map.match(newPosition.x, newPosition.y);
+				reached = true;
+			}
 
-					// Move player
-					// Fire relevant callback when animation is done
-					player.moveTo(nextLot.x, nextLot.y, true)
-					      .done(
-						      (step>0)?
-						      // When player not stopping yet
-						      // i.e. passing by
-						      function(){
-							      Player.onPassby(player, nextLot);
-						      } :
-						      // When player finally stopped
-						      // i.e. passing by and stopped
-						      function(){
-							      Player.onPassby(player, nextLot);
-							      Player.onStop(player, nextLot);
+			if(lot) {
+				return new Promise(function(resolve) {
+					// Move player to the next position
+					player.moveTo(lot.x, lot.y, true)
+					      .then(function() {
+						      // Player moved
+						      // Trigger onPassBy event callback
+						      onPassBy(player, lot);
+
+						      if(!reached) {
+							      // If not finish moving yet, scheduling next move
+							      setTimeout(function(){
+								      Player.move(player, step, onPassBy)
+								            .then(resolve); // Resolve recursive promises
+							      }, waitTime);
+						      } else {
+							      // Reached destination
+							      resolve({ player: player, location: lot });
 						      }
-					      );
-
-					if(step>0) {
-						// Still have to move, only pass by
-						setTimeout(
-							(function(p){
-								return function(){
-									Player.move(p, step);
-								};
-							})(player),
-							Config.get("player.token.waitTime")
-						);
-					}
-				} else if(t == "object") {
-					// Accept
-					// {x:number, y:number}
-					// or instance of Lot that have x and y property
-					if('x' in newPosition && 'y' in newPosition) {
-						var lot = Session.map.match(newPosition.x, newPosition.y);
-						if(lot){
-							// Move player
-							player.moveTo(lot.x, lot.y, true);
-
-							Player.onPassby(player, lot);
-							Player.onStop(player, lot);
-						}
-					}
-				} else { throw new Error("Unable to move player. Invalid location was specified."); }
-			} else { throw new Error("Unable to move player due to missing parameters"); }
+					      });
+				});
+			} else {
+				throw new Error("Unable to move player. Invalid location was specified.");
+			}
 		},
 
 		/**
@@ -449,7 +442,11 @@ define([
 			Game.onDiceRollCompleted = function(result){
 				var p = getSession().getActivePlayer();
 				p.hideActiveMarker();
-				Player.move(p, result);
+				Player.move(p, result, Player.onPassby)
+				      .then(function(r){
+					      // Reached dstination
+					      Player.onStop(r.player, r.location);
+				      });
 			};
 
 			// First player's turn
