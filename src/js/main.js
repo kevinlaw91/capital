@@ -8,7 +8,6 @@ require.config(
 			'opentype': 'lib/opentype',
 			'snapsvg': 'lib/snap.svg',
 			'svg-pan-zoom': 'lib/svg-pan-zoom', // namespace have to be svg-pan-zoom
-			'polyfills': 'lib/polyfills',
 			'velocity': 'lib/velocity'
 		},
 		shim: {
