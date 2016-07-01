@@ -1,0 +1,5 @@
+# JS libraries
+src/js/lib/*.js
+
+# gulpfile
+gulpfile.js
