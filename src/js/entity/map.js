@@ -1,7 +1,7 @@
 define([
 	"game/script/map-generator"
-],function() {
-	'use strict';
+], function() {
+	"use strict";
 
 	return /** @module entity/map */{
 		/**
@@ -37,8 +37,8 @@ define([
 		 */
 		match: function(x, y) {
 			return this.lot.find(
-				function(Lot){
-					return (Lot.x == x && Lot.y == y);
+				function(Lot) {
+					return (Lot.x === x && Lot.y === y);
 				}
 			);
 		},
@@ -53,22 +53,23 @@ define([
 			var currentLot = args;
 
 			// Detect if X, Y grid position was given instead
-			if(args &&
-			   typeof arguments[0] == "number" &&
-			   typeof arguments[1] == "number") {
+			if (args &&
+			   typeof arguments[0] === "number" &&
+			   typeof arguments[1] === "number") {
 				var x = arguments[0],
 					y = arguments[1];
+
 				currentLot = this.match(x, y);
 			}
 
-			if(!currentLot){
+			if (!currentLot) {
 				return; // Returns undefined
 			}
 
 			// Return the index when found a match
 			return this.lot.findIndex(
 				function(lot) {
-					return lot == currentLot;
+					return lot === currentLot;
 				}
 			);
 		}

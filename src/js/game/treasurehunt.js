@@ -1,11 +1,11 @@
 define([
 	"jquery",
-    "engine/ui",
-    "game/randomizer",
-    "ui/lightbox",
-    "ui/dialogs"
+	"engine/ui",
+	"game/randomizer",
+	"ui/lightbox",
+	"ui/dialogs"
 ], function($, UI, Randomizer, /** Lightbox */ Lightbox, /** DialogManager */ DialogManager) {
-	'use strict';
+	"use strict";
 
 	// Prize constants
 	var PRIZE = 5000,
@@ -26,12 +26,12 @@ define([
 				pos = el.attr("data-pos"),
 				dialog = DialogManager.get("treasurehunt").node;
 
-			if(!solved &&
+			if (!solved &&
 			   chance > 0 &&
 			   typeof pos !== "undefined" &&
 			   el.hasClass("masked")
 			) {
-				if(this.probe(pos)) {
+				if (this.probe(pos)) {
 					// Found
 					el.addClass("correct");
 
@@ -67,7 +67,7 @@ define([
 					      .addClass("animate_off");
 
 					// Show new message if applicable
-					if(chance>0){
+					if (chance>0) {
 						dialog.find("h2 span")
 						      .eq(chance - 1)
 						      .addClass("animate_on");
@@ -77,7 +77,7 @@ define([
 				// Play unveil animation
 				el.removeClass("masked");
 
-				if(chance === 0) {
+				if (chance === 0) {
 					// Show failed message
 					dialog.find("h1 span")
 					      // Hide title
@@ -104,11 +104,12 @@ define([
 			chance = ATTEMPT_LIMIT;
 
 			var dialogFragment = $(fragment);
+
 			dialogFragment.find("div.grid").on("click", "div.cell", this.onCellClicked.bind(this));
 
 		},
 		/** Make attempt */
-		probe: function(position){
+		probe: function(position) {
 			return typeof treasureMatrix[position] !== "undefined";
 		},
 		roll: function() {
@@ -123,6 +124,7 @@ define([
 			DialogManager.get("treasurehunt")
 			  .reset(this.prepareDialog.bind(this))
 			  .show();
+
 			return this;
 		},
 		hideDialog: function() {
@@ -134,12 +136,13 @@ define([
 		/** Reveal all cells */
 		revealAll: function() {
 			var dialog = DialogManager.get("treasurehunt").node;
+
 			dialog.find("div.grid")
 			      .addClass("reveal");
 
 			// Draw prize text
-			for(var i = 0; i < treasureMatrix.length; i++) {
-				if(typeof treasureMatrix[i] !== "undefined") {
+			for (var i = 0; i < treasureMatrix.length; i++) {
+				if (typeof treasureMatrix[i] !== "undefined") {
 					dialog.find(".cell")
 					      .eq(i)
 					      .append($("<div><span>" + treasureMatrix[i] + "</span></div>"));
@@ -161,10 +164,13 @@ define([
 			window.setTimeout(this.hideDialog, 2000);
 
 			// Publish result after certain delay
-			var response = { prize: (won)? this.getPrize(): 0 };
+			var response = {
+				prize: (won ? this.getPrize() : 0)
+			};
+
 			window.setTimeout(
-				function(){ _onresult(response); },
-				(won)? 2000: 3000
+				function() { _onresult(response); },
+				(won ? 2000 : 3000)
 			);
 		},
 		/**
@@ -173,8 +179,9 @@ define([
 		 * @param fn.failed - Callback when game finished with lose condition
 		 */
 		onResult: function(fn) {
-			//Register callbacks
+			// Register callbacks
 			_onresult = fn;
+
 			return this;
 		}
 	};

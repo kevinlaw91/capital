@@ -1,13 +1,13 @@
 define([
 	"jquery",
 	"jquery.pub-sub"
-], function ($) {
-	'use strict';
+], function($) {
+	"use strict";
 
 	/** @exports game/leaderboard */
 	var Leaderboard = {
 		ranking: null,
-		populate: function( playerList ) {
+		populate: function(playerList) {
 			// Clone player list
 			Leaderboard.ranking = playerList.slice(0);
 			Leaderboard.sort();
@@ -15,8 +15,9 @@ define([
 		sort: function() {
 			// Perform sorting
 			var newRanking = Leaderboard.ranking.slice(0);
+
 			newRanking.sort(
-				function( a, b ) {
+				function(a, b) {
 					/**
 					 * @param {Player} a
 					 * @param {Player} b
@@ -26,12 +27,12 @@ define([
 			);
 
 			// Check if ranking changed
-			var same = newRanking.every(function( player, index ) {
+			var same = newRanking.every(function(player, index) {
 				// Compare each rank to check if still are the same players
 				return player === Leaderboard.ranking[index];
 			}, Leaderboard);
 
-			if(!same) {
+			if (!same) {
 				Leaderboard.ranking = newRanking;
 				Leaderboard.onRankingChanged();
 			}

@@ -1,7 +1,7 @@
 define(["ui/lightbox"], function(Lightbox) {
-	'use strict';
+	"use strict";
 
-	return (function(){
+	return (function() {
 		var d = {};
 
 		/**
@@ -9,9 +9,10 @@ define(["ui/lightbox"], function(Lightbox) {
 		 * @param template - Contents template for the dialog
 		 * @constructor
 		 */
-		function Dialog(id, template){
+		function Dialog(id, template) {
 			var wrapper = $("<section />");
-			wrapper.attr("role","dialog")
+
+			wrapper.attr("role", "dialog")
 			       .addClass("window")
 			       .addClass(id);
 
@@ -26,8 +27,9 @@ define(["ui/lightbox"], function(Lightbox) {
 		Dialog.prototype.reset = function(setup) {
 			this.node.empty();
 			var clone = this.template.cloneNode(true);
+
 			// Setup dialog box
-			if(typeof setup == "function") {
+			if (typeof setup === "function") {
 				setup(clone);
 			}
 
@@ -43,6 +45,7 @@ define(["ui/lightbox"], function(Lightbox) {
 			    .insertAfter(Lightbox.node)
 			    .removeClass("animate_off")
 			    .addClass("animate_on");
+
 			return this;
 		};
 
@@ -51,6 +54,7 @@ define(["ui/lightbox"], function(Lightbox) {
 			    .removeClass("animate_on")
 			    .addClass("animate_off")
 			    .one("animationend", this.detach.bind(this));
+
 			return this;
 		};
 
@@ -73,7 +77,7 @@ define(["ui/lightbox"], function(Lightbox) {
 			},
 			/** Get dialog instance by id */
 			get: function(id) {
-				if(id in d && d[id] instanceof Dialog){
+				if (id in d && d[id] instanceof Dialog) {
 					return d[id];
 				}
 			}

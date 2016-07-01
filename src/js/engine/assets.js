@@ -9,7 +9,7 @@ define([
 	var AssetManager = {};
 
 	/** @namespace */
-	AssetManager.SymbolStore = (function(){
+	AssetManager.SymbolStore = (function() {
 		/**
 		 * Place to store loaded symbols
 		 * @private
@@ -28,7 +28,7 @@ define([
 			 * @public
 			 * @param {Snap} elem - Snap element
 			 */
-			setSymbolStore: function(elem){
+			setSymbolStore: function(elem) {
 				store = Snap(elem);
 				delete this.setSymbolStore;
 			},
@@ -56,7 +56,7 @@ define([
 			 * @public
 			 * @param path - Path of the file to be loaded
 			 */
-			loadFromFile: function(path){
+			loadFromFile: function(path) {
 				return new Promise(function(resolve, reject) {
 					// Load file
 					Snap.load(path, function(fragment) {
@@ -64,7 +64,7 @@ define([
 							fragment.selectAll("symbol")
 							        .forEach(AssetManager.SymbolStore.onFileLoaded);
 							resolve();
-						} catch(e) {
+						} catch (e) {
 							reject(new Error("(SymbolStore) Failed to process [" + path + "]"));
 						}
 					});
@@ -76,25 +76,26 @@ define([
 			 * @callback
 			 * @param snapSymbol - Snap instance of a loaded symbol
 			 */
-			onFileLoaded: function(snapSymbol){
+			onFileLoaded: function(snapSymbol) {
 				// Cache loaded symbol size
 				var symbolEl = snapSymbol.node,
-				    viewbox = symbolEl.viewBox.baseVal;
-				list.set( symbolEl.id,
+					viewbox = symbolEl.viewBox.baseVal;
+
+				list.set(symbolEl.id,
 					{
 						height: Number(viewbox.height),
 						width: Number(viewbox.width)
 					}
 				);
 
-				//Attach symbol to canvas and put inside <defs>
+				// Attach symbol to canvas and put inside <defs>
 				snapSymbol.appendTo(store).toDefs();
 			}
 		};
 	})();
 
 	/** @namespace */
-	AssetManager.FontStore = (function(){
+	AssetManager.FontStore = (function() {
 		/**
 		 * Cache loaded fonts
 		 * @private
@@ -106,7 +107,7 @@ define([
 			 * Loads a font file
 			 * @param path
 			 */
-			loadFromFile: function(path){
+			loadFromFile: function(path) {
 				return new Promise(function(resolve, reject) {
 					// Load file
 					OpenType.load(path, function(errorMsg, font) {
@@ -115,7 +116,7 @@ define([
 								// Font loaded successfully
 								AssetManager.FontStore.onFileLoaded(font);
 								resolve();
-							} catch(e) {
+							} catch (e) {
 								reject(new Error("(FontStore) Failed to process [" + path + "]"));
 							}
 						} else {
@@ -129,13 +130,13 @@ define([
 			 * Handle loaded fonts
 			 * @callback
 			 */
-			onFileLoaded: function(font){
+			onFileLoaded: function(font) {
 				// Obtaining metadata
 				var fontFamily = font.names.fontFamily.en,
 					fontSubfamily = font.names.fontSubfamily.en;
 
 				// Register at font collection
-				if (fonts.has(fontFamily)){
+				if (fonts.has(fontFamily)) {
 					fonts.get(fontFamily).set(fontSubfamily, font);
 				} else {
 					fonts.set(fontFamily, new Map().set(fontSubfamily, font));
@@ -146,14 +147,14 @@ define([
 			 * Get a Font object from collection
 			 * @returns {Font}
 			 */
-			getFont: function (family, subFamily) {
+			getFont: function(family, subFamily) {
 				return fonts.get(family).get(subFamily);
 			}
 		};
 	})();
-	
+
 	/** @namespace */
-	AssetManager.FragmentStore = (function(){
+	AssetManager.FragmentStore = (function() {
 		/**
 		 * Place to store loaded fragments
 		 * @private
@@ -169,11 +170,11 @@ define([
 		/** @param el - A template element returned from ajax */
 		function cacheTemplate(index, el) {
 			// For browser that doesn't support <template>
-			if(!supported){
+			if (!supported) {
 				var fragment = document.createDocumentFragment(),
 					children = el.children;
 
-				while(children[0]) {
+				while (children[0]) {
 					fragment.appendChild(children[0]);
 				}
 
@@ -181,8 +182,12 @@ define([
 			}
 
 			var templateID = el.getAttribute("data-templateid");
-			if(typeof templateID === "string" && templateID.length){
-				store.set(el.getAttribute("data-templateid"), el.content);
+
+			if (typeof templateID === "string" && templateID.length) {
+				store.set(
+					el.getAttribute("data-templateid"),
+					el.content
+				);
 			} else {
 				throw new Error("Template ID not found");
 			}
@@ -208,7 +213,7 @@ define([
 							$(contents).filter("template")
 							           .each(cacheTemplate);
 							resolve();
-						} catch(e) {
+						} catch (e) {
 							reject(new Error("(FragmentStore) Failed to process [" + path + "]"));
 						}
 					}).fail(function(e) {

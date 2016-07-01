@@ -5,7 +5,7 @@ define([
 	"ui/user-action-panel",
 	"ui/tooltip"
 ], function() {
-	'use strict';
+	"use strict";
 
 	var UI = {
 		InfoPanel: require("ui/info-panel"),

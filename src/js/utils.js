@@ -1,4 +1,6 @@
-define(function(){
+define(function() {
+	"use strict";
+
 	/** @module utils */
 	return {
 		clamp: function(value, min, max) {
@@ -54,6 +56,7 @@ define(function(){
 		 *  JSON.parse(minifyJSON(str))
 		 */
 		minifyJSON: function(json) {
+			/* eslint-disable */
 			var tokenizer = /"|(\/\*)|(\*\/)|(\/\/)|\n|\r/g,
 				in_string = false,
 				in_multiline_comment = false,
@@ -81,25 +84,21 @@ define(function(){
 					}
 					from--; // include " character in next catch
 					rc = json.substring(from);
-				}
-				else if (tmp[0] == "/*" && !in_string && !in_multiline_comment && !in_singleline_comment) {
+				} else if (tmp[0] == "/*" && !in_string && !in_multiline_comment && !in_singleline_comment) {
 					in_multiline_comment = true;
-				}
-				else if (tmp[0] == "*/" && !in_string && in_multiline_comment && !in_singleline_comment) {
+				} else if (tmp[0] == "*/" && !in_string && in_multiline_comment && !in_singleline_comment) {
 					in_multiline_comment = false;
-				}
-				else if (tmp[0] == "//" && !in_string && !in_multiline_comment && !in_singleline_comment) {
+				} else if (tmp[0] == "//" && !in_string && !in_multiline_comment && !in_singleline_comment) {
 					in_singleline_comment = true;
-				}
-				else if ((tmp[0] == "\n" || tmp[0] == "\r") && !in_string && !in_multiline_comment && in_singleline_comment) {
+				} else if ((tmp[0] == "\n" || tmp[0] == "\r") && !in_string && !in_multiline_comment && in_singleline_comment) {
 					in_singleline_comment = false;
-				}
-				else if (!in_multiline_comment && !in_singleline_comment && !(/\n|\r|\s/.test(tmp[0]))) {
+				} else if (!in_multiline_comment && !in_singleline_comment && !(/\n|\r|\s/.test(tmp[0]))) {
 					new_str[ns++] = tmp[0];
 				}
 			}
-			new_str[ns++] = rc;
+			new_str[ns] = rc;
 			return new_str.join("");
+			/* eslint-enable */
 		}
 	};
 });

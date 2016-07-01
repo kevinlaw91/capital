@@ -1,23 +1,21 @@
-require.config(
-	{
-		baseUrl: 'js',
-		paths: {
-			jquery: 'lib/jquery-3.0.0',
-			'jquery.easing': 'lib/jquery.easing.1.3',
-			'jquery.pub-sub': 'lib/jquery.tinypubsub',
-			'opentype': 'lib/opentype',
-			'snapsvg': 'lib/snap.svg',
-			'svg-pan-zoom': 'lib/svg-pan-zoom', // namespace have to be svg-pan-zoom
-			'velocity': 'lib/velocity'
-		},
-		shim: {
-			'jquery.easing': ['jquery'],
-			'jquery.pub-sub': ['jquery'],
-			'velocity': [ 'jquery' ]
-		},
-		defaultErrback: null
-	}
-);
+require.config({
+	baseUrl: "js",
+	paths: {
+		"jquery": "lib/jquery-3.0.0",
+		"jquery.easing": "lib/jquery.easing.1.3",
+		"jquery.pub-sub": "lib/jquery.tinypubsub",
+		"opentype": "lib/opentype",
+		"snapsvg": "lib/snap.svg",
+		"svg-pan-zoom": "lib/svg-pan-zoom", // Namespace have to be svg-pan-zoom
+		"velocity": "lib/velocity"
+	},
+	shim: {
+		"jquery.easing": ["jquery"],
+		"jquery.pub-sub": ["jquery"],
+		"velocity": ["jquery"]
+	},
+	defaultErrback: null
+});
 
 // Benchmark game load time
 console.time("Game Loaded");
@@ -32,7 +30,8 @@ require([
 	"utils",
 	"polyfills",
 	"velocity"
-], function($, Config, Dev, Engine){
+], function($, Config, Dev, Engine) {
+	"use strict";
 	// Provide shortcut methods to console object
 	Dev.useShortLogging();
 

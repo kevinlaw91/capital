@@ -2,9 +2,9 @@ define([
 	"jquery",
 	"jquery.pub-sub"
 ], function($) {
-	'use strict';
+	"use strict";
 
-	function roll(){
+	function roll() {
 		$.publish("Player.RollDice");
 	}
 

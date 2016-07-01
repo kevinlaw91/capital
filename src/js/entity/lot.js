@@ -1,5 +1,5 @@
 define(function() {
-	'use strict';
+	"use strict";
 
 	/**
 	 * Represents a lot in the map
@@ -7,16 +7,16 @@ define(function() {
 	 * @param {object} props - Properties to be applied to the lot
 	 * @constructor
 	 */
-	function Lot(props){
+	function Lot(props) {
 		/**
 		 * Identifier of lot
 		 * @type {string}
 		 */
-		if(typeof props.id !=="undefined") {
+		if (typeof props.id !=="undefined") {
 			this.id = props.id;
 		}
 
-		if(typeof props.direction !== "undefined"){
+		if (typeof props.direction !== "undefined") {
 			/** @instance */
 			this.direction = props.direction;
 		}

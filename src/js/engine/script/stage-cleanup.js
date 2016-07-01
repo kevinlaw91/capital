@@ -1,11 +1,11 @@
 define([
 	"engine/camera"
 ], function(Camera) {
-	'use strict';
+	"use strict";
 
 	return function() {
 		// Remove dummy scene if present
-		if(Camera.removeDummyScene) {
+		if (Camera.removeDummyScene) {
 			Camera.removeDummyScene();
 		}
 		// Re-calculates camera's boundary

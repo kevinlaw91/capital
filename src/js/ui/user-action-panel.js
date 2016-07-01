@@ -3,16 +3,53 @@ define([
 	"jquery.pub-sub",
 	"engine/assets"
 ], function($) {
-	'use strict';
+	"use strict";
 
 	// Import
 	var getUIFragment = require("engine/assets").FragmentStore.get;
 
 	/** Prepare a fragment to be appended to other nodes */
-	function inflate(fragmentID){
+	function inflate(fragmentID) {
 		return getUIFragment(fragmentID).cloneNode(true);
 	}
-	
+
+	// Offer handlers
+	/** Handle offer accept */
+	function acceptOffer(evt) {
+		var panel = evt.data.panel;
+
+		// Accept offer
+		panel.offer.accept();
+
+		// Remove offer
+		panel.offer = null;
+
+		// Close prompt and then fires callback
+		var closeAnimation = $.Deferred();
+
+		panel.onComplete(closeAnimation);
+		closeAnimation.done(evt.data.onPanelClosed);
+	}
+
+	/** Handle ofer decline */
+	function declineOffer(evt) {
+		var panel = evt.data.panel;
+
+		// Decline offer
+		panel.offer.decline();
+
+		// Remove offer
+		panel.offer = null;
+
+		// Close prompt and then fires callback
+		var closeAnimation = $.Deferred();
+
+		UserActionPanel.onCancel(closeAnimation); // eslint-disable-line no-use-before-define
+		closeAnimation.done(evt.data.onPanelClosed);
+	}
+
+	/** @namespace */
+	/* eslint-disable no-use-before-define */
 	var UserActionPanel = {
 		node: "#action-panel",
 		init: function() {
@@ -40,10 +77,10 @@ define([
 				node: $("<section />"),
 				offer: null,
 				enable: function() {
-					PANEL_PROPERTY_BUY.node.find("button").prop('disabled', false);
+					PANEL_PROPERTY_BUY.node.find("button").prop("disabled", false);
 				},
 				disable: function() {
-					PANEL_PROPERTY_BUY.node.find("button").prop('disabled', true);
+					PANEL_PROPERTY_BUY.node.find("button").prop("disabled", true);
 				},
 				prompt: function(data) {
 					// Make target panel visible
@@ -52,8 +89,8 @@ define([
 					var panel = PANEL_PROPERTY_BUY;
 
 					// Fill information
-					for(var field in data.fields) {
-						if(data.fields.hasOwnProperty(field)) {
+					for (var field in data.fields) {
+						if (data.fields.hasOwnProperty(field)) {
 							panel.node.find("[data-label='" + field + "']")
 							     .text(data.fields[field]);
 						}
@@ -114,10 +151,10 @@ define([
 				node: $("<section />"),
 				offer: null,
 				enable: function() {
-					PANEL_PROPERTY_UPGRADE.node.find("button").prop('disabled', false);
+					PANEL_PROPERTY_UPGRADE.node.find("button").prop("disabled", false);
 				},
 				disable: function() {
-					PANEL_PROPERTY_UPGRADE.node.find("button").prop('disabled', true);
+					PANEL_PROPERTY_UPGRADE.node.find("button").prop("disabled", true);
 				},
 				prompt: function(data) {
 					// Make target panel visible
@@ -126,8 +163,8 @@ define([
 					var panel = PANEL_PROPERTY_UPGRADE;
 
 					// Fill information
-					for(var field in data.fields) {
-						if(data.fields.hasOwnProperty(field)) {
+					for (var field in data.fields) {
+						if (data.fields.hasOwnProperty(field)) {
 							panel.node.find("[data-label='" + field + "']")
 							     .text(data.fields[field]);
 						}
@@ -179,53 +216,58 @@ define([
 					panel.node.removeClass("done").addClass("done");
 
 					// Hide panel after 1s delay
-					window.setTimeout(function(){
+					window.setTimeout(function() {
 						UserActionPanel.slideClose(prom);
 					}, 1000);
 				}
 			}
 		},
 		selectPanel: function(id) {
-			if(UserActionPanel.panels.hasOwnProperty(id)){
+			if (UserActionPanel.panels.hasOwnProperty(id)) {
 				// Hide and reset all panels first
 				UserActionPanel.node.find("section").removeClass("done").hide();
 
 				// Show selected panel only
 				var panel = UserActionPanel.panels[id];
+
 				panel.node.show();
 			}
 		},
 		slideOpen: function(prom) {
 			var transition = prom || $.Deferred(),
-			    panel = $("#stage-box-slide");
+				panel = $("#stage-box-slide");
+
 			panel.css("top", UserActionPanel.node.height() * -1);
-			panel.one('transitionend', transition.resolve);
+			panel.one("transitionend", transition.resolve);
 
 			return transition.promise();
 		},
 		slideClose: function(prom) {
 			var transition = prom || $.Deferred(),
-			    panel = $("#stage-box-slide");
-			panel.css("top",0);
-			panel.one('transitionend', transition.resolve);
+				panel = $("#stage-box-slide");
+
+			panel.css("top", 0);
+			panel.one("transitionend", transition.resolve);
 
 			return transition.promise();
 		},
 		prompt: function(evt, data) {
 			var panel = evt.data.panel;
+
 			panel.prompt(data);
 		},
 		onCancel: function(prom) {
 			// Hide player action panel after a very short delay
-			window.setTimeout(function(){
+			window.setTimeout(function() {
 				UserActionPanel.slideClose(prom);
 			}, 100);
 		}
 	};
+	/* eslint-enable no-use-before-define */
 
 	// Reference
 	var PANEL_PROPERTY_BUY = UserActionPanel.panels.PROPERTY_BUY,
-	    PANEL_PROPERTY_UPGRADE = UserActionPanel.panels.PROPERTY_UPGRADE;
+		PANEL_PROPERTY_UPGRADE = UserActionPanel.panels.PROPERTY_UPGRADE;
 
 	// Register handlers for UserActionPanel
 	$.subscribe(
@@ -239,36 +281,6 @@ define([
 		{ panel: PANEL_PROPERTY_UPGRADE },
 		UserActionPanel.prompt
 	);
-
-	// Offer handlers
-	function acceptOffer(evt){
-		var panel = evt.data.panel;
-
-		// Accept offer
-		panel.offer.accept();
-
-		// Remove offer
-		panel.offer = null;
-
-		// Close prompt and then fires callback
-		var closeAnimation = $.Deferred();
-		panel.onComplete(closeAnimation);
-		closeAnimation.done(evt.data.onPanelClosed);
-	}
-
-	function declineOffer(evt){
-		var panel = evt.data.panel;
-		// Decline offer
-		panel.offer.decline();
-
-		// Remove offer
-		panel.offer = null;
-
-		// Close prompt and then fires callback
-		var closeAnimation = $.Deferred();
-		UserActionPanel.onCancel(closeAnimation);
-		closeAnimation.done(evt.data.onPanelClosed);
-	}
 
 	return UserActionPanel;
 });

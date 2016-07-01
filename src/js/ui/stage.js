@@ -3,7 +3,7 @@ define([
 	"snapsvg",
 	"engine/config"
 ], function($, Snap) {
-	'use strict';
+	"use strict";
 
 	// Imports
 	var Config = require("engine/config");
@@ -17,7 +17,7 @@ define([
 		/** <g> canvas wrapper as Snap instance */
 		canvas: null,
 		/** Construct stage */
-		init: function(){
+		init: function() {
 			// Create new Snap <svg> element
 			var stage = new Snap().attr({
 				"id": Config.getAsId("canvas.svg"),

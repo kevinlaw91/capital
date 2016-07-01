@@ -1,8 +1,8 @@
 define(["engine/assets"], function(AssetManager) {
-	'use strict';
+	"use strict";
 
 	/** Script to automate game asset loading */
-	return function(){
+	return function() {
 		// Collect file load promises
 		var assets = [];
 

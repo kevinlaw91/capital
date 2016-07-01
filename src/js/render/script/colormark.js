@@ -4,7 +4,7 @@ define([
 	"engine/renderer",
 	"engine/transform"
 ], function(Snap) {
-	'use strict';
+	"use strict";
 
 	/**
 	 * Mark a land lot with color to indicate owner
@@ -13,37 +13,35 @@ define([
 	 * @param {number} lot.direction
 	 * @param {string} [color=white] Color of marker
 	 */
-	return function(lot, color){
-			// Imports
+	return function(lot, color) {
+		// Imports
 		var Lot = require("entity/lot"),
-		    ScreenTransform = require("engine/transform"),
+			ScreenTransform = require("engine/transform");
 
-		    // Dedicated layer to render
-		    layer = require("engine/renderer").layers.floor_overlay.paper,
+		// Dedicated layer to render
+		var layer = require("engine/renderer").layers.floor_overlay.paper;
 
-		    // Tile corners
-		    tn = ScreenTransform.getVertexOffsetAsPoint(lot.y, lot.x, "N"),
-		    tw = ScreenTransform.getVertexOffsetAsPoint(lot.y, lot.x, "W"),
-		    ts = ScreenTransform.getVertexOffsetAsPoint(lot.y, lot.x, "S"),
-		    te = ScreenTransform.getVertexOffsetAsPoint(lot.y, lot.x, "E"),
+		// Tile corners
+		var tn = ScreenTransform.getVertexOffsetAsPoint(lot.y, lot.x, "N"),
+			tw = ScreenTransform.getVertexOffsetAsPoint(lot.y, lot.x, "W"),
+			ts = ScreenTransform.getVertexOffsetAsPoint(lot.y, lot.x, "S"),
+			te = ScreenTransform.getVertexOffsetAsPoint(lot.y, lot.x, "E");
 
-		    // Four output corners for rendering
-		    n = [tn.x, tn.y],
+		// Four output corners for rendering
+		var n = [tn.x, tn.y],
 			w = [tw.x, tw.y],
 			s = [ts.x, ts.y],
-			e = [te.x, te.y],
+			e = [te.x, te.y];
 
-			// Variables for calculations
-			path, length,
-			width = 0.15; //15% of total length
+		// Variables for calculations
+		var path, length, width = 0.15; // 15% of total length
 
-			// Function
-			function createLinePath(pointA, pointB){
-				return Snap.format("M{a.x},{a.y}L{b.x},{b.y}", { a: pointA, b: pointB });
-			}
+		// Function
+		function createLinePath(pointA, pointB) {
+			return Snap.format("M{a.x},{a.y}L{b.x},{b.y}", { a: pointA, b: pointB });
+		}
 
-
-		switch(lot.direction){
+		switch (lot.direction) {
 			case Lot.prototype.FACING_NORTH:
 				// West to north path
 				path = createLinePath(tw, tn);
@@ -88,6 +86,6 @@ define([
 		}
 
 		return layer.polygon(n, w, s, e)
-		            .attr({ fill: color || "white"});
+		            .attr({ fill: color || "white" });
 	};
 });

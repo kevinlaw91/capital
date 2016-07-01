@@ -1,7 +1,7 @@
 define([
 	"game/treasurehunt"
 ], function() {
-	'use strict';
+	"use strict";
 
 	// Imports
 	var gTreasureHunt = require("game/treasurehunt");

@@ -5,7 +5,7 @@ define([
 	"engine/script/stage-cleanup",
 	"game/game-controller"
 ], function() {
-	'use strict';
+	"use strict";
 
 	// Imports
 
@@ -20,7 +20,7 @@ define([
 	 * Game session that holds information about current match
 	 * @constructor
 	 */
-	function GameSession(){
+	function GameSession() {
 		log("[EVENT] Created new game session", "event");
 
 		/**
@@ -73,8 +73,9 @@ define([
 	 * @param color - Color constant
 	 * @see Player.COLOR
 	 */
-	GameSession.prototype.addPlayer = function(name, color){
+	GameSession.prototype.addPlayer = function(name, color) {
 		var player = new Player(name, Player.COLOR[color]);
+
 		this.players.push(player);
 
 		// Move to starting point (without using animation)
@@ -88,7 +89,7 @@ define([
 	};
 
 	/** Start session */
-	GameSession.prototype.startGame = function(){
+	GameSession.prototype.startGame = function() {
 		log("[EVENT] Game session started", "event");
 		GameController.start();
 	};

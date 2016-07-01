@@ -2,15 +2,15 @@ define([
 	"jquery",
 	"jquery.pub-sub",
 	"render/sprite/token",
-    "engine/transform",
+	"engine/transform",
 	"render/sprite/marker"
 ], function($) {
-	'use strict';
+	"use strict";
 
 	// Imports
 	var ScreenTransform = require("engine/transform"),
-	    PlayerToken = require("render/sprite/token"),
-	    GroundMarker = require("render/sprite/marker");
+		PlayerToken = require("render/sprite/token"),
+		GroundMarker = require("render/sprite/marker");
 
 	/**
 	 * Represents a player color definition
@@ -20,30 +20,8 @@ define([
 	 * @property {string} TOKEN - Token resource id
 	 */
 
-	/**
-	 * Player color constants
-	 * @type {Object.<string, PlayerColor>}
-	 */
-	Player.COLOR = {
-		RED: {
-			LIGHT: "#f73134",
-			DARK: "#bf4d4f",
-			TOKEN: "player-token-red"
-		},
-		BLUE: {
-			LIGHT: "#2fb5ff",
-			DARK: "#2db1b1",
-			TOKEN: "player-token-blue"
-		},
-		PINK: {
-			LIGHT: "#f37ce8",
-			DARK: "#d163c8",
-			TOKEN: "player-token-pink"
-		}
-	};
-
 	/** @constructor */
-	function Player(name, color){
+	function Player(name, color) {
 		/**
 		 * Player name
 		 * @type {string}
@@ -85,6 +63,28 @@ define([
 		// Set as inactive
 		this.hideActiveMarker();
 	}
+
+	/**
+	 * Player color constants
+	 * @type {Object.<string, PlayerColor>}
+	 */
+	Player.COLOR = {
+		RED: {
+			LIGHT: "#f73134",
+			DARK: "#bf4d4f",
+			TOKEN: "player-token-red"
+		},
+		BLUE: {
+			LIGHT: "#2fb5ff",
+			DARK: "#2db1b1",
+			TOKEN: "player-token-blue"
+		},
+		PINK: {
+			LIGHT: "#f37ce8",
+			DARK: "#d163c8",
+			TOKEN: "player-token-pink"
+		}
+	};
 
 	/**
 	 * Adds an amount of cash to player
@@ -136,7 +136,7 @@ define([
 	 * @param {number} y Position in row (y)
 	 * @param {boolean} [animate=false] Use animation
 	 */
-	Player.prototype.moveTo = function(x, y, animate){
+	Player.prototype.moveTo = function(x, y, animate) {
 		// Promise of animation
 		var anim = $.Deferred();
 
@@ -146,13 +146,13 @@ define([
 
 		// Get mid point of the tile
 		// Note: Uses (y,x) is not a bug
-		var pos = ScreenTransform.getTopFaceMidpoint(y,x);
+		var pos = ScreenTransform.getTopFaceMidpoint(y, x);
 
 		// Move ground marker
 		this.marker.moveTo(pos.x, pos.y);
 
 		// Move token
-		if(animate) {
+		if (animate) {
 			this.token.moveTo(pos.x, pos.y, true, anim.resolve);
 		} else {
 			this.token.moveTo(pos.x, pos.y, false, anim.resolve);
@@ -165,11 +165,11 @@ define([
 		this.token.bringToFront();
 	};
 
-	Player.prototype.showActiveMarker = function(){
+	Player.prototype.showActiveMarker = function() {
 		this.marker.show();
 	};
 
-	Player.prototype.hideActiveMarker = function(){
+	Player.prototype.hideActiveMarker = function() {
 		this.marker.hide();
 	};
 

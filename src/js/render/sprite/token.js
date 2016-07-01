@@ -5,10 +5,40 @@ define([
 	"engine/config",
 	"render/script/popup"
 ], function($, Sprite, Renderer) {
-	'use strict';
+	"use strict";
 
 	/** Duration of moving animation */
 	var animationDuration;
+
+	// Utils
+	function onClickFactory(player) {
+		return function() {
+			$.publish("UI.InfoPanel.PlayerInfo.Refresh", player);
+			$.publish("UI.InfoPanel.PlayerInfo.Show");
+		};
+	}
+
+	function onMouseOverFactory(token, player) {
+		return function() {
+			var reg = token.getRegistrationPoint();
+
+			$.publish(
+				"UI.Tooltip.Show",
+				{
+					type: "PLAYER",
+					entity: player,
+					position: {
+						left: reg.x,
+						top: reg.y
+					}
+				}
+			);
+		};
+	}
+
+	function hideTooltip() {
+		$.publish("UI.Tooltip.Hide");
+	}
 
 	/**
 	 * Sprite to represent player token
@@ -17,7 +47,7 @@ define([
 	 * @returns {PlayerToken}
 	 * @constructor
 	 */
-	function PlayerToken(player){
+	function PlayerToken(player) {
 		// Inherits Sprite object
 		Sprite.apply(this, [
 			Renderer.layers.tokens.paper.use(player.color.TOKEN),
@@ -31,6 +61,7 @@ define([
 
 		// Set mouse event handlers
 		var view = this.view;
+
 		view.click(onClickFactory(player));
 		view.mouseover(onMouseOverFactory(this, player));
 		view.mouseout(hideTooltip);
@@ -45,16 +76,17 @@ define([
 		 * @param {function} [callback] - Callback when token become stationary
 		 * @override
 		 */
-		this.moveTo = function(x, y, animate, callback){
+		this.moveTo = function(x, y, animate, callback) {
 			// Update position to new position
 			// value will not be animated
 			this.x = x;
 			this.y = y;
 
 			// Update sprite
-			var targetPos = this.getBoundingOffset(x,y);
+			var targetPos = this.getBoundingOffset(x, y);
 			var doCallback = callback || $.noop; // Define callback
-			if(animate){
+
+			if (animate) {
 				$(this.view.node)
 					.velocity(targetPos, animationDuration, "ease-in-out", doCallback);
 			} else {
@@ -75,7 +107,7 @@ define([
 
 		// Tooltip offset from ground tile
 		var offsetX = 0,
-		    offsetY = -5;
+			offsetY = -5;
 
 		extras.x = this.x + offsetX;
 		extras.y = this.y + offsetY;
@@ -83,34 +115,6 @@ define([
 		// Render tooltip as spatial element
 		require("render/script/popup")(msg, extras);
 	};
-
-	function onClickFactory(player) {
-		return function() {
-			$.publish("UI.InfoPanel.PlayerInfo.Refresh", player);
-			$.publish("UI.InfoPanel.PlayerInfo.Show");
-		};
-	}
-
-	function onMouseOverFactory(token, player) {
-		return function() {
-			var reg = token.getRegistrationPoint();
-			$.publish(
-				"UI.Tooltip.Show",
-				{
-					"class": "PLAYER",
-					"entity": player,
-					"position": {
-						"left": reg.x,
-						"top": reg.y
-					}
-				}
-			);
-		};
-	}
-
-	function hideTooltip(){
-		$.publish("UI.Tooltip.Hide");
-	}
 
 	return PlayerToken;
 });

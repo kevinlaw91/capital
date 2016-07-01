@@ -8,8 +8,8 @@ define([
 	"ui/dialogs",
 	"engine/script/make-layers",
 	"engine/script/asset-load"
-],function() {
-	'use strict';
+], function() {
+	"use strict";
 
 	// Imports
 	var AssetManager = require("engine/assets"),
@@ -29,12 +29,12 @@ define([
 		game: require("engine/game"),
 
 		/** @returns {Game} Game definition object */
-		getGame: function(){
+		getGame: function() {
 			return Engine.game;
 		},
 
 		/** @returns {GameSession} Current game session */
-		getSession: function(){
+		getSession: function() {
 			return Engine.game.getSession();
 		},
 		/**
@@ -89,13 +89,15 @@ define([
 						UI.UserActionPanel.init();
 						UI.InfoPanel.init();
 					})
-					.then(function(){
+					.then(function() {
 						// Prepare Dialog
 						try {
 							var getUIFragment = AssetManager.FragmentStore.get;
+
 							DialogManager.register("treasurehunt", getUIFragment("dialog-minigame-treasurehunt"));
+
 							return Promise.resolve();
-						} catch(e) {
+						} catch (e) {
 							return Promise.reject(new Error("(DialogManager) Failed when registering dialog boxes."));
 						}
 					})

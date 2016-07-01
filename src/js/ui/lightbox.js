@@ -1,5 +1,5 @@
 define(["jquery"], function($) {
-	'use strict';
+	"use strict";
 
 	/** @class Lightbox */
 	return {
@@ -8,7 +8,7 @@ define(["jquery"], function($) {
 			this.node
 			    // Clear pending cleanup task by triggering it purposely
 			    .trigger("animationend")
-			    .attr("aria-hidden","false")
+			    .attr("aria-hidden", "false")
 			    .removeClass("hidden")
 			    .addClass("animate_on");
 		},
@@ -22,7 +22,7 @@ define(["jquery"], function($) {
 			this.node
 			    .removeClass("animate_on animate_off")
 			    .addClass("hidden")
-			    .attr("aria-hidden","true");
+			    .attr("aria-hidden", "true");
 		}
 	};
 });

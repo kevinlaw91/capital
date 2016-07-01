@@ -1,19 +1,17 @@
 define(function() {
-	'use strict';
+	"use strict";
 
-	/*
-	** Polyfills
-	*/
+	/* Polyfills */
 
 	// (ECMA2015) Array.prototype.find()
 	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
 	if (!Array.prototype.find) {
 		Array.prototype.find = function(predicate) {
 			if (this === null) {
-				throw new TypeError('Array.prototype.find called on null or undefined');
+				throw new TypeError("Array.prototype.find called on null or undefined");
 			}
-			if (typeof predicate !== 'function') {
-				throw new TypeError('predicate must be a function');
+			if (typeof predicate !== "function") {
+				throw new TypeError("predicate must be a function");
 			}
 			var list = Object(this);
 			var length = list.length >>> 0;
@@ -26,7 +24,6 @@ define(function() {
 					return value;
 				}
 			}
-			return undefined;
 		};
 	}
 
@@ -35,10 +32,10 @@ define(function() {
 	if (!Array.prototype.findIndex) {
 		Array.prototype.findIndex = function(predicate) {
 			if (this === null) {
-				throw new TypeError('Array.prototype.findIndex called on null or undefined');
+				throw new TypeError("Array.prototype.findIndex called on null or undefined");
 			}
-			if (typeof predicate !== 'function') {
-				throw new TypeError('predicate must be a function');
+			if (typeof predicate !== "function") {
+				throw new TypeError("predicate must be a function");
 			}
 			var list = Object(this);
 			var length = list.length >>> 0;
@@ -51,13 +48,14 @@ define(function() {
 					return i;
 				}
 			}
+
 			return -1;
 		};
 	}
 
 	// (ECMA2015) Promise
 	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
-	if(typeof Promise === "undefined") {
+	if (typeof Promise === "undefined") {
 		require(["lib/promise"], function(polyfill) {
 			polyfill(window);
 		});
