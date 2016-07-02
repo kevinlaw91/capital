@@ -203,6 +203,13 @@ define([
 				return store.get(id);
 			},
 			/**
+			 * Remove a DOM Template from store
+			 * @param {string} id
+			 */
+			remove: function(id) {
+				store.has(id) && store.delete(id);
+			},
+			/**
 			 * Load a file that contains DOM fragment
 			 * @param path - Path of the file to be loaded
 			 */
