@@ -5,13 +5,15 @@ define([
 	"game/randomizer",
 	"engine/dev",
 	"utils",
-	"game/minigames"
+	"game/minigames",
+	"ui/user-action-panel"
 ], function($) {
 	"use strict";
 
 	// Imports
 	var Config = require("engine/config"),
 		MiniGames = require("game/minigames"),
+		UserActionPanel = require("ui/user-action-panel"),
 		formatAsCurrency = require("utils").formatAsCurrency;
 
 	//
@@ -61,31 +63,6 @@ define([
 
 		// Update ranking
 		$.publish("Leaderboard.sort");
-	}
-
-	/**
-	 * Offer object
-	 * @param {function} fnAccept - Actions when an offer was accepted
-	 * @constructor
-	 */
-	function Offer(fnAccept) {
-		var _accept = fnAccept;
-
-		/** @returns {boolean} */
-		this.accept = function() {
-			var result = _accept();
-
-			_accept = null;
-			delete this.accept;
-
-			return result;
-		};
-
-		this.decline = function() {
-			_accept = null;
-			delete this.accept;
-			delete this.decline;
-		};
 	}
 
 	/**
@@ -268,23 +245,40 @@ define([
 
 					// If no special identifier, treat as normal lot
 					default:
+						var prompt;
+
 						if (location.isOwnedBy(player)) {
 							// Stopped at owned property
 							if (location.upgradeAvailable()) {
 								// Can be upgraded
-								// Show prompt
-								$.publish("UI.UserActionPanel.PromptPropertyUpgrade", {
-									offer: new Offer(
-										function() {
-											// Determine success/fail using return value
-											return Lot.upgrade(location, player);
+
+								// Prompt upgradable
+								prompt = UserActionPanel.prompt(
+									"PropertyUpgrade",
+									{
+										// (Boolean) Condition for the offer to be valid
+										modifier: {
+											offer: (player.cash >= location.getNextUpgradeCost())
+										},
+										fields: {
+											cost: formatAsCurrency(location.getNextUpgradeCost())
 										}
-									),
-									fields: {
-										cost: formatAsCurrency(location.getNextUpgradeCost())
-									},
-									onComplete: Player.turn
+									}
+								);
+
+								// Handle when player made their decision
+								prompt.onResult.then(function(choice) {
+									if (choice.value === 1) {
+										// User acccepted offer
+										var outcome = Lot.upgrade(location, player);
+
+										// Forward outcome back to panel
+										choice.forwardOutcome(outcome);
+									}
 								});
+
+								// Handle prompt dismiss event
+								prompt.onDismiss.then(Player.turn);
 							} else {
 								// Cannot be upgrade
 								// End current turn
@@ -295,20 +289,34 @@ define([
 								// Unowned lot
 								log("[GAME_EVENT] This lot can be bought by current player", "gameevent");
 
-								// Offer lot for purchase
-								$.publish("UI.UserActionPanel.PromptPropertyBuy", {
-									offer: new Offer(
-										function() {
-											// Determine success/fail using return value
-											return Lot.buy(location, player);
+								// Prompt for sale
+								prompt = UserActionPanel.prompt(
+									"PropertyBuy",
+									{
+										// (Boolean) Condition for the offer to be valid
+										modifier: {
+											offer: (player.cash >= location.getPrice())
+										},
+										fields: {
+											title: location.name,
+											cost: formatAsCurrency(location.getPrice())
 										}
-									),
-									fields: {
-										title: location.name,
-										cost: formatAsCurrency(location.getPrice())
-									},
-									onComplete: Player.turn
+									}
+								);
+
+								// Handle when player made their decision
+								prompt.onResult.then(function(choice) {
+									if (choice.value === 1) {
+										// User acccepted offer
+										var outcome = Lot.buy(location, player);
+
+										// Forward outcome back to panel
+										choice.forwardOutcome(outcome);
+									}
 								});
+
+								// Handle prompt dismiss event
+								prompt.onDismiss.then(Player.turn);
 							} else {
 								// Stopped at others' property
 
@@ -365,6 +373,7 @@ define([
 		/**
 		 * Buy active player's current position
 		 * @function
+		 * @return {boolean}
 		 */
 		buy: function(lot, player) {
 			var Session = getSession();

@@ -4,67 +4,103 @@
 #action-panel {
 	width: 100%;
 	background-color: #006064;
+	color: white;
+
+	.material-icons {
+		padding: 0 4px;
+	}
 
 	section {
 		display: none;
-		padding: 5px 20px 20px;
 		font-family: "Yantramanav", sans-serif;
-		color: white;
+
+		.contents {
+			padding: 10px 20px;
+		}
 
 		h1 {
-			margin-top: 14px;
-			font-size: 1.5rem;
-			font-weight: 400;
-			opacity: 0.87;
+			padding: 20px;
+			margin-bottom: -20px;
+			font-size: 2rem;
+			opacity: 0.85;
+			font-weight: normal;
 		}
 
-		p {
-			margin-top: 14px;
-			font-size: 1rem;
-			font-weight: 400;
-			opacity: 0.87;
-		}
+		dl {
+			display: flex;
+			line-height: 2rem;
 
-		button {
-			font-family: inherit;
-			position: relative;
-			background-color: #546e7a;
-			box-shadow: 0 2px 5px 0 black(0.26);
-			color: white;
-			border: 0;
-			font:{
-				weight: 500;
-				size: 1rem;
-			}
-			margin: {
-				top: 14px;
-				right: 5px;
+			dt {
+				display: inline-block;
+				text-transform: uppercase;
+				font-weight: 600;
+				font-size: 0.9rem;
+				background-color: black(0.5);
+				color: white(0.9);
+				padding: 0 10px;
+				min-width: 50px;
+				border-right: solid 2px white;
 			}
 
-			&.main {
-				background-color: #ff5722;
-			}
+			dd {
+				display: inline-block;
+				background-color: white(0.1);
+				padding: 0 10px;
+				min-width: 100px;
 
-			.success-icon {
-				@include size(32px);
-				opacity: 0;
-				transform-origin: 50% 50%;
-				position: absolute;
-				left: calc(50% - 16px);
-				top: calc(50% - 16px);
-
-				path {
-					fill: none;
-					stroke: white {
-						width: 3;
-						dasharray: 50, 50;
-					}
+				&.side {
+					background-color: transparent;
 				}
 			}
 
+			.material-icons {
+				vertical-align: sub;
+				font-size: 18px;
+			}
+		}
+
+		.action-row {
+			padding: 10px 20px;
+			background-color: rgba(0, 0, 0, 0.1);
+
+			div {
+				display: flex;
+			}
+		}
+
+		button {
+			background-color: #546e7a;
+			border: 0;
+			box-shadow: 0 2px 5px 0 black(0.25);
+			color: white;
+			font:{
+				family: inherit;
+				weight: 500;
+				size: 1rem;
+			}
+			margin: 5px;
+			min-width: 100px;
+			position: relative;
+			outline: 0;
+
+			&.default {
+				background-color: #ff5722;
+
+				&:focus {
+					box-shadow: 0 0 1px 1px #f3ffc3;
+				}
+
+				&:active {
+					background-color: #e85b26;
+				}
+			}
+
+			&:active {
+				background-color: #4b6470;
+			}
+
 			&:focus {
-				box-shadow: 0 0 1px 1px #fff9c4;
-				outline: 0;
+				box-shadow: 0 0 1px 1px white(0.7);
 			}
 
 			> span {
@@ -72,27 +108,54 @@
 				display: inline-block;
 				padding: 8px 16px;
 			}
+
+			.icon.success {
+				@include size(32px);
+				opacity: 0;
+				transform-origin: 50% 50%;
+				position: absolute;
+				left: calc(50% - 16px);
+				top: calc(50% - 16px);
+
+				use {
+					fill: none;
+					stroke: white {
+						width: 3;
+						dasharray: 50, 50;
+					}
+				}
+			}
 		}
 
-		&.done button {
-			animation: btn-result-hide 0.2s ease-in forwards;
-			@at-root {
-				@keyframes btn-result-hide {
-					from {
-						transform: scale(1,1);
-						opacity: 1;
+		&.done {
+			button {
+				animation: action-panel-hide-transition 0.2s ease-in forwards;
+				@at-root {
+					@keyframes action-panel-hide-transition {
+						from {
+							transform: scale(1,1);
+							opacity: 1;
+						}
+						to {
+							transform: scale(0,0);
+							opacity: 0;
+						}
 					}
-					to {
-						transform: scale(0,0);
-						opacity: 0;
+				}
+
+				&.default {
+					animation-delay: 2s;
+
+					span {
+						animation: action-panel-hide-transition 0.2s ease-in forwards;
 					}
 				}
 			}
 
-			.success-icon {
-				animation: btn-result-show 0.2s ease-in forwards;
+			.icon.success {
+				animation: action-panel-result-fade 0.2s ease-in forwards;
 				@at-root {
-					@keyframes btn-result-show {
+					@keyframes action-panel-result-fade {
 						from {
 							transform: scale(1.5,1.5);
 							opacity: 0;
@@ -104,22 +167,14 @@
 					}
 				}
 
-				path {
-					animation: btn-result-draw-icon 0.4s ease-in forwards;
+				use {
+					animation: action-panel-check-animation 0.4s ease-in forwards;
 					@at-root {
-						@keyframes btn-result-draw-icon {
+						@keyframes action-panel-check-animation {
 							from { stroke-dashoffset: 50px }
 							to { stroke-dashoffset: 0px }
 						}
 					}
-				}
-			}
-
-			&.main {
-				animation-delay: 2s;
-
-				span {
-					animation: btn-result-hide 0.2s ease-in forwards;
 				}
 			}
 		}
