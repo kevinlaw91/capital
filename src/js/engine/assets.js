@@ -52,6 +52,27 @@ define([
 			},
 
 			/**
+			 * Create a SVG fragment that renders the symbol
+			 * @param id
+			 * @returns {Snap}
+			 */
+			use: function(id) {
+				var svg = Snap(); // Paper
+
+				// Clean up
+				svg.selectAll("*").remove();
+
+				if (list.has(id)) {
+					// Render symbol
+					svg.use(id);
+				} else {
+					throw new Error("(SymbolStore) No symbol that matches \"" + id + "\"");
+				}
+
+				return svg;
+			},
+
+			/**
 			 * Loads a file
 			 * @public
 			 * @param path - Path of the file to be loaded
