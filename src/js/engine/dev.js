@@ -154,8 +154,12 @@ define(function() {
 	};
 
 	/** Define conditions for debugging */
-	dev.runPreset = function() {
-		// Write debug script here
+	dev.loadSaved = function() {
+		// Run automatically when game starts
+	};
+
+	dev.run = function() {
+		// Run predefined scripts when needed
 	};
 
 	return dev;

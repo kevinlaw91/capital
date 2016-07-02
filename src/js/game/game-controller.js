@@ -462,6 +462,9 @@ define([
 
 			// First player's turn
 			Player.turn();
+
+			// Run dev saved state
+			require("engine/dev").loadSaved();
 		}
 	};
 });
