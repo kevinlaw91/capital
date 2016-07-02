@@ -81,12 +81,18 @@ define([
 				var symbolEl = snapSymbol.node,
 					viewbox = symbolEl.viewBox.baseVal;
 
-				list.set(symbolEl.id,
-					{
-						height: Number(viewbox.height),
-						width: Number(viewbox.width)
-					}
-				);
+				if (list.has(symbolEl.id)) {
+					console.error("(SymbolStore) Symbol name conflict: " + symbolEl.id);
+					throw new Error("(SymbolStore) Symbol name conflict");
+				} else {
+					list.set(
+						symbolEl.id,
+						{
+							height: Number(viewbox.height),
+							width: Number(viewbox.width)
+						}
+					);
+				}
 
 				// Attach symbol to canvas and put inside <defs>
 				snapSymbol.appendTo(store).toDefs();
