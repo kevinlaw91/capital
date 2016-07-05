@@ -153,3 +153,16 @@ $font-path: "../../../resources/fonts/";
 	normal,
 	$font-formats
 )
+
+/*
+   Material Icons
+   https://github.com/google/material-design-icons
+   Creative Commons Attribution 4.0 International License (CC-BY 4.0)
+*/
+@include font-face(
+	"Material Icons",
+	$font-path + "MaterialIcons-Regular",
+	400,
+	normal,
+	$font-formats
+)
