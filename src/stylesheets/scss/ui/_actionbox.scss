@@ -4,7 +4,7 @@
 #player-action-box {
 	@include absolute(bottom 0);
 	@extend .no-pointer-events;
-	transform: translateZ(0);
+	@extend .gpu-layer;
 	display: block;
 	width: 100%;
 }

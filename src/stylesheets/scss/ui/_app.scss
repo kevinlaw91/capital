@@ -106,7 +106,7 @@ body {
 #stage-box-slide {
 	@include absolute(top 0);
 	@include size(100%);
-	transform: translateZ(0);
+	@extend .gpu-layer;
 	transition: top 250ms $easeOutCubic;
 
 	.contents {
