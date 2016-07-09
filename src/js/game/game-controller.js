@@ -16,18 +16,15 @@ define([
 		UserActionPanel = require("ui/user-action-panel"),
 		formatAsCurrency = require("utils").formatAsCurrency;
 
+	/**
+	 * Reference to the active game session
+	 * @type {GameSession}
+	 */
+	var Session;
+
 	//
 	// Utils functions
 	//
-
-	/**
-	 * Get current game session instance
-	 * @returns {GameSession}
-	 */
-	function getSession() {
-		return require("engine/game").getSession();
-	}
-
 	/**
 	 * @function
 	 * @param {Player} player
@@ -65,63 +62,86 @@ define([
 		$.publish("Leaderboard.sort");
 	}
 
+	// Rule namespaces
+	var Game, Player, Lot;
+
 	/**
 	 * Game flow controls
 	 * @namespace
 	 */
-	var Game = {
+	Game = {
 		// Game states
 		state: {
 			LISTENING_DICE_ROLL: false
 		},
 
 		// Game events
-		onDiceRollCompleted: $.noop
+		onDiceRollCompleted: $.noop,
+
+		// Dice roll
+		doDiceRoll: function() {
+			if (Game.state.LISTENING_DICE_ROLL) {
+				// Perform dice roll and inform to UI
+				var result = require("game/randomizer").DiceRoll();
+
+				// Show moving status
+				$.publish("UI.DiceButton.Indeterminate");
+
+				// Emulate dice rolling time
+				new Promise(function(resolve) {
+					window.setTimeout(
+						function() { resolve(result); },
+						Config.get("player.token.waitTime")
+					);
+				}).then(Game.onDiceRollCompleted);
+			}
+
+			// Stop listening for now
+			Game.state.LISTENING_DICE_ROLL = false;
+		},
+
+		/** Pass turn to next player */
+		endCurrentTurn: function() {
+			// Current active player
+			var player = Session.getActivePlayer();
+
+			if (player) {
+				// Note:
+				// Active player does not always exist,
+				// e.g. during first move of the game
+				player.hideActiveMarker();
+
+				log("[GAME_EVENT] Current player ended his turn", "gameevent");
+			}
+
+			// Give turn to next player
+			Session.turn();
+			Player.onActive(Session.getActivePlayer());
+		}
 	};
 
+	/** Handle dice roll */
+	$.subscribe("Player.RollDice", Game.doDiceRoll);
+
 	/**
-	 * Handle dice roll
-	 * @function
+	 * Player related rules
+	 * @namespace
 	 */
-	$.subscribe("Player.RollDice", function() {
-		if (Game.state.LISTENING_DICE_ROLL) {
-			// Perform dice roll and inform to UI
-			var result = require("game/randomizer").DiceRoll();
-
-			// Show moving status
-			$.publish("UI.DiceButton.Indeterminate");
-
-			// Emulate dice rolling time
-			new Promise(function(resolve) {
-				window.setTimeout(
-					function() { resolve(result); },
-					Config.get("player.token.waitTime")
-				);
-			}).then(Game.onDiceRollCompleted);
-		}
-
-		// Stop listening for now
-		Game.state.LISTENING_DICE_ROLL = false;
-	});
-
-	// Rule entities
-	var Lot, Player;
-
-	/** Player related rules */
 	Player = {
 		/**
-		 * Move a player to new position
+		 * Move a player to new position,
+		 * returning a promise object that is resolved when reaching destination
 		 * @param {object} player
 		 * @param {(number|{x: number, y: number}|Lot|TradableLot)} newPosition
 		 * @param {function} [onPassBy=$.noop] - Called when passing by a location
+		 * @return {Promise} - Resolve value: {player: Object, location: Object}
 		 */
 		move: function(player, newPosition, onPassBy) {
 			// Defaults
 			onPassBy = onPassBy || $.noop;
 
-			var Session = getSession(),
-				waitTime = 75; // Delay time for each steps
-			var posType = typeof newPosition,
+			var waitTime = 75, // Time delay for each steps
+				posType = typeof newPosition,
 				step = (posType === "number")? newPosition: null,
 				reached,
 				lot;
@@ -167,13 +187,25 @@ define([
 		},
 
 		/**
+		 * Move player by steps
+		 * @param {Player} player - Player to move
+		 * @param {number} step - Dice roll result
+		 */
+		moveByStep: function(player, step) {
+			Player.move(player, step, Player.onPassby)
+			      .then(function(r) {
+				      // Reached destination
+				      Player.onStop(r.player, r.location);
+			      });
+		},
+
+		/**
 		 * Find player's next move
 		 * @returns {Lot|TradableLot}
 		 */
 		findNextMove: function(player) {
 			// Find player's current position relative index in map
-			var Session = getSession(),
-				lot = Session.map.lot;
+			var lot = Session.map.lot;
 
 			// Player's current position index
 			var i = Session.map.findIndex(
@@ -211,7 +243,7 @@ define([
 			log("[GAME_EVENT] Player stopped at " + location.x + "," + location.y, "gameevent");
 
 			// Show active indicator if player is active
-			if (getSession().getActivePlayer() === player) {
+			if (Session.getActivePlayer() === player) {
 				player.showActiveMarker();
 			}
 
@@ -222,7 +254,7 @@ define([
 				switch (location.id) {
 					case "MAP-CORNER-0":
 						// End current turn
-						Player.turn();
+						Game.endCurrentTurn();
 						break;
 					case "MAP-CORNER-1":
 						// Treasure Hunt Mini Game
@@ -231,16 +263,16 @@ define([
 							         if (result.prize > 0) {
 								         CashFlow(player, { add: result.prize, source: "PRIZE" });
 							         }
-							         Player.turn();
+							         Game.endCurrentTurn();
 						         });
 						break;
 					case "MAP-CORNER-2":
 						// End current turn
-						Player.turn();
+						Game.endCurrentTurn();
 						break;
 					case "MAP-CORNER-3":
 						// End current turn
-						Player.turn();
+						Game.endCurrentTurn();
 						break;
 
 					// If no special identifier, treat as normal lot
@@ -278,11 +310,11 @@ define([
 								});
 
 								// Handle prompt dismiss event
-								prompt.onDismiss.then(Player.turn);
+								prompt.onDismiss.then(Game.endCurrentTurn);
 							} else {
 								// Cannot be upgrade
 								// End current turn
-								Player.turn();
+								Game.endCurrentTurn();
 							}
 						} else {
 							if (!location.owner) {
@@ -316,7 +348,7 @@ define([
 								});
 
 								// Handle prompt dismiss event
-								prompt.onDismiss.then(Player.turn);
+								prompt.onDismiss.then(Game.endCurrentTurn);
 							} else {
 								// Stopped at others' property
 
@@ -326,39 +358,20 @@ define([
 								CashFlow(player, { sub: location.rent, source: "RENT" });
 
 								// End current turn
-								Player.turn();
+								Game.endCurrentTurn();
 							}
 						}
 				}
 			}
 		},
 
-		/** Pass turn to next player */
-		turn: function() {
-			var Session = getSession();
+		/** When player become active */
+		onActive: function(player) {
+			log("[GAME_EVENT] \"" + player.name + "\" is now active", "gameevent");
 
-			// Current active player
-			var player = Session.getActivePlayer();
-
-			if (player) {
-				// Note:
-				// Active player does not always exist,
-				// e.g. first move of the game
-				player.hideActiveMarker();
-
-				log("[GAME_EVENT] Current player ended his turn", "gameevent");
-			}
-
-			// Give turn to next player
-			Session.turn();
-
-			// New active player
-			var nextPlayer = Session.getActivePlayer();
-
-			nextPlayer.bringToFront();
-			nextPlayer.showActiveMarker();
-
-			log("[GAME_EVENT] \"" + nextPlayer.name + "\" is now active", "gameevent");
+			// Update player token
+			player.bringToFront();
+			player.showActiveMarker();
 
 			// Show dice button
 			$.publish("UI.DiceButton.Show");
@@ -368,7 +381,10 @@ define([
 		}
 	};
 
-	/** Lot related rules */
+	/**
+	 * Lot related rules
+	 * @namespace
+	 */
 	Lot = {
 		/**
 		 * Buy active player's current position
@@ -376,8 +392,6 @@ define([
 		 * @return {boolean}
 		 */
 		buy: function(lot, player) {
-			var Session = getSession();
-
 			if (Session.getActivePlayer() === player) {
 				// Check if lot is currently unowned and is open for trading
 				if (lot && lot.isTradable && lot.owner === null) {
@@ -389,8 +403,6 @@ define([
 					return true;
 				}
 			}
-
-			return false;
 		},
 
 		/**
@@ -398,8 +410,6 @@ define([
 		 * @function
 		 */
 		upgrade: function(lot, player) {
-			var Session = getSession();
-
 			if (Session.getActivePlayer() === player) {
 				// Check if current lot is owned by player and upgrade is possible
 				if (lot && lot.isTradable && lot.isOwnedBy(player) && lot.upgradeAvailable()) {
@@ -411,8 +421,6 @@ define([
 					return true;
 				}
 			}
-
-			return false;
 		}
 	};
 
@@ -422,7 +430,7 @@ define([
 
 	// Cheat interface for dev module
 	$.subscribe("Cheat", function(evt, data) {
-		if (getSession().cheat) {
+		if (Session.cheat) {
 			// Dynamic scoping to expose game rules to dev.cheat()
 			eval(data.cheat);
 		} else {
@@ -432,22 +440,24 @@ define([
 
 	return {
 		// Game start entry point
-		start: function() {
-			Game.onDiceRollCompleted = function(result) {
-				var p = getSession().getActivePlayer();
+		start: function(session) {
+			// Store reference to active session
+			Session = session;
 
-				p.hideActiveMarker();
-				Player.move(p, result, Player.onPassby)
-				      .then(function(r) {
-					      // Reached dstination
-					      Player.onStop(r.player, r.location);
-				      });
+			// Set dice roll complete actions
+			Game.onDiceRollCompleted = function(result) {
+				var player = Session.getActivePlayer();
+
+				// Move player by dice roll result
+				player.hideActiveMarker();
+				Player.moveByStep(player, result);
 			};
 
-			// First player's turn
-			Player.turn();
+			// Give turn to next player
+			Session.turn();
+			Player.onActive(Session.getActivePlayer());
 
-			// Run dev saved state
+			// Load developer saved state
 			require("engine/dev").loadSaved();
 		}
 	};

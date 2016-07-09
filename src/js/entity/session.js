@@ -94,7 +94,7 @@ define([
 	/** Start session */
 	GameSession.prototype.startGame = function() {
 		log("[EVENT] Game session started", "event");
-		GameController.start();
+		GameController.start(this);
 	};
 
 	return GameSession;
