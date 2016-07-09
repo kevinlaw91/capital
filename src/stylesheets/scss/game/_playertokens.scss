@@ -1,34 +1,42 @@
 /* ============================================================================
 ** Player tokens
 ** ==========================================================================*/
-.player-token {
-	animation: player-token-rotate 1s linear infinite;
+.token-active-mark {
+	$length: 29;
+	$gap: 9;
+
 	fill: none;
 	stroke: white {
 		width: 10;
-		dasharray: 22 7;
-		dashoffset: 29;
+		dasharray: ($length - $gap) $gap;
+		dashoffset: $length;
 	}
-}
-
-.player-token-appear {
-	// Animation when token changed as active
-	animation:  player-token-rotate 1s linear infinite,
-	            ground-marker-fadein 0.3s 1;
+	animation: token-active-mark-rotate 1s linear infinite;
 	@at-root {
-		@keyframes player-token-rotate {
-			0% { stroke-dashoffset: 29 }
+		@keyframes token-active-mark-rotate {
+			0% { stroke-dashoffset: $length }
 			100% { stroke-dashoffset: 0 }
 		}
 
-		@keyframes ground-marker-fadein {
-			0% {
-				opacity: 0;
-				transform: translate(0, 20px);
-			}
-			100% {
-				opacity: 1;
-				transform: translate(0, 0px);
+		@keyframes token-active-mark-fadein {
+			0% { opacity: 0; }
+			100% { opacity: 1; }
+		}
+	}
+
+	&.appear {
+		// When token become active
+		animation: token-active-mark-rotate 1s linear infinite,
+		           token-active-mark-fadein 0.5s 1;
+
+		circle {
+			animation: token-active-mark-rise 0.5s;
+			@at-root {
+				@keyframes token-active-mark-rise {
+					from {
+						transform: translate(0, 20px);
+					}
+				}
 			}
 		}
 	}

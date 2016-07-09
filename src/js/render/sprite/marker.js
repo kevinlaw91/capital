@@ -15,13 +15,15 @@ define([
 		// Inherits Sprite object
 		Sprite.apply(this, [
 			function() {
-				var group = Renderer.layers.markers.paper.g();
+				var group = Renderer.layers.markers.paper.g(),
+					fragment = Snap.parse(
+						"<g transform='matrix(1,0,0,0.5,0,0)'>" +
+						"<circle cx='42' cy='42' r='37' />" +
+						"</g>"
+					);
 
-				group.append(Snap.parse(
-					"<g transform='matrix(1,0,0,0.5,0,0)'>" +
-						"<circle cx='42' cy='42' r='37' class='player-token' />" +
-					"</g>"
-				));
+				group.append(fragment)
+				     .addClass("token-active-mark");
 
 				return group;
 			},
@@ -69,20 +71,16 @@ define([
 
 	/** Reveal the sprite using animation */
 	GroundMarker.prototype.show = function() {
-		this.view.attr({ display: "" });
-		var circleElem = this.view.select("circle").node;
-
-		// Play appear animation
-		$(circleElem).addClass("player-token-appear");
+		this.view
+		    .removeClass("hidden")
+		    .addClass("appear");
 	};
 
 	/** Hides the sprite */
 	GroundMarker.prototype.hide = function() {
-		this.view.attr({ display: "none" });
-		// Resets appear animation
-		var circleElem = this.view.select("circle").node;
-
-		$(circleElem).removeClass("player-token-appear");
+		this.view
+		    .removeClass("appear")
+		    .addClass("hidden");
 	};
 
 	return GroundMarker;
