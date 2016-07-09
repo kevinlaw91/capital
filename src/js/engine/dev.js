@@ -2,8 +2,7 @@ define(function() {
 	"use strict";
 
 	// Dev Mode Switch
-	var devMode = true,
-		cheatEnabled = true;
+	var devMode = true;
 
 	/**
 	 * Reference to game engine
@@ -22,12 +21,6 @@ define(function() {
 		 * @returns {Player}
 		 */
 		playerById = function(id) { return S().players[id]; },
-		/**
-		 * Secret access token for dev module to use cheat
-		 * @see dev.storeSecret
-		 * @type {string}
-		 */
-		SECRET_KEY,
 
 	    /** @lends module:engine/dev */
 		dev = {
@@ -43,17 +36,6 @@ define(function() {
 				}
 
 				delete this.init;
-			},
-		    /** Store secret key for cheat */
-			storeSecret: function(key) {
-				SECRET_KEY = key;
-				// Seal
-				delete dev.storeSecret;
-			},
-			cheat: function(str) {
-				if (cheatEnabled) {
-					$.publish("Cheat", { token: SECRET_KEY, cheat: str });
-				}
 			},
 			enableLogging: function() {
 				var style = {
@@ -98,6 +80,14 @@ define(function() {
 			}
 		};
 
+	/**
+	 * Run a cheat
+	 * @param {string} str - Script to run under the context of game-controller
+	 */
+	dev.cheat = function(str) {
+		$.publish("Cheat", { cheat: str });
+	};
+
 	/** Instantly move player to starting position, completing a cycle */
 	dev.movePlayerToStartPosition = function(player) {
 		var startingPoint = S().map.startingPoint,
@@ -107,8 +97,8 @@ define(function() {
 	};
 
 	/** Step player forwards */
-	dev.movePlayerBySteps = function(player, steps) {
-		dev.cheat("move " + player + " " + steps);
+	dev.movePlayerBySteps = function(player_index, steps) {
+		dev.cheat("Player.move(Session.players[" + player_index + "], " + steps + ")");
 	};
 
 	/** Sell specified lot to a player */

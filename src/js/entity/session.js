@@ -23,6 +23,9 @@ define([
 	function GameSession() {
 		log("[EVENT] Created new game session", "event");
 
+		/** @type {boolean} */
+		this.cheat = true;
+
 		/**
 		 * Players in current match
 		 * @type {Player[]}

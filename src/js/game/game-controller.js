@@ -420,39 +420,14 @@ define([
 	// Dev debugging interface
 	//
 
-	// Secret key for dev module to access controller
-	var SECRET_KEY = {};
-
-	// Generate secret key
-	if (window.crypto && window.crypto.getRandomValues) {
-		var byteArray = new Uint32Array(2);
-
-		window.crypto.getRandomValues(byteArray);
-		SECRET_KEY.key = byteArray[0].toString(36) + byteArray[1].toString(36);
-	} else {
-		SECRET_KEY.key = (Math.random() * new Date().getTime()).toString(36).replace(/\./g, "");
-	}
-
-	// Pass to dev module
-	require("engine/dev").storeSecret(SECRET_KEY);
-
 	// Cheat interface for dev module
 	$.subscribe("Cheat", function(evt, data) {
-		// To prevent abuse
-		// do not accept cheat command without correct token
-		if (data.token && data.token === SECRET_KEY) {
-			var args = data.cheat.split(" "),
-				cmd = args[0],
-				s = getSession();
-
-			try {
-				switch (cmd) {
-					case "move":
-						Player.move(s.players[args[1]], Number(args[2]));
-						break;
-				}
-			} catch (e) { throw new TypeError("Invalid cheat command."); }
-		} else { throw new Error("Invalid cheat token."); }
+		if (getSession().cheat) {
+			// Dynamic scoping to expose game rules to dev.cheat()
+			eval(data.cheat);
+		} else {
+			console.warn("Cheat was not enabled.");
+		}
 	});
 
 	return {
