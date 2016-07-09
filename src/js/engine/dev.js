@@ -6,79 +6,103 @@ define(function() {
 
 	/**
 	 * Reference to game engine
+	 * @private
 	 * @type {Engine}
 	 */
-	var G = null,
-		/**
-		 * Returns current game session
-		 * @private
-		 * @returns {GameSession}
-		 */
-		S = function() { return G.getSession(); },
-		/**
-		 * Get player by index
-		 * @private
-		 * @returns {Player}
-		 */
-		playerById = function(id) { return S().players[id]; },
+	var G = null;
 
-	    /** @lends module:engine/dev */
-		dev = {
-			/** @type {Engine} */
-			g: null,
-			init: function(gameEngine) {
-				G = this.g = gameEngine;
+	/**
+	 * Returns current game session
+	 * @private
+	 * @returns {GameSession}
+	 */
+	function S() {
+		return G.getSession();
+	}
 
-				// Export to global if dev tool enabled
-				if (devMode) {
-					window.g   = dev.g;
-					window.dev = dev;
-				}
+	/**
+	 * Get player by index
+	 * @private
+	 * @returns {Player}
+	 */
+	function playerById(id) {
+		return S().players[id];
+	}
 
-				delete this.init;
-			},
-			enableLogging: function() {
-				var style = {
-					normal: "color: silver",
-					event: "color: gold",
-					complete: "color: #00cc65; font-weight: bold",
-					success: "color: #00cc65; font-weight: bold",
-					gameevent: "color: #F490B1"
-				};
+	/** @namespace */
+	var dev = {};
 
-				window.info    = window.console.info.bind(window.console);
-				window.warn    = window.console.warn.bind(window.console);
-				window.err     = window.console.error.bind(window.console);
-				window.time    = window.console.time.bind(window.console);
-				window.timeEnd = window.console.timeEnd.bind(window.console);
-				window.log     = function() {
-					var args = [];
+	/**
+	 * Custom debug logger
+	 * @namespace
+	 */
+	dev.logger = {
+		init: function() {
+			// Disable logging by default
+			dev.logger.disable();
 
-					if (arguments[0] && arguments[0].length>0) {
-						args.push("%c" + arguments[0]);
+			// Enable logging in dev mode
+			if (devMode) {
+				info("Developer debug tool enabled");
+				dev.logger.enable();
+			}
+		},
+		enable: function() {
+			var style = {
+				normal: "color: silver",
+				event: "color: gold",
+				complete: "color: #00cc65; font-weight: bold",
+				success: "color: #00cc65; font-weight: bold",
+				gameevent: "color: #F490B1"
+			};
 
-						if (arguments[1]) {
-							args.push(style[arguments[1]] || arguments[1]);
-						} else {
-							// use default style if not specified
-							args.push(style.normal);
+			window.info = window.console.info.bind(window.console);
+			window.warn = window.console.warn.bind(window.console);
+			window.err  = window.console.error.bind(window.console);
+			window.log  = function() {
+				var args = Array.prototype.slice.call(arguments),
+					len = args.length;
+
+				if (args[0]) {
+					// Enable styling
+					if (typeof args[0] === "string") {
+						args[0] = "%c" + args[0];
+					}
+
+					if (len === 1) {
+						// Use default style if not specified
+						args.push(style.normal);
+					} else {
+						let i = 1;
+
+						while (i < len) {
+							args[i] = style[args[i]] || args[i];
+							i++;
 						}
 					}
 					window.console.log.apply(window.console, args);
-				};
-			},
-			disableLogging: function() {
-				window.time = window.timeEnd = window.info = window.warn = window.err = window.log = function() {};
-			},
-			useShortLogging: function() {
-				if (devMode) {
-					this.enableLogging();
-					info("Developer debug tool enabled");
-				} else {
-					this.disableLogging();
 				}
-			}
-		};
+			};
+		},
+		disable: function() {
+			// Set to noop function
+			window.log = window.warn = window.err = window.info
+			= function() {};
+		}
+	};
+
+	/** Init function */
+	dev.init = function(gameEngine) {
+		G = gameEngine;
+
+		// Export to global if dev tool enabled
+		if (devMode) {
+			window.g   = gameEngine;
+			window.dev = dev;
+		}
+
+		delete dev.init;
+	};
 
 	/**
 	 * Run a cheat

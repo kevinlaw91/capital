@@ -100,7 +100,7 @@ define([
 		}
 
 		// Benchmark
-		time("Generate Map For New Game");
+		console.time("Generate Map For New Game");
 
 		/**
 		 * Map definition
@@ -238,7 +238,7 @@ define([
 		}
 
 		// End Benchmark
-		timeEnd("Generate Map For New Game");
+		console.timeEnd("Generate Map For New Game");
 
 		return map;
 	};

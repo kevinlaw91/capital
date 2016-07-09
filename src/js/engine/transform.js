@@ -93,7 +93,7 @@ define(function() {
 				tileSize = this.tileSize;
 
 			// Generates dimetric projection coordinates
-			time("Generate projection transform matrix");
+			console.time("Generate projection transform matrix");
 
 			var ox = 0, oy = 0,
 				nx = (row - 1) * (tileSize / 2); // Normalize x to return only positive numbers
@@ -115,7 +115,7 @@ define(function() {
 				}
 			}
 
-			timeEnd("Generate projection transform matrix");
+			console.timeEnd("Generate projection transform matrix");
 
 			// Self destruct
 			delete this.generate;

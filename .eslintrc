@@ -10,9 +10,7 @@
 		"log": true,
 		"warn": true,
 		"info": true,
-		"err": true,
-		"time": true,
-		"timeEnd": true
+		"err": true
 	},
 
 	"plugins": [

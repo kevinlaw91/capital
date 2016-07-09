@@ -14,7 +14,7 @@ define([
 	 * @module render/script/map
 	 */
 	return function() {
-		time("Draw Map");
+		console.time("Draw Map");
 
 		// Imports
 		var Renderer = require("engine/renderer"),
@@ -218,6 +218,6 @@ define([
 			DrawTile(type, offset).attr({ "shape-rendering": "crispEdges" });
 		}
 
-		timeEnd("Draw Map");
+		console.timeEnd("Draw Map");
 	};
 });

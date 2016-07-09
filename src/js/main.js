@@ -32,8 +32,8 @@ require([
 	"velocity"
 ], function($, Config, Dev, Engine) {
 	"use strict";
-	// Provide shortcut methods to console object
-	Dev.useShortLogging();
+	// Use custom logger
+	Dev.logger.init();
 
 	// Inject polyfills
 	require("polyfills");
