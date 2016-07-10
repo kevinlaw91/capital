@@ -11,17 +11,10 @@
 		dasharray: ($length - $gap) $gap;
 		dashoffset: $length;
 	}
-	animation: token-active-mark-rotate 1s linear infinite;
-	@at-root {
-		@keyframes token-active-mark-rotate {
-			0% { stroke-dashoffset: $length }
-			100% { stroke-dashoffset: 0 }
-		}
-	}
 
 	&.appear {
 		// When token become active
-		animation: token-active-mark-rotate 1s linear infinite,
+		animation: draw-stroke 1s linear infinite,
 		           fade-in 0.5s;
 
 		circle {
@@ -29,7 +22,7 @@
 			@at-root {
 				@keyframes token-active-mark-rise {
 					from {
-						transform: translate(0, 20px);
+						transform: translateY(20px);
 					}
 				}
 			}

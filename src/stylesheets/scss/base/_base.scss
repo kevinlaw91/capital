@@ -126,3 +126,11 @@ html, body {
 @keyframes transform-unset {
 	to { transform: unset; }
 }
+
+@keyframes rotate {
+	to { transform: rotate(360deg); }
+}
+
+@keyframes draw-stroke {
+	to { stroke-dashoffset: 0; }
+}

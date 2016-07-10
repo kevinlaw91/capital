@@ -104,7 +104,7 @@
 			}
 
 			> span {
-				transform-origin: 50% 50%;
+				transform-origin: center;
 				display: inline-block;
 				padding: 8px 16px;
 			}
@@ -112,7 +112,7 @@
 			.icon.success {
 				@include size(32px);
 				opacity: 0;
-				transform-origin: 50% 50%;
+				transform-origin: center;
 				transform: scale(1.5);
 				position: absolute;
 				left: calc(50% - 16px);
@@ -122,7 +122,8 @@
 					fill: none;
 					stroke: white {
 						width: 3;
-						dasharray: 50, 50;
+						dasharray: 50px;
+						dashoffset: 50px;
 					}
 				}
 			}
@@ -154,13 +155,7 @@
 				animation-fill-mode: forwards;
 
 				use {
-					animation: action-panel-check-animation 0.4s ease-in forwards;
-					@at-root {
-						@keyframes action-panel-check-animation {
-							from { stroke-dashoffset: 50px }
-							to { stroke-dashoffset: 0px }
-						}
-					}
+					animation: draw-stroke 0.4s ease-in forwards;
 				}
 			}
 		}
