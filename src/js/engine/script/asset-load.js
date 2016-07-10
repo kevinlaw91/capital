@@ -18,8 +18,7 @@ define(["engine/assets"], function(AssetManager) {
 
 		// Load Fonts
 		[
-			"src/resources/fonts/passion-one-regular.woff",
-			"src/resources/fonts/pathway-gothic-one-regular.woff"
+			"src/resources/fonts/passion-one-regular.woff"
 		].forEach(function(url) {
 			assets.push(AssetManager.FontStore.loadFromFile(url));
 		});
