@@ -4,13 +4,14 @@
 .treasurehunt {
 	&.animate_on {
 		transform: scale(1.3) perspective( 1000px ) rotateX(-50deg) translateY(-100px);
-		opacity: 0;
-		animation: treasurehunt-reveal 1s $easeOutQuint forwards;
+		animation: treasurehunt-reveal, fade-in;
+		animation-duration: 1s;
+		animation-timing-function: $easeOutQuint;
+		animation-fill-mode: forwards;
 		@at-root {
 			@keyframes treasurehunt-reveal {
 				100% {
 					transform: none;
-					opacity: 1;
 				}
 			}
 		}
@@ -18,19 +19,22 @@
 		h1, h2 {
 			// Contents transition
 			transform: translateY(-20px);
-			opacity: 0;
-			animation: treasurehunt-transition 0.5s forwards;
+			animation: treasurehunt-transition, fade-in;
+			animation-duration: 0.5s;
+			animation-fill-mode: both;
 		}
 
 		.grid {
 			transform: translateY(-50px);
-			animation: treasurehunt-transition 0.5s 0.3s forwards;
+			animation: treasurehunt-transition;
+			animation-duration: 0.5s;
+			animation-delay: 0.3s;
+			animation-fill-mode: forwards;
 		}
 
 		@at-root {
 			@keyframes treasurehunt-transition {
 				100% {
-					opacity: unset;
 					transform: none;
 				}
 			}
@@ -38,13 +42,13 @@
 
 		.cell {
 			transform: scale(0.7);
-			opacity: 0;
-			animation: treasurehunt-cell-transition 0.5s forwards;
+			animation: treasurehunt-cell-transition, fade-in;
+			animation-duration: 0.5s;
+			animation-fill-mode: both;
 			@at-root {
 				@keyframes treasurehunt-cell-transition {
 					100% {
 						transform: unset;
-						opacity: unset;
 					}
 				}
 			}
@@ -60,12 +64,12 @@
 	&.animate_off {
 		@extend .no-pointer-events;
 		transform: none;
-		opacity: 1;
-		animation: treasurehunt-dismiss 2s $easeOutQuint forwards;
+		animation: treasurehunt-dismiss, fade-out;
+		animation-duration: 2s;
+		animation-timing-function: $easeOutQuint;
 		@at-root {
 			@keyframes treasurehunt-dismiss {
 				100% {
-					opacity: 0;
 					transform: scale(2);
 				}
 			}

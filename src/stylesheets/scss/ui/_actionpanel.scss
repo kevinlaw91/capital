@@ -129,41 +129,39 @@
 
 		&.done {
 			button {
-				animation: action-panel-hide-transition 0.2s ease-in forwards;
-				@at-root {
-					@keyframes action-panel-hide-transition {
-						from {
-							transform: scale(1,1);
-							opacity: 1;
-						}
-						to {
-							transform: scale(0,0);
-							opacity: 0;
-						}
-					}
-				}
+				animation: action-panel-hide-transition, fade-out;
+				animation-duration: 0.2s;
+				animation-timing-function: ease-in;
+				animation-fill-mode: forwards;
 
 				&.default {
 					animation-delay: 2s;
 
 					span {
-						animation: action-panel-hide-transition 0.2s ease-in forwards;
+						animation: action-panel-hide-transition, fade-out;
+						animation-duration: 0.2s;
+						animation-timing-function: ease-in;
+						animation-fill-mode: forwards;
+					}
+				}
+
+				@at-root {
+					@keyframes action-panel-hide-transition {
+						from { transform: scale(1); }
+						to { transform: scale(0); }
 					}
 				}
 			}
 
 			.icon.success {
-				animation: action-panel-result-fade 0.2s ease-in forwards;
+				animation: action-panel-result-scale, fade-in;
+				animation-duration: 0.2s;
+				animation-timing-function: ease-in;
+				animation-fill-mode: forwards;
 				@at-root {
-					@keyframes action-panel-result-fade {
-						from {
-							transform: scale(1.5,1.5);
-							opacity: 0;
-						}
-						to {
-							transform: scale(1,1);
-							opacity: 1;
-						}
+					@keyframes action-panel-result-scale {
+						from { transform: scale(1.5); }
+						to { transform: scale(1); }
 					}
 				}
 

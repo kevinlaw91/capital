@@ -17,17 +17,12 @@
 			0% { stroke-dashoffset: $length }
 			100% { stroke-dashoffset: 0 }
 		}
-
-		@keyframes token-active-mark-fadein {
-			0% { opacity: 0; }
-			100% { opacity: 1; }
-		}
 	}
 
 	&.appear {
 		// When token become active
 		animation: token-active-mark-rotate 1s linear infinite,
-		           token-active-mark-fadein 0.5s 1;
+		           fade-in 0.5s;
 
 		circle {
 			animation: token-active-mark-rise 0.5s;

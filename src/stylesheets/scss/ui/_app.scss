@@ -36,24 +36,12 @@ body {
 		background-color: black(0.75);
 
 		&.animate_on {
-			animation: lightbox-reveal 2s ease-out forwards;
-			@at-root {
-				@keyframes lightbox-reveal {
-					0% { opacity: 0; }
-					100% { opacity: 1; }
-				}
-			}
+			animation: fade-in 2s ease-out forwards;
 		}
 
 		&.animate_off {
 			pointer-events: none;
-			animation: lightbox-hide 0.5s ease-out forwards;
-			@at-root {
-				@keyframes lightbox-hide {
-					0% { opacity: 1; }
-					100% { opacity: 0; }
-				}
-			}
+			animation: fade-out 0.5s ease-out forwards;
 		}
 	}
 }
