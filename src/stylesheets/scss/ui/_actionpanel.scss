@@ -113,6 +113,7 @@
 				@include size(32px);
 				opacity: 0;
 				transform-origin: 50% 50%;
+				transform: scale(1.5);
 				position: absolute;
 				left: calc(50% - 16px);
 				top: calc(50% - 16px);
@@ -129,7 +130,7 @@
 
 		&.done {
 			button {
-				animation: action-panel-hide-transition, fade-out;
+				animation: scale-to-0, fade-out;
 				animation-duration: 0.2s;
 				animation-timing-function: ease-in;
 				animation-fill-mode: forwards;
@@ -138,32 +139,19 @@
 					animation-delay: 2s;
 
 					span {
-						animation: action-panel-hide-transition, fade-out;
+						animation: scale-to-0, fade-out;
 						animation-duration: 0.2s;
 						animation-timing-function: ease-in;
 						animation-fill-mode: forwards;
 					}
 				}
-
-				@at-root {
-					@keyframes action-panel-hide-transition {
-						from { transform: scale(1); }
-						to { transform: scale(0); }
-					}
-				}
 			}
 
 			.icon.success {
-				animation: action-panel-result-scale, fade-in;
+				animation: scale-to-1, fade-in;
 				animation-duration: 0.2s;
 				animation-timing-function: ease-in;
 				animation-fill-mode: forwards;
-				@at-root {
-					@keyframes action-panel-result-scale {
-						from { transform: scale(1.5); }
-						to { transform: scale(1); }
-					}
-				}
 
 				use {
 					animation: action-panel-check-animation 0.4s ease-in forwards;

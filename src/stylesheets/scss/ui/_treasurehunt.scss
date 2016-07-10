@@ -4,54 +4,29 @@
 .treasurehunt {
 	&.animate_on {
 		transform: scale(1.3) perspective( 1000px ) rotateX(-50deg) translateY(-100px);
-		animation: treasurehunt-reveal, fade-in;
+		animation: transform-unset, fade-in;
 		animation-duration: 1s;
 		animation-timing-function: $easeOutQuint;
 		animation-fill-mode: forwards;
-		@at-root {
-			@keyframes treasurehunt-reveal {
-				100% {
-					transform: none;
-				}
-			}
-		}
 
 		h1, h2 {
 			// Contents transition
 			transform: translateY(-20px);
-			animation: treasurehunt-transition, fade-in;
+			animation: transform-unset, fade-in;
 			animation-duration: 0.5s;
 			animation-fill-mode: both;
 		}
 
 		.grid {
 			transform: translateY(-50px);
-			animation: treasurehunt-transition;
-			animation-duration: 0.5s;
-			animation-delay: 0.3s;
-			animation-fill-mode: forwards;
-		}
-
-		@at-root {
-			@keyframes treasurehunt-transition {
-				100% {
-					transform: none;
-				}
-			}
+			animation: transform-unset 0.5s 0.3s forwards;
 		}
 
 		.cell {
 			transform: scale(0.7);
-			animation: treasurehunt-cell-transition, fade-in;
+			animation: transform-unset, fade-in;
 			animation-duration: 0.5s;
 			animation-fill-mode: both;
-			@at-root {
-				@keyframes treasurehunt-cell-transition {
-					100% {
-						transform: unset;
-					}
-				}
-			}
 
 			@for $i from 1 through 9 {
 				&:nth-of-type(#{$i}) {
@@ -63,17 +38,9 @@
 
 	&.animate_off {
 		@extend .no-pointer-events;
-		transform: none;
-		animation: treasurehunt-dismiss, fade-out;
+		animation: scale-to-2, fade-out;
 		animation-duration: 2s;
 		animation-timing-function: $easeOutQuint;
-		@at-root {
-			@keyframes treasurehunt-dismiss {
-				100% {
-					transform: scale(2);
-				}
-			}
-		}
 	}
 
 	h1, h2 {
