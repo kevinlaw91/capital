@@ -186,6 +186,23 @@ $font-path: "../../../resources/fonts/";
 		$font-formats
 )
 
+/* Noto Sans */
+@include font-face(
+	"Noto Sans",
+	$font-path + "noto-sans-regular",
+	400,
+	normal,
+	$font-formats
+)
+
+@include font-face(
+	"Noto Sans",
+	$font-path + "noto-sans-700",
+	700,
+	normal,
+	$font-formats
+)
+
 /*
    Material Icons
    https://github.com/google/material-design-icons
