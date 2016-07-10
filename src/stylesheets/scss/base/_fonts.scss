@@ -203,6 +203,55 @@ $font-path: "../../../resources/fonts/";
 	$font-formats
 )
 
+/* Noto Sans SC */
+@include font-face(
+	"Noto Sans SC",
+	$font-path + "NotoSansSC-Thin",
+	100,
+	normal,
+	$font-formats
+)
+
+@include font-face(
+	"Noto Sans SC",
+	$font-path + "NotoSansSC-Light",
+	300,
+	normal,
+	$font-formats
+)
+
+@include font-face(
+	"Noto Sans SC",
+	$font-path + "NotoSansSC-Regular",
+	400,
+	normal,
+	$font-formats
+)
+
+@include font-face(
+	"Noto Sans SC",
+	$font-path + "NotoSansSC-Medium",
+	500,
+	normal,
+	$font-formats
+)
+
+@include font-face(
+	"Noto Sans SC",
+	$font-path + "NotoSansSC-Bold",
+	700,
+	normal,
+	$font-formats
+)
+
+@include font-face(
+	"Noto Sans SC",
+	$font-path + "NotoSansSC-Black",
+	900,
+	normal,
+	$font-formats
+)
+
 /*
    Material Icons
    https://github.com/google/material-design-icons
