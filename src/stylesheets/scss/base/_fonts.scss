@@ -113,6 +113,79 @@ $font-path: "../../../resources/fonts/";
 	$font-formats
 )
 
+/* Catamaran */
+@include font-face(
+		"Catamaran",
+		$font-path + "catamaran-100",
+		100,
+		normal,
+		$font-formats
+)
+
+@include font-face(
+		"Catamaran",
+		$font-path + "catamaran-200",
+		200,
+		normal,
+		$font-formats
+)
+
+@include font-face(
+		"Catamaran",
+		$font-path + "catamaran-300",
+		300,
+		normal,
+		$font-formats
+)
+
+@include font-face(
+		"Catamaran",
+		$font-path + "catamaran-regular",
+		400,
+		normal,
+		$font-formats
+)
+
+@include font-face(
+		"Catamaran",
+		$font-path + "catamaran-500",
+		500,
+		normal,
+		$font-formats
+)
+
+@include font-face(
+		"Catamaran",
+		$font-path + "catamaran-600",
+		600,
+		normal,
+		$font-formats
+)
+
+@include font-face(
+		"Catamaran",
+		$font-path + "catamaran-700",
+		700,
+		normal,
+		$font-formats
+)
+
+@include font-face(
+		"Catamaran",
+		$font-path + "catamaran-800",
+		800,
+		normal,
+		$font-formats
+)
+
+@include font-face(
+		"Catamaran",
+		$font-path + "catamaran-900",
+		900,
+		normal,
+		$font-formats
+)
+
 /*
    Material Icons
    https://github.com/google/material-design-icons
