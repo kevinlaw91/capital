@@ -319,8 +319,11 @@
 
 	.player-name {
 		@extend .truncate-text;
-		font-size: 0.9rem;
-		font-weight: 400;
+		font: {
+			family: "Yantramanav", "Noto Sans", "Noto Sans SC", "Noto Sans TC", sans-serif;
+			size: 0.9rem;
+			weight: 400;
+		}
 		color: white(0.7);
 		padding-left: 5px;
 		max-width: 50%;
