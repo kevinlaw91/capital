@@ -31,6 +31,15 @@ $font-path: "../../../resources/fonts/";
 	$font-formats
 );
 
+/* Pathway Gothic One */
+@include font-face(
+	"Pathway Gothic One",
+	$font-path + "pathway-gothic-one-regular",
+	400,
+	normal,
+	$font-formats
+);
+
 /* Merriweather Sans */
 @include font-face(
 	"Merriweather Sans",
