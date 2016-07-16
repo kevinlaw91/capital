@@ -1,11 +1,14 @@
 define([
+	"jquery",
+	"jquery.pub-sub",
 	"entity/lot",
 	"render/script/colormark",
 	"render/sprite/house"
-], function(Lot) {
+], function($) {
 	"use strict";
 
 	// Imports
+	var Lot = require("entity/lot");
 	var ScreenTransform = require("engine/transform");
 	var House = require("render/sprite/house");
 
@@ -91,6 +94,9 @@ define([
 		// Calling superclass constructor
 		Lot.call(this, props);
 
+		/** jQuery wrapper */
+		this.$ = $(this);
+
 		/** Name */
 		this.name = props.name;
 
@@ -148,12 +154,14 @@ define([
 	/** Recalculate rent based on current net worth and tier */
 	TradableLot.prototype.recalculateRent = function() {
 		this.rent = Math.round(this.worth * Upgrades[this.tier].rentFactor);
+		this.$.trigger("Update.Rent");
 	};
 
 	/** Perform upgrade */
 	TradableLot.prototype.upgrade = function() {
 		// Increase tier
 		this.tier = Math.min(++this.tier, MaxTier);
+		this.$.trigger("Update.Tier");
 
 		// Update rent
 		this.worth += this.cost[this.tier];
@@ -208,6 +216,7 @@ define([
 	TradableLot.prototype.sellTo = function(newOwner) {
 		this.owner = newOwner;
 		this.markColor(newOwner.color.DARK);
+		this.$.trigger("Update.Owner");
 	};
 
 	/**

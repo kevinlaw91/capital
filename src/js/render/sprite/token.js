@@ -13,8 +13,9 @@ define([
 	// Utils
 	function onClickFactory(player) {
 		return function() {
-			$.publish("UI.InfoPanel.PlayerInfo.Refresh", player);
-			$.publish("UI.InfoPanel.PlayerInfo.Show");
+			$.publish("UI.InfoPanel.PlayerInfo.subscribe", player);
+			$.publish("UI.InfoPanel.PlayerInfo.refresh");
+			$.publish("UI.InfoPanel.PlayerInfo.show");
 		};
 	}
 

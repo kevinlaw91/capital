@@ -22,6 +22,9 @@ define([
 
 	/** @constructor */
 	function Player(name, color) {
+		/** jQuery wrapper */
+		this.$ = $(this);
+
 		/**
 		 * Player name
 		 * @type {string}
@@ -93,8 +96,8 @@ define([
 	Player.prototype.addCash = function(amount) {
 		this.cash += amount;
 
-		// Trigger player info panel refresh
-		$.publish("UI.InfoPanel.PlayerInfo.Refresh");
+		// Fire Update event
+		this.$.trigger("Update.Cash", { delta: amount });
 	};
 
 	/**
@@ -104,8 +107,8 @@ define([
 	Player.prototype.deductCash = function(amount) {
 		this.cash -= amount;
 
-		// Trigger player info panel refresh
-		$.publish("UI.InfoPanel.PlayerInfo.Refresh");
+		// Fire Update event
+		this.$.trigger("Update.Cash", { delta: amount });
 	};
 
 	/**
@@ -115,8 +118,8 @@ define([
 	Player.prototype.addToNetWorth = function(amount) {
 		this.netWorth += amount;
 
-		// Trigger player info panel refresh
-		$.publish("UI.InfoPanel.PlayerInfo.Refresh");
+		// Fire Update event
+		this.$.trigger("Update.NetWorth", { delta: amount });
 	};
 
 	/**
@@ -126,8 +129,8 @@ define([
 	Player.prototype.deductFromNetWorth = function(amount) {
 		this.netWorth -= amount;
 
-		// Trigger player info panel refresh
-		$.publish("UI.InfoPanel.PlayerInfo.Refresh");
+		// Fire Update event
+		this.$.trigger("Update.NetWorth", { delta: amount });
 	};
 
 	/**

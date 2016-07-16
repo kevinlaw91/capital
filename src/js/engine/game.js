@@ -36,8 +36,7 @@ define([
 
 			// Update leaderboard with players
 			Game.leaderboard.populate(this.session.players);
-			$.publish("UI.InfoPanel.Leaderboard.Rebuild");
-			$.publish("UI.InfoPanel.Leaderboard.Refresh");
+			Game.leaderboard.sort();
 			$.publish("UI.InfoPanel.Leaderboard.Show");
 
 			// Start game

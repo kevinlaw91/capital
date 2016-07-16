@@ -57,9 +57,6 @@ define([
 			});
 			log("[GAME_EVENT] Player losses $" + args.sub + " (Now: $" + player.cash + ")", "gameevent");
 		}
-
-		// Update ranking
-		$.publish("Leaderboard.sort");
 	}
 
 	// Rule namespaces
