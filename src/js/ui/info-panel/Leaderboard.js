@@ -11,20 +11,38 @@ define([
 	var formatAsCurrency = require("utils").formatAsCurrency;
 
 	// Main UI
-	var ListView = $("<ol/>", { "class": "leaderboard-list" });
+	var ListView = $("<ul/>", { "class": "leaderboard-list" });
 
-	// Rows in leaderboard UI
-	var rows = [];
+	//
+	// Model and View bindings
+	//
+	function bindView(model, view) {
+		model.$.data("LeaderboardRow", view);
+	}
 
-	function resize() {
-		// Clean existing UI
-		ListView.empty();
+	function unbindView(model) {
+		model.$.removeData("LeaderboardRow");
+	}
 
-		// Start from clean node
-		rows = [];
+	/** Discard old cache/data */
+	function reset() {
+		var ranking = Leaderboard.getRankings();
 
+		if (ranking) {
+			// Old model binding exists
+			// Unlink player model with view
+			ranking.forEach(unbindView);
+
+			// Delete rows from view
+			ListView.empty();
+		}
+	}
+
+	function populate() {
 		// Rebuild leaderboard
-		while (rows.length < Leaderboard.getRankings().length) {
+		var ranking = Leaderboard.getRankings();
+
+		for (var i = 0; i < ranking.length; i++) {
 			// Generate DOM for new row
 			let newRow = $("<li/>").append(
 				$("<div/>", { "class": "player-color" }).css("backgroundColor", "white"),
@@ -37,18 +55,32 @@ define([
 			// Add new row to view
 			newRow.appendTo(ListView);
 
-			// Store reference
-			rows.push(newRow);
+			// Bind view to model
+			bindView(ranking[i], newRow);
 		}
 	}
 
-	function refresh() {
-		// Fill data for all ranks
+	/** Reorder rows when RankingChanged event was received */
+	function reorder() {
+		// Loop every rank
 		Leaderboard.getRankings().forEach(
 			function(player, index) {
-				// Loop every rank
-				// and locate corresponding rows
-				var row = rows[index];
+				// Get paired row
+				let row = player.$.data("LeaderboardRow");
+
+				// Set position
+				row.css("top", index * 65);
+			}
+		);
+	}
+
+	/** Update data when Update event was received */
+	function update() {
+		// Loop every rank
+		Leaderboard.getRankings().forEach(
+			function(player) {
+				// Get paired row
+				let row = player.$.data("LeaderboardRow");
 
 				// Update info
 				row.find(".player-color").css("backgroundColor", player.color.LIGHT);
@@ -56,6 +88,12 @@ define([
 				row.find(".player-net-worth").text(formatAsCurrency(player.netWorth));
 			}
 		);
+	}
+
+	/** Force refresh data and rankings */
+	function forceRefresh() {
+		update();
+		reorder();
 	}
 
 	return {
@@ -66,9 +104,12 @@ define([
 				.appendTo(Tab.container);
 
 			// Register handlers
-			$.subscribe("Session.Leaderboard.onReset", resize);
-			$.subscribe("Session.Leaderboard.onUpdate", refresh);
-			$.subscribe("UI.InfoPanel.Leaderboard.Show", Tab.select);
+			$.subscribe("Session.Leaderboard.onReset", reset);
+			$.subscribe("Session.Leaderboard.Populate", populate);
+			$.subscribe("Session.Leaderboard.onUpdate", update);
+			$.subscribe("Session.Leaderboard.onRankingChanged", reorder);
+			$.subscribe("UI.InfoPanel.Leaderboard.forceRefresh", forceRefresh);
+			$.subscribe("UI.InfoPanel.Leaderboard.show", Tab.select);
 		}
 	};
 });

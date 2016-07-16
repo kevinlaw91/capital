@@ -75,6 +75,9 @@ define([
 		if (ranking) {
 			// Old ranking cache exists
 			unsubscribeAll(ranking);
+
+			// Fire Reset event
+			$.publish("Session.Leaderboard.onReset");
 		}
 
 		// Clone player list
@@ -83,8 +86,8 @@ define([
 		// Subscribe update from each player
 		subscribeAll(ranking);
 
-		// Fire Reset event
-		$.publish("Session.Leaderboard.onReset");
+		// Fire Populate event
+		$.publish("Session.Leaderboard.Populate");
 	}
 
 	return {
