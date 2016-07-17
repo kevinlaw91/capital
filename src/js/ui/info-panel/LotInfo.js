@@ -33,42 +33,41 @@ define([
 			);
 		},
 		TierStepper: function(model) {
-			// Update tier stepper
+			// Reset stepper
 			View.TierStepperNodes
 			    .removeClass("passed")
 			    .attr("aria-checked", "false");
 
-			if (model.owner === null) {
-				// Mark unowned
+			// Mark passed nodes
+			if (model.owner) {
+				// Until "Buy" node
 				View.TierStepperNodes
-				    .first()
+				    .slice(0, 2)
 				    .addClass("passed")
+				    .end();
+			}
+
+			if (model.tier > 0) {
+				// Mark passed tiers
+				// Tier nodes indexes are 2,3,4,5
+				View.TierStepperNodes
+				    .slice(2, 2 + model.tier)
+				    .addClass("passed")
+				    .end();
+			}
+
+
+			// Highlight current status
+			if (model.owner) {
+				View.TierStepperNodes
+				    .eq(model.tier + 1)
 				    .attr("aria-checked", "true")
 				    .end();
 			} else {
-				// Mark tier node as completed/passed
-				// We want to mark from first node until the current tier node
-
-				// slice(0,n) will select from first node until (but not including) n
-				// If n=0, no node will be selected. This is not what we want.
-				// We want node 0 to be marked when n=0, so we need to do slice(0,n+1)
-				// The selected result when n=0, is node 0, until but not including n+1 (1)
-				// Therefore will slice(0,1) when n=0
-				// Since it does not include 1 in selection so only node 0 was selected
-
-				// Filter index starts at 0 but tiers start with 1
-				// So we need to offset another 1 manually
-				// therefore model.tier + 2
 				View.TierStepperNodes
-				    .slice(0, model.tier + 2)
-				    .addClass("passed")
-				    .end()
-
-				    // Mark current tier
-				    // Filter index starts at 0 but tiers start with 1
-				    // So only offset 1 manually
-				    .eq(model.tier + 1)
-				    .attr("aria-checked", "true");
+				    .first()
+				    .attr("aria-checked", "true")
+				    .end();
 			}
 		},
 		Cost: function(model) {
