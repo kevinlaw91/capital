@@ -108,25 +108,35 @@ define([
 		 */
 		var map = [];
 
+		// Expected range
+		// [Min, Average, Max]
+		var expected = {
+			land: [300, 1800, 3000],
+			upg1: [500, 1250, 2000],
+			upg2: [700, 2000, 3500],
+			upg3: [1500, 2250, 4500],
+			upg4: [2000, 3500, 6000]
+		};
+
 		/**
 		 * Normal distributions
 		 * arg1: mean, expected average of output
 		 * arg2: stDev, range of output +/- from mean
 		 */
 		var nd = {
-			land: gaussian(7000, 3000),
-			upg1: gaussian(2500, 1500),
-			upg2: gaussian(1500, 1000),
-			upg3: gaussian(2800, 2000),
-			upg4: gaussian(3000, 1500)
+			land: gaussian(expected.land[1], (expected.land[2] - expected.land[0]) / 2),
+			upg1: gaussian(expected.upg1[1], (expected.upg1[2] - expected.upg1[0]) / 2),
+			upg2: gaussian(expected.upg2[1], (expected.upg2[2] - expected.upg2[0]) / 2),
+			upg3: gaussian(expected.upg3[1], (expected.upg3[2] - expected.upg3[0]) / 2),
+			upg4: gaussian(expected.upg4[1], (expected.upg4[2] - expected.upg4[0]) / 2)
 		};
 
 		function generateCost() {
-			var cost_land = randomAmount(nd.land, 1000, 13000),
-				cost_upgrade1 = randomAmount(nd.upg1, 500, 4500),
-				cost_upgrade2 = cost_upgrade1 + randomAmount(nd.upg2, 500, 2500),
-				cost_upgrade3 = cost_upgrade2 + randomAmount(nd.upg3, 1000, 3000),
-				cost_upgrade4 = cost_upgrade3 + randomAmount(nd.upg4, 1500, 4000);
+			var cost_land = randomAmount(nd.land, expected.land[0], expected.land[2]),
+				cost_upgrade1 = randomAmount(nd.upg1, expected.upg1[0], expected.upg1[2]),
+				cost_upgrade2 = cost_upgrade1 + randomAmount(nd.upg2, expected.upg2[0], expected.upg2[2]),
+				cost_upgrade3 = cost_upgrade2 + randomAmount(nd.upg3, expected.upg3[0], expected.upg3[2]),
+				cost_upgrade4 = cost_upgrade3 + randomAmount(nd.upg4, expected.upg4[0], expected.upg4[2]);
 
 			return {
 				cost: [
