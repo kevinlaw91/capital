@@ -1,6 +1,9 @@
 require.config({
 	baseUrl: "js",
 	paths: {
+		"chartist": "lib/chartist",
+		"chartist-plugin-tooltip": "lib/chartist-plugin-tooltip.min",
+		"chartist-plugin-pointlabels": "lib/chartist-plugin-pointlabels.min",
 		"jquery": "lib/jquery-3.0.0",
 		"jquery.easing": "lib/jquery.easing.1.3",
 		"jquery.pub-sub": "lib/jquery.tinypubsub",
@@ -12,7 +15,9 @@ require.config({
 	shim: {
 		"jquery.easing": ["jquery"],
 		"jquery.pub-sub": ["jquery"],
-		"velocity": ["jquery"]
+		"velocity": ["jquery"],
+		"chartist-plugin-tooltip": ["chartist"],
+		"chartist-plugin-pointlabels": ["chartist"]
 	},
 	defaultErrback: null
 });
