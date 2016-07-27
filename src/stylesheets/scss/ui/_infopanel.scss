@@ -169,6 +169,48 @@
 		// Highlighted text when hover nodes
 		color: #ffe079 !important;
 	}
+
+	.chart-title {
+		margin: 15px 10px 10px;
+	}
+
+	/* Style for charts */
+	[data-chart-id] {
+		margin: 10px 0;
+
+		.ct-label {
+			color: #bbb;
+		}
+
+		.ct-grid.ct-horizontal {
+			stroke: white(0.2);
+			stroke-width: 1px;
+		}
+
+		.ct-series {
+			.ct-bar {
+				stroke: #af9;
+			}
+
+			.ct-bar-label {
+				fill: #34b99a;
+				font-size: 0.75rem;
+			}
+		}
+
+		.chartist-tooltip {
+			font-family: "Yantramanav", sans-serif;
+			font-size: 0.88rem;
+			padding: .35em;
+			transition: none;
+
+			&:before {
+				margin-left: -5px;
+				border: 5px solid transparent;
+				border-top-color: #F4C63D;
+			}
+		}
+	}
 }
 
 #info-panel-info .subpanel {

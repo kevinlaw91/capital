@@ -92,11 +92,13 @@ define([
 			};
 		}
 
-		function randomAmount(dist, min, max) {
-			// Increment of 100
-			var unit = 100;
+		// Format to increment of 100
+		function unitIncrement100(v) {
+			return ~~(v/100)*100; // ~~ was used to strip decimals
+		}
 
-			return Utils.clamp(~~(dist() / unit) * unit, min, max); // ~~ was used to strip decimals
+		function randomAmount(dist, min, max) {
+			return Utils.clamp(unitIncrement100(dist()), min, max);
 		}
 
 		// Benchmark
@@ -131,12 +133,19 @@ define([
 			upg4: gaussian(expected.upg4[1], (expected.upg4[2] - expected.upg4[0]) / 2)
 		};
 
-		function generateCost() {
+		function generatePropertyValue() {
 			var cost_land = randomAmount(nd.land, expected.land[0], expected.land[2]),
 				cost_upgrade1 = randomAmount(nd.upg1, expected.upg1[0], expected.upg1[2]),
 				cost_upgrade2 = cost_upgrade1 + randomAmount(nd.upg2, expected.upg2[0], expected.upg2[2]),
 				cost_upgrade3 = cost_upgrade2 + randomAmount(nd.upg3, expected.upg3[0], expected.upg3[2]),
 				cost_upgrade4 = cost_upgrade3 + randomAmount(nd.upg4, expected.upg4[0], expected.upg4[2]);
+
+			var rent_land = unitIncrement100(cost_land * (0.5 + Math.random())),
+				rent_upgrade1 = unitIncrement100(rent_land + (cost_upgrade1 * Math.random()/2)),
+				rent_upgrade2 = unitIncrement100(rent_upgrade1 + (cost_upgrade2 * Math.random()/1.8)),
+				rent_upgrade3 = unitIncrement100(rent_upgrade2 + (cost_upgrade3 * Math.random()/1.4)),
+				rent_upgrade4 = unitIncrement100(rent_upgrade3 + (cost_upgrade4 * Math.random()/1.1));
+
 
 			return {
 				cost: [
@@ -145,6 +154,13 @@ define([
 					cost_upgrade2,
 					cost_upgrade3,
 					cost_upgrade4
+				],
+				rentValue: [
+					rent_land,
+					rent_upgrade1,
+					rent_upgrade2,
+					rent_upgrade3,
+					rent_upgrade4
 				]
 			};
 		}
@@ -165,7 +181,7 @@ define([
 		for (i=12; i>=4; i--) {
 			map.push(
 				new TradableLot(
-					$.extend(generateCost(), {
+					$.extend(generatePropertyValue(), {
 						name: getRandomName(),
 						pos: { x: i, y: 13 },
 						b: { x: i, y: 15 },
@@ -189,7 +205,7 @@ define([
 		for (i=12; i>=4; i--) {
 			map.push(
 				new TradableLot(
-					$.extend(generateCost(), {
+					$.extend(generatePropertyValue(), {
 						name: getRandomName(),
 						pos: { x: 3, y: i },
 						b: { x: 1, y: i },
@@ -213,7 +229,7 @@ define([
 		for (i=4; i<=12; i++) {
 			map.push(
 				new TradableLot(
-					$.extend(generateCost(), {
+					$.extend(generatePropertyValue(), {
 						name: getRandomName(),
 						pos: { x: i, y: 3 },
 						b: { x: i, y: 1 },
@@ -237,7 +253,7 @@ define([
 		for (i=4; i<=12; i++) {
 			map.push(
 				new TradableLot(
-					$.extend(generateCost(), {
+					$.extend(generatePropertyValue(), {
 						name: getRandomName(),
 						pos: { x: 13, y: i },
 						b: { x: 15, y: i },

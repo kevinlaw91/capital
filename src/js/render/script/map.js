@@ -61,7 +61,6 @@ define([
 
 		function Lot_onClick() {
 			$.publish("UI.InfoPanel.LotInfo.subscribe", this.data("lot.id"));
-			$.publish("UI.InfoPanel.LotInfo.refresh");
 			$.publish("UI.InfoPanel.LotInfo.show");
 		}
 

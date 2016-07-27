@@ -1,9 +1,11 @@
 define([
+	"chartist",
 	"jquery",
 	"jquery.pub-sub",
+	"chartist-plugin-tooltip",
 	"engine/core",
 	"utils"
-], function($) {
+], function(Chartist, $) {
 	"use strict";
 
 	// Imports
@@ -80,6 +82,14 @@ define([
 		},
 		Rent: function(model) {
 			View.Rent.text(formatAsCurrency(model.rent));
+		},
+		ChartRent: function(model) {
+			View.ChartRent.update(
+				{
+					labels: ["Lot", "Tier 1", "Tier 2", "Tier 3", "Tier 4"],
+					series: [model.rentValue[0], model.rentValue[1], model.rentValue[2], model.rentValue[3], model.rentValue[4]]
+				}
+			);
 		}
 	};
 
@@ -126,6 +136,37 @@ define([
 			View.Upgrade3 = panelNode.find("[data-label='upgrade3']");
 			View.Upgrade4 = panelNode.find("[data-label='upgrade4']");
 			View.Rent = panelNode.find("[data-label='rent']");
+			View.ChartRent = new Chartist.Bar(
+				panelNode.find("[data-chart-id='rent']")[0] /* Chart wrapper */,
+				null /* No data by default */,
+				{
+					axisY: {
+						showGrid: false
+					},
+					chartPadding: {
+						top: 20
+					},
+					distributeSeries: true,
+					plugins: [
+						Chartist.plugins.tooltip()
+					]
+				}
+			);
+
+			View.ChartRent.on("draw", function(context) {
+				if (context.type === "bar") {
+					context.group.elem(
+						"text",
+						{
+							x: context.x2,
+							y: context.y2 - 10,
+							style: "text-anchor: middle"
+						},
+						"ct-bar-label"
+					)
+			        .text(context.value.y);
+				}
+			});
 
 			// Tier stepper highlighting
 			View.TierStepperNodes
@@ -144,8 +185,12 @@ define([
 			$.subscribe("UI.InfoPanel.LotInfo.subscribe", this.subscribe.bind(this));
 			$.subscribe("UI.InfoPanel.LotInfo.refresh", this.refresh.bind(this));
 			$.subscribe("UI.InfoPanel.LotInfo.show", function() {
-				// Hide all sub-panels
 				Tab.showSubPanel(this);
+
+				// Chart not render properly if container is not visible during chart render
+				// See: https://github.com/gionkunz/chartist-js/issues/119
+				// Force refresh when panel is visible
+				this.refresh();
 			}.bind(this));
 		},
 

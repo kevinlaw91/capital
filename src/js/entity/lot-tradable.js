@@ -19,10 +19,9 @@ define([
 		/** Upgrade configurations */
 		Upgrades = [
 			{
-				rentFactor: 0.15
+				// No sprite
 			},
 			{
-				rentFactor: 0.25,
 				sprites: {
 					south: {
 						rsId: "building-hut-south",
@@ -37,7 +36,6 @@ define([
 				}
 			},
 			{
-				rentFactor: 0.28,
 				sprites: {
 					south: {
 						rsId: "building-laneway-south",
@@ -52,7 +50,6 @@ define([
 				}
 			},
 			{
-				rentFactor: 0.3,
 				sprites: {
 					south: {
 						rsId: "building-ranch-south",
@@ -67,7 +64,6 @@ define([
 				}
 			},
 			{
-				rentFactor: 0.38,
 				sprites: {
 					south: {
 						rsId: "building-villa-south",
@@ -117,9 +113,6 @@ define([
 		 */
 		this.cost = props.cost;
 
-		/** Net Worth */
-		this.worth = this.cost[0];
-
 		/**
 		 * Current upgrade tier
 		 * @type {number}
@@ -127,11 +120,19 @@ define([
 		this.tier = 0;
 
 		/**
+		 * Rent Value
+		 * @type {Number[]}
+		 */
+		this.rentValue = props.rentValue;
+
+		/**
 		 * Rent
 		 * @type {number}
 		 */
 		this.rent = 0;
-		this.recalculateRent();
+
+		// Update rent
+		this.updateRent();
 
 		/**
 		 * Owner of this lot
@@ -152,8 +153,8 @@ define([
 	TradableLot.prototype.isTradable = true;
 
 	/** Recalculate rent based on current net worth and tier */
-	TradableLot.prototype.recalculateRent = function() {
-		this.rent = Math.round(this.worth * Upgrades[this.tier].rentFactor);
+	TradableLot.prototype.updateRent = function() {
+		this.rent = this.rentValue[this.tier];
 		this.$.trigger("Update.Rent");
 	};
 
@@ -164,8 +165,7 @@ define([
 		this.$.trigger("Update.Tier");
 
 		// Update rent
-		this.worth += this.cost[this.tier];
-		this.recalculateRent();
+		this.updateRent();
 
 		// Check to see if building needs to be rendered
 		var resource = Upgrades[this.tier].sprites;
