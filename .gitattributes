@@ -1,0 +1,20 @@
+# Auto-detect and normalize text files (Convert crlf => lf)
+* text=auto
+
+# These files are text and should be normalized (Convert crlf => lf)
+*.css text
+*.htm text diff=html
+*.html text
+*.js text
+*.json text
+*.scss text
+*.svg text
+*.txt text
+
+# These files are binary and should be left untouched
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.png binary
+*.woff binary
+*.woff2 binary

@@ -1,0 +1,22 @@
+### WebStorm ###
+# Directory-based project format:
+.idea/
+
+### Development ###
+# Design Notes
+dev/
+
+### Node ###
+# Dependency directory
+node_modules/
+
+### Sass ###
+.sass-cache/
+*.css.map
+
+### Build ###
+# CSS output files
+src/stylesheets/compiled/
+
+# Webpack output files
+build
