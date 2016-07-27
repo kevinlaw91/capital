@@ -1,9 +1,9 @@
 define([
 	"engine/renderer"
 ], function(Renderer) {
-	'use strict';
+	"use strict";
 
-	return function(){
+	return function() {
 		// Define render layers
 		Renderer.createLayer("anchors");
 		Renderer.createLayer("floor");

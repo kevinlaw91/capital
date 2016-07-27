@@ -1,0 +1,42 @@
+/* ============================================================================
+** Tooltips
+** ==========================================================================*/
+#game-tooltip-layer {
+	position: absolute;
+
+	> div[role='tooltip'] {
+		@extend .no-pointer-events;
+		z-index: 99;
+		position: absolute;
+		display: none;
+
+		> div.contents {
+			position: relative;
+			left: -50%; // Centering
+		}
+	}
+}
+
+// Lot tooltip
+#tooltip-lotname > div.contents {
+	padding: 8px;
+	border-radius: 3px;
+	color: #fff;
+	background-color: #006064;
+	white-space: nowrap;
+	font-family: "Merriweather Sans", sans-serif;
+	font-weight: 400;
+}
+
+// Player tooltip
+#tooltip-playername > div.contents {
+	color: #fff;
+	text-shadow: 0 1px 1px black(0.95),
+	             0 2px 5px black(0.25);
+	white-space: nowrap;
+	font: {
+		family: "Yantramanav", "Noto Sans", "Noto Sans SC", "Noto Sans TC", sans-serif;
+		size: 1.2rem;
+		weight: 500;
+	}
+}

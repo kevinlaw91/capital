@@ -1,0 +1,387 @@
+/* ============================================================================
+** Info Panel
+** ==========================================================================*/
+#info-panel {
+	@include size(600px,100%);
+	font-family: "Yantramanav", sans-serif;
+	color: #aaa;
+	background-color: #333;
+	flex-grow: 0;
+	flex-shrink: 2;
+
+	// Only visible when screen >=1200px
+	display: none;
+
+	@include screen-breakpoint(from 1200px) {
+		display: block;
+	}
+
+	section {
+		&[role='tabpanel'] {
+			display: none;
+		}
+
+		.disabled {
+			color: #7b7b7b;
+		}
+	}
+}
+
+/* Tab bar */
+#info-panel-tab {
+	@extend .no-selection;
+
+	[role='tablist'] {
+		display: flex;
+		list-style: none;
+		background-color: #222;
+	}
+
+	[role='tab'] {
+		position: relative;
+		display: inline-block;
+		cursor: default;
+		background-color: #292929;
+		border-top: solid 2px transparent;
+		color: white(0.5);
+		text-transform: uppercase;
+		font: {
+			family: "Merriweather Sans", sans-serif;
+			weight: 700;
+			size: 0.6rem;
+		}
+
+		&.selected {
+			background:
+				linear-gradient(
+						to bottom,
+						rgba(102,242,240,0.3) 0%,
+						rgba(102,242,240,0.1) 10%,
+						rgba(102,242,240,0) 35%
+				),
+				#333;
+			border-top: solid 2px #66f2f0;
+			color: white(0.8);
+		}
+
+		&:hover {
+			color: white(0.95);
+		}
+
+		span {
+			display: block;
+			padding: 15px 20px;
+		}
+	}
+}
+
+/* Info tab panels */
+#info-panel-default P {
+	font-size: 0.75rem;
+	padding: 20px;
+}
+
+#info-panel-lot {
+	ol.stepper {
+		list-style: none;
+		display: flex;
+		align-content: center;
+		justify-content: space-around;
+
+		.node {
+			@include size(1.5rem);
+			position: relative;
+			box-sizing: content-box;
+			display: inline-block;
+			line-height: 1.5rem;
+			text-align: center;
+			font: {
+				size: 0.9rem;
+				weight: 600;
+			}
+			border: {
+				radius: 50%;
+				width: 4px;
+				style: solid;
+			}
+			cursor: default;
+			z-index: 1;
+
+			// Styles for future nodes
+			background-color: #3c3c3c;
+			border-color: #435969;
+			color: white(0.8);
+		}
+
+		li {
+			position: relative;
+			width: 25%;
+			text-align: center;
+			flex-grow: 1;
+
+			&:before {
+				@include size(100%, 5px);
+				content: '';
+				display: block;
+				@include absolute(top 40%);
+				right: calc(50% + 0.75rem);
+
+				// Styles for future paths
+				background-color: #3e3e3e;
+			}
+
+			&:first-child::before {
+				content: none;
+			}
+
+			&.passed {
+				// Styles for passed
+				.node {
+					// Nodes
+					background-color: #006b8e;
+					border-color: #007fa9;
+					color: white(0.35);
+				}
+
+				&:before {
+					// Paths
+					background-color: #3a7e94;
+				}
+			}
+
+			&[aria-checked='true'] .node {
+				// Styles for active node (highlighted node)
+				background-color: #278dc5;
+				border-color: #fff;
+				color: white(0.9);
+			}
+
+			&:hover .node {
+				// Styles for hovered node
+				background-color: #555;
+				border-color: #ffe079;
+				color: white(0.9);
+			}
+		}
+	}
+
+	.highlight {
+		// Highlighted text when hover nodes
+		color: #ffe079 !important;
+	}
+
+	.chart-title {
+		margin: 15px 10px 10px;
+	}
+
+	/* Style for charts */
+	[data-chart-id] {
+		margin: 10px 0;
+
+		.ct-label {
+			color: #bbb;
+		}
+
+		.ct-grid.ct-horizontal {
+			stroke: white(0.2);
+			stroke-width: 1px;
+		}
+
+		.ct-series {
+			.ct-bar {
+				stroke: #af9;
+			}
+
+			.ct-bar-label {
+				fill: #34b99a;
+				font-size: 0.75rem;
+			}
+		}
+
+		.chartist-tooltip {
+			font-family: "Yantramanav", sans-serif;
+			font-size: 0.88rem;
+			padding: .35em;
+			transition: none;
+
+			&:before {
+				margin-left: -5px;
+				border: 5px solid transparent;
+				border-top-color: #F4C63D;
+			}
+		}
+	}
+}
+
+#info-panel-info .subpanel {
+	font-family: "Yantramanav", sans-serif;
+
+	header {
+		height: 120px;
+		background-color: #bdbdbd;
+		padding-bottom: 20px; // Bottom border
+
+		.shade {
+			background-color: rgba(50, 50, 50, 0.85);
+			height: 100%;
+			padding-top: 25px;
+			padding-bottom: 25px;
+
+			* {
+				margin-left: 35px;
+				margin-right: 35px;
+			}
+		}
+
+		h1 {
+			@extend .truncate-text;
+			line-height: 2rem;
+			font-size: 1.35rem;
+			font-weight: 500;
+			color: white(0.95);
+			text-shadow: 0 2px 2px black(0.45);
+			max-width: 230px;
+		}
+
+		.info-class {
+			text-transform: uppercase;
+			font-size: 0.7rem;
+			font-weight: 600;
+			color: white(0.7);
+		}
+	}
+
+	.metadata {
+		display: flex;
+		flex-direction: column;
+
+		.row {
+			display: flex;
+			flex-direction: row;
+		}
+
+		div {
+			&.item {
+				display: block;
+				flex-grow: 1;
+				flex-basis: 0;
+				padding: 15px;
+			}
+
+			&.data.small {
+				display: block;
+				font-size: 1rem;
+				font-weight: 700;
+				line-height: 1;
+				color: white(0.75);
+				padding-top: 4px;
+
+				span {
+					line-height: 1.5;
+					display: block;
+				}
+			}
+		}
+
+		span {
+			&.label {
+				font: {
+					family: "Merriweather Sans", sans-serif;
+					size: 0.7rem;
+					weight: 800;
+				}
+				text-transform: uppercase;
+				display: block;
+				color: #7d7d7d;
+			}
+
+			&.data {
+				display: block;
+				font-size: 1.4rem;
+				font-weight: 400;
+				line-height: 1.4;
+				color: white(0.8);
+			}
+		}
+	}
+}
+
+/* Leaderboard tab */
+#info-panel-leaderboard {
+	font-family: "Yantramanav", sans-serif;
+
+	h1 {
+		color: #e0e0e0;
+		font-size: 1.25rem;
+		margin: {
+			left: 25px;
+			top: 25px;
+			bottom: 10px;
+		}
+	}
+
+	.leaderboard-list {
+		position: relative;
+		list-style: none;
+
+		li {
+			position: absolute;
+			left: 0;
+			right: 0;
+			height: 65px;
+			padding: 10px 0;
+			display: flex;
+			flex-direction: row;
+			transition: top 450ms ease-out;
+
+			div {
+				line-height: 2.6rem;
+			}
+		}
+	}
+
+	.player-color {
+		width: 5px;
+		flex-grow: 0;
+		flex-shrink: 0;
+	}
+
+	.player-details {
+		display: flex;
+		flex: {
+			grow: 1;
+			shrink: 0;
+			direction: row;
+		}
+		align-content: flex-end;
+		justify-content: space-between;
+	}
+
+	.player-name {
+		@extend .truncate-text;
+		font: {
+			family: "Yantramanav", "Noto Sans", "Noto Sans SC", "Noto Sans TC", sans-serif;
+			size: 0.9rem;
+			weight: 400;
+		}
+		color: white(0.7);
+		padding-left: 5px;
+		max-width: 50%;
+		flex: 1 1 auto;
+	}
+
+	.player-net-worth {
+		@extend .truncate-text;
+		font-size: 1rem;
+		font-weight: 400;
+		color: white(0.8);
+		background-color: #4a4a4a;
+		border-bottom: solid 2px #2d2d2d;
+		text-align: right;
+		padding-left: 15px;
+		padding-right: 15px;
+		margin-left: 10px;
+		flex: 1 0 auto;
+		max-width: 128px;
+	}
+}

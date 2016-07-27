@@ -3,7 +3,7 @@ define([
 	"entity/session",
 	"game/leaderboard"
 ], function($) {
-	'use strict';
+	"use strict";
 
 	// Imports
 	/**
@@ -29,16 +29,16 @@ define([
 			// Create new session
 			Game.session = new GameSession();
 
-			//TODO: Remove after testing
+			// TODO: Remove after testing
 			Game.session.addPlayer("Player 1", "RED");
 			Game.session.addPlayer("Player 2", "BLUE");
 			Game.session.addPlayer("Player 3", "PINK");
 
 			// Update leaderboard with players
 			Game.leaderboard.populate(this.session.players);
-			$.publish("UI.InfoPanel.Leaderboard.Rebuild");
-			$.publish("UI.InfoPanel.Leaderboard.Refresh");
-			$.publish("UI.InfoPanel.Leaderboard.Show");
+			Game.leaderboard.sort();
+			$.publish("UI.InfoPanel.Leaderboard.forceRefresh");
+			$.publish("UI.InfoPanel.Leaderboard.show");
 
 			// Start game
 			Game.session.startGame();

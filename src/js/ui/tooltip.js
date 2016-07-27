@@ -3,7 +3,52 @@ define([
 	"jquery.pub-sub",
 	"engine/core"
 ], function($) {
-	'use strict';
+	"use strict";
+
+	/**
+	 * Construct a tooltip controller object
+	 * @param {number} offsetX - Default x offsets to be applied
+	 * @param {number} offsetY - Default y offsets to be applied
+	 * @param {function} setup - Script to render tooltip
+	 * @returns {Tooltip}
+	 * @constructor
+	 */
+	function Tooltip(offsetX, offsetY, setup) {
+		this.node = $("<div/>", { role: "tooltip" });
+		this.offsetX = offsetX;
+		this.offsetY = offsetY;
+
+		// Run setup if available
+		if (setup) {
+			setup(this.node);
+		}
+
+		// Attach and hide
+		this.node.appendTo($("#game-tooltip-layer"))
+		    .attr("aria-hidden", "true")
+		    .hide();
+
+		return this;
+	}
+
+	Tooltip.prototype.hide = function() {
+		this.node.attr("aria-hidden", "true").hide();
+	};
+
+	Tooltip.prototype.show = function() {
+		this.node.attr("aria-hidden", "false").show();
+	};
+
+	Tooltip.prototype.setPosition = function(left, top) {
+		this.node.css({
+			left: left + this.offsetX,
+			top: top + this.offsetY
+		});
+	};
+
+	Tooltip.prototype.update = function(updater) {
+		updater(this.node.find(".contents"));
+	};
 
 	/**
 	 * Define tooltip handlers
@@ -11,15 +56,21 @@ define([
 	 */
 	var Tooltips = {
 		/** @see updaters.LOT */
-		LOT: new Tooltip("#tooltip-lotname",0,-25),
+		LOT: new Tooltip(0, -25, function(node) {
+			node.attr({ id: "tooltip-lotname" })
+				.append($("<div/>", { "class": "contents" }));
+		}),
 		/** @see updaters.LOT */
-		PLAYER: new Tooltip("#tooltip-playername",0,-50)
+		PLAYER: new Tooltip(0, -50, function(node) {
+			node.attr({ id: "tooltip-playername" })
+			    .append($("<div/>", { "class": "contents" }));
+		})
 	};
 
 	/** Main tooltip controller */
 	var TooltipController = {
 		/** Handle tooltip show event */
-		show: function(evt, data){
+		show: function(evt, data) {
 			/**
 			 * Define tooltip content updaters
 			 * Upon called, context will be the reference to the
@@ -29,7 +80,7 @@ define([
 			var updaters = {
 				/** @see Tooltips.LOT */
 				LOT: function(context) {
-					context.text(require("engine/core").getSession().map[data.id].name);
+					context.text(require("engine/core").getSession().map.lot[data.id].name);
 				},
 				/** @see Tooltips.PLAYER */
 				PLAYER: function(context) {
@@ -38,53 +89,20 @@ define([
 			};
 
 			// Retrieve relevant tooltip handler by class
-			var t = Tooltips[data.class];
-			t.update(updaters[data.class]);
+			var t = Tooltips[data.type];
+
+			t.update(updaters[data.type]);
 			t.setPosition(data.position.left, data.position.top);
 			t.show();
 		},
 
 		/** Handle tooltip hide event */
-	    hide: function() {
+		hide: function() {
 			// Use manual listing instead of looping members
 			// for better performance
 			Tooltips.LOT.hide();
 			Tooltips.PLAYER.hide();
 		}
-	};
-
-	/**
-	 * Construct a tooltip controller object
-	 * @param {string} node - Selector string that points to the tooltip element
-	 * @param {number} offsetX - Default x offsets to be applied
-	 * @param {number} offsetY - Default y offsets to be applied
-	 * @returns {Tooltip}
-	 * @constructor
-	 */
-	function Tooltip(node, offsetX, offsetY) {
-		this.node = $(node);
-		this.offsetX = offsetX;
-		this.offsetY = offsetY;
-		return this;
-	}
-
-	Tooltip.prototype.hide = function() {
-		this.node.hide();
-	};
-
-	Tooltip.prototype.show = function() {
-		this.node.show();
-	};
-
-	Tooltip.prototype.setPosition = function(left, top) {
-		this.node.css({
-			"left": left + this.offsetX,
-			"top": top + this.offsetY
-		});
-	};
-
-	Tooltip.prototype.update = function(updater) {
-		updater(this.node.find(".contents"));
 	};
 
 	// Listening Tooltip requests

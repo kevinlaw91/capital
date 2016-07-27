@@ -2,13 +2,14 @@ define([
 	"jquery",
 	"opentype",
 	"snapsvg"
-], function( $, OpenType, Snap) {
+], function($, OpenType, Snap) {
+	"use strict";
 
 	/** @namespace */
 	var AssetManager = {};
 
 	/** @namespace */
-	AssetManager.SymbolStore = (function(){
+	AssetManager.SymbolStore = (function() {
 		/**
 		 * Place to store loaded symbols
 		 * @private
@@ -27,8 +28,9 @@ define([
 			 * @public
 			 * @param {Snap} elem - Snap element
 			 */
-			setSymbolStore: function(elem){
+			setSymbolStore: function(elem) {
 				store = Snap(elem);
+				delete this.setSymbolStore;
 			},
 
 			/**
@@ -50,54 +52,77 @@ define([
 			},
 
 			/**
+			 * Create a SVG fragment that renders the symbol
+			 * @param id
+			 * @returns {Snap}
+			 */
+			use: function(id) {
+				var svg = Snap(); // Paper
+
+				// Clean up
+				svg.selectAll("*").remove();
+
+				if (list.has(id)) {
+					// Render symbol
+					svg.use(id);
+				} else {
+					throw new Error("(SymbolStore) No symbol that matches \"" + id + "\"");
+				}
+
+				return svg;
+			},
+
+			/**
 			 * Loads a file
 			 * @public
 			 * @param path - Path of the file to be loaded
 			 */
-			loadFromFile: function(path){
-				// Define object to track progress
-				var tracking = $.Deferred();
-
-				// Push to monitoring stacks
-				loading_tasks.push(tracking);
-
-				// Load file
-				Snap.load( path,
-					(function( progress ) {
-						return function( fragment ) {
+			loadFromFile: function(path) {
+				return new Promise(function(resolve, reject) {
+					// Load file
+					Snap.load(path, function(fragment) {
+						try {
 							fragment.selectAll("symbol")
 							        .forEach(AssetManager.SymbolStore.onFileLoaded);
-							progress.resolve();
-						};
-					})(tracking)
-				);
+							resolve();
+						} catch (e) {
+							reject(new Error("(SymbolStore) Failed to process [" + path + "]"));
+						}
+					});
+				});
 			},
 
 			/**
 			 * Extract symbols from a loaded file
 			 * @callback
-			 * @public
 			 * @param snapSymbol - Snap instance of a loaded symbol
 			 */
-			onFileLoaded: function(snapSymbol){
+			onFileLoaded: function(snapSymbol) {
 				// Cache loaded symbol size
 				var symbolEl = snapSymbol.node,
-				    viewbox = symbolEl.viewBox.baseVal;
-				list.set( symbolEl.id,
-					{
-						height: Number(viewbox.height),
-						width: Number(viewbox.width)
-					}
-				);
+					viewbox = symbolEl.viewBox.baseVal;
 
-				//Attach symbol to canvas and put inside <defs>
+				if (list.has(symbolEl.id)) {
+					console.error("(SymbolStore) Symbol name conflict: " + symbolEl.id);
+					throw new Error("(SymbolStore) Symbol name conflict");
+				} else {
+					list.set(
+						symbolEl.id,
+						{
+							height: Number(viewbox.height),
+							width: Number(viewbox.width)
+						}
+					);
+				}
+
+				// Attach symbol to canvas and put inside <defs>
 				snapSymbol.appendTo(store).toDefs();
 			}
 		};
 	})();
 
 	/** @namespace */
-	AssetManager.FontStore = (function(){
+	AssetManager.FontStore = (function() {
 		/**
 		 * Cache loaded fonts
 		 * @private
@@ -109,82 +134,129 @@ define([
 			 * Loads a font file
 			 * @param path
 			 */
-			loadFromFile: function(path){
-				// Define object to track progress
-				var tracking = $.Deferred();
-
-				// Push to monitoring stacks
-				loading_tasks.push(tracking);
-
-				// Load file
-				OpenType.load( path,
-					(function ( progress ) {
-						return function(errorMsg, font) {
-							if (!errorMsg) {
+			loadFromFile: function(path) {
+				return new Promise(function(resolve, reject) {
+					// Load file
+					OpenType.load(path, function(errorMsg, font) {
+						if (!errorMsg) {
+							try {
 								// Font loaded successfully
-
-								// Obtaining font metadata
-								var fontFamily = font.names.fontFamily.en,
-								    fontSubfamily = font.names.fontSubfamily.en;
-
-								// Register to font collection
-								if (fonts.has(fontFamily)){
-									fonts.get(fontFamily).set(fontSubfamily, font);
-								} else {
-									fonts.set(fontFamily, new Map().set(fontSubfamily, font));
-								}
-
-								// Mark task as completed
-								progress.resolve();
-							} else {
-								err(errorMsg);
+								AssetManager.FontStore.onFileLoaded(font);
+								resolve();
+							} catch (e) {
+								reject(new Error("(FontStore) Failed to process [" + path + "]"));
 							}
-						};
-					})(tracking)
-				);
+						} else {
+							reject(new Error("(FontStore) Failed to load [" + path + "]"));
+						}
+					});
+				});
+			},
+
+			/**
+			 * Handle loaded fonts
+			 * @callback
+			 */
+			onFileLoaded: function(font) {
+				// Obtaining metadata
+				var fontFamily = font.names.fontFamily.en,
+					fontSubfamily = font.names.fontSubfamily.en;
+
+				// Register at font collection
+				if (fonts.has(fontFamily)) {
+					fonts.get(fontFamily).set(fontSubfamily, font);
+				} else {
+					fonts.set(fontFamily, new Map().set(fontSubfamily, font));
+				}
 			},
 
 			/**
 			 * Get a Font object from collection
 			 * @returns {Font}
 			 */
-			getFont: function (family, subFamily) {
+			getFont: function(family, subFamily) {
 				return fonts.get(family).get(subFamily);
 			}
 		};
 	})();
 
-	/** Stores file load promise objects */
-	var loading_tasks = [];
+	/** @namespace */
+	AssetManager.FragmentStore = (function() {
+		/**
+		 * Place to store loaded fragments
+		 * @private
+		 */
+		var store = new Map();
 
-	/** Pre-load assets */
-	AssetManager.load = function(){
-		// Track completion of task
-		var task = $.Deferred();
+		/**
+		 * Check support for template element
+		 * @type {boolean}
+		 */
+		var supported = ("content" in document.createElement("template"));
 
-		// Load SVG symbols from file
-		[
-			"src/resources/svg/floor.svg",
-			"src/resources/svg/token.svg",
-			"src/resources/svg/icons.svg",
-			"src/resources/svg/houses.svg"
-		].forEach(AssetManager.SymbolStore.loadFromFile);
+		/** @param el - A template element returned from ajax */
+		function cacheTemplate(index, el) {
+			// For browser that doesn't support <template>
+			if (!supported) {
+				var fragment = document.createDocumentFragment(),
+					children = el.children;
 
-		// Load Fonts
-		[
-			"src/resources/fonts/passion-one-regular.woff",
-			"src/resources/fonts/pathway-gothic-one-regular.woff"
-		].forEach(AssetManager.FontStore.loadFromFile);
+				while (children[0]) {
+					fragment.appendChild(children[0]);
+				}
 
-		// Mark task as resolved when all asset files are loaded
-		$.when.apply($, loading_tasks).done(function() {
-			//Called when all assets are loaded
-			info("Game asset load complete");
-			task.resolve();
-		 });
+				el.content = fragment;
+			}
 
-		return task.promise();
-	};
+			var templateID = el.getAttribute("data-templateid");
+
+			if (typeof templateID === "string" && templateID.length) {
+				store.set(
+					el.getAttribute("data-templateid"),
+					el.content
+				);
+			} else {
+				throw new Error("Template ID not found");
+			}
+		}
+
+		return {
+			/**
+			 * Retrieve a DOM template
+			 * @param {string} id
+			 * @returns {DocumentFragment|undefined}
+			 */
+			get: function(id) {
+				return store.get(id);
+			},
+			/**
+			 * Remove a DOM Template from store
+			 * @param {string} id
+			 */
+			remove: function(id) {
+				store.has(id) && store.delete(id);
+			},
+			/**
+			 * Load a file that contains DOM fragment
+			 * @param path - Path of the file to be loaded
+			 */
+			loadFromFile: function(path) {
+				return new Promise(function(resolve, reject) {
+					$.get(path, "html").done(function(contents) {
+						try {
+							$(contents).filter("template")
+							           .each(cacheTemplate);
+							resolve();
+						} catch (e) {
+							reject(new Error("(FragmentStore) Failed to process [" + path + "]"));
+						}
+					}).fail(function(e) {
+						reject(new Error("(FragmentStore) " + e.status.toString() + " " + e.statusText + " [" + path + "]"));
+					});
+				});
+			}
+		};
+	})();
 
 	return AssetManager;
 });

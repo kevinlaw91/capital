@@ -2,13 +2,13 @@ define([
 	"engine/renderer",
 	"render/sprite/sprite"
 ], function(Renderer, Sprite) {
-	'use strict';
+	"use strict";
 
 	/**
 	 * Marker sprite to indicate active player
 	 * @augments Sprite
 	 */
-	function House(resourceId, offsetX, offsetY){
+	function House(resourceId, offsetX, offsetY) {
 		// Inherits Sprite object
 		Sprite.apply(this, [
 			Renderer.layers.buildings.paper.use(resourceId),
@@ -22,6 +22,7 @@ define([
 
 		this.replace = function(resourceId, offsetX, offsetY) {
 			var newEl = Renderer.layers.buildings.paper.use(resourceId);
+
 			this.view.after(newEl);
 			this.view.remove();
 			this.view = newEl;
@@ -30,51 +31,51 @@ define([
 				height: this.height
 			});
 			this.setOffset(offsetX, offsetY);
-			this.moveTo(this.x,this.y);
+			this.moveTo(this.x, this.y);
 		};
 
 		/** @override */
-		this.moveTo = function(x,y){
+		this.moveTo = function(x, y) {
 			this.x = x;
 			this.y = y;
 
-			//Update view
-			this.view.attr(this.getBoundingOffset(x,y));
+			// Update view
+			this.view.attr(this.getBoundingOffset(x, y));
 
-			//Reorder Z
-			//Recalculate z
+			// Reorder Z
+			// Recalculate z
 			var thisZ = Number(this.view.node.y.baseVal.value);
 
 			var instances = Renderer.layers.buildings.paper.node.children,
-			    i = instances.length - 1,
-			    target = null,
-			    targetZ;
+				i = instances.length - 1,
+				target = null,
+				targetZ = null;
 
-			while(i>=0){
+			while (i >= 0) {
 				var now = instances[i];
 
-				//No need to compare with myself
-				if(now !== this.view.node){
+				// No need to compare with myself
+				if (now !== this.view.node) {
 					// Determine order in Z space by scanning Y value
 					var nowZ = Number(now.y.baseVal.value);
 
 					// Compare Z depth by scanning reversely in DOM
 					// Stop scan when found final target position
-					if(thisZ<nowZ){
-						//This should be moved and put behind
-						if(target === null || nowZ<targetZ){
+					if (thisZ < nowZ) {
+						// This should be moved and put behind
+						if (target === null || nowZ < targetZ) {
 							target = now;
 							targetZ = nowZ;
 						}
-					}else{
+					} else {
 						break; // Found target, stop scanning
 					}
 				}
 				i--;
 			}
 
-			//Reorder element to the target Z
-			if(target !== null){
+			// Reorder element to the target Z
+			if (target !== null) {
 				this.view.insertBefore(target);
 			}
 		};

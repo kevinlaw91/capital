@@ -1,0 +1,324 @@
+//
+// Webfonts generated at
+// https://google-webfonts-helper.herokuapp.com/fonts
+//
+
+// Font format
+// woff2 - Supported by Chrome 26+, Opera 23+, Firefox 39+
+// woff - Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1
+$font-formats: woff2 woff;
+
+// Font resources dir
+$font-path: "../../../resources/fonts/";
+
+
+
+/* ============================================================================
+** Fonts
+** ==========================================================================*/
+
+/*
+   All fonts listed below, unless stated otherwise, were licensed under
+   SIL Open Font License, 1.1 (http://scripts.sil.org/OFL)
+*/
+
+/* Passion One */
+@include font-face(
+	"Passion One",
+	$font-path + "passion-one-regular",
+	400,
+	normal,
+	$font-formats
+);
+
+/* Pathway Gothic One */
+@include font-face(
+	"Pathway Gothic One",
+	$font-path + "pathway-gothic-one-regular",
+	400,
+	normal,
+	$font-formats
+);
+
+/* Merriweather Sans */
+@include font-face(
+	"Merriweather Sans",
+	$font-path + "merriweather-sans-300",
+	300,
+	normal,
+	$font-formats
+);
+
+@include font-face(
+	"Merriweather Sans",
+	$font-path + "merriweather-sans-regular",
+	400,
+	normal,
+	$font-formats
+);
+
+@include font-face(
+	"Merriweather Sans",
+	$font-path + "merriweather-sans-700",
+	700,
+	normal,
+	$font-formats
+);
+
+@include font-face(
+	"Merriweather Sans",
+	$font-path + "merriweather-sans-800",
+	800,
+	normal,
+	$font-formats
+);
+
+/* Yantramanav */
+@include font-face(
+	"Yantramanav",
+	$font-path + "yantramanav-100",
+	100,
+	normal,
+	$font-formats
+)
+
+@include font-face(
+	"Yantramanav",
+	$font-path + "yantramanav-300",
+	300,
+	normal,
+	$font-formats
+)
+
+@include font-face(
+	"Yantramanav",
+	$font-path + "yantramanav-regular",
+	400,
+	normal,
+	$font-formats
+)
+
+@include font-face(
+	"Yantramanav",
+	$font-path + "yantramanav-500",
+	500,
+	normal,
+	$font-formats
+)
+
+@include font-face(
+	"Yantramanav",
+	$font-path + "yantramanav-700",
+	700,
+	normal,
+	$font-formats
+)
+
+@include font-face(
+	"Yantramanav",
+	$font-path + "yantramanav-900",
+	900,
+	normal,
+	$font-formats
+)
+
+/* Catamaran */
+@include font-face(
+		"Catamaran",
+		$font-path + "catamaran-100",
+		100,
+		normal,
+		$font-formats
+)
+
+@include font-face(
+		"Catamaran",
+		$font-path + "catamaran-200",
+		200,
+		normal,
+		$font-formats
+)
+
+@include font-face(
+		"Catamaran",
+		$font-path + "catamaran-300",
+		300,
+		normal,
+		$font-formats
+)
+
+@include font-face(
+		"Catamaran",
+		$font-path + "catamaran-regular",
+		400,
+		normal,
+		$font-formats
+)
+
+@include font-face(
+		"Catamaran",
+		$font-path + "catamaran-500",
+		500,
+		normal,
+		$font-formats
+)
+
+@include font-face(
+		"Catamaran",
+		$font-path + "catamaran-600",
+		600,
+		normal,
+		$font-formats
+)
+
+@include font-face(
+		"Catamaran",
+		$font-path + "catamaran-700",
+		700,
+		normal,
+		$font-formats
+)
+
+@include font-face(
+		"Catamaran",
+		$font-path + "catamaran-800",
+		800,
+		normal,
+		$font-formats
+)
+
+@include font-face(
+		"Catamaran",
+		$font-path + "catamaran-900",
+		900,
+		normal,
+		$font-formats
+)
+
+/* Noto Sans */
+@include font-face(
+	"Noto Sans",
+	$font-path + "noto-sans-regular",
+	400,
+	normal,
+	$font-formats
+)
+
+@include font-face(
+	"Noto Sans",
+	$font-path + "noto-sans-700",
+	700,
+	normal,
+	$font-formats
+)
+
+/* Noto Sans SC */
+@include font-face(
+	"Noto Sans SC",
+	$font-path + "NotoSansSC-Thin",
+	100,
+	normal,
+	$font-formats
+)
+
+@include font-face(
+	"Noto Sans SC",
+	$font-path + "NotoSansSC-Light",
+	300,
+	normal,
+	$font-formats
+)
+
+@include font-face(
+	"Noto Sans SC",
+	$font-path + "NotoSansSC-Regular",
+	400,
+	normal,
+	$font-formats
+)
+
+@include font-face(
+	"Noto Sans SC",
+	$font-path + "NotoSansSC-Medium",
+	500,
+	normal,
+	$font-formats
+)
+
+@include font-face(
+	"Noto Sans SC",
+	$font-path + "NotoSansSC-Bold",
+	700,
+	normal,
+	$font-formats
+)
+
+@include font-face(
+	"Noto Sans SC",
+	$font-path + "NotoSansSC-Black",
+	900,
+	normal,
+	$font-formats
+)
+
+/* Noto Sans TC */
+@include font-face(
+	"Noto Sans TC",
+	$font-path + "NotoSansTC-Thin",
+	100,
+	normal,
+	$font-formats
+)
+
+@include font-face(
+	"Noto Sans TC",
+	$font-path + "NotoSansTC-Light",
+	300,
+	normal,
+	$font-formats
+)
+
+@include font-face(
+	"Noto Sans TC",
+	$font-path + "NotoSansTC-Regular",
+	400,
+	normal,
+	$font-formats
+)
+
+@include font-face(
+	"Noto Sans TC",
+	$font-path + "NotoSansTC-Medium",
+	500,
+	normal,
+	$font-formats
+)
+
+@include font-face(
+	"Noto Sans TC",
+	$font-path + "NotoSansTC-Bold",
+	700,
+	normal,
+	$font-formats
+)
+
+@include font-face(
+	"Noto Sans TC",
+	$font-path + "NotoSansTC-Black",
+	900,
+	normal,
+	$font-formats
+)
+
+/*
+   Material Icons
+   https://github.com/google/material-design-icons
+   Creative Commons Attribution 4.0 International License (CC-BY 4.0)
+*/
+@include font-face(
+	"Material Icons",
+	$font-path + "MaterialIcons-Regular",
+	400,
+	normal,
+	$font-formats
+)

@@ -1,8 +1,23 @@
 define([
-	"jquery",
-	"engine/game"
-],function($) {
-	'use strict';
+	"engine/game",
+	"engine/ui",
+	"engine/assets",
+	"engine/camera",
+	"engine/renderer",
+	"ui/stage",
+	"ui/dialogs",
+	"engine/script/make-layers",
+	"engine/script/asset-load"
+], function() {
+	"use strict";
+
+	// Imports
+	var AssetManager = require("engine/assets"),
+		Camera = require("engine/camera"),
+		DialogManager = require("ui/dialogs"),
+		Renderer = require("engine/renderer"),
+		Stage = require("ui/stage"),
+		UI = require("engine/ui");
 
 	/** @namespace Engine */
 	var Engine = {
@@ -14,66 +29,86 @@ define([
 		game: require("engine/game"),
 
 		/** @returns {Game} Game definition object */
-		getGame: function(){
+		getGame: function() {
 			return Engine.game;
 		},
 
 		/** @returns {GameSession} Current game session */
-		getSession: function(){
+		getSession: function() {
 			return Engine.game.getSession();
 		},
+		/**
+		 * Called when all modules are loaded successfully
+		 * @callback
+		 */
+		onload: function() {
+			// Called when game engine is loaded
+			console.timeEnd("Game Loaded");
 
-		loading: {
-			ASSET_LOADED: $.Deferred(),
-			STAGE_READY: $.Deferred()
+			// Create new game session
+			Engine.getGame()
+			      .newSession();
 		}
 	};
 
 	/**
 	 * Entry point for app logic
 	 * This function will run after configs are loaded and dom is ready
+	 * @callback
 	 */
 	Engine.init = function() {
 		// Initializing app
 		log("[EVENT] Initializing engine...", "event");
 
-		require(["engine/ui"], function(UI) {
-			UI.init();
-		});
+		// Init UI
+		UI.init();
 
-		require([
-			"ui/stage",
-			"engine/assets",
-			"engine/script/stage-setup"
-		], function(Stage, AssetManager) {
-			// Fired when stage SVG node was created
-			Stage.nodeReady.done(
-				function() {
-					// Set up stage
-					require("engine/script/stage-setup")(Engine.loading.STAGE_READY);
+		// Fired when stage SVG node was created
+		Stage.nodeReady.done(function() {
+			// Define SVG symbol defs container svg
+			AssetManager.SymbolStore.setSymbolStore(Stage.container.node);
 
-					// Async load game assets
-					log("Loading game assets...");
-					AssetManager.SymbolStore.setSymbolStore(Stage.container.node);
-					AssetManager.load().done(function(){
-						// Notify assets ready
-						Engine.loading.ASSET_LOADED.resolve();
-					});
+			// Set up stage
+			Camera.setup();
+			Renderer.setCanvas(Stage.canvas);
+			require("engine/script/make-layers")();
 
-					log("[EVENT] Engine is running", "event");
-				}
-			);
-		});
+			// Load game assets
+			log("Loading game assets...");
+			var STATUS_ASSETLOADED = new Promise(function(resolve) {
+				resolve(require("engine/script/asset-load")());
+			});
 
-		$.when(
-			Engine.loading.ASSET_LOADED,
-			Engine.loading.STAGE_READY
-		).done(function(){
-			// Called when game engine is loaded
-			console.timeEnd("Game Loaded");
+			var STATUS_PREPAREUI = new Promise(function(resolve, reject) {
+				STATUS_ASSETLOADED
+					.then(function() {
+						log("Unpacking assets...");
+					})
+					.then(function() {
+						// Prepare UI
+						UI.UserActionPanel.init();
+						UI.InfoPanel.init();
+					})
+					.then(function() {
+						// Prepare Dialog
+						try {
+							var getUIFragment = AssetManager.FragmentStore.get;
 
-			// Create new game session
-			Engine.getGame().newSession();
+							DialogManager.register("treasurehunt", getUIFragment("dialog-minigame-treasurehunt"));
+
+							return Promise.resolve();
+						} catch (e) {
+							return Promise.reject(new Error("(DialogManager) Failed when registering dialog boxes."));
+						}
+					})
+					.then(resolve, reject);
+			});
+
+			// Run in parallel
+			Promise.all([
+				STATUS_ASSETLOADED,
+				STATUS_PREPAREUI
+			]).then(Engine.onload);
 		});
 
 		// Load developer module

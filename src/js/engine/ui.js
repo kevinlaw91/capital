@@ -5,22 +5,16 @@ define([
 	"ui/user-action-panel",
 	"ui/tooltip"
 ], function() {
-	'use strict';
+	"use strict";
 
 	var UI = {
+		InfoPanel: require("ui/info-panel"),
+		UserActionPanel: require("ui/user-action-panel"),
 		init: function() {
 			UI.Stage = require("ui/stage");
 			UI.Stage.init();
 
-			UI.DiceButton = require("ui/dice-button");
-			UI.DiceButton.init();
-
-			UI.InfoPanel = require("ui/info-panel");
-			UI.InfoPanel.init();
-
-			UI.UserActionPanel = require("ui/user-action-panel");
-			UI.UserActionPanel.init();
-
+			require("ui/dice-button");
 			require("ui/tooltip");
 
 			delete UI.init;

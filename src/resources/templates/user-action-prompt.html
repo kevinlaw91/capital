@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<body>
+	<!--
+	-- Used in dialog boxes
+	-- "data-templateid" attribute value will be used for internal referencing
+	-->
+
+	<!-- Prompt to buy unowned lot -->
+	<template data-templateid="panel-prompt-buy">
+		<h1 data-label="title"></h1>
+		<div class="contents">
+			<dl>
+				<dt>Buy</dt>
+				<dd data-label="cost"></dd>
+				<dd class="side" data-modifier-offer="false">
+					<i class="material-icons">error_outline</i>Not enough cash
+				</dd>
+			</dl>
+		</div>
+		<div class="action-row">
+			<div data-modifier-offer="true">
+				<button type="button" class="accept default">
+					<span>BUY FOR <span data-label="cost">$0</span></span>
+				</button>
+				<button type="button" class="decline"><span>DECLINE</span></button>
+			</div>
+			<div data-modifier-offer="false">
+				<button type="button" class="ok"><span>OK</span></button>
+			</div>
+		</div>
+	</template>
+
+	<!-- Prompt to upgrade lot -->
+	<template data-templateid="panel-prompt-upgrade">
+		<h1>Upgrade Property</h1>
+		<div class="contents">
+			<dl>
+				<dt>Cost</dt>
+				<dd data-label="cost"></dd>
+				<dd class="side" data-modifier-offer="false">
+					<i class="material-icons">error_outline</i>Not enough cash
+				</dd>
+			</dl>
+		</div>
+		<div class="action-row">
+			<div data-modifier-offer="true">
+				<button type="button" class="accept default">
+					<span>UPGRADE FOR <span data-label="cost">$0</span></span>
+				</button>
+				<button type="button" class="decline"><span>DECLINE</span></button>
+			</div>
+			<div data-modifier-offer="false">
+				<button type="button" class="ok"><span>OK</span></button>
+			</div>
+		</div>
+	</template>
+</body>
+</html>

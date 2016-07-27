@@ -1,16 +1,7 @@
-define(function(){
-	'use strict';
+define(function() {
+	"use strict";
 
-	/**
-	 * A rendering layer
-	 * @param {string} id - Identifier for the rendering layer
-	 * @constructor
-	 */
-	function Layer(id){
-		this.paper = Renderer.canvas.g().attr({"id": "layer-" + id});
-	}
-
-	/** @exports engine/renderer */
+	/** @namespace */
 	var Renderer = {
 		/** Reference to stage */
 		canvas: null,
@@ -22,7 +13,7 @@ define(function(){
 
 		/**
 		 * Collection of rendering layers currently at the stage
-		 * @type {Layer[]}
+		 * @type {Array.<String,Layer>}
 		 */
 		layers: [],
 
@@ -32,10 +23,20 @@ define(function(){
 		 * @returns {Layer}
 		 */
 		createLayer: function(id) {
-			Renderer.layers[id] = new Layer(id);
+			Renderer.layers[id] = new Layer(id); // eslint-disable-line no-use-before-define
+
 			return Renderer.layers[id];
 		}
 	};
+
+	/**
+	 * A rendering layer
+	 * @param {string} id - Identifier for the rendering layer
+	 * @constructor
+	 */
+	function Layer(id) {
+		this.paper = Renderer.canvas.g().attr({ id: "layer-" + id });
+	}
 
 	return Renderer;
 });

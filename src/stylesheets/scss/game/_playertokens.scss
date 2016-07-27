@@ -1,0 +1,31 @@
+/* ============================================================================
+** Player tokens
+** ==========================================================================*/
+.token-active-mark {
+	$length: 29;
+	$gap: 9;
+
+	fill: none;
+	stroke: white {
+		width: 10;
+		dasharray: ($length - $gap) $gap;
+		dashoffset: $length;
+	}
+
+	&.appear {
+		// When token become active
+		animation: draw-stroke 1s linear infinite,
+		           fade-in 0.5s;
+
+		circle {
+			animation: token-active-mark-rise 0.5s;
+			@at-root {
+				@keyframes token-active-mark-rise {
+					from {
+						transform: translateY(20px);
+					}
+				}
+			}
+		}
+	}
+}

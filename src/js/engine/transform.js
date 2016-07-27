@@ -1,5 +1,5 @@
-define(function(){
-	'use strict';
+define(function() {
+	"use strict";
 
 	/**
 	 * Represents a tile position in a 2D map
@@ -22,7 +22,7 @@ define(function(){
 	 * @param x - X coordinate
 	 * @param y - Y coordinate
 	 */
-	function Point(x, y){
+	function Point(x, y) {
 		/**
 		 * @property {number} X Coordinate
 		 */
@@ -37,7 +37,7 @@ define(function(){
 	 * Returns an array representation of a Point object
 	 * @returns {number[]}
 	 */
-	Point.prototype.toArray = function(){
+	Point.prototype.toArray = function() {
 		return [this.x, this.y];
 	};
 
@@ -82,42 +82,42 @@ define(function(){
 		 * @param {number} params.tileSize - Tile size of 2D map (square)
 		 */
 		generate: function(params) {
-			//Cache params
+			// Cache params
 			this.column = params.column;
 			this.row = params.row;
 			this.tileSize = params.tileSize;
 
-			//Shorthands
+			// Shorthands
 			var col = this.column,
-			    row = this.row,
-			    tileSize = this.tileSize;
+				row = this.row,
+				tileSize = this.tileSize;
 
 			// Generates dimetric projection coordinates
-			time("Generate projection transform matrix");
+			console.time("Generate projection transform matrix");
 
 			var ox = 0, oy = 0,
-			    nx = (row - 1) * (tileSize / 2); //normalize x to return only positive numbers
+				nx = (row - 1) * (tileSize / 2); // Normalize x to return only positive numbers
 
-			for(var r = 0; r<row; r++) {
-				//Record rows
+			for (var r = 0; r<row; r++) {
+				// Record rows
 				this.matrix[r] = [];
 
 				ox = r * -(tileSize / 2);
 				oy = r * (tileSize / 4);
 
-				for(var c = 0; c<col; c++) {
-					//Record each column within a row
+				for (var c = 0; c<col; c++) {
+					// Record each column within a row
 					/** @type Point */
 					this.matrix[r][c] = new Point(
-						ox + c * (tileSize / 2) + nx,
-						oy + c * (tileSize / 4)
+						ox + (c * tileSize / 2) + nx,
+						oy + (c * tileSize / 4)
 					);
 				}
 			}
 
-			timeEnd("Generate projection transform matrix");
+			console.timeEnd("Generate projection transform matrix");
 
-			//self destruct
+			// Self destruct
 			delete this.generate;
 
 			return this;
@@ -143,21 +143,23 @@ define(function(){
 		 * @returns {Point} Bounding box offset
 		 */
 		getBoundingOffset: function(row, column, extended) {
-			if(extended){
-				var to = { col: column, row: row};
-				if(extended.hasOwnProperty("row") && extended.hasOwnProperty("col")){
+			if (extended) {
+				var to = { col: column, row: row };
+
+				if (extended.hasOwnProperty("row") && extended.hasOwnProperty("col")) {
 					// Last tile was defined by position
 					to.col = extended.col;
 					to.row = extended.row;
-				} else if(extended.hasOwnProperty("rowSize") && extended.hasOwnProperty("colSize")) {
+				} else if (extended.hasOwnProperty("rowSize") && extended.hasOwnProperty("colSize")) {
 					// Last tile was defined by size
 					to.col = column + (extended.colSize - 1);
 					to.row = row + (extended.rowSize - 1);
 				}
-				//Bounding offset for an extended tile in map
+
+				// Bounding offset for an extended tile in map
 				return new Point(this.matrix[to.row][column].x, this.matrix[column][row].y);
-			}else{
-				//Bounding offset for a 1x1 tile in map
+			} else {
+				// Bounding offset for a 1x1 tile in map
 				return this.matrix[row][column];
 			}
 		},
@@ -176,15 +178,15 @@ define(function(){
 		 * @see getVertexOffsetAsPoint
 		 * @returns {number[]} Offset in the form of [x,y]
 		 */
-		getVertexOffset: function(row, column, vertex){
+		getVertexOffset: function(row, column, vertex) {
 			// Get bounding box offset for map tile [row, column]
 			// Use transpose when getting matrix
 			var o       = Object.create(this.matrix[row][column]),
-			    full    = this.tileSize,
-			    half    = full/2,
-			    quarter = full/4;
+				full    = this.tileSize,
+				half    = full / 2,
+				quarter = full / 4;
 
-			switch(vertex) {
+			switch (vertex) {
 				case "N":
 					o.x += half;
 					break;
@@ -211,6 +213,7 @@ define(function(){
 					o.y += half + quarter;
 					break;
 			}
+
 			return [o.x, o.y];
 		},
 		/**
@@ -224,8 +227,9 @@ define(function(){
 		 * @see getVertexOffset
 		 * @returns {Point} Offset in the form of {@link Point} object
 		 */
-		getVertexOffsetAsPoint: function(row, column, vertex){
+		getVertexOffsetAsPoint: function(row, column, vertex) {
 			var offset = this.getVertexOffset(row, column, vertex);
+
 			return new Point(offset[0], offset[1]);
 		},
 		/**

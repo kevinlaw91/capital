@@ -1,0 +1,173 @@
+// =============================================================================
+// Media Breakpoints
+// =============================================================================
+@mixin screen-breakpoint($query) {
+	$breakpoints: (
+		medium: 800px,
+		wide: 1200px,
+		ultra: 1600px
+	) !default;
+
+	$query-output: only screen !default;
+	$_i: 1;
+	$_i_min: 1;
+
+	// Flag to minus 1 from max-width
+	$_maxbefore: false;
+
+	// Looking for min, start at position 1
+	@while $_i <= length($query){
+		$_entry: nth($query, $_i);
+		@if type-of($_entry) == number and $_entry > 0 {
+			// Found min as number
+			$query-output: append($query-output, unquote("and (min-width: #{$_entry})"));
+			$query: set-nth($query, $_i, null);
+			$_i_min: $_i; // Store position for min
+
+			$_i: length($query); // @break
+		} @else if type-of($_entry) == string {
+			// Found first string entry
+			@if map-has-key($breakpoints, $_entry) {
+				// Found min as breakpoint keyword
+				$query-output: append($query-output, unquote("and (min-width: #{map_get($breakpoints, $_entry)})"));
+				$query: set-nth($query, $_i, null);
+				$_i_min: $_i; // Store position for min
+
+				$_i: length($query); // @break
+			}
+			@else if $_entry == before {
+				$_maxbefore: true;
+				$_i_min: $_i; // Store position where to start looking for max
+				$_i: length($query); // @break
+			}
+			@else if $_entry == from or $_entry == after {
+				// Swallow
+			}
+			@else {
+				// Error if first string entry in query is not a breakpoint keyword
+				$query: set-nth($query, $_i, null); // Clean invalid entry
+				@error "#{$_entry} is not a valid breakpoint keyword: #{$breakpoints}"
+			}
+		}
+		$_i: $_i + 1;
+	}
+
+	// Looking for max, start at last known min position
+	$_i: $_i_min;
+	@while $_i <= length($query){
+		$_entry: nth($query, $_i);
+		@if type-of($_entry) == number and $_entry > 0 {
+			// Found max as number
+			@if $_maxbefore {
+				// Exclusive (-1 from value)
+				$_entry: $_entry - ($_entry/$_entry)
+			}
+			$query-output: append($query-output, unquote("and (max-width: #{$_entry})"));
+			$_i: length($query); // @break
+		}
+		@else if type-of($_entry) == string {
+			// Found a string entry after min
+			@if map-has-key($breakpoints, $_entry) {
+				// Found max as breakpoint keyword
+				$_entry: map_get($breakpoints, $_entry);
+				@if $_maxbefore {
+					// Exclusive (-1 from value)
+					$_entry: $_entry - ($_entry/$_entry)
+				}
+				$query-output: append($query-output, unquote("and (max-width: #{$_entry})"));
+				$query: set-nth($query, $_i, null);
+				$_i: length($query); // @break
+			} @else if $_entry == unquote("before") {
+				$_maxbefore: true;
+				$query: set-nth($query, $_i, null);
+			} @else if $_entry == unquote("until") {
+				// Swallow
+			} @else {
+				// Error if first string entry in query is not a breakpoint keyword
+				@error "#{$_entry} is not a valid breakpoint keyword: #{$breakpoints}"
+			}
+		}
+
+		$_i: $_i + 1;
+	}
+
+	// Output
+	@media #{$query-output} {
+		@content;
+	}
+}
+
+// =============================================================================
+// @font-face Mixin
+// https://gist.github.com/jonathantneal/d0460e5c2d5d7f9bc5e6
+// =============================================================================
+@mixin font-face($name, $path, $weight: null, $style: null, $exts: eot woff2 woff ttf svg) {
+	$src: null;
+
+	$extmods: (
+		eot: "?",
+		svg: "#" + str-replace($name, " ", "_")
+	);
+
+	$formats: (
+		otf: "opentype",
+		ttf: "truetype"
+	);
+
+	@each $ext in $exts {
+		$extmod: if(map-has-key($extmods, $ext), $ext + map-get($extmods, $ext), $ext);
+		$format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext);
+		$src: append($src, url(quote($path + "." + $extmod)) format(quote($format)), comma);
+	}
+
+	@font-face {
+		font-family: quote($name);
+		font-style: $style;
+		font-weight: $weight;
+		src: $src;
+	}
+}
+
+// =============================================================================
+// Set size
+// =============================================================================
+@mixin size($width, $height: $width) {
+	width: $width;
+	height: $height;
+}
+
+// =============================================================================
+// Set position
+// =============================================================================
+@mixin position($position, $args) {
+	position: unquote($position);
+
+	@each $o in top right bottom left {
+		$i: index($args, $o);
+
+		@if $i and $i + 1 <= length($args) and type-of(nth($args, $i + 1)) == number  {
+			#{$o}: nth($args, $i + 1);
+		}
+	}
+}
+
+@mixin absolute($args) {
+	@include position("absolute", $args);
+}
+
+@mixin fixed($args) {
+	@include position("fixed", $args);
+}
+
+@mixin relative($args) {
+	@include position("relative", $args);
+}
+
+// =============================================================================
+// Flexbox middle
+// =============================================================================
+@mixin flex-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}

@@ -1,83 +1,83 @@
 define([
+	"jquery",
+	"jquery.pub-sub",
 	"entity/lot",
 	"render/script/colormark",
 	"render/sprite/house"
-], function(Lot) {
-	'use strict';
+], function($) {
+	"use strict";
 
 	// Imports
+	var Lot = require("entity/lot");
 	var ScreenTransform = require("engine/transform");
 	var House = require("render/sprite/house");
 
 	// Constants for upgrades
+
 		/** Maximum upgrade */
 	var MaxTier = 4,
-	    /** Upgrade configurations */
-	    Upgrades = [
-		    {
-			    rentFactor: 0.15
-		    },
-		    {
-			    rentFactor: 0.25,
-			    sprites: {
-				    south: {
-					    rsId: "building-hut-south",
-					    rsOffsetX: 30,
-					    rsOffsetY: 40
-				    },
-				    east: {
-					    rsId: "building-hut-east",
-					    rsOffsetX: 20,
-					    rsOffsetY: 25
-				    }
-			    }
-		    },
-		    {
-			    rentFactor: 0.28,
-			    sprites: {
-				    south: {
-					    rsId: "building-laneway-south",
-					    rsOffsetX: 32,
-					    rsOffsetY: 40
-				    },
-				    east: {
-					    rsId: "building-laneway-east",
-					    rsOffsetX: 20,
-					    rsOffsetY: 25
-				    }
-			    }
-		    },
-		    {
-			    rentFactor: 0.3,
-			    sprites: {
-				    south: {
-					    rsId: "building-ranch-south",
-					    rsOffsetX: 32,
-					    rsOffsetY: 42
-				    },
-				    east: {
-					    rsId: "building-ranch-east",
-					    rsOffsetX: 32,
-					    rsOffsetY: 30
-				    }
-			    }
-		    },
-		    {
-			    rentFactor: 0.38,
-			    sprites: {
-				    south: {
-					    rsId: "building-villa-south",
-					    rsOffsetX: 30,
-					    rsOffsetY: 45
-				    },
-				    east: {
-					    rsId: "building-villa-east",
-					    rsOffsetX: 35,
-					    rsOffsetY: 38
-				    }
-			    }
-		    }
-	    ];
+		/** Upgrade configurations */
+		Upgrades = [
+			{
+				// No sprite
+			},
+			{
+				sprites: {
+					south: {
+						rsId: "building-hut-south",
+						rsOffsetX: 30,
+						rsOffsetY: 40
+					},
+					east: {
+						rsId: "building-hut-east",
+						rsOffsetX: 20,
+						rsOffsetY: 25
+					}
+				}
+			},
+			{
+				sprites: {
+					south: {
+						rsId: "building-laneway-south",
+						rsOffsetX: 32,
+						rsOffsetY: 40
+					},
+					east: {
+						rsId: "building-laneway-east",
+						rsOffsetX: 20,
+						rsOffsetY: 25
+					}
+				}
+			},
+			{
+				sprites: {
+					south: {
+						rsId: "building-ranch-south",
+						rsOffsetX: 32,
+						rsOffsetY: 42
+					},
+					east: {
+						rsId: "building-ranch-east",
+						rsOffsetX: 32,
+						rsOffsetY: 30
+					}
+				}
+			},
+			{
+				sprites: {
+					south: {
+						rsId: "building-villa-south",
+						rsOffsetX: 30,
+						rsOffsetY: 45
+					},
+					east: {
+						rsId: "building-villa-east",
+						rsOffsetX: 35,
+						rsOffsetY: 38
+					}
+				}
+			}
+		];
 
 	/**
 	 * Represents a tradable lot in the map
@@ -86,9 +86,12 @@ define([
 	 * @constructor
 	 * @augments Lot
 	 */
-	function TradableLot(props){
+	function TradableLot(props) {
 		// Calling superclass constructor
 		Lot.call(this, props);
+
+		/** jQuery wrapper */
+		this.$ = $(this);
 
 		/** Name */
 		this.name = props.name;
@@ -110,9 +113,6 @@ define([
 		 */
 		this.cost = props.cost;
 
-		/** Net Worth */
-		this.worth = this.cost[0];
-
 		/**
 		 * Current upgrade tier
 		 * @type {number}
@@ -120,11 +120,19 @@ define([
 		this.tier = 0;
 
 		/**
+		 * Rent Value
+		 * @type {Number[]}
+		 */
+		this.rentValue = props.rentValue;
+
+		/**
 		 * Rent
 		 * @type {number}
 		 */
 		this.rent = 0;
-		this.recalculateRent();
+
+		// Update rent
+		this.updateRent();
 
 		/**
 		 * Owner of this lot
@@ -137,7 +145,7 @@ define([
 		this.house = null;
 	}
 
-	//Inherits prototype
+	// Inherits prototype
 	TradableLot.prototype = Object.create(Lot.prototype);
 	TradableLot.prototype.constructor = TradableLot;
 
@@ -145,35 +153,39 @@ define([
 	TradableLot.prototype.isTradable = true;
 
 	/** Recalculate rent based on current net worth and tier */
-	TradableLot.prototype.recalculateRent = function() {
-		this.rent = Math.round(this.worth * Upgrades[this.tier].rentFactor);
+	TradableLot.prototype.updateRent = function() {
+		this.rent = this.rentValue[this.tier];
+		this.$.trigger("Update.Rent");
 	};
 
 	/** Perform upgrade */
-	TradableLot.prototype.upgrade = function(){
+	TradableLot.prototype.upgrade = function() {
 		// Increase tier
 		this.tier = Math.min(++this.tier, MaxTier);
+		this.$.trigger("Update.Tier");
 
 		// Update rent
-		this.worth += this.cost[this.tier];
-		this.recalculateRent();
+		this.updateRent();
 
 		// Check to see if building needs to be rendered
 		var resource = Upgrades[this.tier].sprites;
 
-		if(resource){
+		if (resource) {
 			// Determine which resource to be used
-			if(this.direction == Lot.prototype.FACING_EAST || this.direction == Lot.prototype.FACING_WEST){
+			if (this.direction === Lot.prototype.FACING_EAST ||
+			    this.direction === Lot.prototype.FACING_WEST) {
 				resource = resource.east;
-			} else if(this.direction == Lot.prototype.FACING_NORTH || this.direction == Lot.prototype.FACING_SOUTH){
+			} else if (this.direction === Lot.prototype.FACING_NORTH ||
+			           this.direction === Lot.prototype.FACING_SOUTH) {
 				resource = resource.south;
 			}
 
 			// Render resource
-			if(this.house === null){
+			if (this.house === null) {
 				// Draw house for the first time
 				this.house = new House(resource.rsId, resource.rsOffsetX, resource.rsOffsetY);
 				var pos = ScreenTransform.getTopFaceMidpoint(this.buildingY, this.buildingX);
+
 				this.house.moveTo(pos.x, pos.y);
 			} else {
 				// Redraw/upgrade house
@@ -188,7 +200,7 @@ define([
 	};
 
 	/** Get the cost of performing next upgrade */
-	TradableLot.prototype.getNextUpgradeCost = function(){
+	TradableLot.prototype.getNextUpgradeCost = function() {
 		return (this.cost)?this.cost[this.tier + 1]:-1;
 	};
 
@@ -201,9 +213,10 @@ define([
 	 * Set reference to a new owner
 	 * @param {Player} newOwner
 	 */
-	TradableLot.prototype.sellTo = function(newOwner){
+	TradableLot.prototype.sellTo = function(newOwner) {
 		this.owner = newOwner;
 		this.markColor(newOwner.color.DARK);
+		this.$.trigger("Update.Owner");
 	};
 
 	/**
@@ -211,7 +224,7 @@ define([
 	 * @param {Player} owner
 	 * @return {boolean}
 	 */
-	TradableLot.prototype.isOwnedBy = function(owner){
+	TradableLot.prototype.isOwnedBy = function(owner) {
 		return this.owner === owner;
 	};
 

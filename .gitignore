@@ -8,6 +8,13 @@
 #devnotes
 dev/
 
+#css output
+src/stylesheets/compiled/
+
 ### Node ###
 # Dependency directory
 node_modules/
+
+### Sass ###
+.sass-cache/
+*.css.map

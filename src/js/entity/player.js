@@ -1,18 +1,16 @@
 define([
 	"jquery",
 	"jquery.pub-sub",
-	"engine/config",
 	"render/sprite/token",
-    "engine/transform",
+	"engine/transform",
 	"render/sprite/marker"
 ], function($) {
-	'use strict';
+	"use strict";
 
 	// Imports
-	var Config = require("engine/config"),
-	    ScreenTransform = require("engine/transform"),
-	    PlayerToken = require("render/sprite/token"),
-	    GroundMarker = require("render/sprite/marker");
+	var ScreenTransform = require("engine/transform"),
+		PlayerToken = require("render/sprite/token"),
+		GroundMarker = require("render/sprite/marker");
 
 	/**
 	 * Represents a player color definition
@@ -22,30 +20,11 @@ define([
 	 * @property {string} TOKEN - Token resource id
 	 */
 
-	/**
-	 * Player color constants
-	 * @type {Object.<string, PlayerColor>}
-	 */
-	Player.COLOR = {
-		RED: {
-			LIGHT: "#f73134",
-			DARK: "#bf4d4f",
-			TOKEN: "player-token-red"
-		},
-		BLUE: {
-			LIGHT: "#2fb5ff",
-			DARK: "#2db1b1",
-			TOKEN: "player-token-blue"
-		},
-		PINK: {
-			LIGHT: "#f37ce8",
-			DARK: "#d163c8",
-			TOKEN: "player-token-pink"
-		}
-	};
-
 	/** @constructor */
-	function Player(name, color){
+	function Player(name, color) {
+		/** jQuery wrapper */
+		this.$ = $(this);
+
 		/**
 		 * Player name
 		 * @type {string}
@@ -63,15 +42,8 @@ define([
 			/** Current map grid (column) position of player */
 			mapX: 0,
 			/** Current map grid (row) position of player */
-			mapY: 0,
-			/** Index in map array */
-			index: 0,
-			/** Lot instance in map array */
-			lot: null
+			mapY: 0
 		};
-
-		//Pending steps
-		this.pendingSteps = 0;
 
 		/**
 		 * Amount of cash player possesses
@@ -96,14 +68,36 @@ define([
 	}
 
 	/**
+	 * Player color constants
+	 * @type {Object.<string, PlayerColor>}
+	 */
+	Player.COLOR = {
+		RED: {
+			LIGHT: "#f73134",
+			DARK: "#bf4d4f",
+			TOKEN: "player-token-red"
+		},
+		BLUE: {
+			LIGHT: "#2fb5ff",
+			DARK: "#2db1b1",
+			TOKEN: "player-token-blue"
+		},
+		PINK: {
+			LIGHT: "#f37ce8",
+			DARK: "#d163c8",
+			TOKEN: "player-token-pink"
+		}
+	};
+
+	/**
 	 * Adds an amount of cash to player
 	 * @param {number} amount
 	 */
 	Player.prototype.addCash = function(amount) {
 		this.cash += amount;
 
-		// Trigger player info panel refresh
-		$.publish("UI.InfoPanel.PlayerInfo.Refresh");
+		// Fire Update event
+		this.$.trigger("Update.Cash", { delta: amount });
 	};
 
 	/**
@@ -113,8 +107,8 @@ define([
 	Player.prototype.deductCash = function(amount) {
 		this.cash -= amount;
 
-		// Trigger player info panel refresh
-		$.publish("UI.InfoPanel.PlayerInfo.Refresh");
+		// Fire Update event
+		this.$.trigger("Update.Cash", { delta: amount });
 	};
 
 	/**
@@ -124,8 +118,8 @@ define([
 	Player.prototype.addToNetWorth = function(amount) {
 		this.netWorth += amount;
 
-		// Trigger player info panel refresh
-		$.publish("UI.InfoPanel.PlayerInfo.Refresh");
+		// Fire Update event
+		this.$.trigger("Update.NetWorth", { delta: amount });
 	};
 
 	/**
@@ -135,87 +129,50 @@ define([
 	Player.prototype.deductFromNetWorth = function(amount) {
 		this.netWorth -= amount;
 
-		// Trigger player info panel refresh
-		$.publish("UI.InfoPanel.PlayerInfo.Refresh");
+		// Fire Update event
+		this.$.trigger("Update.NetWorth", { delta: amount });
 	};
 
 	/**
 	 * Move player to x, y position in map
 	 * @param {number} x Position in column (x)
 	 * @param {number} y Position in row (y)
-	 * @param {boolean} [animate=false] Directly jump to destination?
+	 * @param {boolean} [animate=false] Use animation
 	 */
-	Player.prototype.moveTo = function(x, y, animate){
+	Player.prototype.moveTo = function(x, y, animate) {
+		// Promise of animation
+		var anim = $.Deferred();
+
 		// Update position
 		this.position.mapX = x;
 		this.position.mapY = y;
 
-		// Get client screen offset
-		// uses (y,x) is not a bug
-		var pos = ScreenTransform.getTopFaceMidpoint(y,x);
+		// Get mid point of the tile
+		// Note: Uses (y,x) is not a bug
+		var pos = ScreenTransform.getTopFaceMidpoint(y, x);
 
 		// Move ground marker
 		this.marker.moveTo(pos.x, pos.y);
 
-		// Generate callback based on player's context
-		var reached = (function(oPlayer){
-			return function(){
-				$.publish("PlayerMove", {player: oPlayer, x: x, y: y});
-			};
-		})(this);
-
 		// Move token
-		if(animate) {
-			this.token.moveTo(pos.x, pos.y, true, reached);
+		if (animate) {
+			this.token.moveTo(pos.x, pos.y, true, anim.resolve);
 		} else {
-			this.token.moveTo(pos.x, pos.y, false, reached);
-		}
-	};
-
-	/**
-	 * Moves player by specified number of steps
-	 * @param {number} [numOfSteps]
-	 * If specified, will moves player by the step count.
-	 * Function will recursively call itself with no argument until movement finishes.
-	 */
-	Player.prototype.moveBySteps = function(numOfSteps) {
-		if(typeof numOfSteps != "undefined"){
-			this.pendingSteps = numOfSteps;
+			this.token.moveTo(pos.x, pos.y, false, anim.resolve);
 		}
 
-		$.publish("MovePlayerForward", {player: this});
-
-		this.pendingSteps--;
-		if(this.pendingSteps>0){
-			//Not yet reach destination
-			setTimeout(
-				(function(player){
-					return function(){
-						player.moveBySteps();
-					};
-				})(this),
-				Config.get("player.token.waitTime"));
-		} else {
-			//Reach destination
-			setTimeout(
-				(function(p){
-					return function(){
-						$.publish("PlayerStopped", { player: p });
-					};
-				})(this),
-				Config.get("player.token.waitTime"));
-		}
+		return anim;
 	};
 
 	Player.prototype.bringToFront = function() {
 		this.token.bringToFront();
 	};
 
-	Player.prototype.showActiveMarker = function(){
+	Player.prototype.showActiveMarker = function() {
 		this.marker.show();
 	};
 
-	Player.prototype.hideActiveMarker = function(){
+	Player.prototype.hideActiveMarker = function() {
 		this.marker.hide();
 	};
 

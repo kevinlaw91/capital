@@ -4,116 +4,15 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="initial-scale=1.0">
 	<title>Capital</title>
-	<link rel="stylesheet" href="src/css/html5reset-1.6.1.css">
-	<link rel="stylesheet" href="src/css/fonts.css">
-	<link rel="stylesheet" href="src/css/common.css">
-	<link rel="stylesheet" href="src/css/screen-small.css">
-	<link rel="stylesheet" href="src/css/screen-wide.css">
-	<link rel="stylesheet" href="src/css/screen-ultra.css">
-	<link rel="stylesheet" href="src/css/screen-tall.css">
-	<script data-main="src/js/requirejs-run.js" src="src/js/lib/require.js"></script>
+	<link rel="stylesheet" href="src/stylesheets/misc/html5reset-1.6.1.css">
+	<link rel="stylesheet" href="src/stylesheets/compiled/main.css">
+	<script data-main="src/js/main.js" src="src/js/lib/alameda-prim.js"></script>
 </head>
 <body>
-	<div id="app-viewport">
-		<div id="game-splash" class="screen hidden">
-
-		</div>
-		<div id="game-screen" class="screen">
-			<section id="game-tooltip-layer">
-				<div id="tooltip-lotname" role="tooltip">
-					<div class="contents"></div>
-				</div>
-				<div id="tooltip-playername" role="tooltip">
-					<div class="contents"></div>
-				</div>
-			</section>
-			<div id="game-frame">
-				<section id="info-panel">
-					<section id="info-panel-tab"></section>
-					<section id="info-panel-info" role="tabpanel" aria-labelledby="info-panel-tab-info">
-						<section id="info-panel-default" class="panel-template">
-							<p class="disabled">No item selected.</p>
-						</section>
-						<section id="info-panel-player" class="panel-template">
-							<header>
-								<div class="shade">
-									<h1 data-label="name">PLAYER_NAME</h1>
-									<div class="info-class">Player</div>
-								</div>
-							</header>
-							<section class="metadata">
-								<div class="row">
-									<div class="item">
-										<span class="label">Cash</span>
-										<span class="data" data-label="cash">$0</span>
-									</div>
-									<div class="item">
-										<span class="label">Net Worth</span>
-										<span class="data" data-label="net_worth">$0</span>
-									</div>
-								</div>
-							</section>
-						</section>
-						<section id="info-panel-lot" class="panel-template">
-							<header>
-								<div class="shade">
-									<h1 data-label="name">PLACE_NAME</h1>
-									<div class="info-class">Place</div>
-								</div>
-							</header>
-							<section class="metadata">
-								<div class="row" style="box-shadow: inset 0 -5px 15px -5px rgba(0,0,0,0.75);">
-									<div class="item">
-										<ol class="stepper" data-label="tier" role="radiogroup">
-											<li title="Unowned" role="radio">
-												<span class="node">U</span>
-											</li>
-											<li title="Buy" role="radio">
-												<span class="node">B</span>
-											</li>
-											<li title="Upgraded to Tier 1" role="radio">
-												<span class="node">1</span>
-											</li>
-											<li title="Upgraded to Tier 2" role="radio">
-												<span class="node">2</span>
-											</li>
-											<li title="Upgraded to Tier 3" role="radio">
-												<span class="node">3</span>
-											</li>
-											<li title="Upgraded to Tier 4" role="radio">
-												<span class="node">4</span>
-											</li>
-										</ol>
-									</div>
-								</div>
-								<div class="row" style="background-color: #4e4e4e; box-shadow: 0 3px 3px rgba(0, 0, 0, 0.3)">
-									<div class="item">
-										<span class="label">Purchase</span>
-										<span class="data" data-label="cost">$0</span>
-									</div>
-									<div class="item">
-										<span class="label">Upgrades</span>
-										<div class="data small">
-											<span data-label="upgrade1">$0</span>
-											<span data-label="upgrade2">$0</span>
-											<span data-label="upgrade3">$0</span>
-											<span data-label="upgrade4">$0</span>
-										</div>
-									</div>
-									<div class="item">
-										<span class="label">Rent Value</span>
-										<span class="data" data-label="rent">$0</span>
-									</div>
-								</div>
-							</section>
-						</section>
-					</section>
-					<section id="info-panel-leaderboard" role="tabpanel" aria-labelledby="info-panel-tab-leaderboard">
-						<section>
-							<ol class="leaderboard-list"></ol>
-						</section>
-					</section>
-				</section>
+	<div id="app-main">
+		<div id="app-windows-layer">
+			<div id="game-frame" class="window">
+				<section id="info-panel"></section>
 				<section id="stage-box">
 					<div id="stage-box-slide">
 						<div class="contents">
@@ -126,37 +25,19 @@
 									</div>
 								</section>
 							</section>
-							<section id="action-panel">
-								<section id="action-panel-buy">
-									<h1><span data-label="title"></span></h1>
-									<p>Cost: <span data-label="cost">$0</span></p>
-									<button type="button" class="player-action-btn-buy main">
-										<svg xmlns="http://www.w3.org/2000/svg" class="success-icon">
-											<path d="M2.093 18.192l7.808 7.79L29.908 6.018"/>
-										</svg>
-										<span>BUY FOR <span data-label="cost">$0</span></span>
-									</button>
-									<button type="button" class="player-action-btn-done"><span>DECLINE</span></button>
-								</section>
-								<section id="action-panel-upgrade">
-									<h1>Upgrade Property</h1>
-									<p>Cost: <span data-label="cost">$0</span></p>
-									<button type="button" class="player-action-btn-upgrade main">
-										<svg xmlns="http://www.w3.org/2000/svg" class="success-icon">
-											<path d="M2.093 18.192l7.808 7.79L29.908 6.018"/>
-										</svg>
-										<span>UPGRADE FOR <span data-label="cost">$0</span></span>
-									</button>
-									<button type="button" class="player-action-btn-done"><span>DECLINE</span></button>
-								</section>
-							</section>
+							<section id="action-panel"></section>
 						</div>
 					</div>
 				</section>
 				<section id="nav-bar"></section>
 				<section id="stats-box"></section>
 			</div>
+			<div class="lightbox hidden" role="presentation" aria-hidden="true"></div>
+			<section id="app-splash" class="window fullscreen hidden">
+				<div class="container"></div>
+			</section>
 		</div>
+		<section id="game-tooltip-layer"></section>
 	</div>
 </body>
 </html>

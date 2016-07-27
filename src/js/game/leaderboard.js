@@ -1,55 +1,98 @@
 define([
 	"jquery",
 	"jquery.pub-sub"
-], function ($) {
-	'use strict';
+], function($) {
+	"use strict";
 
-	/** @exports game/leaderboard */
-	return {
-		ranking: null,
-		populate: function( playerList ) {
-			// Clone player list
-			this.ranking = playerList.slice(0);
-			this.sort();
-		},
-		sort: function() {
-			// Perform sorting
-			var newRanking = this.ranking.slice(0);
-			newRanking.sort(
-				function( a, b ) {
-					/**
-					 * @param {Player} a
-					 * @param {Player} b
-					 */
-					return b.netWorth - a.netWorth;
-				}
-			);
+	/** Ranking */
+	var ranking;
 
-			// Check if ranking changed
-			var same = newRanking.every(function( player, index ) {
-				// Compare each rank to check if still are the same players
-				return player === this.ranking[index];
-			}, this);
+	/**
+	 * Sorting function
+	 * @param {Player} a
+	 * @param {Player} b
+	 * @returns {number}
+	 */
+	function sort_networth_descending(a, b) {
+		return b.netWorth - a.netWorth;
+	}
 
-			if(!same) {
-				this.ranking = newRanking;
-				this.onRankingChanged();
-			}
-			this.onUpdated();
-		},
-		/**
-		 * Called when leaderboard was updated
-		 * @function
-		 */
-		onUpdated: $.noop,
-		/**
-		 * Called when ranking had changed
-		 * @function
-		 */
-		onRankingChanged: $.noop,
-		reset: function() {
-			// Clear rankings
-			this.ranking = [];
+	/** Sort leaderboard */
+	function sort() {
+		// Perform sorting
+		var newRanking = ranking.slice(0);
+
+		newRanking.sort(sort_networth_descending);
+
+		// Check if ranking changed
+		var same = newRanking.every(function(player, index) {
+			// Compare each rank
+			// Check if players are still in the same order
+			return player === ranking[index];
+		});
+
+		// Stats updated
+		$.publish("Session.Leaderboard.onUpdate");
+
+		if (!same) {
+			// Ranking changed
+			ranking = newRanking;
+			$.publish("Session.Leaderboard.onRankingChanged");
 		}
+	}
+
+	/**
+	 * Subscribe update from all players
+	 * @param {Array.<Player>} list
+	 */
+	function subscribeAll(list) {
+		for (var i in list) {
+			if (list.hasOwnProperty(i)) {
+				list[i].$.on("Update.NetWorth", sort);
+			}
+		}
+	}
+
+	/**
+	 * Unsubscribe update from all players
+	 * @param {Array.<Player>} list
+	 */
+	function unsubscribeAll(list) {
+		for (var i in list) {
+			if (list.hasOwnProperty(i)) {
+				list[i].$.off("Update.NetWorth", sort);
+			}
+		}
+	}
+
+	/**
+	 * Rebuild leaderboard table
+	 * @public
+	 * @param {Array.<Player>} players
+	 */
+	function populate(players) {
+		// Discard old cache
+		if (ranking) {
+			// Old ranking cache exists
+			unsubscribeAll(ranking);
+
+			// Fire Reset event
+			$.publish("Session.Leaderboard.onReset");
+		}
+
+		// Clone player list
+		ranking = players.slice(0);
+
+		// Subscribe update from each player
+		subscribeAll(ranking);
+
+		// Fire Populate event
+		$.publish("Session.Leaderboard.Populate");
+	}
+
+	return {
+		getRankings: function() { return ranking; },
+		populate: populate,
+		sort: sort
 	};
 });

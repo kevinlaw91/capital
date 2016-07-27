@@ -1,0 +1,136 @@
+/* ============================================================================
+** Commons
+** ==========================================================================*/
+
+// Container size that fill whole screen
+.fullscreen {
+	width: 100vw;
+	height: 100vh;
+}
+
+// Disable selection
+.no-selection {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+// Truncate text with ellipsis
+.truncate-text {
+	white-space: nowrap;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+}
+
+// Ignore mouse events
+.no-pointer-events {
+	pointer-events: none;
+}
+
+// Hardware acceleration
+.gpu-layer {
+	transform: translateZ(0);
+}
+
+/* ============================================================================
+** Base
+** ==========================================================================*/
+* {
+	margin: 0;
+	padding: 0;
+}
+
+*,
+*::before,
+*::after {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+html, body {
+	@extend .fullscreen;
+	font-size: 100%;
+}
+
+/* ============================================================================
+** Helpers
+** ==========================================================================*/
+
+.hidden {
+	display: none !important;
+}
+
+.pannable {
+	cursor: grab;
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
+
+	// Cursor for objects that can be clicked on
+	* {
+		cursor: default;
+	}
+
+	// During panning
+	&:active, &:active * {
+		cursor: grabbing;
+		cursor: -moz-grabbing;
+		cursor: -webkit-grabbing;
+	}
+}
+
+.material-icons {
+	font-family: "Material Icons";
+	font-weight: normal;
+	font-style: normal;
+	font-size: 24px;
+	display: inline-block;
+	line-height: 1;
+	text-transform: none;
+	letter-spacing: normal;
+	word-wrap: normal;
+	white-space: nowrap;
+	direction: ltr;
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+	-moz-osx-font-smoothing: grayscale;
+	font-feature-settings: "liga";
+}
+
+/* ============================================================================
+** Animations
+** ==========================================================================*/
+@keyframes fade-in {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+@keyframes fade-out {
+	from { opacity: 1; }
+	to { opacity: 0; }
+}
+
+@keyframes scale-to-2 {
+	to { transform: scale(2); }
+}
+
+@keyframes scale-to-1 {
+	to { transform: scale(1); }
+}
+
+@keyframes scale-to-0 {
+	to { transform: scale(0); }
+}
+
+@keyframes transform-unset {
+	to { transform: unset; }
+}
+
+@keyframes rotate {
+	to { transform: rotate(360deg); }
+}
+
+@keyframes draw-stroke {
+	to { stroke-dashoffset: 0; }
+}

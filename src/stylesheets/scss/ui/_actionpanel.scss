@@ -1,0 +1,166 @@
+/* ============================================================================
+** Player Action Panel
+** ==========================================================================*/
+#action-panel {
+	width: 100%;
+	background-color: #006064;
+	color: white;
+
+	.material-icons {
+		padding: 0 4px;
+	}
+
+	section {
+		display: none;
+		font-family: "Yantramanav", sans-serif;
+
+		.contents {
+			padding: 10px 20px;
+		}
+
+		h1 {
+			font: {
+				family: "Catamaran", sans-serif;
+				size: 2rem;
+				weight: normal;
+			}
+			padding: 20px;
+			margin-bottom: -20px;
+			opacity: 0.85;
+		}
+
+		dl {
+			display: flex;
+			line-height: 2rem;
+
+			dt {
+				display: inline-block;
+				text-transform: uppercase;
+				font-weight: 600;
+				font-size: 0.9rem;
+				background-color: black(0.5);
+				color: white(0.9);
+				padding: 0 10px;
+				min-width: 50px;
+				border-right: solid 2px white;
+			}
+
+			dd {
+				display: inline-block;
+				background-color: white(0.1);
+				padding: 0 10px;
+				min-width: 100px;
+
+				&.side {
+					background-color: transparent;
+				}
+			}
+
+			.material-icons {
+				vertical-align: sub;
+				font-size: 18px;
+			}
+		}
+
+		.action-row {
+			padding: 10px 20px;
+			background-color: rgba(0, 0, 0, 0.1);
+
+			div {
+				display: flex;
+			}
+		}
+
+		button {
+			background-color: #546e7a;
+			border: 0;
+			box-shadow: 0 2px 5px 0 black(0.25);
+			color: white;
+			font:{
+				family: inherit;
+				weight: 500;
+				size: 1rem;
+			}
+			margin: 5px;
+			min-width: 100px;
+			position: relative;
+			outline: 0;
+
+			&.default {
+				background-color: #ff5722;
+
+				&:focus {
+					box-shadow: 0 0 1px 1px #f3ffc3;
+				}
+
+				&:active {
+					background-color: #e85b26;
+				}
+			}
+
+			&:active {
+				background-color: #4b6470;
+			}
+
+			&:focus {
+				box-shadow: 0 0 1px 1px white(0.7);
+			}
+
+			> span {
+				transform-origin: center;
+				display: inline-block;
+				padding: 8px 16px;
+			}
+
+			.icon.success {
+				@include size(32px);
+				opacity: 0;
+				transform-origin: center;
+				transform: scale(1.5);
+				position: absolute;
+				left: calc(50% - 16px);
+				top: calc(50% - 16px);
+
+				use {
+					fill: none;
+					stroke: white {
+						width: 3;
+						dasharray: 50px;
+						dashoffset: 50px;
+					}
+				}
+			}
+		}
+
+		&.done {
+			button {
+				animation: scale-to-0, fade-out;
+				animation-duration: 0.2s;
+				animation-timing-function: ease-in;
+				animation-fill-mode: forwards;
+
+				&.default {
+					animation-delay: 2s;
+
+					span {
+						animation: scale-to-0, fade-out;
+						animation-duration: 0.2s;
+						animation-timing-function: ease-in;
+						animation-fill-mode: forwards;
+					}
+				}
+			}
+
+			.icon.success {
+				animation: scale-to-1, fade-in;
+				animation-duration: 0.2s;
+				animation-timing-function: ease-in;
+				animation-fill-mode: forwards;
+
+				use {
+					animation: draw-stroke 0.4s ease-in forwards;
+				}
+			}
+		}
+	}
+}
