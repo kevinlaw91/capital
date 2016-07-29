@@ -17,7 +17,10 @@
     "webpack-dev-server": "^2.1.0-beta"
   },
   "dependencies": {
-    "babel-runtime": "^6.11.6"
+    "babel-runtime": "^6.11.6",
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1",
+    "react-hot-loader": "^3.0.0-beta"
   },
   "scripts": {
     "build-dev": "webpack",

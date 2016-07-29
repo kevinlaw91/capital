@@ -23,12 +23,12 @@ module.exports = {
 		filename: "app.js"
 	},
 	resolve: {
-		extensions: ["", ".js"]
+		extensions: ["", ".js", ".jsx"]
 	},
 	module: {
 		loaders: [
 			{
-				test: /\.js$/,
+				test: /\.jsx?$/,
 				loader: "babel?cacheDirectory",
 				include: path.join(__dirname, "src")
 			}
@@ -38,6 +38,10 @@ module.exports = {
 		new webpack.DefinePlugin({
 			"process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
 			"APP_DEBUG": true
+		}),
+		new webpack.ProvidePlugin({
+			React: "react",
+			ReactDOM: "react-dom"
 		}),
 		new HTMLWebpackPlugin({
 			title: "Loading...",

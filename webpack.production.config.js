@@ -21,12 +21,12 @@ module.exports = {
 		filename: "app.min.js"
 	},
 	resolve: {
-		extensions: ["", ".js"]
+		extensions: ["", ".js", ".jsx"]
 	},
 	module: {
 		loaders: [
 			{
-				test: /\.js$/,
+				test: /\.jsx?$/,
 				loader: "babel?cacheDirectory",
 				include: path.join(__dirname, "src")
 			}
@@ -35,6 +35,10 @@ module.exports = {
 	plugins: [
 		new webpack.DefinePlugin({
 			"process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV)
+		}),
+		new webpack.ProvidePlugin({
+			React: "react",
+			ReactDOM: "react-dom"
 		}),
 		new HTMLWebpackPlugin({
 			title: "Loading...",

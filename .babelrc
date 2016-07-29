@@ -6,7 +6,8 @@
 				loose: true,
 				modules: false
 			}
-		]
+		],
+		"react"
 	],
 
 	plugins: [
@@ -16,6 +17,7 @@
 				polyfill: false // Preserve ECMA2015 Promise, Map etc...
 			}
 		],
+		"react-hot-loader/babel",
 		"transform-object-rest-spread"
 	]
 }
