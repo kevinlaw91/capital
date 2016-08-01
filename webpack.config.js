@@ -11,6 +11,9 @@ const webpack = require("webpack");
 // Plugins
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 
+// PostCSS
+const PostCSSAutoprefixer = require("autoprefixer");
+
 // Config
 module.exports = {
 	context: path.join(__dirname, "src"),
@@ -31,6 +34,17 @@ module.exports = {
 				test: /\.jsx?$/,
 				loader: "babel?cacheDirectory",
 				include: path.join(__dirname, "src")
+			},
+			{
+				test: /\.scss$/,
+				// Hot Module Reload support + SourceMaps
+				loader: [
+					"style",
+					"css?modules&importLoaders=2&localIdentName=[name]-[local]-[hash:base64:5]&sourceMap",
+					"postcss?sourceMap=inline",
+					"sass?sourceMap"
+				],
+				include: path.join(__dirname, "src")
 			}
 		]
 	},
@@ -49,5 +63,12 @@ module.exports = {
 		}),
 		// Module will be named by file name instead of numbers
 		new webpack.NamedModulesPlugin()
-	]
+	],
+	postcss: function () {
+		return [
+			PostCSSAutoprefixer({
+				browsers: ["last 2 versions"]
+			})
+		];
+	}
 };
