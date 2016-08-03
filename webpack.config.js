@@ -45,6 +45,11 @@ module.exports = {
 					"sass?sourceMap"
 				],
 				include: path.join(__dirname, "src")
+			},
+			{
+				test: /\.(woff|woff2)$/,
+				loader: "file?name=fonts/[name].[ext]",
+				include: path.join(__dirname, "src")
 			}
 		]
 	},
