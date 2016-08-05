@@ -5,6 +5,15 @@
   "author": "Kevin Law",
   "private": true,
   "devDependencies": {
-    "eslint": "^3.4.0"
+    "eslint": "^3.4.0",
+    "html-webpack-plugin": "^2.22.0",
+    "webpack": "^2.1.0-beta",
+    "webpack-browser-plugin": "^1.0.12",
+    "webpack-dev-server": "^2.1.0-beta"
+  },
+  "scripts": {
+    "build-dev": "webpack",
+    "build": "SET NODE_ENV=production& webpack --config=webpack.production.config.js",
+    "clean": "del-cli build/"
   }
 }
