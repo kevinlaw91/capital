@@ -7,7 +7,8 @@
 
 	"globals": {
 		"React": false,
-		"ReactDOM": false
+		"ReactDOM": false,
+		"ReactCSSModule": false
 	},
 
 	"parserOptions": {
