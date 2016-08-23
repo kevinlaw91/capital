@@ -1,7 +1,10 @@
+import ReactCSSModules from "react-css-modules";
+import styles from "./app.scss";
+
 function App() {
 	return (
-		<div />
+		<div className="fullscreen" styleName="container" />
 	);
 }
 
-export default App;
+export default ReactCSSModules(App, styles);
