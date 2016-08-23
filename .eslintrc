@@ -6,6 +6,7 @@
 	},
 
 	"globals": {
+		"logger": false,
 		"React": false,
 		"ReactDOM": false,
 		"ReactCSSModule": false
