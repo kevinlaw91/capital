@@ -1,0 +1,246 @@
+@import "mixins/_fontface.scss";
+
+// Font resources dir
+$path: "../fonts/";
+
+/* ============================================================================
+** Fonts
+** ==========================================================================*
+**
+** All fonts listed below, unless stated otherwise, were licensed under
+** SIL Open Font License, 1.1 (http://scripts.sil.org/OFL)
+*/
+
+//
+// Webfonts generated at
+// https://google-webfonts-helper.herokuapp.com/fonts
+//
+
+/* Passion One */
+@include font-face(
+	"Passion One",
+	$path + "passion-one-regular",
+	400
+);
+
+/* Pathway Gothic One */
+@include font-face(
+	"Pathway Gothic One",
+	$path + "pathway-gothic-one-regular",
+	400
+);
+
+/* Merriweather Sans */
+@include font-face(
+	"Merriweather Sans",
+	$path + "merriweather-sans-300",
+	300
+);
+
+@include font-face(
+	"Merriweather Sans",
+	$path + "merriweather-sans-regular",
+	400
+);
+
+@include font-face(
+	"Merriweather Sans",
+	$path + "merriweather-sans-700",
+	700
+);
+
+@include font-face(
+	"Merriweather Sans",
+	$path + "merriweather-sans-800",
+	800
+);
+
+/* Yantramanav */
+@include font-face(
+	"Yantramanav",
+	$path + "yantramanav-100",
+	100
+)
+
+@include font-face(
+	"Yantramanav",
+	$path + "yantramanav-300",
+	300
+)
+
+@include font-face(
+	"Yantramanav",
+	$path + "yantramanav-regular",
+	400
+)
+
+@include font-face(
+	"Yantramanav",
+	$path + "yantramanav-500",
+	500
+)
+
+@include font-face(
+	"Yantramanav",
+	$path + "yantramanav-700",
+	700
+)
+
+@include font-face(
+	"Yantramanav",
+	$path + "yantramanav-900",
+	900
+)
+
+/* Catamaran */
+@include font-face(
+	"Catamaran",
+	$path + "catamaran-100",
+	100
+)
+
+@include font-face(
+	"Catamaran",
+	$path + "catamaran-200",
+	200
+)
+
+@include font-face(
+	"Catamaran",
+	$path + "catamaran-300",
+	300
+)
+
+@include font-face(
+	"Catamaran",
+	$path + "catamaran-regular",
+	400
+)
+
+@include font-face(
+	"Catamaran",
+	$path + "catamaran-500",
+	500
+)
+
+@include font-face(
+	"Catamaran",
+	$path + "catamaran-600",
+	600
+)
+
+@include font-face(
+	"Catamaran",
+	$path + "catamaran-700",
+	700
+)
+
+@include font-face(
+	"Catamaran",
+	$path + "catamaran-800",
+	800
+)
+
+@include font-face(
+	"Catamaran",
+	$path + "catamaran-900",
+	900
+)
+
+/* Noto Sans */
+@include font-face(
+	"Noto Sans",
+	$path + "noto-sans-regular",
+	400
+)
+
+@include font-face(
+	"Noto Sans",
+	$path + "noto-sans-700",
+	700
+)
+
+/* Noto Sans SC */
+@include font-face(
+	"Noto Sans SC",
+	$path + "NotoSansSC-Thin",
+	100
+)
+
+@include font-face(
+	"Noto Sans SC",
+	$path + "NotoSansSC-Light",
+	300
+)
+
+@include font-face(
+	"Noto Sans SC",
+	$path + "NotoSansSC-Regular",
+	400
+)
+
+@include font-face(
+	"Noto Sans SC",
+	$path + "NotoSansSC-Medium",
+	500
+)
+
+@include font-face(
+	"Noto Sans SC",
+	$path + "NotoSansSC-Bold",
+	700
+)
+
+@include font-face(
+	"Noto Sans SC",
+	$path + "NotoSansSC-Black",
+	900
+)
+
+/* Noto Sans TC */
+@include font-face(
+	"Noto Sans TC",
+	$path + "NotoSansTC-Thin",
+	100
+)
+
+@include font-face(
+	"Noto Sans TC",
+	$path + "NotoSansTC-Light",
+	300
+)
+
+@include font-face(
+	"Noto Sans TC",
+	$path + "NotoSansTC-Regular",
+	400
+)
+
+@include font-face(
+	"Noto Sans TC",
+	$path + "NotoSansTC-Medium",
+	500
+)
+
+@include font-face(
+	"Noto Sans TC",
+	$path + "NotoSansTC-Bold",
+	700
+)
+
+@include font-face(
+	"Noto Sans TC",
+	$path + "NotoSansTC-Black",
+	900
+)
+
+/*
+   Material Icons
+   https://github.com/google/material-design-icons
+   Creative Commons Attribution 4.0 International License (CC-BY 4.0)
+*/
+@include font-face(
+	"Material Icons",
+	$path + "MaterialIcons-Regular",
+	400
+)

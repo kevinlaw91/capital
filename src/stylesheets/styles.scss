@@ -1,5 +1,8 @@
 // CSS Reset
 @import "./vendor/html5reset.css";
 
+// Load font-face declarations
+@import "_fonts.scss";
+
 // Global styles
 @import "_globals.scss";

@@ -1,0 +1,16 @@
+@mixin font-face($name, $path, $weight: 400, $style: normal) {
+	// Font format
+	// woff2 - Supported by Chrome 26+, Opera 23+, Firefox 39+
+	// woff - Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1
+
+	$src: null;
+	$src: append($src, url(quote($path + ".woff")) format(quote("woff")), comma);
+	$src: append($src, url(quote($path + ".woff2")) format(quote("woff2")));
+
+	@font-face {
+		font-family: quote($name);
+		font-style: $style;
+		font-weight: $weight;
+		src: $src;
+	}
+}
