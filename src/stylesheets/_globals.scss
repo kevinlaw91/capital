@@ -1,0 +1,99 @@
+/* ============================================================================
+** Base
+** ==========================================================================*/
+:global {
+	:root {
+		font-size: 62.5%;
+	}
+
+	body {
+		font-family: sans-serif;
+		background-color: #222;
+		color: #ffffff;
+		font-size: 1.6rem;
+	}
+}
+
+/* ============================================================================
+** Commons
+** ==========================================================================*/
+:global {
+	// Hidden
+	.hidden {
+		display: none !important;
+	}
+
+	.screen {
+		position: absolute;
+	}
+
+	// Container size that fill whole screen
+	.fullscreen {
+		width: 100vw;
+		height: 100vh;
+	}
+
+	// Disable selection
+	.no-selection {
+		user-select: none;
+	}
+
+	// Truncate text with ellipsis
+	.truncate-text {
+		white-space: nowrap;
+		overflow-x: hidden;
+		text-overflow: ellipsis;
+	}
+
+	// Ignore mouse events
+	.no-pointer-events {
+		pointer-events: none;
+	}
+
+	// Hardware acceleration
+	.gpu-layer {
+		transform: translateZ(0);
+	}
+
+	// Show pan cursor
+	.pannable {
+		cursor: grab;
+
+		// Cursor for objects that can be clicked on
+		* {
+			cursor: default;
+		}
+
+		// During panning
+		&:active, &:active * {
+			cursor: grabbing;
+		}
+	}
+
+	// Render Material Icon
+	.material-icons {
+		font-family: "Material Icons";
+		font-weight: normal;
+		font-style: normal;
+		font-size: 24px;
+		display: inline-block;
+		line-height: 1;
+		text-transform: none;
+		letter-spacing: normal;
+		word-wrap: normal;
+		white-space: nowrap;
+		direction: ltr;
+		-webkit-font-smoothing: antialiased;
+		text-rendering: optimizeLegibility;
+		-moz-osx-font-smoothing: grayscale;
+		font-feature-settings: "liga";
+	}
+
+	// Flexbox center
+	.flex-center {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		align-content: center;
+	}
+}

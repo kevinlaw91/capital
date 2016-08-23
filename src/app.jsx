@@ -4,6 +4,9 @@ import { AppContainer as ReactAppWrapper } from "react-hot-loader";
 // Main App
 import App from "./ui/App";
 
+// Styles
+import "./stylesheets/styles.scss";
+
 // Logger
 import { register as registerLogger } from "./logger";
 window.logger = registerLogger();
