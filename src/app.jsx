@@ -1,5 +1,7 @@
 /* global APP_DEBUG */
 import { AppContainer as ReactAppWrapper } from "react-hot-loader";
+import { default as store } from "./redux/store";
+import { Provider } from "react-redux";
 
 // Main App
 import App from "./ui/App";
@@ -28,7 +30,9 @@ document.body.insertBefore(wrapper, document.body.firstChild);
 function render() {
 	ReactDOM.render(
 		<ReactAppWrapper>
-			<App />
+			<Provider store={store}>
+				<App />
+			</Provider>
 		</ReactAppWrapper>,
 		wrapper
 	);
