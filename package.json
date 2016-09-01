@@ -35,7 +35,8 @@
     "react-dom": "^15.2.1",
     "react-hot-loader": "^3.0.0-beta",
     "react-redux": "^4.4.5",
-    "redux": "^3.5.2"
+    "redux": "^3.5.2",
+    "velocity-react": "^1.1.5"
   },
   "scripts": {
     "build-dev": "webpack",
