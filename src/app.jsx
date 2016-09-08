@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 
 // Main App
 import App from "./ui/App";
+import { init } from "./core";
 
 // Styles
 import "./stylesheets/styles.scss";
@@ -34,7 +35,8 @@ function render() {
 				<App />
 			</Provider>
 		</ReactAppWrapper>,
-		wrapper
+		wrapper,
+		init
 	);
 }
 

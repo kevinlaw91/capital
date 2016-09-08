@@ -2,13 +2,19 @@ import Screen from "../Screen";
 
 import { connect } from "react-redux";
 import CSSModules from "react-css-modules";
+import { VelocityComponent } from "velocity-react";
 
 import styles from "./splash.scss";
 
 function SplashScreen(props) {
-	if (!props.hidden) {
-		return <Screen fullscreen className={ props.styles.wrapper }> LOADING </Screen>;
-	}
+	return (
+		<VelocityComponent
+			animation={{ opacity: (props.hidden ? 0 : 1) }}
+			duration={ 300 }
+			display={ props.hidden ? "none" : null } >
+			<Screen fullscreen className={ props.styles.wrapper }> LOADING </Screen>
+		</VelocityComponent>
+	);
 }
 
 SplashScreen.propTypes = {
