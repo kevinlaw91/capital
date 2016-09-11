@@ -26,6 +26,10 @@ module.exports = {
 		filename: "app.js"
 	},
 	resolve: {
+		alias: {
+			// Use modified svg-pan-zoom
+			"svg-pan-zoom": path.join(__dirname, "src/js/vendor/svg-pan-zoom")
+		},
 		extensions: ["", ".js", ".jsx"]
 	},
 	module: {
