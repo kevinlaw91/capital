@@ -18,7 +18,7 @@ const PostCSSAutoprefixer = require("autoprefixer");
 module.exports = {
 	context: path.join(__dirname, "src"),
 	// Source map
-	devtool: "cheap-module-source-map",
+	devtool: "module-source-map",
 	entry: ["./app.jsx"],
 	output: {
 		// Local output dir (absolute)
