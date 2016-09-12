@@ -1,5 +1,6 @@
 import svgPanZoom from "svg-pan-zoom";
 import clamp from "../utils/clamp";
+import Velocity from "velocity-animate";
 
 // Pan Zoom Configurations
 const SETTING_ZOOM_INITIAL = 2.0;
@@ -18,6 +19,13 @@ export default camera;
  * @private
  */
 let _isPanning = false;
+
+/**
+ * Viewport element of svg-pan-zoom
+ * @type {SVGGElement|null}
+ * @private
+ */
+let viewport = null;
 
 export function setup(svgElement, viewportElement) {
 	// Called after panning
@@ -72,6 +80,9 @@ export function setup(svgElement, viewportElement) {
 		}
 	});
 
+	// Cache viewport element
+	viewport = viewportElement;
+
 	// Cache initial contents and set initial zoom
 	camera.updateBBox();
 	camera.resize();
@@ -83,5 +94,41 @@ export function setup(svgElement, viewportElement) {
 		// Re-apply pan and zoom
 		camera.pan(camera.getPan());
 		camera.zoom(camera.getZoom());
+	});
+}
+
+export function panToSubject(subject) {
+	// Get current pan position
+	const { x: fromX, y: fromY } = camera.getPan();
+	const { width, height, realZoom: zoom } = camera.getSizes();
+
+	// Get subject position
+	const subjectX = subject.x.baseVal.value;
+	const subjectY = subject.y.baseVal.value;
+
+	// Calculate new pan position
+	const toX = -(subjectX * zoom) + (width / 2);
+	const toY = -(subjectY * zoom) + (height / 2);
+
+	// Delta
+	const dX = toX - fromX;
+	const dY = toY - fromY;
+
+	Velocity(viewport, {
+		tween: 1
+	}, {
+		queue: false,
+		easing: "easeOutExpo",
+		duration: 800,
+		progress: function (elements, complete, remaining, start, tweenValue) {
+			camera.pan({
+				x: fromX + (dX * tweenValue),
+				y: fromY + (dY * tweenValue)
+			});
+		},
+		complete: function () {
+			// Reset internal flag
+			_isPanning = false;
+		}
 	});
 }
