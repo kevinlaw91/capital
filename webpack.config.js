@@ -19,7 +19,10 @@ module.exports = {
 	context: path.join(__dirname, "src"),
 	// Source map
 	devtool: "module-source-map",
-	entry: ["./app.jsx"],
+	entry: [
+		"react-hot-loader/patch", // React HOT Loader
+		"./app.jsx"
+	],
 	output: {
 		// Local output dir (absolute)
 		path: path.join(__dirname, "build"),

@@ -11,8 +11,6 @@ const WebpackBrowserPlugin = require("webpack-browser-plugin");
 // Modify entry
 // Use unshift() to load these before app entry
 config.entry.unshift(
-	// React HOT Loader
-	"react-hot-loader/patch", // NOTE: Put it as first entry
 	// Hot Module Reloading
 	"webpack/hot/only-dev-server",
 	// webpack-dev-server
