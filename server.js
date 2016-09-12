@@ -11,10 +11,10 @@ const WebpackBrowserPlugin = require("webpack-browser-plugin");
 // Modify entry
 // Use unshift() to load these before app entry
 config.entry.unshift(
-	// Hot Module Reloading
-	"webpack/hot/only-dev-server",
 	// webpack-dev-server
-	"webpack-dev-server/client?http://localhost:8080"
+	"webpack-dev-server/client?http://localhost:8080",
+	// Hot Module Reloading
+	"webpack/hot/only-dev-server"
 );
 
 // Initialize plugins
