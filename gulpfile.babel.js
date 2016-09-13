@@ -6,6 +6,10 @@ import gulp from "gulp";
 import rename from "gulp-rename";
 import svgmin from "gulp-svgmin";
 
+// Delete build output directory
+// Expose to CLI
+gulp.task("clean", () => del("build/"));
+
 // SVG optimization
 const svg = {
 	RAW_DIR: "dev/svg/raw/",

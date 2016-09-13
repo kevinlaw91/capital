@@ -47,7 +47,6 @@
   },
   "scripts": {
     "build-dev": "webpack",
-    "build": "SET NODE_ENV=production& webpack --config=webpack.production.config.js",
-    "clean": "del-cli build/"
+    "build": "SET NODE_ENV=production& webpack --config=webpack.production.config.js"
   }
 }

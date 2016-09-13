@@ -24,5 +24,5 @@ Production build:
 
 Clean "build/" dir:
 
-    npm run-script clean
+    gulp clean
         
