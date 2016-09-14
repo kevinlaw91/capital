@@ -114,6 +114,7 @@ export function panToSubject(subject) {
 	const dX = toX - fromX;
 	const dY = toY - fromY;
 
+	// noinspection JSUnusedGlobalSymbols
 	Velocity(viewport, {
 		tween: 1
 	}, {
