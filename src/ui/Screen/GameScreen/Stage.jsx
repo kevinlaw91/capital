@@ -1,6 +1,8 @@
 import { setup as setupSVGPanZoom } from "../../../js/renderer/panzoom";
 import SymbolStore from "./SymbolStore";
 import StageCanvas from "../../../game/stage/StageCanvas";
+import store from "../../../game/state/store";
+import { Provider } from "react-redux";
 
 /** Reference to the rendered <svg> element */
 let refSVGElement = null;
@@ -30,7 +32,9 @@ export default class Stage extends React.Component {
 		return (
 			<svg width="100%" height="100%" ref={ setRefSVGElement }>
 				<SymbolStore />
-				<StageCanvas setPanViewport={ setRefViewportElement } />
+				<Provider store={store}>
+					<StageCanvas setPanViewport={ setRefViewportElement } />
+				</Provider>
 			</svg>
 		);
 	}
