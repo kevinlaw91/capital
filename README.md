@@ -26,3 +26,5 @@ Clean "build/" dir:
 
     gulp clean
         
+## v0.4
+Old 0.4 branch was tagged as "archive/0.4"
