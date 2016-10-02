@@ -5,7 +5,7 @@ export default function StageCanvas(props) {
 
 	return (
 		<g ref={ this.setAsPanViewport }>
-			<rect x="0" y="0" width="1920" height="1080" fill="transparent" stroke="#555" strokeWidth="5" />
+			<rect x="0" y="0" width="1100" height="600" fill="transparent" />
 			<FloorLayer />
 		</g>
 	);
