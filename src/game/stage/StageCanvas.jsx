@@ -1,10 +1,10 @@
 import FloorLayer from "./FloorLayer";
 
 export default function StageCanvas(props) {
-	this.setAsPanViewport = element => props.setPanViewport(element);
+	const setAsPanViewport = (el) => props.setPanViewport(el);
 
 	return (
-		<g ref={ this.setAsPanViewport }>
+		<g ref={ setAsPanViewport }>
 			<rect x="0" y="0" width="1100" height="600" fill="transparent" />
 			<FloorLayer />
 		</g>
