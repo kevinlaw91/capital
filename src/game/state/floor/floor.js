@@ -1,16 +1,15 @@
+import { foreground, background } from "./preset";
+
 // Actions
 export const ADD = "gamestate/floor/ADD";
 
-// Reducer
-const initialState = [
-	{
-		symbol: "grass-2x2",
-		variant: "01",
-		x: 10,
-		y: 25
-	}
-];
+// Initial state
+const initialState = {
+	foreground: foreground,
+	background: background,
+};
 
+// Reducer
 export function reducer(state = initialState, action = {}) {
 	switch (action.type) {
 		case ADD:
