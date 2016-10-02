@@ -20,7 +20,19 @@ const PostCSSAutoprefixer = require("autoprefixer");
 // noinspection JSUnresolvedFunction
 module.exports = {
 	context: path.join(__dirname, "src"),
-	entry: ["./app.jsx"],
+	entry: {
+		"app": "./app.jsx",
+		"vendor": [
+			"react",
+			"react-dom",
+			"react-hot-loader",
+			"react-redux",
+			"redux",
+			"svg-pan-zoom",
+			"velocity-animate",
+			"velocity-react",
+		],
+	},
 	output: {
 		// Local output dir (absolute)
 		path: path.join(__dirname, "build"),
@@ -79,6 +91,11 @@ module.exports = {
 		new HTMLWebpackPlugin({
 			title: "Loading...",
 			filename: "index.html",
+		}),
+		// Create vendor chunk
+		new webpack.optimize.CommonsChunkPlugin({
+			name: "vendor",
+			filename: "vendor.bundle.min.js",
 		}),
 		new webpack.optimize.OccurrenceOrderPlugin(),
 	    // Disable Dedupe that causes error

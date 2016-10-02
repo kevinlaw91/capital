@@ -10,7 +10,7 @@ const WebpackBrowserPlugin = require("webpack-browser-plugin");
 
 // Modify entry
 // Use unshift() to load these before app entry
-config.entry.unshift(
+config.entry.app.unshift(
 	// webpack-dev-server
 	"webpack-dev-server/client?http://localhost:8080",
 	// Hot Module Reloading

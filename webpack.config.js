@@ -19,10 +19,22 @@ module.exports = {
 	context: path.join(__dirname, "src"),
 	// Source map
 	devtool: "module-source-map",
-	entry: [
-		"react-hot-loader/patch", // React HOT Loader
-		"./app.jsx",
-	],
+	entry: {
+		"app": [
+			"react-hot-loader/patch", // React HOT Loader
+			"./app.jsx",
+		],
+		"vendor": [
+			"react",
+			"react-dom",
+			"react-hot-loader",
+			"react-redux",
+			"redux",
+			"svg-pan-zoom",
+			"velocity-animate",
+			"velocity-react",
+		],
+	},
 	output: {
 		// Local output dir (absolute)
 		path: path.join(__dirname, "build"),
@@ -98,6 +110,11 @@ module.exports = {
 		}),
 		// Module will be named by file name instead of numbers
 		new webpack.NamedModulesPlugin(),
+		// Create vendor chunk
+		new webpack.optimize.CommonsChunkPlugin({
+			name: "vendor",
+			filename: "vendor.bundle.js",
+		}),
 		// Loader Options (backward compatibility)
 		new webpack.LoaderOptionsPlugin({
 			test: /\.scss$/,
