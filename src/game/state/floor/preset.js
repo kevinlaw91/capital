@@ -87,7 +87,9 @@ while (count--) {
 	r++; // Proceed to next lot
 }
 
+//
 // Foreground
+//
 
 // (Corner) South west 3x3
 r = 13; c = 1;
