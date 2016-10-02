@@ -24,17 +24,20 @@ module.exports = {
 	output: {
 		// Local output dir (absolute)
 		path: path.join(__dirname, "build"),
-		filename: "app.min.js"
+		filename: "app.min.js",
 	},
 	resolve: {
-		extensions: ["", ".js", ".jsx"]
+		extensions: [".js", ".jsx"],
 	},
 	module: {
-		loaders: [
+		rules: [
 			{
 				test: /\.jsx?$/,
-				loader: "babel?cacheDirectory",
-				include: path.join(__dirname, "src")
+				loader: "babel",
+				options: {
+					cacheDirectory: true,
+				},
+				include: path.join(__dirname, "src"),
 			},
 			{
 				test: /\.scss$/,
@@ -43,48 +46,58 @@ module.exports = {
 					loader: [
 						"css?modules&importLoaders=2&localIdentName=[name]-[local]-[hash:base64:5]",
 						"postcss",
-						"sass"
+						"sass",
 					],
 					// publicPath from 'build/css' to 'build/'
-					publicPath: "../"
+					publicPath: "../",
 				}),
-				include: path.join(__dirname, "src")
+				include: path.join(__dirname, "src"),
 			},
 			{
 				test: /\.(woff|woff2)$/,
-				loader: "file?name=fonts/[name].[ext]",
-				include: path.join(__dirname, "src")
-			}
-		]
+				loader: "file",
+				options: {
+					name: "fonts/[name].[ext]",
+				},
+				include: path.join(__dirname, "src"),
+			},
+		],
 	},
 	plugins: [
 		new webpack.DefinePlugin({
-			"process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV)
+			"process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
 		}),
 		new ExtractTextPlugin({
 			filename: "css/styles.min.css",
-			allChunks: true
+			allChunks: true,
 		}),
 		new OptimizeCssAssetsPlugin(),
 		new webpack.ProvidePlugin({
 			React: "react",
-			ReactDOM: "react-dom"
+			ReactDOM: "react-dom",
 		}),
 		new HTMLWebpackPlugin({
 			title: "Loading...",
-			filename: "index.html"
+			filename: "index.html",
 		}),
 		new webpack.optimize.OccurrenceOrderPlugin(),
-		new webpack.optimize.DedupePlugin(),
+	    // Disable Dedupe that causes error
+	    // https://github.com/webpack/webpack/issues/2644
+		// new webpack.optimize.DedupePlugin(),
 		new webpack.optimize.UglifyJsPlugin({
-			comments: false
-		})
+			comments: false,
+		}),
+		// Loader Options (backward compatibility)
+		new webpack.LoaderOptionsPlugin({
+			test: /\.scss$/,
+			options: {
+				context: __dirname,
+				postcss: [
+					PostCSSAutoprefixer({
+						browsers: ["last 2 versions"],
+					}),
+				],
+			},
+		}),
 	],
-	postcss: function () {
-		return [
-			PostCSSAutoprefixer({
-				browsers: ["last 2 versions"]
-			})
-		];
-	}
 };
