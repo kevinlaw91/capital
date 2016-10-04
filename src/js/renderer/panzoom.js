@@ -3,7 +3,6 @@ import clamp from "../utils/clamp";
 import Velocity from "velocity-animate";
 
 // Pan Zoom Configurations
-const SETTING_ZOOM_INITIAL = 2.0;
 const SETTING_ZOOM_MIN = 0.8;
 const SETTING_ZOOM_MAX = 3.5;
 const SETTING_ZOOM_SENSITIVITY = 0.3;
@@ -86,7 +85,7 @@ export function setup(svgElement, viewportElement) {
 	// Cache initial contents and set initial zoom
 	camera.updateBBox();
 	camera.resize();
-	camera.zoom(SETTING_ZOOM_INITIAL);
+	camera.center();
 
 	// Resize svg-pan-zoom viewport
 	window.addEventListener("resize", function onWindowResize() {
