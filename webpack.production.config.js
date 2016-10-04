@@ -52,6 +52,17 @@ module.exports = {
 				include: path.join(__dirname, "src"),
 			},
 			{
+				// Import vendor css as global scoped
+				test: /vendor\.css$/,
+				loader: ExtractTextPlugin.extract({
+					loader: [
+						"css",
+					],
+					// publicPath from 'build/css' to 'build/'
+					publicPath: "../",
+				}),
+			},
+			{
 				test: /\.scss$/,
 				// Single css bundle
 				loader: ExtractTextPlugin.extract({

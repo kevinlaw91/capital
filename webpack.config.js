@@ -58,6 +58,14 @@ module.exports = {
 				include: path.join(__dirname, "src"),
 			},
 			{
+				// Import vendor css as global scoped
+				test: /vendor\.css$/,
+				use: [
+					"style",
+					"css",
+				],
+			},
+			{
 				test: /\.scss$/,
 				use: [
 					"style",

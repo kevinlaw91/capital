@@ -8,6 +8,7 @@ import App from "./ui/App";
 import { init } from "./core";
 
 // Styles
+import "./stylesheets/vendor.css";
 import "./stylesheets/styles.scss";
 
 // Logger
