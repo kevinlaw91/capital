@@ -41,9 +41,9 @@ export function register() {
 		logger[m] = Function.prototype;
 
 		if (enabled && window.console && window.console[m]) {
-			logger[m] = window.console[m];
+			logger[m] = window.console[m].bind(window.console);
 		}
 	}
 
 	return logger;
-};
+}
