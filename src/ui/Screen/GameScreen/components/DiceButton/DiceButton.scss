@@ -1,0 +1,86 @@
+.container {
+	width: 106px;
+	height: 106px;
+	display: block;
+	margin: 0 auto;
+}
+
+.container-disabled {
+	opacity: 0.75;
+}
+
+.container-indeterminate {
+	:global {
+		animation: rotate 2s linear infinite;
+	}
+}
+
+.circle {
+	pointer-events: painted;
+	cursor: default;
+	fill: #bababa;
+	transition: fill 250ms, stroke 250ms;
+	stroke: white;
+	stroke-width: 5px;
+	transform-origin: center;
+}
+
+.circle-hover {
+	fill: #d8d8d8;
+}
+
+.circle-pressed {
+	fill: #e6e6e6;
+	stroke: none;
+}
+
+.circle-indeterminate {
+	animation: spinning-stroke 2s ease-in-out infinite;
+	stroke: {
+		dasharray: 1,250;
+		dashoffset: 0;
+		linecap: round;
+	}
+}
+
+@keyframes spinning-stroke {
+	0% {
+		stroke-dasharray: 1,250;
+		stroke-dashoffset: 0;
+	}
+	50% {
+		stroke-dasharray: 180,250;
+		stroke-dashoffset: -55px;
+	}
+	100% {
+		stroke-dasharray: 180,250;
+		stroke-dashoffset: -250px;
+	}
+}
+
+.circle-show {
+	animation: dice-show 200ms ease-in forwards;
+	opacity: 1;
+}
+
+@keyframes dice-show {
+	0% { transform: scale(0); }
+	75% { transform: scale(1.1); }
+	100% { transform: scale(1); }
+}
+
+.circle-hide {
+	animation: dice-hide 200ms ease-out forwards;
+	stroke: none;
+}
+
+@keyframes dice-hide {
+	25% {
+		transform: scale(1.1);
+		opacity: 1;
+	}
+	100% {
+		transform: scale(0);
+		opacity: 0;
+	}
+}
