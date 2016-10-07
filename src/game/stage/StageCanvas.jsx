@@ -1,4 +1,4 @@
-import FloorLayer from "./FloorLayer";
+import FloorLayer from "./layers/FloorLayer";
 
 export default function StageCanvas(props) {
 	const setAsPanViewport = (el) => props.setPanViewport(el);

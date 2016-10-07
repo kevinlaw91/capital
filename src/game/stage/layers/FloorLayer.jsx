@@ -1,32 +1,13 @@
 import { connect } from "react-redux";
-import { getVertexOffset } from "../coordinates";
-import classNames from "classnames/bind";
-import styles from "./FloorLayer.scss";
-
-let cx = classNames.bind({
-	"crisp": styles.crisp,
-});
-
-// Default tile size
-import { GRID_TILESIZE } from "../coordinates";
+import FloorTile from "../components/FloorTile";
+import { getVertexOffset } from "../../coordinates";
 
 // Render map tiles
 const renderMapTiles = (entry) => {
-	let href = `#${entry.symbol}` + (entry.variant ? `-${entry.variant}` : "");
-	let className = cx({
-		"crisp": entry.shapeRendering,
-	});
+	const { id, ...other } = entry;
 
 	return (
-		<use
-			key={entry.id}
-			x={entry.x}
-			y={entry.y}
-			width={entry.width || GRID_TILESIZE}
-			height={entry.height || GRID_TILESIZE}
-			xlinkHref={href}
-			className={className}
-		/>
+		<FloorTile key={id} {...other} />
 	);
 };
 
