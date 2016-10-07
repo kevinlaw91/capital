@@ -44,7 +44,7 @@ for (; r < GRID_ROW; r++) {
 
 // (Corner) North west 3x3
 r = 1; c = 1;
-offset = getBoundingOffset(r, c, { rowOffset: 3, colOffset: 3 });
+offset = getBoundingOffset(r, c, { rowSize: 3, colSize: 3 });
 background.push({
 	id: ++id,
 	symbol: "grass-3x3",
@@ -58,7 +58,7 @@ background.push({
 // (Lot) North, 1x3 per lot, 9 in total
 r = 1; c = 4; count = 9;
 while (count--) {
-	offset = getBoundingOffset(r, c, { rowOffset: 3, colOffset: 1 });
+	offset = getBoundingOffset(r, c, { rowSize: 3, colSize: 1 });
 	background.push({
 		id: ++id,
 		symbol: "lot-north",
@@ -74,7 +74,7 @@ while (count--) {
 // (Lot) West, 3x1 per lot, 9 in total
 r = 4; c = 1; count = 9;
 while (count--) {
-	offset = getBoundingOffset(r, c, { rowOffset: 1, colOffset: 3 });
+	offset = getBoundingOffset(r, c, { rowSize: 1, colSize: 3 });
 	background.push({
 		id: ++id,
 		symbol: "lot-west",
@@ -93,7 +93,7 @@ while (count--) {
 
 // (Corner) South west 3x3
 r = 13; c = 1;
-offset = getBoundingOffset(r, c, { rowOffset: 3, colOffset: 3 });
+offset = getBoundingOffset(r, c, { rowSize: 3, colSize: 3 });
 foreground.push({
 	id: ++id,
 	symbol: "grass-3x3",
@@ -106,7 +106,7 @@ foreground.push({
 
 // (Corner) North east 3x3
 r = 1; c = 13;
-offset = getBoundingOffset(r, c, { rowOffset: 3, colOffset: 3 });
+offset = getBoundingOffset(r, c, { rowSize: 3, colSize: 3 });
 foreground.push({
 	id: ++id,
 	symbol: "grass-3x3",
@@ -120,7 +120,7 @@ foreground.push({
 // (Lot) South, 1x3 per lot, 9 in total
 r = 13; c = 4; count = 9;
 while (count--) {
-	offset = getBoundingOffset(r, c, { rowOffset: 3, colOffset: 1 });
+	offset = getBoundingOffset(r, c, { rowSize: 3, colSize: 1 });
 	foreground.push({
 		id: ++id,
 		symbol: "lot-south",
@@ -136,7 +136,7 @@ while (count--) {
 // (Lot) East, 3x1 per lot, 9 in total
 r = 4; c = 13; count = 9;
 while (count--) {
-	offset = getBoundingOffset(r, c, { rowOffset: 1, colOffset: 3 });
+	offset = getBoundingOffset(r, c, { rowSize: 1, colSize: 3 });
 	foreground.push({
 		id: ++id,
 		symbol: "lot-east",
@@ -151,7 +151,7 @@ while (count--) {
 
 // (Corner) South west 3x3
 r = 13; c = 13;
-offset = getBoundingOffset(r, c, { rowOffset: 3, colOffset: 3 });
+offset = getBoundingOffset(r, c, { rowSize: 3, colSize: 3 });
 foreground.push({
 	id: ++id,
 	symbol: "grass-3x3",

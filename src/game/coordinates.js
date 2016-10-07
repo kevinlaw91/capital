@@ -45,24 +45,24 @@ const coordinates = (() => {
  * </pre>
  * @param {number} row - Row position of first tile
  * @param {number} col - Column position of first tile
- * @param {{col: number, row: number}|{colOffset: number, rowOffset: number}} [to] - Define last tile
+ * @param {{col: number, row: number}|{colSize: number, rowSize: number}} [to] - Define last tile
  * @example
  * getBoundingOffset(4, 5); // Get bounding box for a 1x1 tile at r4, c5
  * getBoundingOffset(4, 5, {row: 6, col: 5}) // Last tile positioned at r6, c5
- * getBoundingOffset(1, 2, {rowOffset:1, colOffset:3}) // First tile at r1, c2, 3 cols x 1 row
+ * getBoundingOffset(1, 2, {rowSize:1, colSize:3}) // First tile at r1, c2, 3 cols x 1 row
  * @returns {number[]} Bounding box offset [x,y]
  */
 export function getBoundingOffset(row, col, to) {
 	if (to) {
 		// Bigger than 1x1 tile
 		if (
-			to.hasOwnProperty("rowOffset") &&
-		    to.hasOwnProperty("colOffset")
+			to.hasOwnProperty("rowSize") &&
+		    to.hasOwnProperty("colSize")
 		) {
 			// Size (offset) was given
 			// Calculate last tile
-			to.row = row + (to.rowOffset - 1);
-			to.col = col + (to.colOffset - 1);
+			to.row = row + (to.rowSize - 1);
+			to.col = col + (to.colSize - 1);
 		}
 
 		return [
