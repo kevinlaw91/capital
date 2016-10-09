@@ -67,13 +67,16 @@ const svg = {
 
 				if (result.length < 2) {
 					// No group id
-					name = result[1];
+					name = result[1].trim();
 				} else {
 					id = result[1];
 					name = result[2];
 				}
 
-				path.dirname += "/" + id.trim();
+				if (id) {
+					path.dirname += "/" + id;
+				}
+
 				path.basename = name;
 
 				return path;
