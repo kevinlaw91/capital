@@ -3,6 +3,8 @@ import {
 	getBoundingOffset,
 } from "../../coordinates";
 
+import sprite from "../../../game/resources/sprites/tiles";
+
 const HALF_TILE = GRID_TILESIZE / 2;
 const QUARTER_TILE = GRID_TILESIZE / 4;
 
@@ -52,11 +54,8 @@ export default function FloorTile(props) {
 	// Calculate screen offset
 	let offset = getBoundingOffset(props.row, props.col, to);
 
-	// Generate xlink href
-	let href = `#${props.symbol}`;
-	if (props.variant) {
-		href += `-${props.variant}`;
-	}
+	// Use sprite
+	let href = sprite(props.symbol, props.variant);
 
 	return (
 		<use
