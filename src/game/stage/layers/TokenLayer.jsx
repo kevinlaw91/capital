@@ -4,6 +4,7 @@ import Token from "../components/Token";
 function renderToken(entry) {
 	return (
 		<Token
+			key={entry.id}
 			x={entry.position.x}
 			y={entry.position.y}
 			color={entry.color}

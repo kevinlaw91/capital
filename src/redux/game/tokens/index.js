@@ -3,6 +3,7 @@ import coordinate from "../../../game/coordinates";
 // Initial state
 const initialState = [
 	{
+		id: "p01",
 		color: "white",
 		position: {
 			x: coordinate(13, 13)[0],
