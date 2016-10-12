@@ -24,7 +24,7 @@ SplashScreen.propTypes = {
 
 const mapStateToProps = (state) => {
 	return {
-		hidden: state.splash.hidden
+		hidden: state.ui.splash.hidden
 	};
 };
 

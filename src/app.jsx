@@ -1,6 +1,6 @@
 /* global APP_DEBUG */
 import { AppContainer as ReactAppWrapper } from "react-hot-loader";
-import { default as store } from "./redux/store";
+import store from "./redux";
 import { Provider } from "react-redux";
 
 // Main App

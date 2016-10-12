@@ -1,4 +1,5 @@
-import store from "./redux/store";
+import store from "./redux";
+import * as splash from "./redux/ui/splash";
 
 /** Load app */
 function load(resolve, reject) {
@@ -12,9 +13,7 @@ function loadComplete() {
 	logger.timeEnd("App ready");
 
 	// Hide splash screen when app is ready
-	store.dispatch({
-		type: require("./redux/splash").HIDE_SPLASH
-	});
+	store.dispatch(splash.actions.hide());
 }
 
 /** Engine init */

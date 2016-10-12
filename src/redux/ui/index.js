@@ -3,6 +3,7 @@ import { combineReducers } from "redux";
 // Reducers
 import * as Splash from "./splash";
 
-export default combineReducers({
+const reducer = combineReducers({
 	splash: Splash.reducer
 });
+export { reducer };

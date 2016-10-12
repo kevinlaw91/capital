@@ -1,9 +1,10 @@
-import { foreground, background } from "./preset";
+import foregroundItems from "./foreground";
+import backgroundItems from "./background";
 
 // Initial state
 const initialState = {
-	foreground: foreground,
-	background: background,
+	foreground: foregroundItems,
+	background: backgroundItems,
 };
 
 // Reducer

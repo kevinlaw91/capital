@@ -51,8 +51,8 @@ FloorLayer.propTypes = {
 
 const mapStateToProps = (state) => {
 	return {
-		foreground: state.floor.foreground,
-		background: state.floor.background,
+		foreground: state.game.floor.foreground,
+		background: state.game.floor.background,
 	};
 };
 
