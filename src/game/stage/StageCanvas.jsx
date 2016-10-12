@@ -1,4 +1,5 @@
 import FloorLayer from "./layers/FloorLayer";
+import TokenLayer from "./layers/TokenLayer";
 
 export default function StageCanvas(props) {
 	const setAsPanViewport = (el) => props.setPanViewport(el);
@@ -6,6 +7,7 @@ export default function StageCanvas(props) {
 	return (
 		<g ref={ setAsPanViewport }>
 			<FloorLayer />
+			<TokenLayer />
 		</g>
 	);
 }
