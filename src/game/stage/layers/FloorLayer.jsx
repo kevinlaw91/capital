@@ -14,7 +14,7 @@ const renderMapTiles = (entry) => {
 function FloorLayer(props) {
 	return (
 		<g>
-			{ props.background.map(renderMapTiles)}
+			{ props.background.map(renderMapTiles) }
 			<polygon /* Center blank piece, bottom face */
 				points={
 					[
@@ -39,7 +39,7 @@ function FloorLayer(props) {
 				}
 			    fill="#9acf5c"
 			/>
-			{ props.foreground.map(renderMapTiles)}
+			{ props.foreground.map(renderMapTiles) }
 		</g>
 	);
 }
