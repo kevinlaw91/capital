@@ -1,4 +1,5 @@
 import { createStore } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 
 // Import reducers
 import reducers from "./reducers";
@@ -6,12 +7,10 @@ import reducers from "./reducers";
 // Redux store
 const store = createStore(
 	reducers,
-	/**
-	 * Redux DevTools Extension
-	 * @property devToolsExtension
-	 * @memberOf window
-	 */
-	window.devToolsExtension && window.devToolsExtension()
+	// Redux DevTools Extension
+	composeWithDevTools({
+		name: "Game State",
+	})()
 );
 
 if (module.hot) {
