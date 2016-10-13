@@ -1,7 +1,9 @@
+import Immutable from "seamless-immutable";
+
 import coordinate from "../../../game/coordinates";
 
 // Initial state
-const initialState = [
+const initialState = Immutable([
 	{
 		id: "p01",
 		color: "white",
@@ -10,7 +12,7 @@ const initialState = [
 			y: coordinate(13, 13)[1],
 		}
 	}
-];
+]);
 
 // Reducer
 export function reducer(state = initialState, action = {}) {
