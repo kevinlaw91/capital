@@ -1,4 +1,5 @@
 import * as splash from "./splash";
+import * as game from "./index";
 
 /** Execute tasks during loading */
 function load(resolve, reject) {
@@ -11,6 +12,9 @@ function load(resolve, reject) {
 /** App loaded */
 function loaded() {
 	logger.timeEnd("App ready");
+
+	// TODO: Refactor
+	game.createGame();
 
 	// Hide splash screen when app is ready
 	splash.hide();
