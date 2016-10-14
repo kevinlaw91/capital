@@ -20,11 +20,17 @@ window.logger = registerLogger();
 // Page Title
 document.title = "Capital";
 
+// Debug
+import devDebugObj from "./game/dev";
+
 if (typeof APP_DEBUG !== "undefined") {
 	// Dev build only
 	// APP_DEBUG is only defined in dev build
 	document.title += " (Development Build)";
 	logger.info("===== DEVELOPER MODE ENABLED =====");
+
+	// Expose debug object to global
+	window.app = devDebugObj;
 }
 
 // Create wrapper element
