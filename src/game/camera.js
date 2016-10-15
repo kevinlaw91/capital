@@ -1,5 +1,5 @@
 import svgPanZoom from "svg-pan-zoom";
-import clamp from "../utils/clamp";
+import clamp from "../js/utils/clamp";
 import Velocity from "velocity-animate";
 
 // Pan Zoom Configurations

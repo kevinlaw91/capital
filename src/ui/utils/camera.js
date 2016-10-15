@@ -1,1 +1,1 @@
-export { setup } from "../../js/renderer/panzoom";
+export { setup } from "../../game/camera";
