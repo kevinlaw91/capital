@@ -1,19 +1,15 @@
+import { setViewportElement } from "../utils/camera";
 import FloorLayer from "./layers/FloorLayer";
 import TokenLayer from "./layers/TokenLayer";
 
-export default function StageCanvas(props) {
-	const setAsPanViewport = (el) => props.setPanViewport(el);
-
+export default function StageCanvas() {
 	return (
-		<g ref={ setAsPanViewport }>
+		<g ref={ setViewportElement }>
+			<rect width="1" height="1" fill="transparent">
+				/* Placeholder element to prevent svg-pan-zoom from generating errors if content is empty */
+			</rect>
 			<FloorLayer />
 			<TokenLayer />
 		</g>
 	);
 }
-
-StageCanvas.propTypes = {
-	// Callback provided by parent component
-	// to specify the <g> element used by svg-pan-zoom library
-	setPanViewport: React.PropTypes.func
-};

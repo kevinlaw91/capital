@@ -20,25 +20,38 @@ export default camera;
 let _isPanning = false;
 
 /**
- * Viewport element of svg-pan-zoom
+ * Root svg element
+ * @type {SVGSVGElement|null}
+ * @private
+ */
+let svgElement = null;
+export const setSVGElement = el => { svgElement = el; };
+
+/**
+ * Viewport element
  * @type {SVGGElement|null}
  * @private
  */
-let viewport = null;
+let viewportElement = null;
+export const setViewportElement = el => { viewportElement = el; };
 
-export function setup(svgElement, viewportElement) {
-	// Called after panning
-	function onAfterPan() {}
+// Called after panning
+// function onAfterPan() {}
 
-	// Called when mouse up on svg-pan-zoom svg element
-	function onMouseUp() {
-		// Mouseup was fired during panning
-		if (_isPanning) {
-			// Panning will stop when mouseup
-			onAfterPan();
-			// Reset internal flags
-			_isPanning = false;
-		}
+// Called when mouse up on svg-pan-zoom svg element
+function onMouseUp() {
+	// Mouseup was fired during panning
+	if (_isPanning) {
+		// Panning will stop when mouseup
+		// onAfterPan();
+		// Reset internal flags
+		_isPanning = false;
+	}
+}
+
+export function init() {
+	if (!svgElement || !viewportElement) {
+		throw "Unable to hook camera instance to SVG viewport. Element not found.";
 	}
 
 	// Initialize svg-pan-zoom instance
@@ -79,9 +92,6 @@ export function setup(svgElement, viewportElement) {
 		}
 	});
 
-	// Cache viewport element
-	viewport = viewportElement;
-
 	// Cache initial contents and set initial zoom
 	camera.updateBBox();
 	camera.resize();
@@ -114,7 +124,7 @@ export function panToSubject(subject) {
 	const dY = toY - fromY;
 
 	// noinspection JSUnusedGlobalSymbols
-	Velocity(viewport, {
+	Velocity(viewportElement, {
 		tween: 1
 	}, {
 		queue: false,

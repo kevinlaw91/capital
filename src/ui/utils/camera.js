@@ -1,1 +1,1 @@
-export { setup } from "../../game/camera";
+export * from "../../game/camera";
