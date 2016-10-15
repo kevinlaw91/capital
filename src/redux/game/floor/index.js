@@ -1,12 +1,15 @@
 import Immutable from "seamless-immutable";
 
-import foregroundItems from "./foreground";
-import backgroundItems from "./background";
+import corners from "./corners";
+import * as lot from "./lot";
 
 // Initial state
 const initialState = Immutable({
-	foreground: foregroundItems,
-	background: backgroundItems,
+	corners: corners,
+	south: lot.SOUTH,
+	west: lot.WEST,
+	north: lot.NORTH,
+	east: lot.EAST,
 });
 
 // Reducer

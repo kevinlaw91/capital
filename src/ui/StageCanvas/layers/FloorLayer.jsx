@@ -1,20 +1,14 @@
 import { connect } from "react-redux";
-import FloorTile from "./components/FloorTile";
 import { getVertexOffset } from "../../utils/coordinates";
-
-// Render map tiles
-const renderMapTiles = (entry) => {
-	const { id, ...other } = entry;
-
-	return (
-		<FloorTile key={id} {...other} />
-	);
-};
+import renderTile from "./utils/renderTile";
 
 function FloorLayer(props) {
 	return (
 		<g>
-			{ props.background.map(renderMapTiles) }
+			{ renderTile(props.topCorner) }
+			{ props.west.map(renderTile) }
+			{ props.north.map(renderTile) }
+			{ renderTile(props.leftCorner) }
 			<polygon /* Center blank piece, bottom face */
 				points={
 					[
@@ -39,20 +33,39 @@ function FloorLayer(props) {
 				}
 			    fill="#9acf5c"
 			/>
-			{ props.foreground.map(renderMapTiles) }
+			{ renderTile(props.rightCorner) }
+			{ props.south.map(renderTile) }
+			{ props.east.map(renderTile) }
+			{ renderTile(props.bottomCorner) }
 		</g>
 	);
 }
 
 FloorLayer.propTypes = {
-	foreground: React.PropTypes.array,
-	background: React.PropTypes.array,
+	foregroundBorder: React.PropTypes.array,
+	backgroundBorder: React.PropTypes.array,
+	topCorner: React.PropTypes.object,
+	leftCorner: React.PropTypes.object,
+	rightCorner: React.PropTypes.object,
+	bottomCorner: React.PropTypes.object,
+	south: React.PropTypes.array,
+	west: React.PropTypes.array,
+	north: React.PropTypes.array,
+	east: React.PropTypes.array,
 };
 
 const mapStateToProps = (state) => {
+	let f = state.game.floor;
+
 	return {
-		foreground: state.game.floor.foreground,
-		background: state.game.floor.background,
+		topCorner: f.corners.top,
+		leftCorner: f.corners.left,
+		rightCorner: f.corners.right,
+		bottomCorner: f.corners.bottom,
+		south: f.south,
+		west: f.west,
+		north: f.north,
+		east: f.east,
 	};
 };
 
