@@ -1,5 +1,5 @@
-// Limit require context to src/svg/tokens
-const r = require.context("svg-sprite-loader?name=[path][name]!../../../svg/tokens", true, /.*\.svg$/);
+// Limit require context to src/resources/svg/tokens
+const r = require.context("svg-sprite-loader?name=[path][name]!../../../resources/svg/tokens", true, /.*\.svg$/);
 
 const symbols = {
 	"black": r("./black.svg"),
