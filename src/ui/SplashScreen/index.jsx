@@ -4,7 +4,7 @@ import styles from "./SplashScreen.scss";
 function SplashScreen() {
 	return (
 		<section styleName="wrapper">
-			<div>LOADING</div>
+			<span>LOADING</span>
 		</section>
 	);
 }
