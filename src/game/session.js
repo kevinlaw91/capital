@@ -5,22 +5,16 @@ import generateMap from "./map/map-generator";
  * @type {Object}
  * @public
  */
-let activeSession;
+export let active = null;
 
-export default {
-	get active() {
-		return activeSession;
-	},
+/** Create new game session */
+export function create() {
+	active = {
+		map: generateMap(),
+	};
+}
 
-	/** Create new game session */
-	create: function () {
-		activeSession = {
-			map: generateMap(),
-		};
-	},
-
-	/** Destroy active game session */
-	destroy: function () {
-		activeSession = null;
-	},
-};
+/** Destroy active game session */
+export function destroy() {
+	active = null;
+}
