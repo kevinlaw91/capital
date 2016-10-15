@@ -1,5 +1,5 @@
-import { setup as setupSVGPanZoom } from "../../../../../js/renderer/panzoom";
-import StageCanvas from "../../../../../game/stage/StageCanvas";
+import { setup as setupSVGPanZoom } from "../../../utils/camera";
+import StageCanvas from "../../../StageCanvas";
 
 /** Reference to the rendered <svg> element */
 let refSVGElement = null;

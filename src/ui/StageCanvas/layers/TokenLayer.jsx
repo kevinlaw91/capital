@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import Token from "../components/Token";
+import Token from "./components/Token";
 
 function renderToken(entry) {
 	return (

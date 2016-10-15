@@ -1,5 +1,4 @@
-import Screen from "../Screen";
-import Stage from "./Components/Stage";
+import Stage from "./components/Stage";
 import OverlayPanel from "./components/OverlayPanel";
 import CSSModules from "react-css-modules";
 
@@ -7,12 +6,10 @@ import styles from "./GameScreen.scss";
 
 function GameScreen(props) {
 	return (
-		<Screen fullscreen>
-			<section className={props.styles["main"]}>
-				<Stage />
-				<OverlayPanel />
-			</section>
-		</Screen>
+		<section className={props.styles["main"]}>
+			<Stage />
+			<OverlayPanel />
+		</section>
 	);
 }
 

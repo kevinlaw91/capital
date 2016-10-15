@@ -1,9 +1,9 @@
 import {
 	GRID_TILESIZE,
 	getBoundingOffset,
-} from "../../coordinates";
+} from "../../../utils/coordinates";
 
-import sprite from "../../../game/resources/sprites/tiles";
+import { tiles as sprite } from "../../../utils/sprites";
 
 const HALF_TILE = GRID_TILESIZE / 2;
 const QUARTER_TILE = GRID_TILESIZE / 4;

@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
-import FloorTile from "../components/FloorTile";
-import { getVertexOffset } from "../../coordinates";
+import FloorTile from "./components/FloorTile";
+import { getVertexOffset } from "../../utils/coordinates";
 
 // Render map tiles
 const renderMapTiles = (entry) => {

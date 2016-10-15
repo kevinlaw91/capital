@@ -1,4 +1,4 @@
-import DiceButton from "../DiceButton";
+import DiceButton from "./DiceButton";
 import CSSModules from "react-css-modules";
 import styles from "./OverlayPanel.scss";
 

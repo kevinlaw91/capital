@@ -1,0 +1,1 @@
+export { setup } from "../../js/renderer/panzoom";

@@ -1,4 +1,4 @@
-import sprite from "../../../game/resources/sprites/tokens";
+import { tokens as sprite } from "../../../utils/sprites";
 
 // Offset to be applied to the sprite
 const offsetY = -30;
