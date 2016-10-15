@@ -39,6 +39,9 @@ module.exports = {
 		// Local output dir (absolute)
 		path: path.join(__dirname, "build"),
 		filename: "app.js",
+		// Required for style-loader with sourceMap option enabled
+		// https://github.com/webpack/style-loader/issues/55
+		publicPath: "http://localhost:8080/",
 	},
 	resolve: {
 		alias: {

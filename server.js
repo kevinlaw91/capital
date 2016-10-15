@@ -37,9 +37,6 @@ new WebpackDevServer(webpack(config), {
 	// Local folder (relative) to serve as web server root
 	contentBase: "build/",
 	hot: true,
-	// Set output.publicPath to webpack-dev-server root
-	// Required for style-loader with sourceMap option enabled
-	// https://github.com/webpack/style-loader/issues/55
 	publicPath: "http://localhost:8080/",
 	historyApiFallback: true,
 	stats: { colors: true }
