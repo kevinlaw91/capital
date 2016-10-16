@@ -1,7 +1,7 @@
-import store from "../redux";
+import dispatch from "./utils/dispatch";
 import * as splash from "../redux/ui/splash";
 
 /** Hide splash screen */
 export function hide() {
-	store.dispatch(splash.actions.hide());
+	dispatch(splash.actions.hide());
 }
