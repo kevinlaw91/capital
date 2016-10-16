@@ -13,9 +13,6 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
-// PostCSS
-const PostCSSAutoprefixer = require("autoprefixer");
-
 // Config
 // noinspection JSUnresolvedFunction
 module.exports = {
@@ -113,18 +110,6 @@ module.exports = {
 		// new webpack.optimize.DedupePlugin(),
 		new webpack.optimize.UglifyJsPlugin({
 			comments: false,
-		}),
-		// Loader Options (backward compatibility)
-		new webpack.LoaderOptionsPlugin({
-			test: /\.scss$/,
-			options: {
-				context: __dirname,
-				postcss: [
-					PostCSSAutoprefixer({
-						browsers: ["last 2 versions"],
-					}),
-				],
-			},
 		}),
 	],
 };

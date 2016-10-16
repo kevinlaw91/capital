@@ -11,9 +11,6 @@ const webpack = require("webpack");
 // Plugins
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 
-// PostCSS
-const PostCSSAutoprefixer = require("autoprefixer");
-
 // Config
 module.exports = {
 	context: path.join(__dirname, "src"),
@@ -84,7 +81,7 @@ module.exports = {
 					{
 						loader: "postcss",
 						options: {
-							sourceMap: "inline",
+							map: "inline",
 						},
 					},
 					{
@@ -126,17 +123,5 @@ module.exports = {
 			name: "vendor",
 			filename: "vendor.bundle.js",
 		}),
-		// Loader Options (backward compatibility)
-		new webpack.LoaderOptionsPlugin({
-			test: /\.scss$/,
-		    options: {
-			    context: __dirname,
-			    postcss: [
-				    PostCSSAutoprefixer({
-					    browsers: ["last 2 versions"],
-				    }),
-			    ],
-		    },
-	    }),
 	],
 };
