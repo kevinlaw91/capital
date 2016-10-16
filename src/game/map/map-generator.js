@@ -47,25 +47,25 @@ export default function generate() {
 	const map = new GameMap();
 
 	// Bottom corner
-	map.update("CORNER-0", {
+	map.update("CORNER-BOTTOM", {
 		tilePosition: { x: 13, y: 13 },
 		tokenPosition: { x: 13, y: 13 },
 	});
 
 	// Left corner
-	map.update("CORNER-1", {
+	map.update("CORNER-LEFT", {
 		tilePosition: { x: 3, y: 13 },
 		tokenPosition: { x: 3, y: 13 },
 	});
 
 	// Top corner
-	map.update("CORNER-2", {
+	map.update("CORNER-TOP", {
 		tilePosition: { x: 3, y: 3 },
 		tokenPosition: { x: 3, y: 3 },
 	});
 
 	// Right corner
-	map.update("CORNER-3", {
+	map.update("CORNER-RIGHT", {
 		tilePosition: { x: 13, y: 3 },
 		tokenPosition: { x: 13, y: 3 },
 	});
