@@ -6,8 +6,8 @@ function FloorLayer(props) {
 	return (
 		<g>
 			{ renderTile(props.topCorner) }
-			{ props.west.map(renderTile) }
-			{ props.north.map(renderTile) }
+			{ Object.values(props.west).map(renderTile) }
+			{ Object.values(props.north).map(renderTile) }
 			{ renderTile(props.leftCorner) }
 			<polygon /* Center blank piece, bottom face */
 				points={
@@ -34,8 +34,8 @@ function FloorLayer(props) {
 			    fill="#9acf5c"
 			/>
 			{ renderTile(props.rightCorner) }
-			{ props.south.map(renderTile) }
-			{ props.east.map(renderTile) }
+			{ Object.values(props.south).map(renderTile) }
+			{ Object.values(props.east).map(renderTile) }
 			{ renderTile(props.bottomCorner) }
 		</g>
 	);
@@ -48,10 +48,10 @@ FloorLayer.propTypes = {
 	leftCorner: React.PropTypes.object,
 	rightCorner: React.PropTypes.object,
 	bottomCorner: React.PropTypes.object,
-	south: React.PropTypes.array,
-	west: React.PropTypes.array,
-	north: React.PropTypes.array,
-	east: React.PropTypes.array,
+	south: React.PropTypes.object,
+	west: React.PropTypes.object,
+	north: React.PropTypes.object,
+	east: React.PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
