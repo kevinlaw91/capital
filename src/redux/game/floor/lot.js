@@ -7,7 +7,7 @@ r = 13; c = 4; count = 9;
 while (count--) {
 	SOUTH.push({
 		col: c, row: r,
-		id: `TILE-SOUTH-C${c}`,
+		id: `TILE-SOUTH-${c}`,
 		symbol: "lot-south",
 		variant: "01",
 		rowSize: 3,
@@ -25,7 +25,7 @@ r = 4; c = 1; count = 9;
 while (count--) {
 	WEST.push({
 		col: c, row: r,
-		id: `TILE-WEST-R${r}`,
+		id: `TILE-WEST-${r}`,
 		symbol: "lot-west",
 		variant: "01",
 		rowSize: 1,
@@ -42,7 +42,7 @@ r = 1; c = 4; count = 9;
 while (count--) {
 	NORTH.push({
 		col: c, row: r,
-		id: `TILE-NORTH-C${c}`,
+		id: `TILE-NORTH-${c}`,
 		symbol: "lot-north",
 		variant: "01",
 		rowSize: 3,
@@ -59,7 +59,7 @@ r = 4; c = 13; count = 9;
 while (count--) {
 	EAST.push({
 		col: c, row: r,
-		id: `TILE-EAST-R${r}`,
+		id: `TILE-EAST-${r}`,
 		symbol: "lot-east",
 		variant: "01",
 		rowSize: 1,
