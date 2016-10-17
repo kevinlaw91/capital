@@ -29,7 +29,7 @@ class DiceButton extends React.Component {
 	}
 
 	handleMouseEnter() { this.setState({ hover: true }); }
-	handleMouseLeave() { this.setState({ hover: false }); }
+	handleMouseLeave() { this.setState({ pressed: false, hover: false }); }
 	handleMouseDown() { this.setState({ pressed: true }); }
 	handleMouseUp() { this.setState({ pressed: false }); }
 
