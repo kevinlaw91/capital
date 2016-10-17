@@ -20,6 +20,7 @@ export default camera;
  * @private
  */
 let _isPanning = false;
+let _mouseDownHolding = false;
 
 /**
  * Root svg element
@@ -42,15 +43,22 @@ function onAfterPan() {
 	dispatch(actions.setPanningStatus(false));
 }
 
+// Called when mouse down on svg-pan-zoom svg element
+function onMouseDown() {
+	_mouseDownHolding = true;
+}
+
 // Called when mouse up on svg-pan-zoom svg element
 function onMouseUp() {
 	// Mouseup was fired during panning
 	if (_isPanning) {
 		// Panning will stop when mouseup
 		onAfterPan();
-		// Reset internal flags
-		_isPanning = false;
 	}
+
+	// Reset internal flags
+	_isPanning = false;
+	_mouseDownHolding = false;
 }
 
 export function init() {
@@ -65,13 +73,15 @@ export function init() {
 		maxZoom: SETTING_ZOOM_MAX,
 		zoomScaleSensitivity: SETTING_ZOOM_SENSITIVITY,
 		beforePan: function (oldPan, newPan) {
-			if (!_isPanning) {
-				// To prevent dispatch repeatedly
-				dispatch(actions.setPanningStatus(true));
-			}
+			if (_mouseDownHolding) {
+				if (!_isPanning) {
+					// To prevent dispatch repeatedly
+					dispatch(actions.setPanningStatus(true));
+				}
 
-			// Disable click event for stage contents when panning
-			_isPanning = true;
+				// Disable click event for stage contents when panning
+				_isPanning = true;
+			}
 
 			// Set Pan boundary
 			const { width, height, viewBox, realZoom } = this.getSizes();
@@ -93,9 +103,11 @@ export function init() {
 		},
 		customEventsHandler: {
 			init: function (options) {
+				options.svgElement.addEventListener("mousedown", onMouseDown);
 				options.svgElement.addEventListener("mouseup", onMouseUp);
 			},
 			destroy: function (options) {
+				options.svgElement.removeEventListener("mousedown", onMouseDown);
 				options.svgElement.removeEventListener("mouseup", onMouseUp);
 			}
 		}
