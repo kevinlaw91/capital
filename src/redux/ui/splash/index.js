@@ -1,3 +1,5 @@
+import Immutable from "seamless-immutable";
+
 // Types
 export const types = {
 	"HIDE": "ui/splash/HIDE",
@@ -9,16 +11,14 @@ export const actions = {
 };
 
 // Initial state
-const initialState = {
+const initialState = Immutable({
 	hidden: false
-};
+});
 
 export function reducer(state = initialState, action = {}) {
 	switch (action.type) {
 		case types.HIDE:
-			return Object.assign({}, state, {
-				hidden: true
-			});
+			return state.set("hidden", true);
 		default: return state;
 	}
 }
