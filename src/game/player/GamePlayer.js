@@ -1,8 +1,6 @@
-import shortid from "shortid";
-
 export default class GamePlayer {
-	constructor() {
-		this.id = shortid.generate();
+	constructor(id) {
+		this.id = id;
 	}
 
 	setPosition(pos) {
