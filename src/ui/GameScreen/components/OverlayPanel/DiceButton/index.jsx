@@ -4,6 +4,7 @@ import classNames from "classnames/bind";
 import styles from "./DiceButton.scss";
 
 let cx = classNames.bind({
+	"circle-ignore": styles["circle-ignore"],
 	"circle-hover": styles["circle-hover"],
 	"circle-pressed": styles["circle-pressed"],
 	"circle-indeterminate": styles["circle-indeterminate"],
@@ -41,6 +42,7 @@ class DiceButton extends React.Component {
 
 		let circleStyle = cx({
 			"circle-hover": !this.state.disabled && !this.state.indeterminate && this.state.hover,
+			"circle-ignore": this.props.ignoreInputs,
 			"circle-pressed": !this.state.disabled && !this.state.indeterminate && this.state.pressed,
 			"circle-indeterminate": this.state.indeterminate,
 		});
@@ -54,7 +56,6 @@ class DiceButton extends React.Component {
 					cx="53" cy="53" r="40"
 					className={circleStyle}
 					styleName="circle"
-					style={ this.props.ignoreInputs ? { pointerEvents: "none" } : {} }
 					onMouseEnter={this.handleMouseEnter}
 					onMouseLeave={this.handleMouseLeave}
 					onMouseDown={this.handleMouseDown}

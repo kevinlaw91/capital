@@ -25,6 +25,11 @@
 	transform-origin: center;
 }
 
+.circle-ignore {
+	pointer-events: none !important;
+	opacity: 0.25 !important;
+}
+
 .circle-hover {
 	fill: #d8d8d8;
 }
