@@ -1,6 +1,8 @@
 import svgPanZoom from "svg-pan-zoom";
 import clamp from "../js/utils/clamp";
 import Velocity from "velocity-animate";
+import dispatch from "./utils/dispatch";
+import { actions } from "../redux/ui/camera";
 
 // Pan Zoom Configurations
 const SETTING_ZOOM_MIN = 0.8;
@@ -36,14 +38,16 @@ let viewportElement = null;
 export const setViewportElement = el => { viewportElement = el; };
 
 // Called after panning
-// function onAfterPan() {}
+function onAfterPan() {
+	dispatch(actions.setPanningStatus(false));
+}
 
 // Called when mouse up on svg-pan-zoom svg element
 function onMouseUp() {
 	// Mouseup was fired during panning
 	if (_isPanning) {
 		// Panning will stop when mouseup
-		// onAfterPan();
+		onAfterPan();
 		// Reset internal flags
 		_isPanning = false;
 	}
@@ -61,6 +65,11 @@ export function init() {
 		maxZoom: SETTING_ZOOM_MAX,
 		zoomScaleSensitivity: SETTING_ZOOM_SENSITIVITY,
 		beforePan: function (oldPan, newPan) {
+			if (!_isPanning) {
+				// To prevent dispatch repeatedly
+				dispatch(actions.setPanningStatus(true));
+			}
+
 			// Disable click event for stage contents when panning
 			_isPanning = true;
 

@@ -1,3 +1,4 @@
+import { connect } from "react-redux";
 import CSSModules from "react-css-modules";
 import classNames from "classnames/bind";
 import styles from "./DiceButton.scss";
@@ -53,6 +54,7 @@ class DiceButton extends React.Component {
 					cx="53" cy="53" r="40"
 					className={circleStyle}
 					styleName="circle"
+					style={ this.props.ignoreInputs ? { pointerEvents: "none" } : {} }
 					onMouseEnter={this.handleMouseEnter}
 					onMouseLeave={this.handleMouseLeave}
 					onMouseDown={this.handleMouseDown}
@@ -63,4 +65,14 @@ class DiceButton extends React.Component {
 	}
 }
 
-export default CSSModules(DiceButton, styles);
+DiceButton.propTypes = {
+	ignoreInputs: React.PropTypes.bool,
+};
+
+const mapStateToProps = (state) => ({
+	ignoreInputs: state.ui.camera.panning
+});
+
+export default connect(mapStateToProps)(
+	CSSModules(DiceButton, styles)
+);
