@@ -1,3 +1,8 @@
+import {
+	START_LOCATION as path_start,
+	default as path
+} from "./pathfinding";
+
 export default class GameMap {
 	constructor() {
 		this.items = new Map();
@@ -20,6 +25,16 @@ export default class GameMap {
 				this.add(key);
 			}
 		}
+
+		this.findNextMove = (current) => {
+			if (path[current]) {
+				return path[current];
+			}
+
+			logger.warn("Unable to find next move. Using start position.");
+
+			return path_start;
+		};
 	}
 
 	/**
