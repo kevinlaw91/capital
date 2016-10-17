@@ -26,7 +26,7 @@ TokenLayer.propTypes = {
 
 const mapStateToProps = (state) => {
 	return {
-		tokens: state.game.tokens,
+		tokens: state.game.stage.tokens,
 	};
 };
 

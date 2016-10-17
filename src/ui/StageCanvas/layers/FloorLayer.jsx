@@ -55,7 +55,7 @@ FloorLayer.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-	let f = state.game.floor;
+	let f = state.game.stage.floor;
 
 	return {
 		topCorner: f.corners.top,

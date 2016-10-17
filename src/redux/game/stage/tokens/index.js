@@ -1,6 +1,6 @@
 import Immutable from "seamless-immutable";
 
-import coordinate from "../../../game/coordinates";
+import coordinate from "../../../../game/coordinates";
 
 // Initial state
 const initialState = Immutable([
