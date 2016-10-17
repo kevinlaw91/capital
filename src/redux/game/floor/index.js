@@ -1,20 +1,21 @@
-import Immutable from "seamless-immutable";
+import { combineReducers } from "redux";
 
-import corners from "./corners";
-import * as lot from "./lot";
+import { reducer as corners } from "./corners";
+import { reducer as south } from "./south";
+import { reducer as west } from "./west";
+import { reducer as north } from "./north";
+import { reducer as east } from "./east";
 
-// Initial state
-const initialState = Immutable({
-	corners: corners,
-	south: lot.SOUTH,
-	west: lot.WEST,
-	north: lot.NORTH,
-	east: lot.EAST,
-});
+// Re-export types and actions
+export { types, actions } from "./actions";
 
 // Reducer
-export function reducer(state = initialState, action = {}) {
-	switch (action.type) {
-		default: return state;
-	}
-}
+const reducer = combineReducers({
+	corners,
+	south,
+	west,
+	north,
+	east,
+});
+
+export { reducer };

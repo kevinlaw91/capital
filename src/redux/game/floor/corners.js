@@ -1,4 +1,7 @@
-export default {
+import Immutable from "seamless-immutable";
+
+// Initial state
+const initialState = Immutable({
 	bottom: {
 		col: 13, row: 13,
 		id: "TILE-CORNER-BOTTOM",
@@ -38,4 +41,9 @@ export default {
 		colSize: 3,
 		square: true,
 	},
-};
+});
+
+// Reducer
+export function reducer(state = initialState) {
+	return state;
+}
