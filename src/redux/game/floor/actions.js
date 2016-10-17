@@ -2,7 +2,7 @@ import mapping from "./mappings";
 
 // Types
 export const types = {
-	"UPDATE": "game/floor/update",
+	"UPDATE": "game/floor/UPDATE",
 };
 
 // Actions
