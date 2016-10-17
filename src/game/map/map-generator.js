@@ -14,28 +14,24 @@ function generateLotAnchors(side, index) {
 		case "S":
 			return {
 				// x = 12, 11, 10 ... 4
-				tilePosition: { x: 12 - index, y: 13 },
 				tokenPosition: { x: 12 - index, y: 13 },
 				buildingPosition: { x: 12 - index, y: 15 },
 			};
 		case "W":
 			return {
 				// y = 12, 11, 10 ... 4
-				tilePosition: { x: 3, y: 12 - index },
 				tokenPosition: { x: 3, y: 12 - index },
 				buildingPosition: { x: 1, y: 12 - index },
 			};
 		case "N":
 			return {
 				// x = 4, 5, 6 ... 12
-				tilePosition: { x: 4 + index, y: 3 },
 				tokenPosition: { x: 4 + index, y: 3 },
 				buildingPosition: { x: 4 + index, y: 1 },
 			};
 		case "E":
 			return {
 				// y = 4, 5, 6 ... 12
-				tilePosition: { x: 13, y: 4 + index },
 				tokenPosition: { x: 13, y: 4 + index },
 				buildingPosition: { x: 15, y: 4 + index },
 			};
@@ -48,25 +44,21 @@ export default function generate() {
 
 	// Bottom corner
 	map.update("CORNER-BOTTOM", {
-		tilePosition: { x: 13, y: 13 },
 		tokenPosition: { x: 13, y: 13 },
 	});
 
 	// Left corner
 	map.update("CORNER-LEFT", {
-		tilePosition: { x: 3, y: 13 },
 		tokenPosition: { x: 3, y: 13 },
 	});
 
 	// Top corner
 	map.update("CORNER-TOP", {
-		tilePosition: { x: 3, y: 3 },
 		tokenPosition: { x: 3, y: 3 },
 	});
 
 	// Right corner
 	map.update("CORNER-RIGHT", {
-		tilePosition: { x: 13, y: 3 },
 		tokenPosition: { x: 13, y: 3 },
 	});
 
