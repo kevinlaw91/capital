@@ -52,3 +52,5 @@ const path = {
 	"LOT-E07": "LOT-E08",
 	"LOT-E08": "CORNER-BOTTOM",
 };
+
+export default pos => path[pos];
