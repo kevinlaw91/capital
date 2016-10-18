@@ -35,7 +35,10 @@ export function reducer(state = initialState, action = {}) {
 				id = shortid.generate();
 			} while (id in state);
 
-			return state.merge({ [id]: {} }, { deep: true });
+			return state.merge({ [id]: {
+				// Start position
+				position: "CORNER-BOTTOM",
+			} }, { deep: true });
 
 		case types.SET_POSITION:
 			return state.merge(

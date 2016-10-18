@@ -1,13 +1,13 @@
 import { connect } from "react-redux";
 import Token from "./components/Token";
 
-function renderToken(entry) {
+function renderToken(id, entry) {
 	return (
 		<Token
-			key={entry.id}
-			x={entry.position.x}
-			y={entry.position.y}
+			key={id}
 			color={entry.color}
+			x={entry.x}
+			y={entry.y}
 		/>
 	);
 }
@@ -15,13 +15,13 @@ function renderToken(entry) {
 function TokenLayer(props) {
 	return (
 		<g>
-			{ props.tokens.map(renderToken) }
+			{ Object.keys(props.tokens).map(k => renderToken(k, props.tokens[k])) }
 		</g>
 	);
 }
 
 TokenLayer.propTypes = {
-	tokens: React.PropTypes.array,
+	tokens: React.PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
