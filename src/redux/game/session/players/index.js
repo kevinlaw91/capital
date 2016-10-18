@@ -17,7 +17,7 @@ export const actions = {
 		type: types.SET_POSITION,
 		id: playerId,
 		positon: pos,
-	})
+	}),
 };
 
 // Initial state
