@@ -10,6 +10,7 @@ export let active = null;
 
 /** Create new game session */
 export function create() {
+	// Generate map
 	dispatch(mapActions.generate());
 }
 
