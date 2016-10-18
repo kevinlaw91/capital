@@ -1,3 +1,5 @@
+import shortid from "shortid";
+
 import dispatch from "./utils/dispatch";
 import getState from "./utils/getState";
 
@@ -18,11 +20,23 @@ export function create() {
 	dispatch(mapActions.generate());
 
 	// Create a demo player
-	dispatch(playerActions.add());
 
 	// Retrieve state tree
-	const state = getState();
-	const players = state.game.session.players;
+	let state = getState();
+	let players = state.game.session.players;
+
+	// Generate a player id
+	let uniqueId;
+
+	// Make sure id is unique and not yet taken
+	do {
+		uniqueId = shortid.generate();
+	} while (uniqueId in players);
+
+	dispatch(playerActions.add(uniqueId));
+
+	state = getState();
+	players = state.game.session.players;
 
 	// Generate player tokens
 	Object.keys(players).forEach(id => {
