@@ -3,13 +3,13 @@ import shortid from "shortid";
 
 // Types
 export const types = {
-	"NEW": "game/session/players/NEW",
+	"ADD": "game/session/players/ADD",
 	"CLEAR": "game/session/players/CLEAR",
 };
 
 // Actions
 export const actions = {
-	new: () => ({ type: types.NEW }),
+	add: () => ({ type: types.ADD }),
 	clear: () => ({ type: types.CLEAR }),
 };
 
@@ -19,7 +19,7 @@ const initialState = Immutable({});
 // Reducer
 export function reducer(state = initialState, action = {}) {
 	switch (action.type) {
-		case types.NEW:
+		case types.ADD:
 			// Generate a player id
 			let id;
 
