@@ -1,6 +1,8 @@
-export const START_LOCATION = "CORNER-BOTTOM";
+// Player token starting point
+const START_LOCATION = "CORNER-BOTTOM";
 
-export default {
+// Player token moving path
+const path = {
 	"CORNER-BOTTOM": "LOT-S00",
 
 	// South
@@ -53,3 +55,22 @@ export default {
 	"LOT-E07": "LOT-E08",
 	"LOT-E08": "CORNER-BOTTOM",
 };
+
+/**
+ * Find position for next move
+ * @param currentPosition
+ * @return {string}
+ */
+export function findNextMove(currentPosition) {
+	if (currentPosition) {
+		if (path[currentPosition]) {
+			return path[currentPosition];
+		} else {
+			throw "Unable to find next move.";
+		}
+	} else {
+		// No current position was specified
+		// Go to to starting point
+		return START_LOCATION;
+	}
+}
