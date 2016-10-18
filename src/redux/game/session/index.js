@@ -1,11 +1,9 @@
 import { combineReducers } from "redux";
 
 // Reducers
-import { reducer as session } from "./session";
-import { reducer as stage } from "./stage";
+import { reducer as map } from "./map";
 
 const reducer = combineReducers({
-	session,
-	stage,
+	map,
 });
 export { reducer };
