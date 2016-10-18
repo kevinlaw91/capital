@@ -3,9 +3,6 @@ import { AppContainer as ReactAppWrapper } from "react-hot-loader";
 import store from "./redux";
 import { Provider } from "react-redux";
 
-// Polyfills
-import "./js/polyfills";
-
 // Main App
 import App from "./ui/App";
 
