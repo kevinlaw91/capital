@@ -1,5 +1,6 @@
 import Immutable from "seamless-immutable";
 
+import tokenReducer from "./token";
 import tokenPosition from "./tokenPosition";
 import coordinate from "../../../../game/coordinates";
 
@@ -48,22 +49,29 @@ const initialState = Immutable({});
 export function reducer(state = initialState, action = {}) {
 	switch (action.type) {
 		case types.ADD:
-			return state.merge({ [action.id]: {
-				color: "white",
-				x: 0,
-				y: 0,
-			} }, { deep: true });
+			if (action.id) {
+				const newToken = tokenReducer(null, action);
+
+				return state.set(action.id, newToken);
+			}
+
+			return state;
 
 		case types.CLEAR:
 			return initialState;
 
 		case types.SET_POSITION:
-			return state.merge(
-				{ [action.id]: {
-					x: action.x,
-					y: action.y,
-				} }, { deep: true });
+			if (action.id) {
+				return state.set(
+					action.id,
+					tokenReducer(state[action.id], action),
+					{ deep: true }
+				);
+			}
 
-		default: return state;
+			return state;
+
+		default:
+			return state;
 	}
 }
