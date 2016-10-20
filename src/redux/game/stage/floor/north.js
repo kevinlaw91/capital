@@ -1,26 +1,25 @@
 import Immutable from "seamless-immutable";
-import createReducer from "./side_reducer";
 
-let NORTH = {};
-let r = 1, c = 4, count = 9;
+import { reducerFactory } from "./sideReducerFactory";
 
-while (count--) {
-	let id = `TILE-NORTH-${c}`;
-
-	NORTH[id] = {
-		col: c, row: r,
-		id: id,
-		symbol: "lot-north",
-		variant: "01",
-		rowSize: 3,
-		colSize: 1,
-	};
-
-	c++; // Proceed to next lot
-}
+const tileDefault = Immutable({
+	symbol: "lot-north",
+	variant: "01",
+});
 
 // Initial state
-const initialState = Immutable(NORTH);
+const initialState = Immutable({
+	"TILE-NORTH-4": tileDefault,
+	"TILE-NORTH-5": tileDefault,
+	"TILE-NORTH-6": tileDefault,
+	"TILE-NORTH-7": tileDefault,
+	"TILE-NORTH-8": tileDefault,
+	"TILE-NORTH-9": tileDefault,
+	"TILE-NORTH-10": tileDefault,
+	"TILE-NORTH-11": tileDefault,
+	"TILE-NORTH-12": tileDefault,
+});
+
 
 // Reducer
-export const reducer = createReducer("NORTH", initialState);
+export const reducer = reducerFactory(initialState);

@@ -57,15 +57,21 @@ export default function FloorTile(props) {
 	// Use sprite
 	let href = sprite(props.symbol, props.variant);
 
+	if (!href) {
+		logger.error(`Sprite '${props.symbol}' (Variant: '${props.variant}') cannot be found in tile collection.`);
+	}
+
 	return (
-		<use
-			x={offset[0]}
-			y={offset[1]}
-			width={width}
-			height={height}
-			xlinkHref={href}
-			style={props.crisp && crispEdge}
-		/>
+		href ? (
+			<use
+				x={offset[0]}
+				y={offset[1]}
+				width={width}
+				height={height}
+				xlinkHref={href}
+				style={props.crisp && crispEdge}
+			/>
+		) : null
 	);
 }
 

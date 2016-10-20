@@ -14,4 +14,5 @@ const symbols = {
 	},
 };
 
-export default (id, variant = "01") => symbols[variant][id];
+export default (id, variant) =>
+	symbols[variant] ? symbols[variant][id] : null;

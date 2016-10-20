@@ -1,49 +1,43 @@
 import Immutable from "seamless-immutable";
 
+import { types } from "./index";
+import tileReducer from "./tileReducer";
+
 // Initial state
 const initialState = Immutable({
-	bottom: {
-		col: 13, row: 13,
-		id: "TILE-CORNER-BOTTOM",
+	"TILE-CORNER-BOTTOM": {
 		symbol: "grass-3x3",
 		variant: "01",
-		rowSize: 3,
-		colSize: 3,
-		square: true,
 	},
-
-	left: {
-		col: 1, row: 13,
-		id: "TILE-CORNER-LEFT",
+	"TILE-CORNER-LEFT": {
 		symbol: "grass-3x3",
 		variant: "01",
-		rowSize: 3,
-		colSize: 3,
-		square: true,
 	},
-
-	top: {
-		col: 1, row: 1,
-		id: "TILE-CORNER-TOP",
+	"TILE-CORNER-TOP": {
 		symbol: "grass-3x3",
 		variant: "01",
-		rowSize: 3,
-		colSize: 3,
-		square: true,
 	},
-
-	right: {
-		col: 13, row: 1,
-		id: "TILE-CORNER-RIGHT",
+	"TILE-CORNER-RIGHT": {
 		symbol: "grass-3x3",
 		variant: "01",
-		rowSize: 3,
-		colSize: 3,
-		square: true,
 	},
 });
 
 // Reducer
-export function reducer(state = initialState) {
-	return state;
+export function reducer(state = initialState, action = {}) {
+	switch (action.type) {
+		case types.CHANGE_SYMBOL:
+			if (action.id && state[action.id]) {
+				return state.set(
+					action.id,
+					tileReducer(state[action.id], action),
+					{ deep: true }
+				);
+			}
+
+			return state;
+
+		default:
+			return state;
+	}
 }
