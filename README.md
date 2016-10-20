@@ -2,7 +2,7 @@
 
 ## Install
 
-    npm install
+    npm install --only=dev
 
 ## Start webpack-dev-server
 
