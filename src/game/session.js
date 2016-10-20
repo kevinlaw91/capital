@@ -1,11 +1,13 @@
 import shortid from "shortid";
+import { batchActions } from "redux-batched-actions";
 
 import dispatch from "./utils/dispatch";
 import getState from "./utils/getState";
 
-import { actions as mapActions } from "../redux/game/session/map";
 import { actions as playerActions } from "../redux/game/session/players";
 import { actions as tokenActions } from "../redux/game/stage/tokens";
+
+import generateMap from "./map/generate";
 
 /**
  * Current active game session
@@ -17,7 +19,7 @@ export let active = null;
 /** Create new game session */
 export function create() {
 	// Generate map
-	dispatch(mapActions.generate());
+	dispatch(batchActions(generateMap()));
 
 	// Create a demo player
 

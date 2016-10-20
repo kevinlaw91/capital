@@ -12,9 +12,6 @@ for (let side of ["S", "W", "N", "E"]) {
 		let id = `LOT-${side}${index}`;
 
 		// Store entry
-		map[id] = {
-			id: id,
-			tradable: true,
-		};
+		map[id] = {};
 	}
 }
