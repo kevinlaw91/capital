@@ -1,7 +1,7 @@
 export default function (locationId) {
 	// Test to see if location is a property lot
 	// and attempt to extract fields from it
-	const lot = /LOT-(N|S|E|W)(\d{2})/.exec(locationId);
+	const lot = /LOT-(N|S|E|W)(\d+)/.exec(locationId);
 
 	if (lot) {
 		// Location id represents a property lot

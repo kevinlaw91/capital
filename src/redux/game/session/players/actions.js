@@ -17,6 +17,6 @@ export const actions = {
 	setPosition: (playerId, pos) => ({
 		type: types.SET_POSITION,
 		id: playerId,
-		positon: pos,
+		position: pos,
 	}),
 };
