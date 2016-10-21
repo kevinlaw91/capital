@@ -5,6 +5,7 @@ import classNames from "classnames/bind";
 import { getStateIsPanning } from "../../../../../redux/ui/camera";
 
 import styles from "./DiceButton.scss";
+import { onClick } from "../../../../../game/rules/dice";
 
 let cx = classNames.bind({
 	"circle-ignore": styles["circle-ignore"],
@@ -59,6 +60,7 @@ class DiceButton extends React.Component {
 					cx="53" cy="53" r="40"
 					className={circleStyle}
 					styleName="circle"
+					onClick={onClick}
 					onMouseEnter={this.handleMouseEnter}
 					onMouseLeave={this.handleMouseLeave}
 					onMouseDown={this.handleMouseDown}
