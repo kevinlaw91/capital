@@ -1,1 +1,1 @@
-export * from "../../game/coordinates";
+export * from "../../game/map/coordinates";

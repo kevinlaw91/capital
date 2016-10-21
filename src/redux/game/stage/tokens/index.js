@@ -2,7 +2,7 @@ import Immutable from "seamless-immutable";
 
 import tokenReducer from "./tokenReducer";
 import tokenPosition from "./tokenPosition";
-import coordinate from "../../../../game/coordinates";
+import coordinate from "../../../../game/map/coordinates";
 
 // Types
 export const types = {
