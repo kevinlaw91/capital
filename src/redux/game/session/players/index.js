@@ -42,3 +42,4 @@ export function reducer(state = initialState, action = {}) {
 
 // Selectors
 export const selectAllPlayers = state => state.game.session.players;
+export const selectPlayerById = (state, playerId) => state.game.session.players[playerId];
