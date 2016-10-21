@@ -1,16 +1,15 @@
 import shortid from "shortid";
 import { batchActions } from "redux-batched-actions";
 
-import dispatch from "./utils/dispatch";
-import getState from "./utils/getState";
+import dispatch from "../utils/dispatch";
+import getState from "../utils/getState";
 
-import { actions as playerActions } from "../redux/game/session/players";
-import { actions as tokenActions } from "../redux/game/stage/tokens";
+import generateMap from "../map/generate";
 
-import generateMap from "./map/generate";
+import { actions as playerActions } from "../../redux/game/session/players";
+import { actions as tokenActions } from "../../redux/game/stage/tokens";
 
-/** Create new game session */
-export function create() {
+export default function () {
 	// Generate map
 	dispatch(batchActions(generateMap()));
 
@@ -41,8 +40,4 @@ export function create() {
 		// Move tokens to starting location
 		dispatch(tokenActions.setPosition(id, players[id].position));
 	});
-}
-
-/** Destroy active game session */
-export function destroy() {
 }
