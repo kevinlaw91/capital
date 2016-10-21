@@ -1,7 +1,10 @@
 import { batchActions } from "redux-batched-actions";
 
 import getState from "../../utils/getState";
-import { actions } from "../../../redux/game/session/map";
+import {
+	selectAllMapEntities,
+	actions
+} from "../../../redux/game/session/map";
 
 import NameGenerator from "./name";
 import generatePrice from "./price";
@@ -11,8 +14,8 @@ import generateRent from "./rent";
 export default function () {
 	const nameGenerator = NameGenerator();
 
-	const state = getState();
-	const map = state.game.session.map;
+	// Read state tree
+	const map = selectAllMapEntities(getState());
 
 	// Collection of mutation actions for each property lot
 	const batch = [];

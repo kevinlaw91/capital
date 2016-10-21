@@ -22,3 +22,6 @@ export function reducer(state = initialState, action = {}) {
 		default: return state;
 	}
 }
+
+// Selectors
+export const getStateIsHidden = state => state.ui.splash.hidden;

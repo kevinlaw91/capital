@@ -30,3 +30,6 @@ export function reducer(state = initialState, action = {}) {
 		default: return state;
 	}
 }
+
+// Selectors
+export const getStateIsPanning = state => state.ui.camera.panning;

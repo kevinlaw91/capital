@@ -1,6 +1,9 @@
 import { connect } from "react-redux";
 import CSSModules from "react-css-modules";
 import classNames from "classnames/bind";
+
+import { getStateIsPanning } from "../../../../../redux/ui/camera";
+
 import styles from "./DiceButton.scss";
 
 let cx = classNames.bind({
@@ -71,7 +74,7 @@ DiceButton.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-	ignoreInputs: state.ui.camera.panning
+	ignoreInputs: getStateIsPanning(state)
 });
 
 export default connect(mapStateToProps)(

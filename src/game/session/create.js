@@ -6,7 +6,10 @@ import getState from "../utils/getState";
 
 import generateMap from "../map/generate";
 
-import { actions as playerActions } from "../../redux/game/session/players";
+import {
+	selectAllPlayers,
+	actions as playerActions
+} from "../../redux/game/session/players";
 import { actions as tokenActions } from "../../redux/game/stage/tokens";
 
 export default function () {
@@ -15,9 +18,8 @@ export default function () {
 
 	// Create a demo player
 
-	// Retrieve state tree
-	let state = getState();
-	let players = state.game.session.players;
+	// Read state tree
+	let players = selectAllPlayers(getState());
 
 	// Generate a player id
 	let uniqueId;
@@ -29,10 +31,9 @@ export default function () {
 
 	dispatch(playerActions.add(uniqueId));
 
-	state = getState();
-	players = state.game.session.players;
-
 	// Generate player tokens
+	players = selectAllPlayers(getState());
+
 	Object.keys(players).forEach(id => {
 		// Add token
 		dispatch(tokenActions.add(id));

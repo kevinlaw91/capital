@@ -2,6 +2,8 @@ import { connect } from "react-redux";
 import { getVertexOffset } from "../../utils/coordinates";
 import renderTile from "./utils/renderTile";
 
+import { selectors } from "../../../redux/game/stage/floor";
+
 const RENDER_CORNER = (id, props) => {
 	switch (id) {
 		case "TILE-CORNER-BOTTOM":
@@ -154,14 +156,12 @@ FloorLayer.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-	let f = state.game.stage.floor;
-
 	return {
-		corners: f.corners,
-		south: f.south,
-		west: f.west,
-		north: f.north,
-		east: f.east,
+		corners: selectors.selectCornerTiles(state),
+		south: selectors.selectSouthTiles(state),
+		west: selectors.selectWestTiles(state),
+		north: selectors.selectNorthTiles(state),
+		east: selectors.selectEastTiles(state),
 	};
 };
 

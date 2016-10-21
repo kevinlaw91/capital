@@ -1,6 +1,8 @@
 import { connect } from "react-redux";
 import Token from "./components/Token";
 
+import { selectAllTokens } from "../../../redux/game/stage/tokens";
+
 function renderToken(id, entry) {
 	return (
 		<Token
@@ -26,7 +28,7 @@ TokenLayer.propTypes = {
 
 const mapStateToProps = (state) => {
 	return {
-		tokens: state.game.stage.tokens,
+		tokens: selectAllTokens(state),
 	};
 };
 

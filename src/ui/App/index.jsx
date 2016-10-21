@@ -5,6 +5,9 @@ import SplashScreen from "../SplashScreen";
 import GameScreen from "../GameScreen";
 import CSSModules from "react-css-modules";
 import { VelocityComponent } from "velocity-react";
+
+import { getStateIsHidden as getSplashHidden } from "../../redux/ui/splash";
+
 import styles from "./App.scss";
 
 class App extends React.Component {
@@ -38,7 +41,7 @@ App.propTypes = {
 
 const mapStateToProps = (state) => {
 	return {
-		hideSplash: state.ui.splash.hidden
+		hideSplash: getSplashHidden(state)
 	};
 };
 
