@@ -9,13 +9,6 @@ import { actions as tokenActions } from "../redux/game/stage/tokens";
 
 import generateMap from "./map/generate";
 
-/**
- * Current active game session
- * @type {Object}
- * @public
- */
-export let active = null;
-
 /** Create new game session */
 export function create() {
 	// Generate map
@@ -52,5 +45,4 @@ export function create() {
 
 /** Destroy active game session */
 export function destroy() {
-	active = null;
 }
