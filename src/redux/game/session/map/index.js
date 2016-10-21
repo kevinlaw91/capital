@@ -1,7 +1,7 @@
 import Immutable from "seamless-immutable";
 
 import mapDefinition from "./initialState";
-import lotReducer from "./lot";
+import lotReducer from "./lotReducer";
 
 // Types
 export const types = {

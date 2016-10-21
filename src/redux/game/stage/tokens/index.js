@@ -1,6 +1,6 @@
 import Immutable from "seamless-immutable";
 
-import tokenReducer from "./token";
+import tokenReducer from "./tokenReducer";
 import tokenPosition from "./tokenPosition";
 import coordinate from "../../../../game/coordinates";
 

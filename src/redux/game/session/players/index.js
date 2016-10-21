@@ -1,7 +1,7 @@
 import Immutable from "seamless-immutable";
 
 import { types } from "./actions";
-import playerReducer from "./player";
+import playerReducer from "./playerReducer";
 
 // Re-export types and actions
 export { types, actions } from "./actions";
