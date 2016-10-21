@@ -1,4 +1,5 @@
 import { connect } from "react-redux";
+
 import Token from "./components/Token";
 
 import { selectAllTokens } from "../../../redux/game/stage/tokens";
@@ -26,10 +27,8 @@ TokenLayer.propTypes = {
 	tokens: React.PropTypes.object,
 };
 
-const mapStateToProps = (state) => {
-	return {
-		tokens: selectAllTokens(state),
-	};
-};
+const mapStateToProps = state => ({
+	tokens: selectAllTokens(state),
+});
 
 export default connect(mapStateToProps)(TokenLayer);

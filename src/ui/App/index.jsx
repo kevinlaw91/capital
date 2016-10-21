@@ -1,12 +1,14 @@
 import { connect } from "react-redux";
-import { init } from "../../game/bootstrap";
-import Screen from "./components/Screen";
-import SplashScreen from "../SplashScreen";
-import GameScreen from "../GameScreen";
 import CSSModules from "react-css-modules";
 import { VelocityComponent } from "velocity-react";
 
+import Screen from "./components/Screen";
+import SplashScreen from "../SplashScreen";
+import GameScreen from "../GameScreen";
+
 import { getStateIsHidden as getSplashHidden } from "../../redux/ui/splash";
+
+import { init } from "../../game/bootstrap";
 
 import styles from "./App.scss";
 
@@ -39,11 +41,9 @@ App.propTypes = {
 	styles: React.PropTypes.object
 };
 
-const mapStateToProps = (state) => {
-	return {
-		hideSplash: getSplashHidden(state)
-	};
-};
+const mapStateToProps = state => ({
+	hideSplash: getSplashHidden(state)
+});
 
 export default connect(mapStateToProps)(
 	CSSModules(App, styles)

@@ -73,7 +73,7 @@ DiceButton.propTypes = {
 	ignoreInputs: React.PropTypes.bool,
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
 	ignoreInputs: getStateIsPanning(state)
 });
 

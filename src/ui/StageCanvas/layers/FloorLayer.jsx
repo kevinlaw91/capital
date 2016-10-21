@@ -1,4 +1,5 @@
 import { connect } from "react-redux";
+
 import { getVertexOffset } from "../../utils/coordinates";
 import renderTile from "./utils/renderTile";
 
@@ -155,14 +156,12 @@ FloorLayer.propTypes = {
 	east: React.PropTypes.objectOf(PROPTYPES_TILE),
 };
 
-const mapStateToProps = (state) => {
-	return {
-		corners: selectors.selectCornerTiles(state),
-		south: selectors.selectSouthTiles(state),
-		west: selectors.selectWestTiles(state),
-		north: selectors.selectNorthTiles(state),
-		east: selectors.selectEastTiles(state),
-	};
-};
+const mapStateToProps = state => ({
+	corners: selectors.selectCornerTiles(state),
+	south: selectors.selectSouthTiles(state),
+	west: selectors.selectWestTiles(state),
+	north: selectors.selectNorthTiles(state),
+	east: selectors.selectEastTiles(state),
+});
 
 export default connect(mapStateToProps)(FloorLayer);
