@@ -1,5 +1,4 @@
-// Player token moving path
-const path = {
+export default currentPos => ({
 	"CORNER-BOTTOM": "LOT-S0",
 
 	// South
@@ -51,6 +50,4 @@ const path = {
 	"LOT-E6": "LOT-E7",
 	"LOT-E7": "LOT-E8",
 	"LOT-E8": "CORNER-BOTTOM",
-};
-
-export default pos => path[pos];
+}[currentPos]);
