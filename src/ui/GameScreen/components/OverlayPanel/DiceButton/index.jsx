@@ -2,6 +2,10 @@ import { connect } from "react-redux";
 import CSSModules from "react-css-modules";
 import classNames from "classnames/bind";
 
+import {
+	getStateDisabled,
+	getStateIndeterminate
+} from "../../../../../redux/ui/dice";
 import { getStateIsPanning } from "../../../../../redux/ui/camera";
 
 import styles from "./DiceButton.scss";
@@ -26,10 +30,8 @@ class DiceButton extends React.Component {
 		this.handleMouseUp = this.handleMouseUp.bind(this);
 
 		this.state = {
-			disabled: false,
 			hover: false,
 			pressed: false,
-			indeterminate: false,
 		};
 	}
 
@@ -40,15 +42,15 @@ class DiceButton extends React.Component {
 
 	render() {
 		let svgStyle = cx({
-			"container-disabled": this.state.disabled,
-			"container-indeterminate": this.state.indeterminate,
+			"container-disabled": this.props.disabled,
+			"container-indeterminate": this.props.indeterminate,
 		});
 
 		let circleStyle = cx({
-			"circle-hover": !this.state.disabled && !this.state.indeterminate && this.state.hover,
+			"circle-hover": !this.props.disabled && !this.props.indeterminate && this.state.hover,
 			"circle-ignore": this.props.ignoreInputs,
-			"circle-pressed": !this.state.disabled && !this.state.indeterminate && this.state.pressed,
-			"circle-indeterminate": this.state.indeterminate,
+			"circle-pressed": !this.props.disabled && !this.props.indeterminate && this.state.pressed,
+			"circle-indeterminate": this.props.indeterminate,
 		});
 
 		return (
@@ -73,10 +75,14 @@ class DiceButton extends React.Component {
 
 DiceButton.propTypes = {
 	ignoreInputs: React.PropTypes.bool,
+	disabled: React.PropTypes.bool,
+	indeterminate: React.PropTypes.bool,
 };
 
 const mapStateToProps = state => ({
-	ignoreInputs: getStateIsPanning(state)
+	ignoreInputs: getStateIsPanning(state),
+	disabled: getStateDisabled(state),
+	indeterminate: getStateIndeterminate(state),
 });
 
 export default connect(mapStateToProps)(

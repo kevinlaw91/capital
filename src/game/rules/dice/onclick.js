@@ -1,3 +1,4 @@
+import dispatch from "../../utils/dispatch";
 import getState from "../../utils/getState";
 
 import playerfindNextMove from "../../rules/player/findNextMove";
@@ -5,6 +6,7 @@ import queueMove from "../../rules/player/queueMove";
 import roll from "./roll";
 
 import { selectAllPlayers, selectPlayerById } from "../../../redux/game/session/players";
+import { actions as diceButtonActions } from "../../../redux/ui/dice";
 
 /** @return {Promise} */
 export default function () {
@@ -26,5 +28,12 @@ export default function () {
 		steps--;
 	}
 
-	return queueMove(firstPlayerId, nextMoves);
+	dispatch(diceButtonActions.setIndeterminate(true));
+	dispatch(diceButtonActions.disable());
+
+	return queueMove(firstPlayerId, nextMoves)
+		.then(() => {
+			dispatch(diceButtonActions.enable());
+			dispatch(diceButtonActions.setIndeterminate(false));
+		});
 }
