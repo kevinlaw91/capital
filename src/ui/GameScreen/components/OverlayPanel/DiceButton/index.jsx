@@ -24,6 +24,7 @@ class DiceButton extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.handleClick = this.handleClick.bind(this);
 		this.handleMouseEnter = this.handleMouseEnter.bind(this);
 		this.handleMouseLeave = this.handleMouseLeave.bind(this);
 		this.handleMouseDown = this.handleMouseDown.bind(this);
@@ -35,6 +36,7 @@ class DiceButton extends React.Component {
 		};
 	}
 
+	handleClick() { !this.props.disabled && onClick(); }
 	handleMouseEnter() { this.setState({ hover: true }); }
 	handleMouseLeave() { this.setState({ pressed: false, hover: false }); }
 	handleMouseDown() { this.setState({ pressed: true }); }
@@ -62,7 +64,7 @@ class DiceButton extends React.Component {
 					cx="53" cy="53" r="40"
 					className={circleStyle}
 					styleName="circle"
-					onClick={onClick}
+					onClick={this.handleClick}
 					onMouseEnter={this.handleMouseEnter}
 					onMouseLeave={this.handleMouseLeave}
 					onMouseDown={this.handleMouseDown}
