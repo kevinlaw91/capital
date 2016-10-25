@@ -8,8 +8,6 @@ import generateMap from "../map/generate";
 import addPlayer from "./addPlayer";
 
 import { selectAllPlayers } from "../../redux/game/session/players";
-import { actions as playerActions } from "../../redux/game/player";
-import { actions as tokenActions } from "../../redux/game/stage/tokens";
 import { actions as playerTurnActions } from "../../redux/game/session/turn";
 
 export default function () {
@@ -28,24 +26,15 @@ export default function () {
 		"red",
 		"yellow",
 	]);
+
 	for (let idx = 0; idx < playerCount; idx++) {
 		addPlayer({
 			color: playerColors[idx],
 		});
 	}
 
-	// Generate player tokens
-	const players = selectAllPlayers(getState());
-
-	Object.keys(players).forEach(id => {
-		// Add token
-		dispatch(tokenActions.add(id));
-
-		// Move player to starting location
-		dispatch(playerActions.setPosition(id, "CORNER-BOTTOM"));
-	});
-
 	// Shuffle player order
+	const players = selectAllPlayers(getState());
 	const turnOrder = shuffle(Object.keys(players));
 	dispatch(playerTurnActions.setOrder(turnOrder));
 

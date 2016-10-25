@@ -44,6 +44,7 @@ export function reducer(state = initialState, action = {}) {
 			return initialState;
 
 		case sharedTypes.SET_POSITION:
+		case sharedTypes.SET_COLOR:
 		case types.SET_ONMOVE:
 			if (action.id) {
 				return state.set(

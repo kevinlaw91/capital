@@ -32,6 +32,9 @@ export default function reducer(state = initialState, action = {}) {
 				y: screenOffset[1],
 			});
 
+		case sharedTypes.SET_COLOR:
+			return state.set("color", action.color);
+
 		case types.SET_ONMOVE:
 			if (action.callback) {
 				return state.set("onMove", action.callback);
