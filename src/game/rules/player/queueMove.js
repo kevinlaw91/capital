@@ -1,7 +1,7 @@
 import dispatch from "../../utils/dispatch";
 
 import { actions as playerSharedActions } from "../../../redux/game/player";
-import { actions as tokenActions } from "../../../redux/game/stage/tokens";
+import { actions as tokenActions } from "../../../redux/game/stage/token/items";
 
 const PLAYER_MOVE_WAIT = 200;
 

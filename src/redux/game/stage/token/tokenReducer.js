@@ -4,7 +4,7 @@ import tokenPosition from "./tokenPosition";
 import coordinate from "../../../../game/map/coordinates";
 
 import { types as sharedTypes } from "../../player";
-import { types } from "./index";
+import { types } from "./items";
 
 // Initial state
 const initialState = Immutable({

@@ -1,8 +1,6 @@
-import getState from "../utils/getState";
 import dispatch from "../utils/dispatch";
 
-import { actions as playerTurnActions } from "../../redux/game/session/turn";
-import { selectTurnOrder } from "../../redux/game/session/turn";
+import { actions as playerSharedActions } from "../../redux/game/player";
 
 import turnChange from "../rules/turn/change";
 import getNextActivePlayer from "../rules/turn/getNextActivePlayer";
@@ -15,7 +13,7 @@ function gameLoop() {
 
 	// Loop
 	const nextPlayerId = getNextActivePlayer();
-	dispatch(playerTurnActions.setActive(nextPlayerId));
+	dispatch(playerSharedActions.setActive(nextPlayerId));
 	turnChange().then(gameLoop);
 }
 

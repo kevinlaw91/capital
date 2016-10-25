@@ -1,11 +1,11 @@
 import { combineReducers } from "redux";
 
 // Reducers
-import { reducer as floor } from "./floor";
-import { reducer as token } from "./token";
+import { reducer as items } from "./items";
+import { reducer as order } from "./order";
 
 const reducer = combineReducers({
-	floor,
-	token,
+	items,
+	order,
 });
 export { reducer };

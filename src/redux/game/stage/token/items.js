@@ -5,9 +5,9 @@ import { types as sharedTypes } from "../../player";
 
 // Types
 export const types = {
-	"ADD": "game/stage/tokens/ADD",
-	"CLEAR": "game/stage/tokens/CLEAR",
-	"SET_ONMOVE": "game/stage/tokens/SET_ONMOVE",
+	"ADD": "game/stage/token/items/ADD",
+	"CLEAR": "game/stage/token/items/CLEAR",
+	"SET_ONMOVE": "game/stage/token/items/SET_ONMOVE",
 };
 
 // Actions
@@ -62,4 +62,4 @@ export function reducer(state = initialState, action = {}) {
 }
 
 // Selectors
-export const selectAllTokens = state => state.game.stage.tokens;
+export const selectAllTokens = state => state.game.stage.token.items;

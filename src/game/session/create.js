@@ -9,6 +9,7 @@ import addPlayer from "./addPlayer";
 
 import { selectAllPlayers } from "../../redux/game/session/players";
 import { actions as playerTurnActions } from "../../redux/game/session/turn";
+import { actions as tokenOrderActions } from "../../redux/game/stage/token/order";
 
 export default function () {
 	// Generate map
@@ -37,4 +38,5 @@ export default function () {
 	const players = selectAllPlayers(getState());
 	const turnOrder = shuffle(Object.keys(players));
 	dispatch(playerTurnActions.setOrder(turnOrder));
+	dispatch(tokenOrderActions.setOrder(turnOrder));
 }
