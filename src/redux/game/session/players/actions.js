@@ -2,7 +2,6 @@
 export const types = {
 	"ADD": "game/session/players/ADD",
 	"CLEAR": "game/session/players/CLEAR",
-	"SET_POSITION": "game/session/players/SET_POSITION",
 };
 
 // Actions
@@ -13,10 +12,4 @@ export const actions = {
 	}),
 
 	clear: () => ({ type: types.CLEAR }),
-
-	setPosition: (playerId, pos) => ({
-		type: types.SET_POSITION,
-		id: playerId,
-		position: pos,
-	}),
 };

@@ -1,6 +1,7 @@
 import Immutable from "seamless-immutable";
 
 import { types } from "./actions";
+import { types as sharedTypes } from "../../player";
 import playerReducer from "./playerReducer";
 
 // Re-export types and actions
@@ -24,7 +25,7 @@ export function reducer(state = initialState, action = {}) {
 		case types.CLEAR:
 			return initialState;
 
-		case types.SET_POSITION:
+		case sharedTypes.SET_POSITION:
 			if (action.id) {
 				return state.set(
 					action.id,

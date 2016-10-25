@@ -10,6 +10,7 @@ import {
 	selectAllPlayers,
 	actions as playerActions
 } from "../../redux/game/session/players";
+import { actions as sharedActions } from "../../redux/game/player";
 import { actions as tokenActions } from "../../redux/game/stage/tokens";
 
 export default function () {
@@ -38,7 +39,7 @@ export default function () {
 		// Add token
 		dispatch(tokenActions.add(id));
 
-		// Move tokens to starting location
-		dispatch(tokenActions.setPosition(id, players[id].position));
+		// Move player to starting location
+		dispatch(sharedActions.setPosition(id, "CORNER-BOTTOM"));
 	});
 }

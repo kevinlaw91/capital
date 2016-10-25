@@ -1,14 +1,12 @@
 import Immutable from "seamless-immutable";
 
 import tokenReducer from "./tokenReducer";
-import tokenPosition from "./tokenPosition";
-import coordinate from "../../../../game/map/coordinates";
+import { types as sharedTypes } from "../../player";
 
 // Types
 export const types = {
 	"ADD": "game/stage/tokens/ADD",
 	"CLEAR": "game/stage/tokens/CLEAR",
-	"SET_POSITION": "game/stage/tokens/SET_POSITION",
 };
 
 // Actions
@@ -19,28 +17,6 @@ export const actions = {
 	}),
 
 	clear: () => ({ type: types.CLEAR }),
-
-	setPosition: (playerId, pos) => {
-		let coord = pos;
-
-		if (typeof pos === "string") {
-			// Transform location id to x, y mapping in map
-			const tokenPos = tokenPosition(pos);
-			const screenOffset = coordinate(tokenPos.y, tokenPos.x);
-
-			coord = {
-				x: screenOffset[0],
-				y: screenOffset[1],
-			};
-		}
-
-		return {
-			type: types.SET_POSITION,
-			id: playerId,
-			x: coord.x,
-			y: coord.y,
-		};
-	}
 };
 
 const initialState = Immutable({});
@@ -60,7 +36,7 @@ export function reducer(state = initialState, action = {}) {
 		case types.CLEAR:
 			return initialState;
 
-		case types.SET_POSITION:
+		case sharedTypes.SET_POSITION:
 			if (action.id) {
 				return state.set(
 					action.id,
