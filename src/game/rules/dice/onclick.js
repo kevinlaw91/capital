@@ -5,16 +5,17 @@ import playerfindNextMove from "../../rules/player/findNextMove";
 import queueMove from "../../rules/player/queueMove";
 import roll from "./roll";
 
-import { selectAllPlayers, selectPlayerById } from "../../../redux/game/session/players";
+import { selectPlayerById } from "../../../redux/game/session/players";
+import { selectActivePlayerId } from "../../../redux/game/session/turn";
 import { actions as diceButtonActions } from "../../../redux/ui/dice";
 
 /** @return {Promise} */
 export default function () {
 	const state = getState();
 
-	const firstPlayerId = Object.keys(selectAllPlayers(state))[0];
-	const firstPlayer = selectPlayerById(state, firstPlayerId);
-	const currentPos = firstPlayer.position;
+	const activePlayerId = selectActivePlayerId(state);
+	const activePlayer = selectPlayerById(state, activePlayerId);
+	const currentPos = activePlayer.position;
 
 	// Roll dice
 	let steps = roll();
@@ -31,7 +32,7 @@ export default function () {
 	dispatch(diceButtonActions.setIndeterminate(true));
 	dispatch(diceButtonActions.disable());
 
-	return queueMove(firstPlayerId, nextMoves)
+	return queueMove(activePlayerId, nextMoves)
 		.then(() => {
 			dispatch(diceButtonActions.enable());
 			dispatch(diceButtonActions.setIndeterminate(false));
