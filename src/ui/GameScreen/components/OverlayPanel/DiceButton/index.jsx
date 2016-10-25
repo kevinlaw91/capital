@@ -9,7 +9,7 @@ import {
 import { getStateIsPanning } from "../../../../../redux/ui/camera";
 
 import styles from "./DiceButton.scss";
-import onClick from "../../../../../game/rules/dice/onclick";
+import { click } from "../../../../../game/rules/dice/click";
 
 let cx = classNames.bind({
 	"circle-ignore": styles["circle-ignore"],
@@ -36,7 +36,7 @@ class DiceButton extends React.Component {
 		};
 	}
 
-	handleClick() { !this.props.disabled && onClick(); }
+	handleClick() { !this.props.disabled && click(); }
 	handleMouseEnter() { this.setState({ hover: true }); }
 	handleMouseLeave() { this.setState({ pressed: false, hover: false }); }
 	handleMouseDown() { this.setState({ pressed: true }); }

@@ -37,7 +37,4 @@ export default function () {
 	const players = selectAllPlayers(getState());
 	const turnOrder = shuffle(Object.keys(players));
 	dispatch(playerTurnActions.setOrder(turnOrder));
-
-	// Set active player
-	dispatch(playerTurnActions.setActive(turnOrder[0]));
 }
