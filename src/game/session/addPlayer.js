@@ -5,9 +5,9 @@ import dispatch from "../utils/dispatch";
 
 import {
 	selectAllPlayers,
-	actions as playerActions
+	actions as playerCollection
 } from "../../redux/game/session/players";
-import { actions as sharedPlayerActions } from "../../redux/game/player";
+import { actions as playerActions } from "../../redux/game/player";
 
 function generateUniqueId() {
 	let id; // Generated id
@@ -24,8 +24,8 @@ function generateUniqueId() {
 
 export default props => {
 	const uniqueId = generateUniqueId();
-	dispatch(playerActions.add(uniqueId));
-	dispatch(sharedPlayerActions.setColor(uniqueId, props.color));
+	dispatch(playerCollection.add(uniqueId));
+	dispatch(playerActions.setColor(uniqueId, props.color));
 
 	return uniqueId;
 };

@@ -8,7 +8,7 @@ import generateMap from "../map/generate";
 import addPlayer from "./addPlayer";
 
 import { selectAllPlayers } from "../../redux/game/session/players";
-import { actions as sharedPlayerActions } from "../../redux/game/player";
+import { actions as playerActions } from "../../redux/game/player";
 import { actions as tokenActions } from "../../redux/game/stage/tokens";
 import { actions as playerTurnActions } from "../../redux/game/session/turn";
 
@@ -42,7 +42,7 @@ export default function () {
 		dispatch(tokenActions.add(id));
 
 		// Move player to starting location
-		dispatch(sharedPlayerActions.setPosition(id, "CORNER-BOTTOM"));
+		dispatch(playerActions.setPosition(id, "CORNER-BOTTOM"));
 	});
 
 	// Shuffle player order
