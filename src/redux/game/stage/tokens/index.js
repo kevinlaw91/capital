@@ -7,6 +7,7 @@ import { types as sharedTypes } from "../../player";
 export const types = {
 	"ADD": "game/stage/tokens/ADD",
 	"CLEAR": "game/stage/tokens/CLEAR",
+	"SET_ONMOVE": "game/stage/tokens/SET_ONMOVE",
 };
 
 // Actions
@@ -17,6 +18,12 @@ export const actions = {
 	}),
 
 	clear: () => ({ type: types.CLEAR }),
+
+	setOnMove: (playerId, callbackFn) => ({
+		type: types.SET_ONMOVE,
+		id: playerId,
+		callback: callbackFn,
+	})
 };
 
 const initialState = Immutable({});
@@ -37,6 +44,7 @@ export function reducer(state = initialState, action = {}) {
 			return initialState;
 
 		case sharedTypes.SET_POSITION:
+		case types.SET_ONMOVE:
 			if (action.id) {
 				return state.set(
 					action.id,

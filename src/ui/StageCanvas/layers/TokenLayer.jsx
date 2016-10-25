@@ -11,6 +11,7 @@ function renderToken(id, entry) {
 			color={entry.color}
 			x={entry.x}
 			y={entry.y}
+		    onMove={entry.onMove}
 		/>
 	);
 }

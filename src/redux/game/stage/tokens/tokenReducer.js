@@ -32,6 +32,13 @@ export default function reducer(state = initialState, action = {}) {
 				y: screenOffset[1],
 			});
 
+		case types.SET_ONMOVE:
+			if (action.callback) {
+				return state.set("onMove", action.callback);
+			} else {
+				return state.without("onMove");
+			}
+
 		default:
 			return state;
 	}
