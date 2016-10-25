@@ -1,4 +1,3 @@
-import shortid from "shortid";
 import { batchActions } from "redux-batched-actions";
 
 import dispatch from "../utils/dispatch";
@@ -6,11 +5,9 @@ import getState from "../utils/getState";
 import shuffle from "../../js/utils/shuffle";
 
 import generateMap from "../map/generate";
+import addPlayer from "./addPlayer";
 
-import {
-	selectAllPlayers,
-	actions as playerActions
-} from "../../redux/game/session/players";
+import { selectAllPlayers } from "../../redux/game/session/players";
 import { actions as sharedPlayerActions } from "../../redux/game/player";
 import { actions as tokenActions } from "../../redux/game/stage/tokens";
 import { actions as playerTurnActions } from "../../redux/game/session/turn";
@@ -19,23 +16,14 @@ export default function () {
 	// Generate map
 	dispatch(batchActions(generateMap()));
 
-	// Create a demo player
-
-	// Read state tree
-	let players = selectAllPlayers(getState());
-
-	// Generate a player id
-	let uniqueId;
-
-	// Make sure id is unique and not yet taken
-	do {
-		uniqueId = shortid.generate();
-	} while (uniqueId in players);
-
-	dispatch(playerActions.add(uniqueId));
+	// Create players
+	const playerCount = 4;
+	for (let idx = 0; idx < playerCount; idx++) {
+		addPlayer();
+	}
 
 	// Generate player tokens
-	players = selectAllPlayers(getState());
+	const players = selectAllPlayers(getState());
 
 	Object.keys(players).forEach(id => {
 		// Add token
