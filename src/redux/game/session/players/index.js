@@ -25,6 +25,7 @@ export function reducer(state = initialState, action = {}) {
 		case types.CLEAR:
 			return initialState;
 
+		case sharedTypes.SET_COLOR:
 		case sharedTypes.SET_POSITION:
 			if (action.id) {
 				return state.set(

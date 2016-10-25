@@ -18,8 +18,20 @@ export default function () {
 
 	// Create players
 	const playerCount = 4;
+	let playerColors = shuffle([
+		"black",
+		"blue",
+		"brown",
+		"green",
+		"pink",
+		"purple",
+		"red",
+		"yellow",
+	]);
 	for (let idx = 0; idx < playerCount; idx++) {
-		addPlayer();
+		addPlayer({
+			color: playerColors[idx],
+		});
 	}
 
 	// Generate player tokens
