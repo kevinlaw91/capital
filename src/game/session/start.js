@@ -5,6 +5,7 @@ import { actions as playerTurnActions } from "../../redux/game/session/turn";
 import { selectTurnOrder } from "../../redux/game/session/turn";
 
 import turnChange from "../rules/turn/change";
+import getNextActivePlayer from "../rules/turn/getNextActivePlayer";
 
 let gameEnded = false;
 
@@ -13,14 +14,12 @@ function gameLoop() {
 	if (gameEnded) { return; }
 
 	// Loop
+	const nextPlayerId = getNextActivePlayer();
+	dispatch(playerTurnActions.setActive(nextPlayerId));
 	turnChange().then(gameLoop);
 }
 
 export default function () {
-	// Set active player
-	const turnOrder = selectTurnOrder(getState());
-	dispatch(playerTurnActions.setActive(turnOrder[0]));
-
 	// Start game logic loop
 	// Listen to dice button click etc...
 	gameLoop();
