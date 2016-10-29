@@ -33,7 +33,7 @@ function renderToken(id, entry) {
 	return (
 		<Token
 			key={id}
-			color={entry.color}
+			color={entry.color || "white"}
 			x={screenX}
 			y={screenY}
 		    onMove={entry.onMove}

@@ -4,9 +4,7 @@ import { types as sharedTypes } from "../../player";
 import { types } from "./items";
 
 // Initial state
-const initialState = Immutable({
-	color: "white",
-});
+const initialState = Immutable({});
 
 export default function reducer(state = initialState, action = {}) {
 	switch (action.type) {
