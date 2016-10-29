@@ -6,10 +6,7 @@ export default function (locationId) {
 	if (lot) {
 		// Location id represents a property lot
 		// Extract side and index from it
-		const [/* skip */, side, idx] = lot;
-
-		// Strip zero padding
-		let i = Number(idx);
+		const [/* skip */, side, i] = lot;
 
 		switch (side) {
 			case "S": return { x: 12 - i, y: 13 };

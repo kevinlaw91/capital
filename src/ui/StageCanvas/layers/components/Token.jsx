@@ -3,11 +3,12 @@ import { VelocityComponent } from "velocity-react";
 import { tokens as sprite } from "../../../utils/sprites";
 
 // Offset to be applied to the sprite
-const offsetY = -30;
+const offsetX = -32;
+const offsetY = -43;
 
 export default function Token(props) {
 	const animatedProps = {
-		x: props.x,
+		x: props.x + offsetX,
 		y: props.y + offsetY,
 	};
 
