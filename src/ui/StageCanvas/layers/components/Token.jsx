@@ -27,8 +27,8 @@ export default function Token(props) {
 }
 
 Token.propTypes = {
-	x: React.PropTypes.number,
-	y: React.PropTypes.number,
+	x: React.PropTypes.number.isRequired,
+	y: React.PropTypes.number.isRequired,
 	color: React.PropTypes.string,
 	onMove: React.PropTypes.func,
 };
