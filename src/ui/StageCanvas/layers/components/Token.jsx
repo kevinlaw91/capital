@@ -1,5 +1,7 @@
 import { VelocityComponent } from "velocity-react";
 
+import { token as animation } from "../../../../game/config/animations";
+
 import { tokens as sprite } from "../../../utils/sprites";
 
 // Offset to be applied to the sprite
@@ -13,7 +15,11 @@ export default function Token(props) {
 	};
 
 	return (
-		<VelocityComponent animation={animatedProps} duration={300} complete={props.onMove}>
+		<VelocityComponent
+			animation={animatedProps}
+			duration={animation.DURATION_MOVE}
+			complete={props.onMove}
+		>
 			<use
 				width={64}
 				height={64}

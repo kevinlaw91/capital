@@ -1,9 +1,9 @@
 import dispatch from "../../utils/dispatch";
 
-import { actions as playerSharedActions } from "../../../redux/game/player";
-import { actions as tokenActions } from "../../../redux/game/stage/token/items";
+import { actions as playerActions } from "../../../redux/game/player";
+import { actions as tokenActions } from "../../../redux/game/stage/token";
 
-const PLAYER_MOVE_WAIT = 200;
+import { token as animation } from "../../../game/config/animations";
 
 /**
  * Move player along the path
@@ -32,12 +32,12 @@ export default (playerId, path) => {
 						// (2) animation done callback (async)
 						animCompleted = animDone;
 						// (1) Move player
-						dispatch(playerSharedActions.setPosition(playerId, location));
+						dispatch(playerActions.setPosition(playerId, location));
 					}).then(() => {
 						// Player done moving
 						// (3) Wait before beginning next step
 						if (idx <= path.length - 1) {
-							window.setTimeout(stepCompleted, PLAYER_MOVE_WAIT);
+							window.setTimeout(stepCompleted, animation.PAUSE_BEFORE_NEXT_STEP);
 						} else {
 							// This is already last step in queue,
 							// so no more waiting

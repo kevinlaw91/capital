@@ -30,7 +30,3 @@
 @keyframes :global(rotate) {
 	to { transform: rotate(360deg); }
 }
-
-@keyframes :global(draw-stroke) {
-	to { stroke-dashoffset: 0; }
-}

@@ -8,7 +8,7 @@ import {
 	actions as playerCollection
 } from "../../redux/game/session/players";
 import { actions as playerActions } from "../../redux/game/player";
-import { actions as tokenActions } from "../../redux/game/stage/token/items";
+import { actions as tokenActions } from "../../redux/game/stage/token";
 
 function generateUniqueId() {
 	let id; // Generated id

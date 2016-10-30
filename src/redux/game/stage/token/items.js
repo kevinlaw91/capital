@@ -1,37 +1,17 @@
 import Immutable from "seamless-immutable";
 
 import tokenReducer from "./tokenReducer";
-import { types as sharedTypes } from "../../player";
 
-// Types
-export const types = {
-	"ADD": "game/stage/token/items/ADD",
-	"CLEAR": "game/stage/token/items/CLEAR",
-	"SET_ONMOVE": "game/stage/token/items/SET_ONMOVE",
-};
+import { types as tokenTypes } from "./index";
+import { types as playerTypes } from "../../../../redux/game/player";
 
-// Actions
-export const actions = {
-	add: playerId => ({
-		type: types.ADD,
-		id: playerId,
-	}),
-
-	clear: () => ({ type: types.CLEAR }),
-
-	setOnMove: (playerId, callbackFn) => ({
-		type: types.SET_ONMOVE,
-		id: playerId,
-		callback: callbackFn,
-	})
-};
-
+// Initial state
 const initialState = Immutable({});
 
 // Reducer
 export function reducer(state = initialState, action = {}) {
 	switch (action.type) {
-		case types.ADD:
+		case tokenTypes.ADD:
 			if (action.id) {
 				const newToken = tokenReducer(null, action);
 
@@ -40,12 +20,13 @@ export function reducer(state = initialState, action = {}) {
 
 			return state;
 
-		case types.CLEAR:
+		case tokenTypes.CLEAR:
 			return initialState;
 
-		case sharedTypes.SET_POSITION:
-		case sharedTypes.SET_COLOR:
-		case types.SET_ONMOVE:
+		case playerTypes.SET_POSITION:
+		case playerTypes.SET_COLOR:
+		case tokenTypes.SET_IDLE:
+		case tokenTypes.SET_ONMOVE:
 			if (action.id) {
 				return state.set(
 					action.id,

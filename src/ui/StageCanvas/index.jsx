@@ -2,6 +2,7 @@ import { setViewportElement } from "../utils/camera";
 import FloorLayer from "./layers/FloorLayer";
 import * as FloorLayerBorder from "./layers/FloorLayerBorder";
 import TokenLayer from "./layers/TokenLayer";
+import GroundMarkerLayer from "./layers/GroundMarkerLayer";
 
 export default function StageCanvas() {
 	return (
@@ -14,6 +15,9 @@ export default function StageCanvas() {
 			<FloorLayerBorder.Back />
 			<FloorLayer />
 			<FloorLayerBorder.Front />
+
+			{ /* Ground Markers */ }
+			<GroundMarkerLayer />
 
 			{ /* Tokens */ }
 			<TokenLayer />

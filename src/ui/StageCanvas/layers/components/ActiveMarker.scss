@@ -1,0 +1,18 @@
+.circle {
+	$length: 29;
+	$gap: 9;
+
+	animation: rotate-stroke 1s linear infinite;
+	fill: none;
+	stroke: white {
+		width: 10;
+		dasharray: ($length - $gap) $gap;
+		dashoffset: $length;
+	}
+}
+
+@keyframes rotate-stroke {
+	 to {
+		 stroke-dashoffset: 0;
+	 }
+ }

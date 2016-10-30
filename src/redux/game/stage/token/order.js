@@ -1,6 +1,7 @@
 import Immutable from "seamless-immutable";
 
-import { types as sharedTypes } from "../../../../redux/game/player";
+import { types as tokenTypes } from "./actions";
+import { types as playerTypes } from "../../../../redux/game/player";
 
 // Types
 export const types = {
@@ -18,22 +19,23 @@ export const actions = {
 	clear: () => ({ type: types.CLEAR }),
 };
 
+// Initial state
 const initialState = Immutable([]);
 
 // Reducer
 export function reducer(state = initialState, action = {}) {
 	switch (action.type) {
-		case types.SET_ORDER:
+		case tokenTypes.SET_ORDER:
 			if (action.order) {
 				return Immutable(action.order.reverse());
 			}
 
 			return state;
 
-		case types.CLEAR:
+		case tokenTypes.CLEAR:
 			return initialState;
 
-		case sharedTypes.SET_ACTIVE:
+		case playerTypes.SET_ACTIVE:
 			// Move id entry towards the end when token is set to active
 			if (action.id) {
 				// Remove entry and re-insert at the end

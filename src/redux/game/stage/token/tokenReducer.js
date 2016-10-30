@@ -1,23 +1,28 @@
 import Immutable from "seamless-immutable";
 
-import { types as sharedTypes } from "../../player";
-import { types } from "./items";
+import { types as playerTypes } from "../../player";
+import { types as tokenTypes } from "./index";
 
 // Initial state
-const initialState = Immutable({});
+const initialState = Immutable({
+	idle: true,
+});
 
 export default function reducer(state = initialState, action = {}) {
 	switch (action.type) {
-		case types.ADD:
+		case tokenTypes.ADD:
 			return initialState;
 
-		case sharedTypes.SET_POSITION:
+		case playerTypes.SET_POSITION:
 			return state.set("position", action.position);
 
-		case sharedTypes.SET_COLOR:
+		case playerTypes.SET_COLOR:
 			return state.set("color", action.color);
 
-		case types.SET_ONMOVE:
+		case tokenTypes.SET_IDLE:
+			return state.set("idle", action.idle);
+
+		case tokenTypes.SET_ONMOVE:
 			if (action.callback) {
 				return state.set("onMove", action.callback);
 			} else {
