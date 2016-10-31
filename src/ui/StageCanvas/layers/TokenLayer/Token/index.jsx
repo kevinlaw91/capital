@@ -1,8 +1,8 @@
 import { VelocityComponent } from "velocity-react";
 
-import { token as animation } from "../../../../game/config/animations";
+import { token as animation } from "../../../../../game/config/animations";
 
-import { tokens as sprite } from "../../../utils/sprites";
+import { tokens as sprite } from "../../../../utils/sprites";
 
 // Offset to be applied to the sprite
 const offsetX = -32;
