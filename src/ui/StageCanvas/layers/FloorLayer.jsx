@@ -61,45 +61,57 @@ const RENDER_CORNER = (id, props) => {
 const lotIndex = /\d+$/;
 
 const RENDER_TILE_WEST = ([id, { ...tileProps }]) => {
+	const row = Number(id.match(lotIndex)[0]);
+
 	return renderTile({
-		id: id,
-		row: Number(id.match(lotIndex)[0]),
+		id,
+		row,
 		col: 1,
 		rowSize: 1,
 		colSize: 3,
+		tooltip: "LOT-W" + (12 - row),
 		...tileProps
 	});
 };
 
 const RENDER_TILE_NORTH = ([id, { ...tileProps }]) => {
+	const col = Number(id.match(lotIndex)[0]);
+
 	return renderTile({
-		id: id,
+		id,
 		row: 1,
-		col: Number(id.match(lotIndex)[0]),
+		col,
 		rowSize: 3,
 		colSize: 1,
+		tooltip: "LOT-N" + (col - 4),
 		...tileProps
 	});
 };
 
 const RENDER_TILE_SOUTH = ([id, { ...tileProps }]) => {
+	const col = Number(id.match(lotIndex)[0]);
+
 	return renderTile({
-		id: id,
+		id,
 		row: 13,
-		col: Number(id.match(lotIndex)[0]),
+		col,
 		rowSize: 3,
 		colSize: 1,
+		tooltip: "LOT-S" + (12 - col),
 		...tileProps
 	});
 };
 
 const RENDER_TILE_EAST = ([id, { ...tileProps }]) => {
+	const row = Number(id.match(lotIndex)[0]);
+
 	return renderTile({
-		id: id,
-		row: Number(id.match(lotIndex)[0]),
+		id,
+		row,
 		col: 13,
 		rowSize: 1,
 		colSize: 3,
+		tooltip: "LOT-E" + (row - 4),
 		...tileProps
 	});
 };

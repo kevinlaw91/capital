@@ -79,3 +79,4 @@ export function reducer(state = initialState, action = {}) {
 
 // Selectors
 export const selectAllMapEntities = state => state.game.session.map;
+export const selectEntityById = (state, id) => state.game.session.map[id];

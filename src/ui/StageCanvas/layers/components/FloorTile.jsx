@@ -1,3 +1,7 @@
+import { connect } from "react-redux";
+
+import { actions } from "../../../../redux/ui/tooltip";
+
 import {
 	GRID_TILESIZE,
 	getBoundingOffset,
@@ -13,7 +17,7 @@ const crispEdge = {
 	shapeRendering: "crispEdges",
 };
 
-export default function FloorTile(props) {
+function FloorTile(props) {
 	const { rowSize, colSize } = props;
 
 	let height = GRID_TILESIZE;
@@ -61,6 +65,23 @@ export default function FloorTile(props) {
 		logger.error(`Sprite '${props.symbol}' (Variant: '${props.variant}') cannot be found in tile collection.`);
 	}
 
+	// Mouse events
+	let handleMouseEnter;
+	let handleMouseOut;
+
+	if (props.tooltip) {
+		handleMouseEnter = function (evt) {
+			const bb = evt.target.getBoundingClientRect();
+
+			props.showTooltip("LotTooltip", {
+				lot: props.tooltip,
+				x: bb.left + (bb.width / 2),
+				y: bb.top + (bb.height / 2),
+			});
+		};
+		handleMouseOut = props.hideTooltip;
+	}
+
 	return (
 		href ? (
 			<use
@@ -70,6 +91,8 @@ export default function FloorTile(props) {
 				height={height}
 				xlinkHref={href}
 				style={props.crisp && crispEdge}
+			    onMouseEnter={handleMouseEnter}
+			    onMouseOut={handleMouseOut}
 			/>
 		) : null
 	);
@@ -84,4 +107,14 @@ FloorTile.propTypes = {
 	rowSize: React.PropTypes.number,
 	colSize: React.PropTypes.number,
 	crisp: React.PropTypes.bool,
+	tooltip: React.PropTypes.string,
+	showTooltip: React.PropTypes.func,
+	hideTooltip: React.PropTypes.func,
 };
+
+const mapDispatchToProps = {
+	showTooltip: actions.show,
+	hideTooltip: actions.hide,
+};
+
+export default connect(null, mapDispatchToProps)(FloorTile);

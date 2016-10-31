@@ -5,6 +5,7 @@ import { VelocityComponent } from "velocity-react";
 import Screen from "./components/Screen";
 import SplashScreen from "../SplashScreen";
 import GameScreen from "../GameScreen";
+import Tooltip from "../Tooltip";
 
 import { getStateIsHidden as getSplashHidden } from "../../redux/ui/splash";
 
@@ -31,6 +32,7 @@ class App extends React.Component {
 						<SplashScreen />
 					</Screen>
 				</VelocityComponent>
+				<Tooltip />
 			</div>
 		);
 	}
