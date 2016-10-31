@@ -1,16 +1,16 @@
 import { connect } from "react-redux";
 import { VelocityTransitionGroup } from "velocity-react";
 
-import { getTopFaceMidpoint } from "../../utils/coordinates";
-import tokenPosition from "./utils/tokenPosition";
+import { getTopFaceMidpoint } from "../../../utils/coordinates";
+import tokenPosition from "../utils/tokenPosition";
 
-import { selectOrder as selectTokenOrder } from "../../../redux/game/stage/token/order";
-import { selectAllTokens } from "../../../redux/game/stage/token/items";
-import { selectActivePlayerId } from "../../../redux/game/session/turn";
+import { selectOrder as selectTokenOrder } from "../../../../redux/game/stage/token/order";
+import { selectAllTokens } from "../../../../redux/game/stage/token/items";
+import { selectActivePlayerId } from "../../../../redux/game/session/turn";
 
-import ActiveMarker from "./components/ActiveMarker";
+import ActiveMarker from "./ActiveMarker";
 
-import { token as animation } from "../../../game/config/animations";
+import { token as animation } from "../../../../game/config/animations";
 
 function renderActiveMarker(id, token) {
 	if (!id || !token) {
