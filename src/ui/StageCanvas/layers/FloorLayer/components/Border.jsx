@@ -1,4 +1,4 @@
-import { GRID_COL, GRID_ROW } from "../../../../utils/coordinates";
+import { GRID_COL, GRID_ROW } from "../../../utils/coordinates";
 
 import FloorTile from "./FloorTile";
 

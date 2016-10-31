@@ -1,4 +1,4 @@
-import { getVertexOffset } from "../../../utils/coordinates";
+import { getVertexOffset } from "../../utils/coordinates";
 
 import * as Border from "./components/Border";
 import * as Side from "./components/Sides";

@@ -1,4 +1,4 @@
-import { GRID_TILESIZE } from "../../../../../utils/coordinates";
+import { GRID_TILESIZE } from "../../../../utils/coordinates";
 
 const HALF_TILE = GRID_TILESIZE / 2;
 const QUARTER_TILE = GRID_TILESIZE / 4;

@@ -1,8 +1,8 @@
 import { connect } from "react-redux";
 import { VelocityTransitionGroup } from "velocity-react";
 
-import { getTopFaceMidpoint } from "../../../utils/coordinates";
-import tokenPosition from "../utils/tokenPosition";
+import { getTopFaceMidpoint } from "../../utils/coordinates";
+import tokenPosition from "../../utils/tokenPosition";
 
 import { selectOrder as selectTokenOrder } from "../../../../redux/game/stage/token/order";
 import { selectAllTokens } from "../../../../redux/game/stage/token/items";
