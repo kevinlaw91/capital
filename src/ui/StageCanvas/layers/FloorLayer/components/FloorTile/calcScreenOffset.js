@@ -1,4 +1,4 @@
-import { getBoundingOffset } from "../../../../utils/coordinates";
+import { getBoundingOffset } from "../../../../../utils/coordinates";
 
 export default function (row, col, rowSize, colSize) {
 	let offset;

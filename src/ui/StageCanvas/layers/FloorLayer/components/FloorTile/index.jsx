@@ -1,13 +1,9 @@
-import { connect } from "react-redux";
-
-import { actions } from "../../../../../redux/ui/tooltip";
-
 import calcScreenOffset from "./calcScreenOffset";
 import calcTileSize from "./calcTileSize";
 
-import { tiles as sprite } from "../../../../utils/sprites";
+import { tiles as sprite } from "../../../../../utils/sprites";
 
-function FloorTile(props) {
+export default function FloorTile(props) {
 	const { symbol, variant, row, col, rowSize, colSize } = props;
 
 	// Calculate props
@@ -61,10 +57,3 @@ FloorTile.propTypes = {
 	showTooltip: React.PropTypes.func,
 	hideTooltip: React.PropTypes.func,
 };
-
-const mapDispatchToProps = {
-	showTooltip: actions.show,
-	hideTooltip: actions.hide,
-};
-
-export default connect(null, mapDispatchToProps)(FloorTile);

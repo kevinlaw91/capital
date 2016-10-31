@@ -1,5 +1,6 @@
-import { GRID_COL, GRID_ROW } from "../../utils/coordinates";
-import renderTile from "./utils/renderTile";
+import { GRID_COL, GRID_ROW } from "../../../../utils/coordinates";
+
+import FloorTile from "./FloorTile";
 
 // Border tiles
 const BORDER_BG = [];
@@ -50,18 +51,21 @@ for (; r < GRID_ROW; r++) {
 	});
 }
 
-export function Back() {
-	return (
-		<g style={{ shapeRendering: "crispEdges" }}>
-			{ BORDER_BG.map(renderTile) }
-		</g>
-	);
-}
+// Render crisp quality
+const crisp = { shapeRendering: "crispEdges" };
 
-export function Front() {
-	return (
-		<g style={{ shapeRendering: "crispEdges" }}>
-			{ BORDER_FG.map(renderTile) }
-		</g>
-	);
-}
+export const Back = () => (
+	<g style={crisp}> {
+		BORDER_BG.map(({ id, ...props }) =>
+			<FloorTile key={id} {...props} />
+		)
+	} </g>
+);
+
+export const Front = () => (
+	<g style={crisp}> {
+		BORDER_FG.map(({ id, ...props }) =>
+			<FloorTile key={id} {...props} />
+		)
+	} </g>
+);

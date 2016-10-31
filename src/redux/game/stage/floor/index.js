@@ -33,10 +33,4 @@ const reducer = combineReducers({
 export { reducer };
 
 // Selectors
-export const selectors = {
-	selectCornerTiles: state => state.game.stage.floor.corners,
-	selectSouthTiles: state => state.game.stage.floor.south,
-	selectWestTiles: state => state.game.stage.floor.west,
-	selectNorthTiles: state => state.game.stage.floor.north,
-	selectEastTiles: state => state.game.stage.floor.east,
-};
+export const selectTiles = (state, group) => state.game.stage.floor[group];
