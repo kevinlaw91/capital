@@ -1,9 +1,9 @@
 import CSSModules from "react-css-modules";
 import { VelocityComponent } from "velocity-react";
 
-import { token as animation } from "../../../../game/config/animations";
+import { token as animation } from "../../../../../game/config/animations";
 
-import styles from "./ActiveMarker.scss";
+import styles from "./styles.scss";
 
 function ActiveMarker(props) {
 	const idleTransitions = {
