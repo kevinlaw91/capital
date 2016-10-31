@@ -15,7 +15,6 @@ const RENDER_CORNER = (id, props) => {
 					row: 13,
 					rowSize: 3,
 					colSize: 3,
-					square: true,
 				})
 			);
 
@@ -27,7 +26,6 @@ const RENDER_CORNER = (id, props) => {
 					row: 13,
 					rowSize: 3,
 					colSize: 3,
-					square: true,
 				})
 			);
 
@@ -39,7 +37,6 @@ const RENDER_CORNER = (id, props) => {
 					row: 1,
 					rowSize: 3,
 					colSize: 3,
-					square: true,
 				})
 			);
 
@@ -51,7 +48,6 @@ const RENDER_CORNER = (id, props) => {
 					row: 1,
 					rowSize: 3,
 					colSize: 3,
-					square: true,
 				})
 			);
 	}
