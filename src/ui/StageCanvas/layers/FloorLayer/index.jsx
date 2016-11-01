@@ -1,5 +1,6 @@
 import { getVertexOffset } from "../../utils/coordinates";
 
+import SVGFilterBrightness from "../../filters/SVGFilterBrightness";
 import * as Border from "./components/Border";
 import * as Side from "./components/Sides";
 import * as Corner from "./components/Corners";
@@ -7,6 +8,7 @@ import * as Corner from "./components/Corners";
 export default function FloorLayer() {
 	return (
 		<g>
+			<SVGFilterBrightness id="FloorLayerTileHoverEffect" value="1.3" />
 			<Border.Back />
 			<Corner.Top />
 			<Side.West />

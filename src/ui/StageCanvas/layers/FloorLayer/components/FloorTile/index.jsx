@@ -19,8 +19,11 @@ export default function FloorTile(props) {
 	// Tooltip
 	let handleMouseEnter, handleMouseOut;
 	if (props.tooltip) {
-		// Show tooltip
-		handleMouseEnter = function (evt) {
+		handleMouseEnter = evt => {
+			// Hover effect
+			evt.target.setAttribute("filter", "url(#FloorLayerTileHoverEffect)");
+
+			// Show tooltip
 			const { left, top, width, height } = evt.target.getBoundingClientRect();
 			props.showTooltip("LotTooltip", {
 				lot: props.tooltip,
@@ -29,8 +32,13 @@ export default function FloorTile(props) {
 			});
 		};
 
-		// Hide tooltip
-		handleMouseOut = props.hideTooltip;
+		handleMouseOut = evt => {
+			// Undo hover effect
+			evt.target.removeAttribute("filter");
+
+			// Hide tooltip
+			props.hideTooltip();
+		};
 	}
 
 	return (
