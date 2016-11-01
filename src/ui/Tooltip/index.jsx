@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { getTooltipClass, getTooltipData } from "../../redux/ui/tooltip";
 
 import LotTooltip from "./LotTooltip";
+import TokenTooltip from "./TokenTooltip";
 
 import styles from "./styles.scss";
 
@@ -13,6 +14,9 @@ function Tooltip(props) {
 	switch (props.type) {
 		case "LotTooltip":
 			tooltip = <LotTooltip x={props.data.x} y={props.data.y} lot={props.data.lot} />;
+			break;
+		case "TokenTooltip":
+			tooltip = <TokenTooltip x={props.data.x} y={props.data.y} player={props.data.player} />;
 			break;
 	}
 

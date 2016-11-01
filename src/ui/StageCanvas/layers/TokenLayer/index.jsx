@@ -33,6 +33,7 @@ function renderToken(id, entry) {
 	return (
 		<Token
 			key={id}
+			tooltip={id}
 			color={entry.color || "white"}
 			x={screenX}
 			y={screenY}
