@@ -1,6 +1,4 @@
-// Map lot id to redux tile
-
-export default {
+const map = {
 	// Corners
 	"CORNER-BOTTOM": "TILE-CORNER-BOTTOM",
 	"CORNER-LEFT": "TILE-CORNER-LEFT",
@@ -51,3 +49,9 @@ export default {
 	"LOT-E7": "TILE-EAST-11",
 	"LOT-E8": "TILE-EAST-12",
 };
+
+// Map from entity id to tile id
+export const getTileId = lotId => map[lotId];
+
+// Map from tile id to entity id
+export const getLotId = tileId => Object.keys(map).filter(key => map[key] === tileId)[0];

@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import { selectTiles } from "../../../../../redux/game/stage/floor";
 import { actions as tooltipActions } from "../../../../../redux/ui/tooltip";
 
+import { getLotId } from "../../../../../game/map/tile/mappings";
+
 import FloorTile from "./FloorTile";
 
 // Add tooltip support to floor tile
@@ -25,7 +27,7 @@ const _west = ([id, { ...tileProps }]) => {
 			col={1}
 			rowSize={1}
 			colSize={3}
-			tooltip={"LOT-W" + (12 - row)}
+			tooltip={getLotId(id)}
 			{...tileProps}
 		/>
 	);
@@ -41,7 +43,7 @@ const _north = ([id, { ...tileProps }]) => {
 			col={col}
 			rowSize={3}
 			colSize={1}
-			tooltip={"LOT-N" + (col - 4)}
+			tooltip={getLotId(id)}
 			{...tileProps}
 		/>
 	);
@@ -57,7 +59,7 @@ const _south = ([id, { ...tileProps }]) => {
 			col={col}
 			rowSize={3}
 			colSize={1}
-			tooltip={"LOT-S" + (12 - col)}
+			tooltip={getLotId(id)}
 			{...tileProps}
 		/>
 	);
@@ -73,7 +75,7 @@ const _east = ([id, { ...tileProps }]) => {
 			col={13}
 			rowSize={1}
 			colSize={3}
-			tooltip={"LOT-E" + (row - 4)}
+			tooltip={getLotId(id)}
 			{...tileProps}
 		/>
 	);
