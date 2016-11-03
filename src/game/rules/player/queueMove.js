@@ -1,9 +1,7 @@
-import dispatch from "../../utils/dispatch";
-
-import { actions as playerActions } from "../../../redux/game/player";
-import { actions as tokenActions } from "../../../redux/game/stage/token";
-
-import { token as animation } from "../../../game/config/animations";
+import dispatch from "redux/dispatch";
+import { actions as playerActions } from "redux/game/player";
+import { actions as tokenActions } from "redux/game/stage/token";
+import { token as animation } from "game/config/animations";
 
 /**
  * Move player along the path

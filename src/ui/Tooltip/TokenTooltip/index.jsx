@@ -1,9 +1,7 @@
 import CSSModules from "react-css-modules";
 import { connect } from "react-redux";
-
 import styles from "./TokenTooltip.scss";
-
-import { selectPlayerById } from "../../../redux/game/session/players";
+import { selectPlayerById } from "redux/game/session/players";
 
 function TokenTooltip(props) {
 	return (

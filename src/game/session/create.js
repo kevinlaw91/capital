@@ -1,15 +1,12 @@
 import { batchActions } from "redux-batched-actions";
-
-import dispatch from "../utils/dispatch";
-import getState from "../utils/getState";
-import shuffle from "../../js/utils/shuffle";
-
-import generateMap from "../map/generate";
+import dispatch from "redux/dispatch";
+import getState from "redux/getState";
+import shuffle from "js/utils/shuffle";
+import generateMap from "game/map/generate";
 import addPlayer from "./addPlayer";
-
-import { selectAllPlayers } from "../../redux/game/session/players";
-import { actions as playerTurnActions } from "../../redux/game/session/turn";
-import { actions as tokenOrderActions } from "../../redux/game/stage/token";
+import { selectAllPlayers } from "redux/game/session/players";
+import { actions as playerTurnActions } from "redux/game/session/turn";
+import { actions as tokenOrderActions } from "redux/game/stage/token";
 
 export default function () {
 	// Generate map

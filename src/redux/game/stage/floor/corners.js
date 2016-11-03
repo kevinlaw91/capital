@@ -1,5 +1,4 @@
 import Immutable from "seamless-immutable";
-
 import { types } from "./index";
 import tileReducer from "./tileReducer";
 

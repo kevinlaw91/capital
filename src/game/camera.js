@@ -1,8 +1,8 @@
 import svgPanZoom from "svg-pan-zoom";
-import clamp from "../js/utils/clamp";
 import Velocity from "velocity-animate";
-import dispatch from "./utils/dispatch";
-import { actions } from "../redux/ui/camera";
+import dispatch from "redux/dispatch";
+import { actions } from "redux/ui/camera";
+import clamp from "js/utils/clamp";
 
 // Pan Zoom Configurations
 const SETTING_ZOOM_MIN = 0.8;

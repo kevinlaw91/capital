@@ -1,9 +1,7 @@
 import Immutable from "seamless-immutable";
-
 import tokenReducer from "./tokenReducer";
-
 import { types as tokenTypes } from "./index";
-import { types as playerTypes } from "../../../../redux/game/player";
+import { types as playerTypes } from "redux/game/player";
 
 // Initial state
 const initialState = Immutable({});

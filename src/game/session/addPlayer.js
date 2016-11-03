@@ -1,14 +1,12 @@
 import shortid from "shortid";
-
-import getState from "../utils/getState";
-import dispatch from "../utils/dispatch";
-
+import getState from "redux/getState";
+import dispatch from "redux/dispatch";
 import {
 	selectAllPlayers,
 	actions as playerCollection
-} from "../../redux/game/session/players";
-import { actions as playerActions } from "../../redux/game/player";
-import { actions as tokenActions } from "../../redux/game/stage/token";
+} from "redux/game/session/players";
+import { actions as playerActions } from "redux/game/player";
+import { actions as tokenActions } from "redux/game/stage/token";
 
 function generateUniqueId() {
 	let id; // Generated id

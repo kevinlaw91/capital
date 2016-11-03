@@ -1,3 +1,3 @@
-import store from "../../redux";
+import store from "./store";
 
 export default () => store.getState();

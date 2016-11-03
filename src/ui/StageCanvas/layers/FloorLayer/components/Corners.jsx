@@ -1,8 +1,6 @@
 import { connect } from "react-redux";
-
 import FloorTile from "./FloorTile";
-
-import { selectTiles } from "../../../../../redux/game/stage/floor";
+import { selectTiles } from "redux/game/stage/floor";
 
 export const Top = connect(
 	state => selectTiles(state, "corners")["TILE-CORNER-TOP"]

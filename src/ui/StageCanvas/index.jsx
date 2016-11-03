@@ -1,4 +1,4 @@
-import { setViewportElement } from "../utils/camera";
+import { setViewportElement } from "game/camera";
 import FloorLayer from "./layers/FloorLayer";
 import TokenLayer from "./layers/TokenLayer";
 import GroundMarkerLayer from "./layers/GroundMarkerLayer";

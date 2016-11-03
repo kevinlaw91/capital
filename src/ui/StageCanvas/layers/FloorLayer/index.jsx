@@ -1,6 +1,5 @@
-import { getVertexOffset } from "../../utils/coordinates";
-
-import SVGFilterBrightness from "../../filters/SVGFilterBrightness";
+import { getVertexOffset } from "game/map/coordinates";
+import SVGFilterBrightness from "ui/StageCanvas/filters/SVGFilterBrightness";
 import * as Border from "./components/Border";
 import * as Side from "./components/Sides";
 import * as Corner from "./components/Corners";

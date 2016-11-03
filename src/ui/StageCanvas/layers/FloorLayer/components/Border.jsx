@@ -1,5 +1,4 @@
-import { GRID_COL, GRID_ROW } from "../../../utils/coordinates";
-
+import { GRID_COL, GRID_ROW } from "game/map/coordinates";
 import FloorTile from "./FloorTile";
 
 // Border tiles

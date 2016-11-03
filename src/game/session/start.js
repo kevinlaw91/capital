@@ -1,9 +1,7 @@
-import dispatch from "../utils/dispatch";
-
-import { actions as playerSharedActions } from "../../redux/game/player";
-
-import turnChange from "../rules/turn/change";
-import getNextActivePlayer from "../rules/turn/getNextActivePlayer";
+import dispatch from "redux/dispatch";
+import { actions as playerSharedActions } from "redux/game/player";
+import turnChange from "game/rules/turn/change";
+import getNextActivePlayer from "game/rules/turn/getNextActivePlayer";
 
 let gameEnded = false;
 

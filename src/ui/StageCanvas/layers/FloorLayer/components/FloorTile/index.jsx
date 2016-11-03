@@ -1,7 +1,6 @@
 import calcScreenOffset from "./calcScreenOffset";
 import calcTileSize from "./calcTileSize";
-
-import { tiles as sprite } from "../../../../../utils/sprites";
+import { default as sprite } from "game/resources/sprites/tiles";
 
 export default function FloorTile(props) {
 	const { symbol, variant, row, col, rowSize, colSize } = props;

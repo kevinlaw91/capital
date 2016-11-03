@@ -1,11 +1,9 @@
 import { batchActions } from "redux-batched-actions";
-
-import getState from "../../utils/getState";
+import getState from "redux/getState";
 import {
 	selectAllMapEntities,
-	actions
-} from "../../../redux/game/session/map";
-
+	actions,
+} from "redux/game/session/map";
 import NameGenerator from "./name";
 import generatePrice from "./price";
 import generateUpgrades from "./upgrades";

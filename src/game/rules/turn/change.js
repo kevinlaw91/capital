@@ -1,18 +1,14 @@
-import dispatch from "../../utils/dispatch";
-import getState from "../../utils/getState";
-
-import { token as animation } from "../../../game/config/animations";
-
-import { findWaypointsBySteps } from "../../rules/player/pathfinder";
-import queueMove from "../../rules/player/queueMove";
-import roll from "../../rules/dice/roll";
-import { subscribe as waitForDiceOnClick } from "../../rules/dice/click";
-
-import { selectPlayerById } from "../../../redux/game/session/players";
-import { selectActivePlayerId } from "../../../redux/game/session/turn";
-
-import { actions as diceButtonActions } from "../../../redux/ui/dice";
-import { actions as tokenActions } from "../../../redux/game/stage/token";
+import dispatch from "redux/dispatch";
+import getState from "redux/getState";
+import { token as animation } from "game/config/animations";
+import { findWaypointsBySteps } from "game/rules/player/pathfinder";
+import queueMove from "game/rules/player/queueMove";
+import roll from "game/rules/dice/roll";
+import { subscribe as waitForDiceOnClick } from "game/rules/dice/click";
+import { selectPlayerById } from "redux/game/session/players";
+import { selectActivePlayerId } from "redux/game/session/turn";
+import { actions as diceButtonActions } from "redux/ui/dice";
+import { actions as tokenActions } from "redux/game/stage/token";
 
 function wait(duration) {
 	return function () {

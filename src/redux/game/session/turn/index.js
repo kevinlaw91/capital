@@ -1,6 +1,5 @@
 import Immutable from "seamless-immutable";
-
-import { types as sharedTypes } from "../../../../redux/game/player";
+import { types as sharedTypes } from "redux/game/player";
 
 // Types
 export const types = {

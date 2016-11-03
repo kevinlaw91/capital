@@ -1,4 +1,4 @@
-import findNextMove from "../../rules/player/findNextMove";
+import findNextMove from "game/rules/player/findNextMove";
 
 export function findWaypointsBySteps(from, steps) {
 	const waypoints = [];

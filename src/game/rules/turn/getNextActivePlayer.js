@@ -1,9 +1,8 @@
-import getState from "../../utils/getState";
-
+import getState from "redux/getState";
 import {
 	selectTurnOrder,
 	selectActivePlayerId,
-} from "../../../redux/game/session/turn";
+} from "redux/game/session/turn";
 
 export default function () {
 	// Set active player

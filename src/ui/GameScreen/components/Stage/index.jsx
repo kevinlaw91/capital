@@ -1,5 +1,5 @@
-import { setSVGElement, init } from "../../../utils/camera";
-import StageCanvas from "../../../StageCanvas";
+import { setSVGElement, init } from "game/camera";
+import StageCanvas from "ui/StageCanvas";
 
 export default class Stage extends React.Component {
 	componentDidMount() {

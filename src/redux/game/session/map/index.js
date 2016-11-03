@@ -1,5 +1,4 @@
 import Immutable from "seamless-immutable";
-
 import mapDefinition from "./initialState";
 import lotReducer from "./lotReducer";
 

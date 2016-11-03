@@ -1,4 +1,4 @@
-import { getBoundingOffset } from "../../../../utils/coordinates";
+import { getBoundingOffset } from "game/map/coordinates";
 
 export default function (row, col, rowSize, colSize) {
 	let offset;

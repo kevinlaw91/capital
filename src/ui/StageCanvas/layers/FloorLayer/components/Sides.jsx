@@ -1,10 +1,7 @@
 import { connect } from "react-redux";
-
-import { selectTiles } from "../../../../../redux/game/stage/floor";
-import { actions as tooltipActions } from "../../../../../redux/ui/tooltip";
-
-import { getLotId } from "../../../../../game/map/tile/mappings";
-
+import { selectTiles } from "redux/game/stage/floor";
+import { actions as tooltipActions } from "redux/ui/tooltip";
+import { getLotId } from "game/map/tile/mappings";
 import FloorTile from "./FloorTile";
 
 // Add tooltip support to floor tile

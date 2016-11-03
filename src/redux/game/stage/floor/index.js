@@ -1,11 +1,5 @@
 import { combineReducers } from "redux";
 
-import { reducer as corners } from "./corners";
-import { reducer as south } from "./south";
-import { reducer as west } from "./west";
-import { reducer as north } from "./north";
-import { reducer as east } from "./east";
-
 // Types
 export const types = {
 	"CHANGE_SYMBOL": "game/stage/floor/CHANGE_SYMBOL",
@@ -22,6 +16,12 @@ export const actions = {
 };
 
 // Reducer
+import { reducer as corners } from "./corners";
+import { reducer as south } from "./south";
+import { reducer as west } from "./west";
+import { reducer as north } from "./north";
+import { reducer as east } from "./east";
+
 const reducer = combineReducers({
 	corners,
 	south,

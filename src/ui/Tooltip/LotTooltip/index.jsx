@@ -1,9 +1,7 @@
 import CSSModules from "react-css-modules";
 import { connect } from "react-redux";
-
 import styles from "./LotTooltip.scss";
-
-import { selectEntityById } from "../../../redux/game/session/map";
+import { selectEntityById } from "redux/game/session/map";
 
 function LotTooltip(props) {
 	return (

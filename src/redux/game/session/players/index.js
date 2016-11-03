@@ -1,5 +1,4 @@
 import Immutable from "seamless-immutable";
-
 import { types } from "./actions";
 import { types as sharedTypes } from "../../player";
 import playerReducer from "./playerReducer";

@@ -1,11 +1,8 @@
 import CSSModules from "react-css-modules";
-
 import { connect } from "react-redux";
-import { getTooltipClass, getTooltipData } from "../../redux/ui/tooltip";
-
+import { getTooltipClass, getTooltipData } from "redux/ui/tooltip";
 import LotTooltip from "./LotTooltip";
 import TokenTooltip from "./TokenTooltip";
-
 import styles from "./styles.scss";
 
 function Tooltip(props) {

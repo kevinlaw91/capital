@@ -1,16 +1,12 @@
 import { connect } from "react-redux";
 import CSSModules from "react-css-modules";
 import { VelocityComponent } from "velocity-react";
-
 import Screen from "./components/Screen";
-import SplashScreen from "../SplashScreen";
-import GameScreen from "../GameScreen";
-import Tooltip from "../Tooltip";
-
-import { getStateIsHidden as getSplashHidden } from "../../redux/ui/splash";
-
-import { init } from "../../game/bootstrap";
-
+import SplashScreen from "ui/SplashScreen";
+import GameScreen from "ui/GameScreen";
+import Tooltip from "ui/Tooltip";
+import { getStateIsHidden as getSplashHidden } from "redux/ui/splash";
+import { init } from "game/bootstrap";
 import styles from "./App.scss";
 
 class App extends React.Component {

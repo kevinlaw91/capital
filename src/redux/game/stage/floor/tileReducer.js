@@ -1,5 +1,4 @@
 import Immutable from "seamless-immutable";
-
 import { types } from "./index";
 
 // Initial state

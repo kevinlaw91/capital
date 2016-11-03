@@ -1,5 +1,5 @@
 import gaussian from "./gaussian";
-import clamp from "../../../../js/utils/clamp";
+import clamp from "js/utils/clamp";
 
 export default function (min, avg, max) {
 	// Generate a number from gaussian distribution

@@ -1,13 +1,10 @@
 import { connect } from "react-redux";
-
-import Token from "./Token/index";
-
-import tokenPosition from "../../utils/tokenPosition";
-import { getTopFaceMidpoint } from "../../utils/coordinates";
-
-import { selectOrder as selectTokenOrder } from "../../../../redux/game/stage/token/order";
-import { selectAllTokens } from "../../../../redux/game/stage/token/items";
-import { selectActivePlayerId } from "../../../../redux/game/session/turn";
+import Token from "./Token";
+import tokenPosition from "game/map/tile/tokenPosition";
+import { getTopFaceMidpoint } from "game/map/coordinates";
+import { selectOrder as selectTokenOrder } from "redux/game/stage/token/order";
+import { selectAllTokens } from "redux/game/stage/token/items";
+import { selectActivePlayerId } from "redux/game/session/turn";
 
 function renderToken(id, entry) {
 	let screenX, screenY;

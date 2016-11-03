@@ -1,11 +1,8 @@
 import { VelocityComponent } from "velocity-react";
 import { connect } from "react-redux";
-
-import { token as animation } from "../../../../../game/config/animations";
-
-import { tokens as sprite } from "../../../../utils/sprites";
-
-import { actions as tooltipActions } from "../../../../../redux/ui/tooltip";
+import { token as animation } from "game/config/animations";
+import { default as sprite } from "game/resources/sprites/tokens";
+import { actions as tooltipActions } from "redux/ui/tooltip";
 
 // Offset to be applied to the sprite
 const offsetX = -32;
