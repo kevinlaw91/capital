@@ -20,3 +20,6 @@ src/stylesheets/compiled/
 
 # Webpack output files
 build
+
+### Logs ###
+*.log
