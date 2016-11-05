@@ -24,13 +24,34 @@ const splashScreen = (
 );
 
 class App extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			bootstrap: true,
+		};
+	}
+
 	componentDidMount() {
-		init().then(load);
+		init().then(() => {
+			// CSS loaded, reveal app ui frame
+			this.setState({
+				bootstrap: false,
+			});
+
+			// Begin loading app
+			load();
+		});
 	}
 
 	render() {
 		return (
-			<div className="fullscreen" styleName="container">
+			<div
+				/* Hide app when css is still loading */
+				style={this.state.bootstrap ? { display: "none" } : {}}
+
+				className="fullscreen"
+				styleName="container"
+			>
 				{gameScreen}
 				<VelocityTransitionGroup
 					leave={{
