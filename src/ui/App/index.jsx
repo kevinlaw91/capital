@@ -9,6 +9,13 @@ import { getStateIsHidden as getSplashHidden } from "redux/ui/splash";
 import { init } from "game/bootstrap";
 import styles from "./App.scss";
 
+// Game Screen
+const gameScreen = (
+	<Screen fullscreen>
+		<GameScreen />
+	</Screen>
+);
+
 // Splash screen
 const splashScreen = (
 	<Screen fullscreen>
@@ -24,9 +31,7 @@ class App extends React.Component {
 	render() {
 		return (
 			<div className="fullscreen" styleName="container">
-				<Screen fullscreen>
-					<GameScreen />
-				</Screen>
+				{gameScreen}
 				<VelocityTransitionGroup
 					leave={{
 						animation: {
