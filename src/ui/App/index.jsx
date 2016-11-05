@@ -6,7 +6,7 @@ import SplashScreen from "ui/SplashScreen";
 import GameScreen from "ui/GameScreen";
 import Tooltip from "ui/Tooltip";
 import { getStateIsHidden as getSplashHidden } from "redux/ui/splash";
-import { init } from "game/bootstrap";
+import { init, load } from "game/bootstrap";
 import styles from "./App.scss";
 
 // Game Screen
@@ -25,7 +25,7 @@ const splashScreen = (
 
 class App extends React.Component {
 	componentDidMount() {
-		init();
+		init().then(load);
 	}
 
 	render() {

@@ -1,29 +1,31 @@
 import * as splash from "./splash";
-import * as game from "./index";
+import * as session from "./session";
 
-/** Execute tasks during loading */
-function load(resolve, reject) {
-	// Benchmark loading time
-	logger.time("App ready");
-
-	resolve();
-}
-
-/** App loaded */
-function loaded() {
-	logger.timeEnd("App ready");
-
-	// TODO: Refactor
-	game.createGame();
-
-	// Hide splash screen when app is ready
-	splash.hide();
-}
-
-/** App was mounted */
 export function init() {
 	logger.log("Initializing engine...");
 
-	// Run boot tasks
-	new Promise(load).then(loaded);
+	return new Promise(resolve => {
+		window.addEventListener("load", resolve);
+	});
+}
+
+function loaded() {
+	// Hide splash screen when loading complete
+	splash.hide();
+}
+
+export function load() {
+	logger.log("Loading app");
+
+	// TODO: Loading
+	new Promise(resolve => {
+		// Create new game session
+		session.create();
+
+		// Start session
+		session.start();
+
+		// Load complete
+		resolve();
+	}).then(loaded);
 }
