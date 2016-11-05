@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import CSSModules from "react-css-modules";
-import { VelocityComponent } from "velocity-react";
+import { VelocityTransitionGroup } from "velocity-react";
 import Screen from "./components/Screen";
 import SplashScreen from "ui/SplashScreen";
 import GameScreen from "ui/GameScreen";
@@ -8,6 +8,13 @@ import Tooltip from "ui/Tooltip";
 import { getStateIsHidden as getSplashHidden } from "redux/ui/splash";
 import { init } from "game/bootstrap";
 import styles from "./App.scss";
+
+// Splash screen
+const splashScreen = (
+	<Screen fullscreen>
+		<SplashScreen />
+	</Screen>
+);
 
 class App extends React.Component {
 	componentDidMount() {
@@ -20,14 +27,17 @@ class App extends React.Component {
 				<Screen fullscreen>
 					<GameScreen />
 				</Screen>
-				<VelocityComponent
-					animation={{ opacity: (this.props.hideSplash ? 0 : 1) }}
-					duration={ 300 }
-					display={ this.props.hideSplash ? "none" : null } >
-					<Screen fullscreen>
-						<SplashScreen />
-					</Screen>
-				</VelocityComponent>
+				<VelocityTransitionGroup
+					leave={{
+						animation: {
+							opacity: 0,
+						},
+						duration: 500,
+					}}
+				    component="div"
+				>
+					{this.props.splash && splashScreen}
+				</VelocityTransitionGroup>
 				<Tooltip />
 			</div>
 		);
@@ -35,12 +45,12 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-	hideSplash: React.PropTypes.bool,
+	splash: React.PropTypes.bool,
 	styles: React.PropTypes.object
 };
 
 const mapStateToProps = state => ({
-	hideSplash: getSplashHidden(state)
+	splash: !getSplashHidden(state)
 });
 
 export default connect(mapStateToProps)(
