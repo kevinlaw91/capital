@@ -7,6 +7,7 @@ import {
 } from "redux/game/session/players";
 import { actions as playerActions } from "redux/player";
 import { actions as tokenActions } from "redux/game/stage/token/items";
+import playerConfig from "game/config/player";
 
 function generateUniqueId() {
 	let id; // Generated id
@@ -32,6 +33,9 @@ export default props => {
 
 	// Set color
 	dispatch(playerActions.setColor(id, props.color));
+
+	// Set starting gold
+	dispatch(playerActions.setGold(id, playerConfig.STARTING_GOLD));
 
 	// Move player to starting location
 	dispatch(playerActions.setPosition(id, "CORNER-BOTTOM"));
