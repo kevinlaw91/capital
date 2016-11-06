@@ -2,6 +2,7 @@ import dispatch from "redux/dispatch";
 import { actions as playerActions } from "redux/game/player";
 import { actions as tokenActions } from "redux/game/stage/token";
 import { token as animation } from "game/config/animations";
+import reach from "game/rules/player/reach";
 
 /**
  * Move player along the path
@@ -32,11 +33,15 @@ export default (playerId, path) => {
 						// (1) Move player
 						dispatch(playerActions.setPosition(playerId, location));
 					}).then(() => {
-						// Player done moving
-						// (3) Wait before beginning next step
+						// Move animation done
 						if (idx < path.length - 1) {
+							reach(location, false);
+
+							// (3) Wait before beginning next step
 							window.setTimeout(stepCompleted, animation.PAUSE_BEFORE_NEXT_STEP);
 						} else if (idx === path.length - 1) {
+							reach(location, true);
+
 							// This is already last step in queue,
 							// so no more waiting
 							stepCompleted();
