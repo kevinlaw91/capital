@@ -1,5 +1,5 @@
 import Immutable from "seamless-immutable";
-import { types as sharedTypes } from "redux/player";
+import { types as playerTypes } from "redux/player";
 
 // Types
 export const types = {
@@ -23,11 +23,11 @@ const initialState = Immutable({
 // Reducer
 export function reducer(state = initialState, action = {}) {
 	switch (action.type) {
-		case sharedTypes.SET_ACTIVE:
-			return state.set("active", action.id);
-
 		case types.SET_ORDER:
 			return state.set("order", action.order);
+
+		case playerTypes.SET_ACTIVE:
+			return state.set("active", action.id);
 
 		default:
 			return state;
