@@ -1,2 +1,2 @@
-export default location => {
+export default (player, location) => {
 };
