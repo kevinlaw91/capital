@@ -1,9 +1,7 @@
 import { batchActions } from "redux-batched-actions";
 import getState from "redux/getState";
-import {
-	selectAllMapEntities,
-	actions,
-} from "redux/game/session/map";
+import { selectAllEntities as selectAllMapEntities } from "redux/game/session/map";
+import { actions as lotActions } from "redux/lot";
 import NameGenerator from "./name";
 import generatePrice from "./price";
 import generateUpgrades from "./upgrades";
@@ -37,11 +35,11 @@ export default function () {
 
 		batch.push(
 			batchActions([
-				actions.setName(id, nameGenerator.next().value),
-				actions.setTradable(id, true),
-				actions.setPrice(id, price),
-				actions.setUpgradeCost(id, upgradeCost),
-				actions.setRent(id, rent),
+				lotActions.setName(id, nameGenerator.next().value),
+				lotActions.setTradable(id, true),
+				lotActions.setPrice(id, price),
+				lotActions.setUpgradeCost(id, upgradeCost),
+				lotActions.setRent(id, rent),
 			])
 		);
 	});
