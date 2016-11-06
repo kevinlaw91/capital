@@ -8,11 +8,14 @@ export default function (locationId) {
 		// Extract side and index from it
 		const [/* skip */, side, i] = lot;
 
+		// Convert to number
+		const idx = Number(i);
+
 		switch (side) {
-			case "S": return { x: 12 - i, y: 13 };
-			case "W": return { x: 3, y: 12 - i };
-			case "N": return { x: 4 + i, y: 3 };
-			case "E": return { x: 13, y: 4 + i };
+			case "S": return { x: 12 - idx, y: 13 };
+			case "W": return { x: 3, y: 12 - idx };
+			case "N": return { x: 4 + idx, y: 3 };
+			case "E": return { x: 13, y: 4 + idx };
 		}
 	} else {
 		// Not property lot
