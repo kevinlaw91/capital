@@ -1,11 +1,10 @@
 import Immutable from "seamless-immutable";
-import { types as tokenTypes } from "./actions";
 import { types as playerTypes } from "redux/player";
 
 // Types
 export const types = {
-	"SET_ORDER": "game/stage/token/order/SET_ORDER",
-	"CLEAR": "game/stage/token/order/CLEAR",
+	"SET_ORDER": "game/stage/token/SET_ORDER",
+	"CLEAR_ORDER": "game/stage/token/CLEAR_ORDER",
 };
 
 // Actions
@@ -15,7 +14,9 @@ export const actions = {
 		order: arr,
 	}),
 
-	clear: () => ({ type: types.CLEAR }),
+	clearOrder: () => ({
+		type: types.CLEAR_ORDER
+	}),
 };
 
 // Initial state
@@ -24,14 +25,14 @@ const initialState = Immutable([]);
 // Reducer
 export function reducer(state = initialState, action = {}) {
 	switch (action.type) {
-		case tokenTypes.SET_ORDER:
+		case types.SET_ORDER:
 			if (action.order) {
 				return Immutable(action.order.reverse());
 			}
 
 			return state;
 
-		case tokenTypes.CLEAR:
+		case types.CLEAR_ORDER:
 			return initialState;
 
 		case playerTypes.SET_ACTIVE:
