@@ -2,20 +2,20 @@ import types from "./types";
 
 // Actions
 export default {
-	setActive: playerId => ({
+	setActive: id => ({
 		type: types.SET_ACTIVE,
-		id: playerId,
+		id,
 	}),
 
-	setColor: (playerId, color) => ({
+	setColor: (id, color) => ({
 		type: types.SET_COLOR,
-		id: playerId,
-		color: color,
+		id,
+		color,
 	}),
 
-	setPosition: (playerId, position) => ({
+	setPosition: (id, position) => ({
 		type: types.SET_POSITION,
-		id: playerId,
+		id,
 		position,
 	}),
 };
