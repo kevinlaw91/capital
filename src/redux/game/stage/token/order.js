@@ -1,6 +1,6 @@
 import Immutable from "seamless-immutable";
 import { types as tokenTypes } from "./actions";
-import { types as playerTypes } from "redux/game/player";
+import { types as playerTypes } from "redux/player";
 
 // Types
 export const types = {

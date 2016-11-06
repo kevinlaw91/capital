@@ -1,5 +1,5 @@
 import Immutable from "seamless-immutable";
-import { types as playerTypes } from "redux/game/player";
+import { types as playerTypes } from "redux/player";
 import { types as tokenTypes } from "./actions";
 
 // Initial state

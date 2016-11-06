@@ -1,10 +1,23 @@
 import Immutable from "seamless-immutable";
-import { types } from "./actions";
-import { types as sharedTypes } from "../../player";
-import playerReducer from "./playerReducer";
+import playerReducer, { types as playerTypes } from "redux/player";
 
-// Re-export types and actions
-export { types, actions } from "./actions";
+// Types
+export const types = {
+	"ADD": "game/session/players/ADD",
+	"CLEAR": "game/session/players/CLEAR",
+};
+
+// Actions
+export const actions = {
+	add: playerId => ({
+		type: types.ADD,
+		id: playerId,
+	}),
+
+	clear: () => ({
+		type: types.CLEAR
+	}),
+};
 
 // Initial state
 const initialState = Immutable({});
@@ -14,9 +27,7 @@ export function reducer(state = initialState, action = {}) {
 	switch (action.type) {
 		case types.ADD:
 			if (action.id) {
-				const newPlayer = playerReducer(null, action);
-
-				return state.set(action.id, newPlayer);
+				return state.set(action.id, playerReducer());
 			}
 
 			return state;
@@ -24,19 +35,18 @@ export function reducer(state = initialState, action = {}) {
 		case types.CLEAR:
 			return initialState;
 
-		case sharedTypes.SET_COLOR:
-		case sharedTypes.SET_POSITION:
-			if (action.id) {
-				return state.set(
-					action.id,
-					playerReducer(state[action.id], action),
-					{ deep: true }
-				);
+		default:
+			// Handle children actions
+			if (Object.values(playerTypes).includes(action.type)) {
+				if (action.id) {
+					return state.set(
+						action.id,
+						playerReducer(state[action.id], action),
+						{ deep: true }
+					);
+				}
 			}
 
-			return state;
-
-		default:
 			return state;
 	}
 }

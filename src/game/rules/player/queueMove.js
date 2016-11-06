@@ -1,5 +1,5 @@
 import dispatch from "redux/dispatch";
-import { actions as playerActions } from "redux/game/player";
+import { actions as playerActions } from "redux/player";
 import { actions as tokenActions } from "redux/game/stage/token";
 import { token as animation } from "game/config/animations";
 import reach from "game/rules/player/reach";

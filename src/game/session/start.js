@@ -1,5 +1,5 @@
 import dispatch from "redux/dispatch";
-import { actions as playerSharedActions } from "redux/game/player";
+import { actions as playerActions } from "redux/player";
 import turnChange from "game/rules/turn/change";
 import getNextActivePlayer from "game/rules/turn/getNextActivePlayer";
 
@@ -11,7 +11,7 @@ function gameLoop() {
 
 	// Loop
 	const nextPlayerId = getNextActivePlayer();
-	dispatch(playerSharedActions.setActive(nextPlayerId));
+	dispatch(playerActions.setActive(nextPlayerId));
 	turnChange().then(gameLoop);
 }
 
