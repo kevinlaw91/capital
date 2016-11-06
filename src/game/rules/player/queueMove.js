@@ -34,9 +34,9 @@ export default (playerId, path) => {
 					}).then(() => {
 						// Player done moving
 						// (3) Wait before beginning next step
-						if (idx <= path.length - 1) {
+						if (idx < path.length - 1) {
 							window.setTimeout(stepCompleted, animation.PAUSE_BEFORE_NEXT_STEP);
-						} else {
+						} else if (idx === path.length - 1) {
 							// This is already last step in queue,
 							// so no more waiting
 							stepCompleted();
