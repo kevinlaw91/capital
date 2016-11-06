@@ -1,7 +1,24 @@
 import Immutable from "seamless-immutable";
-import tokenReducer from "./tokenReducer";
-import { types as tokenTypes } from "./index";
-import { types as playerTypes } from "redux/game/player";
+import tokenReducer, { types as tokenTypes } from "redux/player/token";
+import { types as playerTypes } from "redux/player";
+
+// Types
+export const types = {
+	"ADD": "game/stage/token/ADD",
+	"CLEAR": "game/stage/token/CLEAR",
+};
+
+// Actions
+export const actions = {
+	add: playerId => ({
+		type: types.ADD,
+		id: playerId,
+	}),
+
+	clear: () => ({
+		type: types.CLEAR
+	}),
+};
 
 // Initial state
 const initialState = Immutable({});
@@ -9,33 +26,31 @@ const initialState = Immutable({});
 // Reducer
 export function reducer(state = initialState, action = {}) {
 	switch (action.type) {
-		case tokenTypes.ADD:
+		case types.ADD:
 			if (action.id) {
-				const newToken = tokenReducer(null, action);
-
-				return state.set(action.id, newToken);
+				return state.set(action.id, tokenReducer());
 			}
 
 			return state;
 
-		case tokenTypes.CLEAR:
+		case types.CLEAR:
 			return initialState;
 
-		case playerTypes.SET_POSITION:
-		case playerTypes.SET_COLOR:
-		case tokenTypes.SET_IDLE:
-		case tokenTypes.SET_ONMOVE:
-			if (action.id) {
-				return state.set(
-					action.id,
-					tokenReducer(state[action.id], action),
-					{ deep: true }
-				);
+		default:
+			// Handle children actions
+			if (
+				Object.values(playerTypes).includes(action.type) ||
+				Object.values(tokenTypes).includes(action.type)
+			) {
+				if (action.id) {
+					return state.set(
+						action.id,
+						tokenReducer(state[action.id], action),
+						{ deep: true }
+					);
+				}
 			}
 
-			return state;
-
-		default:
 			return state;
 	}
 }

@@ -1,19 +1,20 @@
 import Immutable from "seamless-immutable";
-import { types as sharedTypes } from "redux/game/player";
-import { types } from "./actions";
+import types from "./types";
+
+// Re-export types and actions
+export { types };
+export { default as actions } from "./actions";
 
 // Initial state
 const initialState = Immutable({});
 
+// Reducer
 export default function reducer(state = initialState, action = {}) {
 	switch (action.type) {
-		case types.ADD:
-			return initialState;
-
-		case sharedTypes.SET_COLOR:
+		case types.SET_COLOR:
 			return state.set("color", action.color);
 
-		case sharedTypes.SET_POSITION:
+		case types.SET_POSITION:
 			return state.set("position", action.position);
 
 		default:

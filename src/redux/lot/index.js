@@ -1,6 +1,15 @@
-import { types } from "./index";
+import Immutable from "seamless-immutable";
+import types from "./types";
 
-export default function reducer(state, action = {}) {
+// Re-export types and actions
+export { types };
+export { default as actions } from "./actions";
+
+// Initial state
+const initialState = Immutable({});
+
+// Reducer
+export default function reducer(state = initialState, action = {}) {
 	switch (action.type) {
 		case types.SET_NAME:
 			return state.set("name", action.name);

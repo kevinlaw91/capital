@@ -6,7 +6,7 @@ import generateMap from "game/map/generate";
 import addPlayer from "./addPlayer";
 import { selectAllPlayers } from "redux/game/session/players";
 import { actions as playerTurnActions } from "redux/game/session/turn";
-import { actions as tokenOrderActions } from "redux/game/stage/token";
+import { actions as tokenOrderActions } from "redux/game/stage/token/order";
 
 export default function () {
 	// Generate map

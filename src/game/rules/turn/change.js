@@ -8,7 +8,7 @@ import { subscribe as waitForDiceOnClick } from "game/rules/dice/click";
 import { selectPlayerById } from "redux/game/session/players";
 import { selectActivePlayerId } from "redux/game/session/turn";
 import { actions as diceButtonActions } from "redux/ui/dice";
-import { actions as tokenActions } from "redux/game/stage/token";
+import { actions as tokenActions } from "redux/player/token";
 
 function wait(duration) {
 	return function () {

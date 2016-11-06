@@ -5,8 +5,8 @@ import {
 	selectAllPlayers,
 	actions as playerCollection
 } from "redux/game/session/players";
-import { actions as playerActions } from "redux/game/player";
-import { actions as tokenActions } from "redux/game/stage/token";
+import { actions as playerActions } from "redux/player";
+import { actions as tokenActions } from "redux/game/stage/token/items";
 
 function generateUniqueId() {
 	let id; // Generated id
