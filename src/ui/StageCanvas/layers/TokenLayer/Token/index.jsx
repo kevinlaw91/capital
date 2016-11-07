@@ -16,12 +16,13 @@ function Token(props) {
 
 	function handleMouseEnter(evt) {
 		// Show tooltip
+		props.showTooltip("TokenTooltip", props.tooltip);
+	}
+
+	function handleMouseMove(evt) {
+		// Move tooltip
 		const { left, top, width, height } = evt.target.getBoundingClientRect();
-		props.showTooltip("TokenTooltip", {
-			player: props.tooltip,
-			x: left + (width / 2),
-			y: top + (height / 2),
-		});
+		props.moveTooltip(left + (width / 2), top + (height / 2));
 	}
 
 	const handleMouseOut = props.hideTooltip;
@@ -40,6 +41,7 @@ function Token(props) {
 					"shapeRendering": "crispEdges",
 				}}
 				onMouseEnter={handleMouseEnter}
+				onMouseMove={handleMouseMove}
 				onMouseOut={handleMouseOut}
 			/>
 		</VelocityComponent>
@@ -53,10 +55,12 @@ Token.propTypes = {
 	onMove: React.PropTypes.func,
 	tooltip: React.PropTypes.string,
 	showTooltip: React.PropTypes.func,
+	moveTooltip: React.PropTypes.func,
 	hideTooltip: React.PropTypes.func,
 };
 
 export default connect(null, {
 	showTooltip: tooltipActions.show,
+	moveTooltip: tooltipActions.move,
 	hideTooltip: tooltipActions.hide,
 })(Token);

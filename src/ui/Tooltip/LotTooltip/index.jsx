@@ -8,7 +8,7 @@ function LotTooltip(props) {
 		<div
 			style={{
 				left: props.x || 0,
-				top: props.y + 35 || 0,
+				top: props.y + 15 || 0,
 			}}
 			styleName="tooltip"
 		>
@@ -22,12 +22,12 @@ function LotTooltip(props) {
 LotTooltip.propTypes = {
 	x: React.PropTypes.number,
 	y: React.PropTypes.number,
-	lot: React.PropTypes.string.isRequired,
+	entityId: React.PropTypes.string.isRequired,
 	data: React.PropTypes.object,
 };
 
 const mapStateToProps = (state, props) => ({
-	data: selectEntityById(state, props.lot),
+	data: selectEntityById(state, props.entityId),
 });
 
 export default connect(mapStateToProps)(

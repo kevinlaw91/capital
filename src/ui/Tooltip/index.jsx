@@ -1,6 +1,10 @@
 import CSSModules from "react-css-modules";
 import { connect } from "react-redux";
-import { getTooltipClass, getTooltipData } from "redux/ui/tooltip";
+import {
+	getTooltipClass,
+	getTooltipPosition,
+	getTooltipData,
+} from "redux/ui/tooltip";
 import LotTooltip from "./LotTooltip";
 import TokenTooltip from "./TokenTooltip";
 import styles from "./styles.scss";
@@ -10,10 +14,10 @@ function Tooltip(props) {
 
 	switch (props.type) {
 		case "LotTooltip":
-			tooltip = <LotTooltip x={props.data.x} y={props.data.y} lot={props.data.lot} />;
+			tooltip = <LotTooltip x={props.position.x} y={props.position.y} entityId={props.data} />;
 			break;
 		case "TokenTooltip":
-			tooltip = <TokenTooltip x={props.data.x} y={props.data.y} player={props.data.player} />;
+			tooltip = <TokenTooltip x={props.position.x} y={props.position.y} entityId={props.data} />;
 			break;
 	}
 
@@ -26,11 +30,16 @@ function Tooltip(props) {
 
 Tooltip.propTypes = {
 	type: React.PropTypes.string,
-	data: React.PropTypes.object,
+	position: React.PropTypes.shape({
+		x: React.PropTypes.number,
+		y: React.PropTypes.number,
+	}),
+	data: React.PropTypes.any,
 };
 
 const mapStateToProps = state => ({
 	type: getTooltipClass(state),
+	position: getTooltipPosition(state),
 	data: getTooltipData(state),
 });
 

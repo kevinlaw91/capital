@@ -8,7 +8,7 @@ function TokenTooltip(props) {
 		<div
 			style={{
 				left: props.x || 0,
-				top: props.y - 20 || 0,
+				top: props.y - 15 || 0,
 			}}
 			styleName="tooltip"
 		>
@@ -22,12 +22,12 @@ function TokenTooltip(props) {
 TokenTooltip.propTypes = {
 	x: React.PropTypes.number,
 	y: React.PropTypes.number,
-	player: React.PropTypes.string.isRequired,
+	entityId: React.PropTypes.string.isRequired,
 	data: React.PropTypes.object,
 };
 
 const mapStateToProps = (state, props) => ({
-	data: selectPlayerById(state, props.player),
+	data: selectPlayerById(state, props.entityId),
 });
 
 export default connect(mapStateToProps)(

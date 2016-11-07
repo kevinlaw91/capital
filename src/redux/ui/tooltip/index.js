@@ -4,6 +4,7 @@ import Immutable from "seamless-immutable";
 export const types = {
 	"SHOW": "ui/tooltip/SHOW",
 	"HIDE": "ui/tooltip/HIDE",
+	"MOVE": "ui/tooltip/MOVE",
 };
 
 // Actions
@@ -15,6 +16,10 @@ export const actions = {
 	}),
 	hide: () => ({
 		type: types.HIDE
+	}),
+	move: (x, y) => ({
+		type: types.MOVE,
+		position: { x, y },
 	}),
 };
 
@@ -33,12 +38,18 @@ export function reducer(state = initialState, action = {}) {
 
 			return state;
 
+		case types.MOVE:
+			return state.merge(action.position);
+
 		case types.HIDE:
 			return initialState;
-		default: return state;
+
+		default:
+			return state;
 	}
 }
 
 // Selectors
 export const getTooltipClass = state => state.ui.tooltip.tooltipClass;
+export const getTooltipPosition = state => ({ x: state.ui.tooltip.x, y: state.ui.tooltip.y });
 export const getTooltipData = state => state.ui.tooltip.data;

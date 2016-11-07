@@ -16,19 +16,20 @@ export default function FloorTile(props) {
 	}
 
 	// Tooltip
-	let handleMouseEnter, handleMouseOut;
+	let handleMouseEnter, handleMouseMove, handleMouseOut;
 	if (props.tooltip) {
 		handleMouseEnter = evt => {
 			// Hover effect
 			evt.target.setAttribute("filter", "url(#FloorLayerTileHoverEffect)");
 
 			// Show tooltip
+			props.showTooltip("LotTooltip", props.tooltip);
+		};
+
+		handleMouseMove = evt => {
+			// Move tooltip
 			const { left, top, width, height } = evt.target.getBoundingClientRect();
-			props.showTooltip("LotTooltip", {
-				lot: props.tooltip,
-				x: left + (width / 2),
-				y: top + (height / 2),
-			});
+			props.moveTooltip(left + (width / 2), top + (height / 2));
 		};
 
 		handleMouseOut = evt => {
@@ -47,6 +48,7 @@ export default function FloorTile(props) {
 				{...size}
 				xlinkHref={href}
 			    onMouseEnter={handleMouseEnter}
+			    onMouseMove={handleMouseMove}
 			    onMouseOut={handleMouseOut}
 			/>
 		) : null
@@ -62,5 +64,6 @@ FloorTile.propTypes = {
 	colSize: React.PropTypes.number,
 	tooltip: React.PropTypes.string,
 	showTooltip: React.PropTypes.func,
+	moveTooltip: React.PropTypes.func,
 	hideTooltip: React.PropTypes.func,
 };

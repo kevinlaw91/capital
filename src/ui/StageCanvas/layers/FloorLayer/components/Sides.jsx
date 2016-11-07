@@ -7,6 +7,7 @@ import FloorTile from "./FloorTile";
 // Add tooltip support to floor tile
 const TooltipFloorTile = connect(null, {
 	showTooltip: tooltipActions.show,
+	moveTooltip: tooltipActions.move,
 	hideTooltip: tooltipActions.hide,
 })(FloorTile);
 
