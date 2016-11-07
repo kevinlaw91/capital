@@ -15,43 +15,24 @@ export default function FloorTile(props) {
 		logger.error(`Sprite '${symbol}' (Variant: '${variant}') cannot be found in tile collection.`);
 	}
 
-	// Tooltip
-	let handleMouseEnter, handleMouseMove, handleMouseOut;
-	if (props.tooltip) {
-		handleMouseEnter = evt => {
-			// Hover effect
-			props.hoverEffect && evt.target.setAttribute("filter", "url(#FloorLayerTileHoverEffect)");
+	// Hover effect
+	const handleMouseEnter = evt => {
+		this.props.hoverEffect && evt.target.setAttribute("filter", "url(#FloorLayerTileHoverEffect)");
+	};
 
-			// Show tooltip
-			props.showTooltip("LotTooltip", props.tooltip);
-		};
+	// Undo hover effect
+	const handleMouseOut = evt => {
+		evt.target.removeAttribute("filter");
+	};
 
-		handleMouseMove = evt => {
-			// Move tooltip
-			const { left, top, width, height } = evt.target.getBoundingClientRect();
-			props.moveTooltip(left + (width / 2), top + (height / 2));
-		};
-
-		handleMouseOut = evt => {
-			// Undo hover effect
-			evt.target.removeAttribute("filter");
-
-			// Hide tooltip
-			props.hideTooltip();
-		};
-	}
-
-	return (
-		href ? (
-			<use
-				{...offset}
-				{...size}
-				xlinkHref={href}
-			    onMouseEnter={handleMouseEnter}
-			    onMouseMove={handleMouseMove}
-			    onMouseOut={handleMouseOut}
-			/>
-		) : null
+	return href && (
+		<use
+			{...offset}
+			{...size}
+			xlinkHref={href}
+			onMouseEnter={handleMouseEnter}
+			onMouseOut={handleMouseOut}
+		/>
 	);
 }
 
@@ -62,9 +43,5 @@ FloorTile.propTypes = {
 	col: React.PropTypes.number.isRequired,
 	rowSize: React.PropTypes.number,
 	colSize: React.PropTypes.number,
-	tooltip: React.PropTypes.string,
-	showTooltip: React.PropTypes.func,
-	moveTooltip: React.PropTypes.func,
-	hideTooltip: React.PropTypes.func,
 	hoverEffect: React.PropTypes.bool,
 };
