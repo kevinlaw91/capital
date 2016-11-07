@@ -26,6 +26,7 @@ const _west = ([id, { ...tileProps }]) => {
 			rowSize={1}
 			colSize={3}
 			tooltip={getLotId(id)}
+			hoverEffect={true}
 			{...tileProps}
 		/>
 	);
@@ -42,6 +43,7 @@ const _north = ([id, { ...tileProps }]) => {
 			rowSize={3}
 			colSize={1}
 			tooltip={getLotId(id)}
+			hoverEffect={true}
 			{...tileProps}
 		/>
 	);
@@ -58,6 +60,7 @@ const _south = ([id, { ...tileProps }]) => {
 			rowSize={3}
 			colSize={1}
 			tooltip={getLotId(id)}
+			hoverEffect={true}
 			{...tileProps}
 		/>
 	);
@@ -74,6 +77,7 @@ const _east = ([id, { ...tileProps }]) => {
 			rowSize={1}
 			colSize={3}
 			tooltip={getLotId(id)}
+			hoverEffect={true}
 			{...tileProps}
 		/>
 	);

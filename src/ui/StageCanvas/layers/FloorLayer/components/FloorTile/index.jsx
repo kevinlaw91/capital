@@ -20,7 +20,7 @@ export default function FloorTile(props) {
 	if (props.tooltip) {
 		handleMouseEnter = evt => {
 			// Hover effect
-			evt.target.setAttribute("filter", "url(#FloorLayerTileHoverEffect)");
+			props.hoverEffect && evt.target.setAttribute("filter", "url(#FloorLayerTileHoverEffect)");
 
 			// Show tooltip
 			props.showTooltip("LotTooltip", props.tooltip);
@@ -66,4 +66,5 @@ FloorTile.propTypes = {
 	showTooltip: React.PropTypes.func,
 	moveTooltip: React.PropTypes.func,
 	hideTooltip: React.PropTypes.func,
+	hoverEffect: React.PropTypes.bool,
 };
