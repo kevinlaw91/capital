@@ -26,6 +26,9 @@ export default function reducer(state = initialState, action = {}) {
 		case types.SET_RENT:
 			return state.set("rent", action.rent, { deep: true });
 
+		case types.SET_OWNER:
+			return state.set("owner", action.owner);
+
 		default:
 			return state;
 	}

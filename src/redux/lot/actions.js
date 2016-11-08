@@ -31,4 +31,10 @@ export default {
 		id,
 		rent,
 	}),
+
+	setOwner: (id, owner) => ({
+		type: types.SET_OWNER,
+		id,
+		owner,
+	}),
 };
