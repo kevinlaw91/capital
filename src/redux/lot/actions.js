@@ -2,33 +2,33 @@ import types from "./types";
 
 // Actions
 export default {
-	setName: (lotId, name) => ({
+	setName: (id, name) => ({
 		type: types.SET_NAME,
-		id: lotId,
-		name
+		id,
+		name,
 	}),
 
-	setTradable: (lotId, isTradable) => ({
+	setTradable: (id, tradable) => ({
 		type: types.SET_TRADABLE,
-		id: lotId,
-		tradable: isTradable
+		id,
+		tradable,
 	}),
 
-	setPrice: (lotId, price) => ({
+	setPrice: (id, price) => ({
 		type: types.SET_PRICE,
-		id: lotId,
-		price
+		id,
+		price,
 	}),
 
-	setUpgradeCost: (lotId, cost) => ({
+	setUpgradeCost: (id, cost) => ({
 		type: types.SET_UPGRADE_COST,
-		id: lotId,
+		id,
 		upgrades: cost,
 	}),
 
-	setRent: (lotId, rent) => ({
+	setRent: (id, rent) => ({
 		type: types.SET_RENT,
-		id: lotId,
-		rent
+		id,
+		rent,
 	}),
 };
