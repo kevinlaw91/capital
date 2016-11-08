@@ -15,15 +15,18 @@ export default function FloorTile(props) {
 		logger.error(`Sprite '${symbol}' (Variant: '${variant}') cannot be found in tile collection.`);
 	}
 
-	// Hover effect
-	const handleMouseEnter = evt => {
-		this.props.hoverEffect && evt.target.setAttribute("filter", "url(#FloorLayerTileHoverEffect)");
-	};
+	let handleMouseEnter, handleMouseOut;
 
-	// Undo hover effect
-	const handleMouseOut = evt => {
-		evt.target.removeAttribute("filter");
-	};
+	// Hover effect
+	if (props.hoverEffect) {
+		handleMouseEnter = evt => {
+			evt.target.setAttribute("filter", "url(#FloorLayerTileHoverEffect)");
+		};
+
+		handleMouseOut = evt => {
+			evt.target.removeAttribute("filter");
+		};
+	}
 
 	return href && (
 		<use
