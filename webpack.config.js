@@ -55,7 +55,7 @@ module.exports = {
 		rules: [
 			{
 				test: /\.jsx?$/,
-				loader: "babel",
+				loader: "babel-loader",
 				options: {
 					cacheDirectory: true,
 				},
@@ -65,16 +65,16 @@ module.exports = {
 				// Import vendor css as global scoped
 				test: /vendor\.css$/,
 				use: [
-					"style",
-					"css",
+					"style-loader",
+					"css-loader",
 				],
 			},
 			{
 				test: /\.scss$/,
 				use: [
-					"style",
+					"style-loader",
 					{
-						loader: "css",
+						loader: "css-loader",
 						options: {
 							modules: true,
 							importLoaders: 2,
@@ -83,13 +83,13 @@ module.exports = {
 						},
 					},
 					{
-						loader: "postcss",
+						loader: "postcss-loader",
 						options: {
 							map: "inline",
 						},
 					},
 					{
-						loader: "sass",
+						loader: "sass-loader",
 						options: {
 							sourceMap: true,
 						},
@@ -99,7 +99,7 @@ module.exports = {
 			},
 			{
 				test: /\.(woff|woff2)$/,
-				loader: "file",
+				loader: "file-loader",
 				options: {
 					name: "fonts/[name].[ext]",
 				},

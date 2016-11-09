@@ -50,7 +50,7 @@ module.exports = {
 		rules: [
 			{
 				test: /\.jsx?$/,
-				loader: "babel",
+				loader: "babel-loader",
 				options: {
 					cacheDirectory: true,
 				},
@@ -61,7 +61,7 @@ module.exports = {
 				test: /vendor\.css$/,
 				loader: ExtractTextPlugin.extract({
 					loader: [
-						"css",
+						"css-loader",
 					],
 					// publicPath from 'build/css' to 'build/'
 					publicPath: "../",
@@ -72,9 +72,9 @@ module.exports = {
 				// Single css bundle
 				loader: ExtractTextPlugin.extract({
 					loader: [
-						"css?modules&importLoaders=2&localIdentName=[name]-[local]-[hash:base64:5]",
-						"postcss",
-						"sass",
+						"css-loader?modules&importLoaders=2&localIdentName=[name]-[local]-[hash:base64:5]",
+						"postcss-loader",
+						"sass-loader",
 					],
 					// publicPath from 'build/css' to 'build/'
 					publicPath: "../",
@@ -83,7 +83,7 @@ module.exports = {
 			},
 			{
 				test: /\.(woff|woff2)$/,
-				loader: "file",
+				loader: "file-loader",
 				options: {
 					name: "fonts/[name].[ext]",
 				},
