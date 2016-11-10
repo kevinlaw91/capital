@@ -21,16 +21,6 @@ module.exports = {
 			"react-hot-loader/patch", // React HOT Loader
 			"./app.jsx",
 		],
-		"vendor": [
-			"react",
-			"react-dom",
-			"react-hot-loader",
-			"react-redux",
-			"redux",
-			"svg-pan-zoom",
-			"velocity-animate",
-			"velocity-react",
-		],
 	},
 	output: {
 		// Local output dir (absolute)
@@ -124,10 +114,10 @@ module.exports = {
 		}),
 		// Module will be named by file name instead of numbers
 		new webpack.NamedModulesPlugin(),
-		// Create vendor chunk
-		new webpack.optimize.CommonsChunkPlugin({
-			name: "vendor",
-			filename: "vendor.bundle.js",
+		// Load DLL manifest
+		new webpack.DllReferencePlugin({
+			context: __dirname,
+			manifest: require("./build/vendor.dll.manifest.json"),
 		}),
 	],
 };

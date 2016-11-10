@@ -4,6 +4,10 @@
 	<meta charset="utf-8">
 	<title><%= htmlWebpackPlugin.options.title %></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<% if (htmlWebpackPlugin.options.env !== "production") { %>
+	<!-- Load webpack DLL (Development build only) -->
+	<script type="text/javascript" src="<%= webpackConfig.output.publicPath %>vendor.dll.js"></script>
+	<% } %>
 </head>
 <body>
 </body>
