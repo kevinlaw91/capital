@@ -119,6 +119,8 @@ module.exports = {
 		new HTMLWebpackPlugin({
 			title: "Loading...",
 			filename: "index.html",
+			template: "template.html",
+			env: process.env.NODE_ENV,
 		}),
 		// Module will be named by file name instead of numbers
 		new webpack.NamedModulesPlugin(),

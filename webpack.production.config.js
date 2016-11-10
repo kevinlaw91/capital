@@ -107,6 +107,8 @@ module.exports = {
 		new HTMLWebpackPlugin({
 			title: "Loading...",
 			filename: "index.html",
+			template: "template.html",
+			env: process.env.NODE_ENV,
 		}),
 		// Create vendor chunk
 		new webpack.optimize.CommonsChunkPlugin({
