@@ -51,8 +51,8 @@
     "webpack-dev-server": "^2.1.0-beta"
   },
   "scripts": {
-    "build-dev": "webpack",
+    "build:dev": "webpack",
     "build:dll": "webpack --config=webpack.dll.config.js",
-    "build": "SET NODE_ENV=production& webpack --config=webpack.production.config.js"
+    "build:prod": "SET NODE_ENV=production& webpack --config=webpack.production.config.js"
   }
 }

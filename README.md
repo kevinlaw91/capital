@@ -24,12 +24,14 @@ App will be hosted at [localhost:8080](http://localhost:8080/)
 ## Build
 
 Development build:
+> Note: Build DLL first
 
-    npm run-script build-dev
+
+    npm run build:dev
 
 Production build:
 
-    npm run-script build
+    npm run build:prod
 
 Clean "build/" dir:
 
