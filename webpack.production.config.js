@@ -105,7 +105,7 @@ module.exports = {
 			ReactDOM: "react-dom",
 		}),
 		new HTMLWebpackPlugin({
-			title: "Loading...",
+			title: "Capital",
 			filename: "index.html",
 			template: "template.html",
 			env: process.env.NODE_ENV,

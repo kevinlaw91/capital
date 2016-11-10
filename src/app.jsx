@@ -14,25 +14,19 @@ import "stylesheets/styles.scss";
 import { register as registerLogger } from "./logger";
 window.logger = registerLogger();
 
-// Page Title
-document.title = "Capital";
-
 // Debug
 import devDebugObj from "game/dev";
 
 if (typeof APP_DEBUG !== "undefined") {
-	// Dev build only
-	// APP_DEBUG is only defined in dev build
-	document.title += " (Development Build)";
+	// APP_DEBUG exist in dev build only
 	logger.info("===== DEVELOPER MODE ENABLED =====");
 
 	// Expose debug object to global
 	window.app = devDebugObj;
 }
 
-// Create wrapper element
-let wrapper  = document.createElement("div");
-document.body.insertBefore(wrapper, document.body.firstChild);
+// React injection point
+let wrapper = document.getElementById("app");
 
 function render() {
 	ReactDOM.render(
