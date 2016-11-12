@@ -3,7 +3,6 @@ const webpack = require("webpack");
 module.exports = {
 	entry: {
 		vendor: [
-			// Own dependencies
 			"classnames",
 			"react",
 			"react-css-modules",
@@ -17,12 +16,6 @@ module.exports = {
 			"svg-pan-zoom",
 			"velocity-animate",
 			"velocity-react",
-
-			// Library dependencies
-			"react-hot-loader",
-			"react-proxy",
-			"redbox-react",
-			"sockjs-client",
 		],
 	},
 	resolve: {
