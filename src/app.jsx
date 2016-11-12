@@ -43,5 +43,5 @@ function render() {
 render();
 
 if (module.hot) {
-	module.hot.accept("./ui/App", render);
+	module.hot.accept("ui/App", render);
 }
