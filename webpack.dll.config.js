@@ -1,4 +1,3 @@
-const path = require("path");
 const webpack = require("webpack");
 
 module.exports = {
@@ -27,10 +26,6 @@ module.exports = {
 		],
 	},
 	resolve: {
-		alias: {
-			// Use modified svg-pan-zoom
-			"svg-pan-zoom": path.join(__dirname, "src/js/vendor/svg-pan-zoom"),
-		},
 		modules: ["node_modules"],
 	},
 	output: {

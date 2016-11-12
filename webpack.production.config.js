@@ -36,10 +36,6 @@ module.exports = {
 		filename: "app.min.js",
 	},
 	resolve: {
-		alias: {
-			// Use modified svg-pan-zoom
-			"svg-pan-zoom": path.join(__dirname, "src/js/vendor/svg-pan-zoom"),
-		},
 		modules: [
 			path.join(__dirname, "src"),
 			"node_modules"
