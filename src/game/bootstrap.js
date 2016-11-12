@@ -1,31 +1,17 @@
-import * as splash from "./splash";
-import * as session from "./session";
+import loadApp from "game/load";
+import loadSuccess from "game/loadSuccess";
 
-export function init() {
-	logger.log("Initializing engine...");
-
-	return new Promise(resolve => {
-		window.addEventListener("load", resolve);
-	});
-}
-
-function loaded() {
-	// Hide splash screen when loading complete
-	splash.hide();
-}
+// App loaded flag
+// State will persists between HMR events
+let APP_LOADED = false;
+export const isAppLoaded = () => APP_LOADED;
 
 export function load() {
-	logger.log("Loading app");
+	return loadApp().then(() => {
+		// Run load complete
+		loadSuccess();
 
-	// TODO: Loading
-	new Promise(resolve => {
-		// Create new game session
-		session.create();
-
-		// Start session
-		session.start();
-
-		// Load complete
-		resolve();
-	}).then(loaded);
+		// Set flag
+		APP_LOADED = true;
+	});
 }

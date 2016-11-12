@@ -6,8 +6,15 @@ import SplashScreen from "ui/SplashScreen";
 import GameScreen from "ui/GameScreen";
 import Tooltip from "ui/Tooltip";
 import { getStateIsHidden as getSplashHidden } from "redux/ui/splash";
-import { init, load } from "game/bootstrap";
+import { isAppLoaded, load, loaded } from "game/bootstrap";
 import styles from "./App.scss";
+
+function waitForStylesheetReady() {
+	return new Promise(loaded => {
+		// Wait for stylesheets to load
+		window.addEventListener("load", loaded);
+	});
+}
 
 // Game Screen
 const gameScreen = (
@@ -32,21 +39,30 @@ class App extends React.Component {
 	}
 
 	componentDidMount() {
-		init().then(() => {
-			// CSS loaded, reveal app ui frame
-			this.setState({
-				bootstrap: false,
-			});
+		if (!isAppLoaded()) {
+			// First launch
+			logger.log("Initializing engine...");
 
-			// Begin loading app
-			load();
-		});
+			// Wait for stylesheet to load
+			waitForStylesheetReady()
+			.then(() => {
+				// Stylesheets loaded
+				// Reveals app loading UI
+				this.setState({ bootstrap: false });
+				// Load game
+				load();
+			});
+		} else {
+			// App already loaded, this is only a module reload
+			// Don't hide UI as stylesheets were already loaded
+			this.setState({ bootstrap: false });
+		}
 	}
 
 	render() {
 		return (
 			<div
-				/* Hide app when css is still loading */
+				/* Hide ui when stylesheet is still loading */
 				style={this.state.bootstrap ? { display: "none" } : {}}
 
 				className="fullscreen"
