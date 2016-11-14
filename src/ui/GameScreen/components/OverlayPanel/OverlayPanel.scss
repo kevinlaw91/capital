@@ -1,6 +1,22 @@
-.container {
+.align-bottom {
 	position: absolute;
 	bottom: 0;
+}
+
+.container {
+	composes: align-bottom;
 	width: 100%;
 	pointer-events: none;
+}
+
+.layer-dice-button {
+	composes: align-bottom;
+	width: 100%;
+}
+
+.layer-prompt {
+	composes: align-bottom;
+	position: absolute;
+	left: 15px;
+	bottom: 15px;
 }

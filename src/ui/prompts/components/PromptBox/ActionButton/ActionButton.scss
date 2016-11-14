@@ -1,0 +1,24 @@
+.flex {
+	display: flex;
+}
+
+.reversed {
+	flex-direction: row-reverse;
+}
+
+.button {
+	padding: 5px;
+	border: none;
+	text-align: center;
+	min-width: 130px;
+ }
+
+.label {
+	flex-grow: 1;
+}
+
+.label-text {
+	font-family: "Yantramanav", sans-serif;
+	font-size: 1.6rem;
+	font-weight: 700;
+}
