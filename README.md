@@ -10,8 +10,7 @@ This will speed up webpack build time. Do this:
 - Before performing first app build
 - Everytime after updating app dependencies
 
-
-    npm run build:dll
+`npm run build:dll`
 
 ## Start webpack-dev-server
 
