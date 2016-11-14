@@ -1,29 +1,13 @@
 import shortid from "shortid";
-import getState from "redux/getState";
 import dispatch from "redux/dispatch";
-import {
-	selectAllPlayers,
-	actions as playerCollection
-} from "redux/game/session/players";
+import { actions as playerCollection } from "redux/game/session/players";
 import { actions as playerActions } from "redux/player";
 import { actions as tokenActions } from "redux/game/stage/token/items";
 import playerConfig from "game/config/player";
 
-function generateUniqueId() {
-	let id; // Generated id
-
-	// Read current player list
-	const players = selectAllPlayers(getState());
-	do {
-		// Generate a unique player id
-		id = shortid.generate();
-	} while (id in players);
-
-	return id;
-}
-
 export default props => {
-	const id = generateUniqueId();
+	// Generate a unique player id
+	const id = shortid.generate();
 
 	// Register player
 	dispatch(playerCollection.add(id));
