@@ -2,7 +2,7 @@ import shortid from "shortid";
 import dispatch from "redux/dispatch";
 import { actions as playerCollection } from "redux/game/session/players";
 import { actions as playerActions } from "redux/player";
-import { actions as tokenActions } from "redux/game/stage/token/items";
+import { actions as tokenCollection } from "redux/game/stage/token/items";
 import playerConfig from "game/config/player";
 
 export default props => {
@@ -13,7 +13,7 @@ export default props => {
 	dispatch(playerCollection.add(id));
 
 	// Register token
-	dispatch(tokenActions.add(id));
+	dispatch(tokenCollection.add(id));
 
 	// Set color
 	dispatch(playerActions.setColor(id, props.color));
