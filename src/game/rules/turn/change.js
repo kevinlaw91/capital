@@ -1,7 +1,7 @@
 import dispatch from "redux/dispatch";
 import getState from "redux/getState";
 import { token as animation } from "game/config/animations";
-import { findWaypointsBySteps } from "game/rules/player/pathfinder";
+import { findWaypointsBySteps } from "game/rules/map/pathfinder";
 import stay from "game/rules/map/stay";
 import queueMove from "game/rules/player/queueMove";
 import roll from "game/rules/dice/roll";
