@@ -38,6 +38,7 @@ function Token(props) {
 				height={64}
 				xlinkHref={ sprite(props.color) }
 				style={{
+					"cursor": "default",
 					"shapeRendering": "crispEdges",
 				}}
 				onMouseEnter={handleMouseEnter}

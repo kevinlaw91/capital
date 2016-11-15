@@ -3,7 +3,15 @@ import calcTileSize from "./calcTileSize";
 import { default as sprite } from "game/resources/sprites/tiles";
 
 export default function FloorTile(props) {
-	const { symbol, variant, row, col, rowSize, colSize } = props;
+	const {
+		symbol,
+		variant,
+		row,
+		col,
+		rowSize,
+		colSize,
+		...otherProps,
+	} = props;
 
 	// Calculate props
 	const size = calcTileSize(rowSize, colSize);
@@ -35,6 +43,7 @@ export default function FloorTile(props) {
 			xlinkHref={href}
 			onMouseEnter={handleMouseEnter}
 			onMouseOut={handleMouseOut}
+			{...otherProps}
 		/>
 	);
 }

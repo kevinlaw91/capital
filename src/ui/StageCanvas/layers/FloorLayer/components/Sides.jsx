@@ -2,6 +2,7 @@ import { connect } from "react-redux";
 import { selectTiles } from "redux/game/stage/floor";
 import { getLotId } from "game/map/tile/mappings";
 import TooltipFloorTile from "./TooltipFloorTile";
+import styles from "./styles.scss";
 
 function getIndexFromId(id) {
 	return id.match(/\d+$/)[0]|0;
@@ -18,6 +19,7 @@ const _west = ([id, { ...tileProps }]) => {
 			rowSize={1}
 			colSize={3}
 			tooltip={getLotId(id)}
+			className={styles["action-tile"]}
 			hoverEffect={true}
 			{...tileProps}
 		/>
@@ -35,6 +37,7 @@ const _north = ([id, { ...tileProps }]) => {
 			rowSize={3}
 			colSize={1}
 			tooltip={getLotId(id)}
+			className={styles["action-tile"]}
 			hoverEffect={true}
 			{...tileProps}
 		/>
@@ -52,6 +55,7 @@ const _south = ([id, { ...tileProps }]) => {
 			rowSize={3}
 			colSize={1}
 			tooltip={getLotId(id)}
+			className={styles["action-tile"]}
 			hoverEffect={true}
 			{...tileProps}
 		/>
@@ -69,6 +73,7 @@ const _east = ([id, { ...tileProps }]) => {
 			rowSize={1}
 			colSize={3}
 			tooltip={getLotId(id)}
+			className={styles["action-tile"]}
 			hoverEffect={true}
 			{...tileProps}
 		/>

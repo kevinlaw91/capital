@@ -61,21 +61,6 @@
 		transform: translateZ(0);
 	}
 
-	// Show pan cursor
-	.pannable {
-		cursor: grab;
-
-		// Cursor for objects that can be clicked on
-		* {
-			cursor: default;
-		}
-
-		// During panning
-		&:active, &:active * {
-			cursor: grabbing;
-		}
-	}
-
 	// Flexbox center
 	.flex-center {
 		display: flex;
