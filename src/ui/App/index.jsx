@@ -6,7 +6,7 @@ import SplashScreen from "ui/SplashScreen";
 import GameScreen from "ui/GameScreen";
 import Tooltip from "ui/Tooltip";
 import { getStateIsHidden as getSplashHidden } from "redux/ui/splash";
-import { isAppLoaded, load, loaded } from "game/bootstrap";
+import { isAppLoaded, load } from "game/bootstrap";
 import styles from "./App.scss";
 
 function waitForStylesheetReady() {
