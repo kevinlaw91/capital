@@ -1,21 +1,18 @@
-import getState from "redux/getState";
-import { selectPlayerById } from "redux/game/session/players";
-import { selectEntityById } from "redux/game/session/map";
 import playerCanBuyLot from "game/rules/map/lot/condition/can_buy";
-import purchaseLot from "game/rules/map/lot/purchase";
+import { prompt as promptLotPurchase } from "game/rules/map/lot/purchase";
 
 export default (player, location) => {
-	if (location.startsWith("LOT-")) {
-		const state = getState();
-		const entLot = selectEntityById(state, location);
-		const entPlayer = selectPlayerById(state, player);
+	// Pending decisions
+	// This need to be resolved by player before passing turn
+	const pending = [];
 
-		if (playerCanBuyLot(entPlayer, entLot)) {
-			// TODO: Build UI
-			const purchase = window.confirm("Buy?");
-			if (purchase) {
-				purchaseLot(location, player, entLot.price);
-			}
+	if (location.startsWith("LOT-")) {
+		if (playerCanBuyLot(player, location)) {
+			// Offer player to buy property
+			pending.push(promptLotPurchase(location, player));
 		}
 	}
+
+	// Make sure all pending decisions were already resolved by player
+	return Promise.all(pending);
 };

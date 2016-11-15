@@ -3,6 +3,10 @@ import { AppContainer as ReactAppWrapper } from "react-hot-loader";
 import store from "redux/store";
 import { Provider } from "react-redux";
 
+// Velocity
+import "velocity-animate";
+import "velocity-animate/velocity.ui";
+
 // Main App
 import App from "ui/App";
 

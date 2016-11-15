@@ -1,4 +1,5 @@
 import { connect } from "react-redux";
+import { VelocityTransitionGroup } from "velocity-react";
 import { getStateIsPanning } from "redux/ui/camera";
 import { selectAllPrompts } from "redux/ui/prompts";
 import styles from "./UserPrompt.scss";
@@ -18,7 +19,19 @@ function UserPrompt(props) {
 				"translucent": props.ignoreInputs,
 			})}
 		>
-			{ Object.entries(props.items).map(inflate) }
+			<VelocityTransitionGroup
+				enter={{
+					animation: "transition.slideLeftBigIn",
+					duration: 200,
+				}}
+				leave={{
+					animation: "transition.slideLeftBigOut",
+					duration: 200,
+				}}
+				component="div"
+			>
+				{ Object.entries(props.items).map(inflate) }
+			</VelocityTransitionGroup>
 		</div>
 	);
 }

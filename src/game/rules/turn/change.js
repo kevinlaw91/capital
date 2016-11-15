@@ -2,6 +2,7 @@ import dispatch from "redux/dispatch";
 import getState from "redux/getState";
 import { token as animation } from "game/config/animations";
 import { findWaypointsBySteps } from "game/rules/player/pathfinder";
+import stay from "game/rules/map/stay";
 import queueMove from "game/rules/player/queueMove";
 import roll from "game/rules/dice/roll";
 import { subscribe as waitForDiceOnClick } from "game/rules/dice/click";
@@ -51,8 +52,15 @@ export default function () {
 					.then(() => dispatch(diceButtonActions.setIndeterminate(false)));
 			})
 			// Reached destination
-			// Token becomes idle
-			.then(() => dispatch(tokenActions.setIdle(activePlayerId, true)))
+			.then(() => {
+				// Token becomes idle
+				dispatch(tokenActions.setIdle(activePlayerId, true));
+
+				// Execute player stay rules
+				const currentPos = selectPlayerById(getState(), activePlayerId).position;
+
+				return stay(activePlayerId, currentPos);
+			})
 			// Wait before passing the turn
 			.then(wait(animation.ACTION_DELAY))
 			// Re-enable dice button
