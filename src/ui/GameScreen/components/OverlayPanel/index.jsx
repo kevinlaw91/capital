@@ -1,7 +1,7 @@
 import CSSModules from "react-css-modules";
 import styles from "./OverlayPanel.scss";
-import DiceButton from "./DiceButton";
-import UserPrompt from "./UserPrompt";
+import DiceButton from "../DiceButton";
+import UserPrompt from "../UserPrompt";
 
 function OverlayPanel() {
 	return (

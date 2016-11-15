@@ -7,7 +7,7 @@ import {
 } from "redux/ui/dice";
 import { getStateIsPanning } from "redux/ui/camera";
 import styles from "./DiceButton.scss";
-import { click } from "game/rules/dice/click";
+import { click } from "../../../../game/rules/dice/click";
 
 let cx = classNames.bind({
 	"circle-ignore": styles["circle-ignore"],
