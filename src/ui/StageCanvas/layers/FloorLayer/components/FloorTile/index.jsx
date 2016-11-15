@@ -10,6 +10,7 @@ export default function FloorTile(props) {
 		col,
 		rowSize,
 		colSize,
+		hoverEffect,
 		...otherProps,
 	} = props;
 
@@ -26,7 +27,7 @@ export default function FloorTile(props) {
 	let handleMouseEnter, handleMouseOut;
 
 	// Hover effect
-	if (props.hoverEffect) {
+	if (hoverEffect) {
 		handleMouseEnter = evt => {
 			evt.target.setAttribute("filter", "url(#FloorLayerTileHoverEffect)");
 		};

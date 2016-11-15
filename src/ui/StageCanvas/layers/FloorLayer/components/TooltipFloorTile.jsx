@@ -5,12 +5,13 @@ import FloorTile from "./FloorTile";
 function TooltipFloorTile(props) {
 	const {
 		tooltip,
+		dispatch,
 		...otherProps,
 	} = props;
 
 	const handleMouseEnter = () => {
 		// Show Tooltip
-		props.dispatch(
+		dispatch(
 			tooltipActions.show("LotTooltip", tooltip)
 		);
 	};
@@ -18,13 +19,13 @@ function TooltipFloorTile(props) {
 	const handleMouseMove = evt => {
 		// Move tooltip
 		const { left, top, width, height } = evt.target.getBoundingClientRect();
-		props.dispatch(
+		dispatch(
 			tooltipActions.move(left + (width / 2), top + (height / 2))
 		);
 	};
 
 	const handleMouseOut = () => {
-		props.dispatch(
+		dispatch(
 			tooltipActions.hide()
 		);
 	};
