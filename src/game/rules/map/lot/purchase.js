@@ -4,10 +4,10 @@ import { actions as lotActions } from "redux/lot";
 
 /**
  * @param {string} location
- * @param {string} owner
+ * @param {string} player
  * @param {number} price
  */
-export default (location, owner, price) => {
-	dispatch(playerActions.deductGold(owner, price));
-	dispatch(lotActions.setOwner(location, owner));
+export default (location, player, price) => {
+	dispatch(playerActions.deductGold(player, price));
+	dispatch(lotActions.setOwner(location, player));
 };
