@@ -5,7 +5,6 @@ module.exports = {
 		vendor: [
 			"classnames",
 			"react",
-			"react-css-modules",
 			"react-dom",
 			"react-redux",
 			"redux",

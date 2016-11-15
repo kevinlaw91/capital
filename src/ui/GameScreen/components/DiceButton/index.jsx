@@ -1,5 +1,4 @@
 import { connect } from "react-redux";
-import CSSModules from "react-css-modules";
 import classNames from "classnames/bind";
 import {
 	getStateDisabled,
@@ -10,10 +9,12 @@ import { click } from "game/rules/dice/click";
 import styles from "./DiceButton.scss";
 
 let cx = classNames.bind({
+	"circle": styles["circle"],
 	"circle-ignore": styles["circle-ignore"],
 	"circle-hover": styles["circle-hover"],
 	"circle-pressed": styles["circle-pressed"],
 	"circle-indeterminate": styles["circle-indeterminate"],
+	"container": styles["container"],
 	"container-indeterminate": styles["container-indeterminate"],
 	"container-disabled": styles["container-disabled"],
 });
@@ -42,11 +43,13 @@ class DiceButton extends React.Component {
 
 	render() {
 		let svgStyle = cx({
+			"container": true,
 			"container-disabled": this.props.disabled,
 			"container-indeterminate": this.props.indeterminate,
 		});
 
 		let circleStyle = cx({
+			"circle": true,
 			"circle-hover": !this.props.disabled && !this.props.indeterminate && this.state.hover,
 			"circle-ignore": this.props.ignoreInputs,
 			"circle-pressed": !this.props.disabled && !this.props.indeterminate && this.state.pressed,
@@ -54,14 +57,10 @@ class DiceButton extends React.Component {
 		});
 
 		return (
-			<svg
-				styleName="container"
-				className={svgStyle}
-			>
+			<svg className={svgStyle}>
 				<circle
 					cx="53" cy="53" r="40"
 					className={circleStyle}
-					styleName="circle"
 					onClick={this.handleClick}
 					onMouseEnter={this.handleMouseEnter}
 					onMouseLeave={this.handleMouseLeave}
@@ -85,6 +84,4 @@ const mapStateToProps = state => ({
 	indeterminate: getStateIndeterminate(state),
 });
 
-export default connect(mapStateToProps)(
-	CSSModules(DiceButton, styles)
-);
+export default connect(mapStateToProps)(DiceButton);

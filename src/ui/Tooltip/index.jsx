@@ -1,4 +1,3 @@
-import CSSModules from "react-css-modules";
 import { connect } from "react-redux";
 import {
 	getTooltipClass,
@@ -22,7 +21,7 @@ function Tooltip(props) {
 	}
 
 	return (
-		<div styleName="layer">
+		<div className={styles["layer"]}>
 			{tooltip}
 		</div>
 	);
@@ -43,6 +42,4 @@ const mapStateToProps = state => ({
 	data: getTooltipData(state),
 });
 
-export default connect(mapStateToProps)(
-	CSSModules(Tooltip, styles)
-);
+export default connect(mapStateToProps)(Tooltip);

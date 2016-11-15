@@ -1,12 +1,9 @@
-import CSSModules from "react-css-modules";
 import styles from "./SplashScreen.scss";
 
-function SplashScreen() {
+export default function SplashScreen() {
 	return (
-		<section styleName="wrapper">
+		<section className={styles["wrapper"]}>
 			<span>LOADING</span>
 		</section>
 	);
 }
-
-export default CSSModules(SplashScreen, styles);

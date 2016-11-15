@@ -1,4 +1,3 @@
-import CSSModules from "react-css-modules";
 import { connect } from "react-redux";
 import styles from "./LotTooltip.scss";
 import { selectEntityById } from "redux/game/session/map";
@@ -10,9 +9,9 @@ function LotTooltip(props) {
 				left: props.x || 0,
 				top: props.y + 15 || 0,
 			}}
-			styleName="tooltip"
+			className={styles["tooltip"]}
 		>
-			<div styleName="contents">
+			<div className={styles["contents"]}>
 				{ props.data.name }
 			</div>
 		</div>
@@ -30,6 +29,4 @@ const mapStateToProps = (state, props) => ({
 	data: selectEntityById(state, props.entityId),
 });
 
-export default connect(mapStateToProps)(
-	CSSModules(LotTooltip, styles)
-);
+export default connect(mapStateToProps)(LotTooltip);

@@ -1,23 +1,16 @@
-import CSSModules from "react-css-modules";
-import styles from "./OverlayPanel.scss";
 import DiceButton from "../DiceButton";
 import UserPrompt from "../UserPrompt";
+import styles from "./OverlayPanel.scss";
 
-function OverlayPanel() {
+export default function OverlayPanel(props) {
 	return (
-		<section styleName="container">
-			<div styleName="layer-dice-button">
+		<section className={styles["container"]}>
+			<div className={styles["layer-dice-button"]}>
 				<DiceButton />
 			</div>
-			<div styleName="layer-prompt">
+			<div className={styles["layer-prompt"]}>
 				<UserPrompt />
 			</div>
 		</section>
 	);
 }
-
-OverlayPanel.propTypes = {
-	styles: React.PropTypes.object,
-};
-
-export default CSSModules(OverlayPanel, styles);

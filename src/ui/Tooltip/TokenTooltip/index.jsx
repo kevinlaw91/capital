@@ -1,4 +1,3 @@
-import CSSModules from "react-css-modules";
 import { connect } from "react-redux";
 import styles from "./TokenTooltip.scss";
 import { selectPlayerById } from "redux/game/session/players";
@@ -10,9 +9,9 @@ function TokenTooltip(props) {
 				left: props.x || 0,
 				top: props.y - 15 || 0,
 			}}
-			styleName="tooltip"
+			className={styles["tooltip"]}
 		>
-			<div styleName="contents">
+			<div className={styles["contents"]}>
 				{ props.data.name || "Player" }
 			</div>
 		</div>
@@ -30,6 +29,4 @@ const mapStateToProps = (state, props) => ({
 	data: selectPlayerById(state, props.entityId),
 });
 
-export default connect(mapStateToProps)(
-	CSSModules(TokenTooltip, styles)
-);
+export default connect(mapStateToProps)(TokenTooltip);
