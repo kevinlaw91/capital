@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import CSSModules from "react-css-modules";
+import classnames from "classnames/bind";
 import { VelocityTransitionGroup } from "velocity-react";
 import Screen from "./components/Screen";
 import SplashScreen from "ui/SplashScreen";
@@ -8,6 +8,10 @@ import Tooltip from "ui/Tooltip";
 import { getStateIsHidden as getSplashHidden } from "redux/ui/splash";
 import { isAppLoaded, load } from "game/bootstrap";
 import styles from "./App.scss";
+
+const cx = classnames.bind({
+	"container": styles["container"],
+});
 
 function waitForStylesheetReady() {
 	return new Promise(loaded => {
@@ -62,11 +66,17 @@ class App extends React.Component {
 	render() {
 		return (
 			<div
-				/* Hide ui when stylesheet is still loading */
+				/*
+				 * Hide ui when stylesheet is still loading
+				 * This has to be implemented using inline style
+				 * or else FOUC will happens
+				 */
 				style={this.state.bootstrap ? { display: "none" } : {}}
+				className={cx({
+					"fullscreen": true,
+					"container": true,
+				})}
 
-				className="fullscreen"
-				styleName="container"
 			>
 				{gameScreen}
 				<VelocityTransitionGroup
@@ -88,13 +98,10 @@ class App extends React.Component {
 
 App.propTypes = {
 	splash: React.PropTypes.bool,
-	styles: React.PropTypes.object
 };
 
 const mapStateToProps = state => ({
 	splash: !getSplashHidden(state)
 });
 
-export default connect(mapStateToProps)(
-	CSSModules(App, styles)
-);
+export default connect(mapStateToProps)(App);
