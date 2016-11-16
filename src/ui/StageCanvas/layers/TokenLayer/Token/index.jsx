@@ -27,7 +27,7 @@ class Token extends React.Component {
 
 	handleMouseEnter(evt) {
 		// Show tooltip
-		this.props.showTooltip("TokenTooltip", this.props.tooltip);
+		this.props.showTooltip("TokenTooltip", this.props.tokenId);
 	}
 
 	handleMouseMove(evt) {
@@ -93,7 +93,6 @@ Token.propTypes = {
 	x: React.PropTypes.number,
 	y: React.PropTypes.number,
 	color: React.PropTypes.string,
-	tooltip: React.PropTypes.string,
 	showTooltip: React.PropTypes.func,
 	moveTooltip: React.PropTypes.func,
 	hideTooltip: React.PropTypes.func,
