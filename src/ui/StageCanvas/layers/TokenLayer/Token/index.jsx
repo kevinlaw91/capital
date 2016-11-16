@@ -32,7 +32,7 @@ class Token extends React.Component {
 		unregister(this.props.tokenId);
 	}
 
-	handleMouseEnter(evt) {
+	handleMouseEnter() {
 		// Show tooltip
 		this.props.showTooltip("TokenTooltip", this.props.tokenId);
 	}
@@ -63,21 +63,19 @@ class Token extends React.Component {
 	}
 
 	render() {
-		const animatedProps = {
-			x: this.props.x + Token.OFFSET_X,
-			y: this.props.y + Token.OFFSET_Y,
-		};
-
 		return (
 			<VelocityComponent
-				animation={animatedProps}
+				animation={{
+					x: this.props.x + Token.OFFSET_X,
+					y: this.props.y + Token.OFFSET_Y,
+				}}
 				duration={animation.DURATION_MOVE}
 				complete={this.handleAnimationComplete}
 			>
 				<use
 					width={64}
 					height={64}
-					xlinkHref={ sprite(this.props.color) }
+					xlinkHref={sprite(this.props.color)}
 					className={tokenStyles}
 					onMouseEnter={this.handleMouseEnter}
 					onMouseMove={this.handleMouseMove}
