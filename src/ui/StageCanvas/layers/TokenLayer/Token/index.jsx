@@ -1,59 +1,98 @@
 import { VelocityComponent } from "velocity-react";
 import { connect } from "react-redux";
+import Deferred from "js/utils/deferred";
 import { token as animation } from "game/config/animations";
 import { default as sprite } from "game/resources/sprites/tokens";
 import { actions as tooltipActions } from "redux/ui/tooltip";
+import { register, unregister } from "ui/tokens";
 
-// Offset to be applied to the sprite
-const offsetX = -32;
-const offsetY = -43;
-
-function Token(props) {
-	const animatedProps = {
-		x: props.x + offsetX,
-		y: props.y + offsetY,
-	};
-
-	function handleMouseEnter(evt) {
-		// Show tooltip
-		props.showTooltip("TokenTooltip", props.tooltip);
+class Token extends React.Component {
+	constructor(props) {
+		super(props);
+		this._animation = {};
+		this.handleMouseEnter = this.handleMouseEnter.bind(this);
+		this.handleMouseMove = this.handleMouseMove.bind(this);
+		this.handleMouseOut = this.handleMouseOut.bind(this);
+		this.onAnimationComplete = this.onAnimationComplete.bind(this);
+		this.handleAnimationComplete = this.handleAnimationComplete.bind(this);
 	}
 
-	function handleMouseMove(evt) {
+	componentDidMount() {
+		register(this.props.tokenId, this);
+	}
+
+	componentWillUnmount() {
+		unregister(this.props.tokenId);
+	}
+
+	handleMouseEnter(evt) {
+		// Show tooltip
+		this.props.showTooltip("TokenTooltip", this.props.tooltip);
+	}
+
+	handleMouseMove(evt) {
 		// Move tooltip
 		const { left, top, width, height } = evt.target.getBoundingClientRect();
-		props.moveTooltip(left + (width / 2), top + (height / 2));
+		this.props.moveTooltip(left + (width / 2), top + (height / 2));
 	}
 
-	const handleMouseOut = props.hideTooltip;
+	handleMouseOut() {
+		this.props.hideTooltip();
+	}
 
-	return (
-		<VelocityComponent
-			animation={animatedProps}
-			duration={animation.DURATION_MOVE}
-			complete={props.onMove}
-		>
-			<use
-				width={64}
-				height={64}
-				xlinkHref={ sprite(props.color) }
-				style={{
-					"cursor": "default",
-					"shapeRendering": "crispEdges",
-				}}
-				onMouseEnter={handleMouseEnter}
-				onMouseMove={handleMouseMove}
-				onMouseOut={handleMouseOut}
-			/>
-		</VelocityComponent>
-	);
+	onAnimationComplete() {
+		if (!this._animation.onComplete) {
+			this._animation.onComplete = new Deferred();
+		}
+
+		return this._animation.onComplete.promise;
+	}
+
+	handleAnimationComplete() {
+		if (this._animation.onComplete) {
+			this._animation.onComplete.resolve();
+			delete this._animation.onComplete;
+		}
+	}
+
+	render() {
+		const animatedProps = {
+			x: this.props.x + Token.OFFSET_X,
+			y: this.props.y + Token.OFFSET_Y,
+		};
+
+		return (
+			<VelocityComponent
+				animation={animatedProps}
+				duration={animation.DURATION_MOVE}
+				complete={this.handleAnimationComplete}
+			>
+				<use
+					width={64}
+					height={64}
+					xlinkHref={ sprite(this.props.color) }
+					style={{
+						"cursor": "default",
+						"shapeRendering": "crispEdges",
+					}}
+					onMouseEnter={this.handleMouseEnter}
+					onMouseMove={this.handleMouseMove}
+					onMouseOut={this.handleMouseOut}
+				/>
+			</VelocityComponent>
+		);
+	}
 }
 
+// Offset to be applied to the sprite
+Token.OFFSET_X = -32;
+Token.OFFSET_Y = -43;
+
 Token.propTypes = {
+	tokenId: React.PropTypes.string.isRequired,
 	x: React.PropTypes.number.isRequired,
 	y: React.PropTypes.number.isRequired,
 	color: React.PropTypes.string.isRequired,
-	onMove: React.PropTypes.func,
 	tooltip: React.PropTypes.string,
 	showTooltip: React.PropTypes.func,
 	moveTooltip: React.PropTypes.func,

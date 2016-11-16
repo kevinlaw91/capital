@@ -30,11 +30,11 @@ function renderToken(id, entry) {
 	return (
 		<Token
 			key={id}
+			tokenId={id}
 			tooltip={id}
 			color={entry.color || "white"}
 			x={screenX}
 			y={screenY}
-		    onMove={entry.onMove}
 		/>
 	);
 }

@@ -1,8 +1,8 @@
 import dispatch from "redux/dispatch";
 import { actions as playerActions } from "redux/player";
-import { actions as tokenActions } from "redux/player/token";
 import { token as animation } from "game/config/animations";
 import passing from "game/rules/map/passing";
+import { find as findToken } from "ui/tokens";
 
 /**
  * Move player along the path
@@ -11,10 +11,6 @@ import passing from "game/rules/map/passing";
  */
 export default (playerId, path) => {
 	return new Promise(reachedDestination => {
-		// Handle promise resolving when animation completed
-		let animCompleted = null;
-		dispatch(tokenActions.setOnMove(playerId, () => animCompleted && animCompleted()));
-
 		// Reducer that accepts every waypoint id in the path
 		// then generate move actions and add into a promise chain
 		const queueReducer = (queue, location, idx) => {
@@ -27,19 +23,19 @@ export default (playerId, path) => {
 					// 2. Move animation done
 					// 3. Wait is over (if still have next move in queue)
 					return new Promise(animDone => {
-						// Set animation complete callback resolver
-						// (2) animation done callback (async)
-						animCompleted = animDone;
-						// (1) Move player
+						// Set animation complete callback
+						findToken(playerId)
+							.onAnimationComplete()
+							.then(animDone);
+						// Move player
 						dispatch(playerActions.setPosition(playerId, location));
 					}).then(() => {
 						// Move animation done
-
 						// Execute player passing rules
 						passing(playerId, location);
 
 						if (idx < path.length - 1) {
-							// (3) Wait before beginning next step
+							// Wait before beginning next step
 							window.setTimeout(stepCompleted, animation.PAUSE_BEFORE_NEXT_STEP);
 						} else if (idx === path.length - 1) {
 							// Reached destination
@@ -54,8 +50,6 @@ export default (playerId, path) => {
 		// Initial value was set to a resolved promise
 		// so that first item in queue can start immediately
 		path.reduce(queueReducer, Promise.resolve())
-		    // Clear callback handler
-		    .then(() => dispatch(tokenActions.setOnMove(playerId, null)))
 		    // Queue completed / reach destination
 		    .then(reachedDestination);
 	});
