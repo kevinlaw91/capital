@@ -104,8 +104,10 @@ Token.defaultProps = {
 	y: 0,
 };
 
-export default connect(null, {
+const mapDispatchToProps = {
 	showTooltip: tooltipActions.show,
 	moveTooltip: tooltipActions.move,
 	hideTooltip: tooltipActions.hide,
-})(Token);
+};
+
+export default connect(null, mapDispatchToProps)(Token);
