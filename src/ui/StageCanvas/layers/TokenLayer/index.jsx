@@ -22,9 +22,6 @@ function renderToken(id, entry) {
 			// Position is an object with x and y props
 			({ x: screenX, y: screenY } = entry.position);
 		}
-	} else {
-		// Move to origin if position undefined
-		screenX = screenY = 0;
 	}
 
 	return (
@@ -32,7 +29,7 @@ function renderToken(id, entry) {
 			key={id}
 			tokenId={id}
 			tooltip={id}
-			color={entry.color || "white"}
+			color={entry.color}
 			x={screenX}
 			y={screenY}
 		/>

@@ -90,13 +90,19 @@ Token.OFFSET_Y = -43;
 
 Token.propTypes = {
 	tokenId: React.PropTypes.string.isRequired,
-	x: React.PropTypes.number.isRequired,
-	y: React.PropTypes.number.isRequired,
-	color: React.PropTypes.string.isRequired,
+	x: React.PropTypes.number,
+	y: React.PropTypes.number,
+	color: React.PropTypes.string,
 	tooltip: React.PropTypes.string,
 	showTooltip: React.PropTypes.func,
 	moveTooltip: React.PropTypes.func,
 	hideTooltip: React.PropTypes.func,
+};
+
+Token.defaultProps = {
+	color: "white",
+	x: 0,
+	y: 0,
 };
 
 export default connect(null, {
