@@ -1,10 +1,17 @@
 import { VelocityComponent } from "velocity-react";
 import { connect } from "react-redux";
+import classnames from "classnames";
 import Deferred from "js/utils/deferred";
 import { token as animation } from "game/config/animations";
 import { default as sprite } from "game/resources/sprites/tokens";
 import { actions as tooltipActions } from "redux/ui/tooltip";
 import { register, unregister } from "ui/tokens";
+import styles from "./Token.scss";
+
+const tokenStyles = classnames(
+	styles["crisp"],
+	styles["cursor-default"]
+);
 
 class Token extends React.Component {
 	constructor(props) {
@@ -71,10 +78,7 @@ class Token extends React.Component {
 					width={64}
 					height={64}
 					xlinkHref={ sprite(this.props.color) }
-					style={{
-						"cursor": "default",
-						"shapeRendering": "crispEdges",
-					}}
+					className={tokenStyles}
 					onMouseEnter={this.handleMouseEnter}
 					onMouseMove={this.handleMouseMove}
 					onMouseOut={this.handleMouseOut}
