@@ -1,14 +1,16 @@
-// A pending promise
-let pending;
+import Deferred from "js/utils/deferred";
+
+// Dice button click as deferred
+let onClick;
 
 export function subscribe() {
-	return new Promise(resolve => {
-		pending = resolve;
-	});
+	onClick = new Deferred();
+
+	return onClick.promise;
 }
 
 export function click() {
-	if (pending) {
-		pending();
+	if (onClick) {
+		onClick.resolve();
 	}
 }
