@@ -10,47 +10,56 @@ import { find as findToken } from "ui/tokens";
  * @param {Array.<string>} path - Array containing waypoint location ids
  */
 export default (playerId, path) => {
-	return new Promise(reachedDestination => {
-		// Reducer that accepts every waypoint id in the path
-		// then generate move actions and add into a promise chain
-		const queueReducer = (queue, location, idx) => {
-			// Add each waypoints to move queue
-			return queue.then(() => {
-				// Wait for a step to complete before beginning another step
-				return new Promise(stepCompleted => {
-					// A step is complete when:
-					// 1. Player position was updated
-					// 2. Move animation done
-					// 3. Wait is over (if still have next move in queue)
-					return new Promise(animDone => {
-						// Set animation complete callback
-						findToken(playerId)
-							.onAnimationComplete()
-							.then(animDone);
-						// Move player
-						dispatch(playerActions.setPosition(playerId, location));
-					}).then(() => {
-						// Move animation done
-						// Execute player passing rules
-						passing(playerId, location);
+	// Reducer that accepts every waypoint id in the path
+	// and chain it into a promise
+	const queueReducer = (queue, location, idx) => {
+		// Chain future steps into move queue
+		return queue.then(() => {
+			//
+			// Sequenced actions for each waypoint
+			//
 
-						if (idx < path.length - 1) {
-							// Wait before beginning next step
-							window.setTimeout(stepCompleted, animation.PAUSE_BEFORE_NEXT_STEP);
-						} else if (idx === path.length - 1) {
-							// Reached destination
-							// Already reached last step in queue, no delay needed
-							stepCompleted();
-						}
-					});
-				});
+			/** Move player token by animation */
+			const moveToken = () => new Promise(resolve => {
+				// Set animation complete callback
+				findToken(playerId)
+					.onAnimationComplete()
+					.then(resolve);
+				// Move player
+				dispatch(playerActions.setPosition(playerId, location));
 			});
-		};
 
+			/** Will be called when player passing a location */
+			const tokenPassing = () => {
+				// Execute player passing rules
+				passing(playerId, location);
+			};
+
+			/** Delay between each steps */
+			const wait = () => new Promise(resolve => {
+				const haveMoreSteps = idx < path.length - 1;
+				if (haveMoreSteps) {
+					// Wait before continue
+					window.setTimeout(resolve, animation.PAUSE_BEFORE_NEXT_STEP);
+				} else {
+					// Already reached last step in queue
+					// No delay needed
+					resolve();
+				}
+			});
+
+			// Execute these sequences for each waypoints
+			return moveToken()
+				.then(tokenPassing)
+				.then(wait);
+		});
+	};
+
+	// Reaching destination as a promise
+	return new Promise(reach => {
 		// Initial value was set to a resolved promise
 		// so that first item in queue can start immediately
 		path.reduce(queueReducer, Promise.resolve())
-		    // Queue completed / reach destination
-		    .then(reachedDestination);
+		    .then(reach);
 	});
 };
