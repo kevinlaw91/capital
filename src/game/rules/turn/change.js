@@ -56,6 +56,9 @@ export default function () {
 				// Token becomes idle
 				dispatch(tokenActions.setIdle(activePlayerId, true));
 
+				// Hide dice button
+				dispatch(diceButtonActions.hide());
+
 				// Execute player stay rules
 				const currentPos = selectPlayerById(getState(), activePlayerId).position;
 
@@ -64,7 +67,11 @@ export default function () {
 			// Wait before passing the turn
 			.then(wait(animation.ACTION_DELAY))
 			// Re-enable dice button
-			.then(() => dispatch(diceButtonActions.enable()))
+			.then(() => {
+				// Show and enable dice button
+				dispatch(diceButtonActions.show());
+				dispatch(diceButtonActions.enable());
+			})
 			// Pass the turn to next person
 			.then(pass);
 	});

@@ -1,6 +1,8 @@
 import { connect } from "react-redux";
 import classNames from "classnames/bind";
+import { VelocityComponent } from "velocity-react";
 import {
+	getStateHidden,
 	getStateDisabled,
 	getStateIndeterminate
 } from "redux/ui/dice";
@@ -58,15 +60,20 @@ class DiceButton extends React.Component {
 
 		return (
 			<svg className={svgStyle}>
-				<circle
-					cx="53" cy="53" r="40"
-					className={circleStyle}
-					onClick={this.handleClick}
-					onMouseEnter={this.handleMouseEnter}
-					onMouseLeave={this.handleMouseLeave}
-					onMouseDown={this.handleMouseDown}
-					onMouseUp={this.handleMouseUp}
-				/>
+				<VelocityComponent
+					animation={this.props.hidden ? "transition.expandOut": "transition.shrinkIn"}
+					duration={200}
+				>
+					<circle
+						cx="53" cy="53" r="40"
+						className={circleStyle}
+						onClick={this.handleClick}
+						onMouseEnter={this.handleMouseEnter}
+						onMouseLeave={this.handleMouseLeave}
+						onMouseDown={this.handleMouseDown}
+						onMouseUp={this.handleMouseUp}
+					/>
+				</VelocityComponent>
 			</svg>
 		);
 	}
@@ -74,12 +81,14 @@ class DiceButton extends React.Component {
 
 DiceButton.propTypes = {
 	ignoreInputs: React.PropTypes.bool,
+	hidden: React.PropTypes.bool,
 	disabled: React.PropTypes.bool,
 	indeterminate: React.PropTypes.bool,
 };
 
 const mapStateToProps = state => ({
 	ignoreInputs: getStateIsPanning(state),
+	hidden: getStateHidden(state),
 	disabled: getStateDisabled(state),
 	indeterminate: getStateIndeterminate(state),
 });
