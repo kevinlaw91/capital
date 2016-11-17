@@ -111,9 +111,6 @@ module.exports = {
 			name: "vendor",
 			filename: "vendor.bundle.min.js",
 		}),
-	    // Disable Dedupe that causes error
-	    // https://github.com/webpack/webpack/issues/2644
-		// new webpack.optimize.DedupePlugin(),
 		new webpack.optimize.UglifyJsPlugin({
 			comments: false,
 		}),
