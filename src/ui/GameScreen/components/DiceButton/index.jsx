@@ -6,7 +6,7 @@ import {
 	getStateDisabled,
 	getStateIndeterminate,
 } from "redux/ui/dice";
-import { getStateIsPanning } from "redux/ui/camera";
+import { isPanning } from "redux/ui/camera";
 import { click } from "game/rules/dice/click";
 import styles from "./DiceButton.scss";
 
@@ -85,7 +85,7 @@ DiceButton.propTypes = {
 };
 
 const mapStateToProps = state => ({
-	ignoreInputs: getStateIsPanning(state),
+	ignoreInputs: isPanning(state),
 	hidden: getStateHidden(state),
 	disabled: getStateDisabled(state),
 	indeterminate: getStateIndeterminate(state),

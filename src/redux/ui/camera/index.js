@@ -2,34 +2,42 @@ import Immutable from "seamless-immutable";
 
 // Types
 export const types = {
-	"START_PAN": "game/camera/START_PAN",
-	"STOP_PAN": "game/camera/STOP_PAN",
+	"GRAB": "game/camera/GRAB",
+	"PAN": "game/camera/PAN",
 };
 
 // Actions
 export const actions = {
-	setPanningStatus: (bool) => ({
-		type: bool ? types.START_PAN : types.STOP_PAN,
+	setGrabbing: grab => ({
+		type: types.GRAB,
+		grab,
+	}),
+
+	setPanning: pan => ({
+		type: types.PAN,
+		pan,
 	}),
 };
 
 // Initial state
 const initialState = Immutable({
+	grabbing: false,
 	panning: false,
 });
 
 // Reducer
 export function reducer(state = initialState, action = {}) {
 	switch (action.type) {
-		case types.START_PAN:
-			return state.set("panning", true);
+		case types.GRAB:
+			return state.set("grabbing", action.grab);
 
-		case types.STOP_PAN:
-			return state.set("panning", false);
+		case types.PAN:
+			return state.set("panning", action.pan);
 
 		default: return state;
 	}
 }
 
 // Selectors
-export const getStateIsPanning = state => state.ui.camera.panning;
+export const isGrabbing = state => state.ui.camera.grabbing;
+export const isPanning = state => state.ui.camera.panning;

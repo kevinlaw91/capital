@@ -40,19 +40,20 @@ export const setViewportElement = el => { viewportElement = el; };
 
 // Called after panning
 function onAfterPan() {
-	dispatch(actions.setPanningStatus(false));
+	dispatch(actions.setPanning(false));
 }
 
 // Called when mouse down on svg-pan-zoom svg element
 function onMouseDown() {
+	dispatch(actions.setGrabbing(true));
 	_mouseDownHolding = true;
 }
 
-// Called when mouse up on svg-pan-zoom svg element
+// Called when mouse up on window
 function onMouseUp() {
-	// Mouseup was fired during panning
+	dispatch(actions.setGrabbing(false));
 	if (_isPanning) {
-		// Panning will stop when mouseup
+		// This implies panning has stopped
 		onAfterPan();
 	}
 
@@ -76,7 +77,7 @@ export function init() {
 			if (_mouseDownHolding) {
 				if (!_isPanning) {
 					// To prevent dispatch repeatedly
-					dispatch(actions.setPanningStatus(true));
+					dispatch(actions.setPanning(true));
 				}
 
 				// Disable click event for stage contents when panning
@@ -104,11 +105,9 @@ export function init() {
 		customEventsHandler: {
 			init: function (options) {
 				options.svgElement.addEventListener("mousedown", onMouseDown);
-				options.svgElement.addEventListener("mouseup", onMouseUp);
 			},
 			destroy: function (options) {
 				options.svgElement.removeEventListener("mousedown", onMouseDown);
-				options.svgElement.removeEventListener("mouseup", onMouseUp);
 			}
 		}
 	});
@@ -125,6 +124,9 @@ export function init() {
 		camera.pan(camera.getPan());
 		camera.zoom(camera.getZoom());
 	});
+
+	// Attach event listener to update panning state
+	window.addEventListener("mouseup", onMouseUp);
 }
 
 export function panToSubject(subject) {

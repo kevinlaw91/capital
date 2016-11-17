@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { VelocityTransitionGroup } from "velocity-react";
-import { getStateIsPanning } from "redux/ui/camera";
+import { isPanning } from "redux/ui/camera";
 import { selectAllPrompts } from "redux/ui/prompts";
 import styles from "./UserPrompt.scss";
 import classnames from "classnames/bind";
@@ -42,7 +42,7 @@ UserPrompt.propTypes = {
 };
 
 const mapStateToProps = state => ({
-	ignoreInputs: getStateIsPanning(state),
+	ignoreInputs: isPanning(state),
 	items: selectAllPrompts(state),
 });
 
