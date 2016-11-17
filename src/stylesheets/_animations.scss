@@ -26,7 +26,3 @@
 @keyframes :global(transform-unset) {
 	to { transform: unset; }
 }
-
-@keyframes :global(rotate) {
-	to { transform: rotate(360deg); }
-}

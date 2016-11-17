@@ -5,13 +5,12 @@
 	margin: 0 auto;
 }
 
-.container-disabled {
-	opacity: 0.75;
-}
-
 .container-indeterminate {
-	:global {
-		animation: rotate 2s linear infinite;
+	animation: rotate 2s linear infinite;
+	:at-root {
+		@keyframes rotate {
+			to { transform: rotate(360deg); }
+		}
 	}
 }
 
@@ -23,6 +22,10 @@
 	stroke: white;
 	stroke-width: 5px;
 	transform-origin: center;
+}
+
+.circle-disabled {
+	opacity: 0.75;
 }
 
 .circle-ignore {
@@ -40,25 +43,27 @@
 }
 
 .circle-indeterminate {
-	animation: spinning-stroke 2s ease-in-out infinite;
 	stroke: {
 		dasharray: 1,250;
 		dashoffset: 0;
 		linecap: round;
 	}
-}
 
-@keyframes spinning-stroke {
-	0% {
-		stroke-dasharray: 1,250;
-		stroke-dashoffset: 0;
-	}
-	50% {
-		stroke-dasharray: 180,250;
-		stroke-dashoffset: -55px;
-	}
-	100% {
-		stroke-dasharray: 180,250;
-		stroke-dashoffset: -250px;
+	animation: spinning-stroke 2s ease-in-out infinite;
+	:at-root {
+		@keyframes spinning-stroke {
+			0% {
+				stroke-dasharray: 1,250;
+				stroke-dashoffset: 0;
+			}
+			50% {
+				stroke-dasharray: 180,250;
+				stroke-dashoffset: -55px;
+			}
+			100% {
+				stroke-dasharray: 180,250;
+				stroke-dashoffset: -250px;
+			}
+		}
 	}
 }

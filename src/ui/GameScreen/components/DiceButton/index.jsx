@@ -4,7 +4,7 @@ import { VelocityComponent } from "velocity-react";
 import {
 	getStateHidden,
 	getStateDisabled,
-	getStateIndeterminate
+	getStateIndeterminate,
 } from "redux/ui/dice";
 import { getStateIsPanning } from "redux/ui/camera";
 import { click } from "game/rules/dice/click";
@@ -12,25 +12,23 @@ import styles from "./DiceButton.scss";
 
 let cx = classNames.bind({
 	"circle": styles["circle"],
+	"circle-disabled": styles["circle-disabled"],
 	"circle-ignore": styles["circle-ignore"],
 	"circle-hover": styles["circle-hover"],
 	"circle-pressed": styles["circle-pressed"],
 	"circle-indeterminate": styles["circle-indeterminate"],
 	"container": styles["container"],
 	"container-indeterminate": styles["container-indeterminate"],
-	"container-disabled": styles["container-disabled"],
 });
 
 class DiceButton extends React.Component {
 	constructor(props) {
 		super(props);
-
 		this.handleClick = this.handleClick.bind(this);
 		this.handleMouseEnter = this.handleMouseEnter.bind(this);
 		this.handleMouseLeave = this.handleMouseLeave.bind(this);
 		this.handleMouseDown = this.handleMouseDown.bind(this);
 		this.handleMouseUp = this.handleMouseUp.bind(this);
-
 		this.state = {
 			hover: false,
 			pressed: false,
@@ -46,12 +44,12 @@ class DiceButton extends React.Component {
 	render() {
 		let svgStyle = cx({
 			"container": true,
-			"container-disabled": this.props.disabled,
 			"container-indeterminate": this.props.indeterminate,
 		});
 
 		let circleStyle = cx({
 			"circle": true,
+			"circle-disabled": this.props.disabled,
 			"circle-hover": !this.props.disabled && !this.props.indeterminate && this.state.hover,
 			"circle-ignore": this.props.ignoreInputs,
 			"circle-pressed": !this.props.disabled && !this.props.indeterminate && this.state.pressed,
