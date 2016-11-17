@@ -9,11 +9,17 @@ export const types = {
 
 // Actions
 export const actions = {
-	enable: () => ({ type: types.ENABLE }),
-	disable: () => ({ type: types.DISABLE }),
-	setIndeterminate: bool => ({
+	enable: () => ({
+		type: types.ENABLE,
+	}),
+
+	disable: () => ({
+		type: types.DISABLE,
+	}),
+
+	setIndeterminate: indeterminate => ({
 		type: types.SET_INDETERMINATE,
-		value: bool,
+		indeterminate,
 	}),
 };
 
@@ -27,11 +33,15 @@ export function reducer(state = initialState, action = {}) {
 	switch (action.type) {
 		case types.ENABLE:
 			return state.set("disabled", false);
+
 		case types.DISABLE:
 			return state.set("disabled", true);
+
 		case types.SET_INDETERMINATE:
-			return state.set("indeterminate", action.value);
-		default: return state;
+			return state.set("indeterminate", action.indeterminate);
+
+		default:
+			return state;
 	}
 }
 
