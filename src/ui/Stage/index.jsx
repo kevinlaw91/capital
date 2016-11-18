@@ -1,7 +1,13 @@
 import { connect } from "react-redux";
 import { isGrabbing } from "redux/ui/camera";
-import { setSVGElement, init } from "game/camera";
-import StageCanvas from "ui/StageCanvas";
+import {
+	setSVGElement,
+	setViewportElement,
+	init,
+} from "game/camera";
+import FloorLayer from "./layers/FloorLayer";
+import TokenLayer from "./layers/TokenLayer";
+import GroundMarkerLayer from "./layers/GroundMarkerLayer";
 import styles from "./Stage.scss";
 
 class Stage extends React.Component {
@@ -19,10 +25,23 @@ class Stage extends React.Component {
 				height="100%"
 				ref={setSVGElement}
 				className={this.props.grabbing ? styles["cursor-grabbing"] : styles["cursor-grab"]}
-			    onMouseDown={this.handleMouseDown}
-			    onMouseUp={this.handleMouseUp}
+				onMouseDown={this.handleMouseDown}
+				onMouseUp={this.handleMouseUp}
 			>
-				<StageCanvas />
+				<g ref={ setViewportElement }>
+					<rect width="1" height="1" fill="transparent">
+						{ /* Placeholder element to prevent svg-pan-zoom from generating errors if content is empty */ }
+					</rect>
+
+					{ /* Floor */ }
+					<FloorLayer />
+
+					{ /* Ground Markers */ }
+					<GroundMarkerLayer />
+
+					{ /* Tokens */ }
+					<TokenLayer />
+				</g>
 			</svg>
 		);
 	}

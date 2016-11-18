@@ -54,17 +54,23 @@ for (; r < GRID_ROW; r++) {
 const crisp = { shapeRendering: "crispEdges" };
 
 export const Back = () => (
-	<g style={crisp}> {
-		BORDER_BG.map(({ id, ...props }) =>
-			<FloorTile key={id} {...props} />
-		)
-	} </g>
+	<g style={crisp}>
+		{
+			BORDER_BG.map(
+				({ id, ...props }) =>
+					<FloorTile key={id} {...props} />
+			)
+		}
+	</g>
 );
 
 export const Front = () => (
-	<g style={crisp}> {
-		BORDER_FG.map(({ id, ...props }) =>
-			<FloorTile key={id} {...props} />
-		)
-	} </g>
+	<g style={crisp}>
+		{
+			BORDER_FG.map(
+				({ id, ...props }) =>
+					<FloorTile key={id} {...props} />
+			)
+		}
+	</g>
 );
