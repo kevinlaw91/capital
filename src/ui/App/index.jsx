@@ -6,6 +6,10 @@ import SplashScreen from "ui/SplashScreen";
 import GameScreen from "ui/GameScreen";
 import Tooltip from "ui/Tooltip";
 import { getStateIsHidden as getSplashHidden } from "redux/ui/splash";
+import {
+	GameStatus,
+	getGameState
+} from "redux/game/session/status";
 import { isAppLoaded, load } from "game/bootstrap";
 import styles from "./App.scss";
 
@@ -78,7 +82,7 @@ class App extends React.Component {
 				})}
 
 			>
-				{gameScreen}
+				{ this.props.gameState === GameStatus.ACTIVE && gameScreen}
 				<VelocityTransitionGroup
 					leave={{
 						animation: {
@@ -97,11 +101,13 @@ class App extends React.Component {
 }
 
 App.propTypes = {
+	gameState: React.PropTypes.oneOf(Object.values(GameStatus)),
 	splash: React.PropTypes.bool,
 };
 
 const mapStateToProps = state => ({
-	splash: !getSplashHidden(state)
+	gameState: getGameState(state),
+	splash: !getSplashHidden(state),
 });
 
 export default connect(mapStateToProps)(App);

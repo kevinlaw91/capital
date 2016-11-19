@@ -1,5 +1,9 @@
 import dispatch from "redux/dispatch";
 import { actions as playerActions } from "redux/player";
+import {
+	GameStatus,
+	actions as gameStatusActions
+} from "redux/game/session/status";
 import turnChange from "game/rules/turn/change";
 import getNextActivePlayer from "game/rules/turn/getNextActivePlayer";
 
@@ -16,6 +20,9 @@ function gameLoop() {
 }
 
 export default function () {
+	// Set status
+	dispatch(gameStatusActions.setStatus(GameStatus.ACTIVE));
+
 	// Start game logic loop
 	// Listen to dice button click etc...
 	gameLoop();
