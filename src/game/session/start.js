@@ -23,6 +23,11 @@ export default function () {
 	// Set status
 	dispatch(gameStatusActions.setStatus(GameStatus.ACTIVE));
 
+	if (typeof APP_DEBUG !== "undefined") {
+		// In dev build only
+		require("game/dev");
+	}
+
 	// Start game logic loop
 	// Listen to dice button click etc...
 	gameLoop();

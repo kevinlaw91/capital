@@ -18,15 +18,9 @@ import "stylesheets/styles.scss";
 import { register as registerLogger } from "./logger";
 window.logger = registerLogger();
 
-// Debug
-import devDebugObj from "game/dev";
-
 if (typeof APP_DEBUG !== "undefined") {
 	// APP_DEBUG exist in dev build only
 	logger.info("===== DEVELOPER MODE ENABLED =====");
-
-	// Expose debug object to global
-	window.app = devDebugObj;
 }
 
 // React injection point
