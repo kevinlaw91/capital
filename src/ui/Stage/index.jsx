@@ -5,6 +5,7 @@ import {
 	setViewportElement,
 	init,
 } from "game/camera";
+import Defs from "./Defs";
 import Floaters from "./layers/Floaters";
 import FloorLayer from "./layers/FloorLayer";
 import TokenLayer from "./layers/TokenLayer";
@@ -29,6 +30,7 @@ class Stage extends React.Component {
 				onMouseDown={this.handleMouseDown}
 				onMouseUp={this.handleMouseUp}
 			>
+				<Defs />
 				<g ref={ setViewportElement }>
 					<rect width="1" height="1" fill="transparent">
 						{ /* Placeholder element to prevent svg-pan-zoom from generating errors if content is empty */ }
