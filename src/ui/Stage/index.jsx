@@ -5,6 +5,7 @@ import {
 	setViewportElement,
 	init,
 } from "game/camera";
+import Floaters from "./layers/Floaters";
 import FloorLayer from "./layers/FloorLayer";
 import TokenLayer from "./layers/TokenLayer";
 import GroundMarkerLayer from "./layers/GroundMarkerLayer";
@@ -41,6 +42,9 @@ class Stage extends React.Component {
 
 					{ /* Tokens */ }
 					<TokenLayer />
+
+					{ /* Floaters */}
+					<Floaters />
 				</g>
 			</svg>
 		);
