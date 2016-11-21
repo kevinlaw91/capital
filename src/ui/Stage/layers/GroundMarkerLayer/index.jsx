@@ -1,7 +1,6 @@
 import { connect } from "react-redux";
 import { VelocityTransitionGroup } from "velocity-react";
-import { getTopFaceMidpoint } from "game/map/coordinates";
-import tokenPosition from "game/map/tile/tokenPosition";
+import { getScreenOffset } from "game/map/tile/tokenPosition";
 import { selectOrder as selectTokenOrder } from "redux/game/stage/token/order";
 import { selectAllTokens } from "redux/game/stage/token/items";
 import { selectActivePlayerId } from "redux/game/session/turn";
@@ -13,31 +12,19 @@ function renderActiveMarker(id, token) {
 		return;
 	}
 
-	let screenX, screenY;
+	let x, y;
 
 	if (token.position) {
-		if (typeof token.position === "string") {
-			// Position is a property lot id
-			// Based on the id,
-			// get the grid x,y for placing the token
-			const grid = tokenPosition(token.position);
-
-			// Transform grid x,y to screen x,y
-			[screenX, screenY] = getTopFaceMidpoint(grid.y, grid.x);
-		} else {
-			// Position is an object with x and y props
-			({ x: screenX, y: screenY } = token.position);
-		}
-	} else {
-		// Move to origin if position undefined
-		screenX = screenY = 0;
+		({ x, y } = (typeof token.position === "string") ?
+			getScreenOffset(token.position) : token.position
+		);
 	}
 
 	return (
 		<ActiveMarker
 			key={id}
-			x={screenX}
-			y={screenY}
+			x={x}
+			y={y}
 		    idle={token.idle}
 		/>
 	);

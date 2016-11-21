@@ -1,27 +1,17 @@
 import { connect } from "react-redux";
 import Token from "./Token";
-import tokenPosition from "game/map/tile/tokenPosition";
-import { getTopFaceMidpoint } from "game/map/coordinates";
+import { getScreenOffset } from "game/map/tile/tokenPosition";
 import { selectOrder as selectTokenOrder } from "redux/game/stage/token/order";
 import { selectAllTokens } from "redux/game/stage/token/items";
 import { selectActivePlayerId } from "redux/game/session/turn";
 
 function renderToken(id, entry) {
-	let screenX, screenY;
+	let x, y;
 
 	if (entry.position) {
-		if (typeof entry.position === "string") {
-			// Position is a property lot id
-			// Based on the id,
-			// get the grid x,y for placing the token
-			const grid = tokenPosition(entry.position);
-
-			// Transform grid x,y to screen x,y
-			[screenX, screenY] = getTopFaceMidpoint(grid.y, grid.x);
-		} else {
-			// Position is an object with x and y props
-			({ x: screenX, y: screenY } = entry.position);
-		}
+		({ x, y } = (typeof entry.position === "string") ?
+			getScreenOffset(entry.position) : entry.position
+		);
 	}
 
 	return (
@@ -29,8 +19,8 @@ function renderToken(id, entry) {
 			key={id}
 			tokenId={id}
 			color={entry.color}
-			x={screenX}
-			y={screenY}
+			x={x}
+			y={y}
 		/>
 	);
 }

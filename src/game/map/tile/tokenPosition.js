@@ -1,4 +1,6 @@
-export default function (locationId) {
+import { getTopFaceMidpoint } from "game/map/coordinates";
+
+export function mappedTile(locationId) {
 	// Test to see if location is a property lot
 	// and attempt to extract fields from it
 	const lot = /LOT-(N|S|E|W)(\d+)/.exec(locationId);
@@ -26,4 +28,16 @@ export default function (locationId) {
 			case "CORNER-TOP": return { x: 3, y: 3 };
 		}
 	}
+}
+
+/**
+ * @param locationId
+ * @return {{x: number, y: number}} Screen offset
+ */
+export function getScreenOffset(locationId) {
+	// Based on the id, get the grid x,y for placing the token
+	const grid = mappedTile(locationId);
+
+	// Transform grid x,y to screen x,y
+	return getTopFaceMidpoint(grid.y, grid.x);
 }

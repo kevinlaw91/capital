@@ -148,7 +148,7 @@ export function getTopFaceMidpoint(row, col) {
 	x += GRID_TILESIZE / 2;
 	y += GRID_TILESIZE / 4;
 
-	return [x, y];
+	return { x, y };
 }
 
 /** Get canvas offset for the coordinates */
