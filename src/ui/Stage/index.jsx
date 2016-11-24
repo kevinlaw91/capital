@@ -28,6 +28,15 @@ class Stage extends React.Component {
 		this.setRef_floaters = ref => {
 			this.floaters = ref.getWrappedInstance();
 		};
+
+		/**
+		 * @public
+		 * @type {?TokenLayer}
+		 */
+		this.tokens = null;
+		this.setRef_tokens = ref => {
+			this.tokens = ref.getWrappedInstance();
+		};
 	}
 
 	componentDidMount() {
@@ -68,7 +77,7 @@ class Stage extends React.Component {
 					<GroundMarkerLayer />
 
 					{ /* Tokens */ }
-					<TokenLayer />
+					<TokenLayer ref={this.setRef_tokens} />
 
 					{ /* Floaters */}
 					<Floaters ref={this.setRef_floaters} />

@@ -5,7 +5,6 @@ import Deferred from "js/utils/deferred";
 import { token as animation } from "game/config/animations";
 import { default as sprite } from "game/resources/sprites/tokens";
 import { actions as tooltipActions } from "redux/ui/tooltip";
-import { register, unregister } from "ui/tokens";
 import styles from "./Token.scss";
 
 const tokenStyles = classnames(
@@ -25,11 +24,11 @@ class Token extends React.Component {
 	}
 
 	componentDidMount() {
-		register(this.props.tokenId, this);
+		this.props.register(this.props.tokenId, this);
 	}
 
 	componentWillUnmount() {
-		unregister(this.props.tokenId);
+		this.props.unregister(this.props.tokenId);
 	}
 
 	handleMouseEnter() {
@@ -91,6 +90,8 @@ Token.OFFSET_X = -32;
 Token.OFFSET_Y = -43;
 
 Token.propTypes = {
+	register: React.PropTypes.func,
+	unregister: React.PropTypes.func,
 	tokenId: React.PropTypes.string.isRequired,
 	x: React.PropTypes.number,
 	y: React.PropTypes.number,

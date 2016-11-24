@@ -2,7 +2,7 @@ import dispatch from "redux/dispatch";
 import { actions as playerActions } from "redux/player";
 import { token as animation } from "game/config/animations";
 import passing from "game/rules/map/passing";
-import { find as findToken } from "ui/tokens";
+import { getStageInstance } from "game/session/stage";
 
 /**
  * Move player along the path
@@ -22,7 +22,9 @@ export default (playerId, path) => {
 			/** Move player token by animation */
 			const moveToken = () => new Promise(resolve => {
 				// Set animation complete callback
-				findToken(playerId)
+				getStageInstance()
+					.tokens
+					.find(playerId)
 					.onAnimationComplete()
 					.then(resolve);
 				// Move player

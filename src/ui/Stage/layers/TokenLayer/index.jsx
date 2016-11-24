@@ -5,32 +5,58 @@ import { selectOrder as selectTokenOrder } from "redux/game/stage/token/order";
 import { selectAllTokens } from "redux/game/stage/token/items";
 import { selectActivePlayerId } from "redux/game/session/turn";
 
-function renderToken(id, entry) {
-	let x, y;
+class TokenLayer extends React.Component {
+	constructor(props) {
+		super(props);
 
-	if (entry.position) {
-		({ x, y } = (typeof entry.position === "string") ?
-			getScreenOffset(entry.position) : entry.position
-		);
+		/** Register instances */
+		this.items = new Map();
+		this.registerToken = (id, instance) => this.items.set(id, instance);
+		this.unregisterToken = id => this.items.delete(id);
+
+		/**
+		 * Find instance of Token by player id
+		 * @public
+		 */
+		this.find = id => this.items.get(id);
 	}
 
-	return (
-		<Token
-			key={id}
-			tokenId={id}
-			color={entry.color}
-			x={x}
-			y={y}
-		/>
-	);
-}
+	render() {
+		function renderToken(id, register, unregister, entry) {
+			let x, y;
 
-function TokenLayer(props) {
-	return (
-		<g>
-			{ props.order.map(k => renderToken(k, props.tokens[k])) }
-		</g>
-	);
+			if (entry.position) {
+				({ x, y } = (typeof entry.position === "string") ?
+						getScreenOffset(entry.position) : entry.position
+				);
+			}
+
+			return (
+				<Token
+					key={id}
+					register={register}
+					unregister={unregister}
+					tokenId={id}
+					color={entry.color}
+					x={x}
+					y={y}
+				/>
+			);
+		}
+
+		return (
+			<g>
+				{
+					this.props.order.map(k => renderToken(
+						k,
+						this.registerToken,
+						this.unregisterToken,
+						this.props.tokens[k]
+					))
+				}
+			</g>
+		);
+	}
 }
 
 TokenLayer.propTypes = {
@@ -45,4 +71,9 @@ const mapStateToProps = state => ({
 	tokens: selectAllTokens(state),
 });
 
-export default connect(mapStateToProps)(TokenLayer);
+export default connect(
+	mapStateToProps,
+	null,
+	null,
+	{ withRef: true }
+)(TokenLayer);
