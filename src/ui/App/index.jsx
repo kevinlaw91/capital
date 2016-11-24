@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import classnames from "classnames/bind";
 import { VelocityTransitionGroup } from "velocity-react";
-import Screen from "./components/Screen";
+import Screen from "ui/components/Screen";
 import SplashScreen from "ui/SplashScreen";
 import GameScreen from "ui/GameScreen";
 import Tooltip from "ui/Tooltip";
