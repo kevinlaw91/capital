@@ -10,14 +10,67 @@ import { removeFloaterById } from "ui/Stage/controllers/floater";
  */
 function renderTextAsPath(text) {
 	const font = getFont("Passion One");
+
+	// Params
+	const fontSize = 16;
+	const kerning = true;
+	const align = "center";
+	const baseline = "middle";
+
+	// Position
+	let x = 0, y = 0;
+
+	// Calculate bounding box
+	const fontScale = 1 / font.unitsPerEm * fontSize;
+
+	let width = 0;
+	const height = (font.ascender + font.descender) * fontScale;
+
+	const glyphs = font.stringToGlyphs(text);
+	for (let i = 0, len = glyphs.length; i < len; i++) {
+		const glyph = glyphs[i];
+
+		if (glyph.advanceWidth) {
+			width += glyph.advanceWidth * fontScale;
+		}
+
+		if (kerning && i < len - 1) {
+			const kerningValue = font.getKerningValue(glyph, glyphs[i + 1]);
+			width += kerningValue * fontScale;
+		}
+	}
+
+	// Apply horizontal alignment
+	switch (align) {
+		case "middle":
+		case "center":
+			x -= width / 2;
+			break;
+		case "right":
+			x -= width;
+			break;
+	}
+
+	// Apply baseline adjustments
+	switch (baseline) {
+		case "middle":
+		case "center":
+			y += height / 2;
+			break;
+		case "top":
+			y += height;
+			break;
+	}
+
+	// Generate path
 	const path = font.getPath(
 		text, // Text
-		0, // X Position
-		0, // Y Position
-		16, // Font size
+		x, // X Position
+		y, // Y Position
+		fontSize, // Font size
 		// Options
 		{
-			kerning: true,
+			kerning,
 		}
 	);
 
@@ -31,14 +84,16 @@ export default class GoldChangeText extends React.Component {
 	constructor(props) {
 		super(props);
 
-		// Bind
-		this.setBBoxRef = this.setBBoxRef.bind(this);
-		this.setMotionPathAnim = this.setMotionPathAnim.bind(this);
-		this.setFadeInAnim = this.setFadeInAnim.bind(this);
-		this.setFadeOutAnim = this.setFadeOutAnim.bind(this);
-
-		// Calculate path once
+		// Generate path once
 		this.textAsPath = renderTextAsPath(this.props.text);
+
+		// Styles
+		this.styles = {
+			fill: this.props.color,
+			stroke: "rgba(0, 0, 0, 0.3)",
+			strokeWidth: 0.5,
+			opacity: 0,
+		};
 
 		// Randomize animation params
 		this.lifespan = 4500 + Math.round(Math.random() * 1500);
@@ -52,40 +107,6 @@ export default class GoldChangeText extends React.Component {
 
 		// Animation complete callback
 		this.callbackComplete = () => removeFloaterById(this.props.id);
-
-		// Prevent re-trigger of animation
-		this.animationStarted = false;
-
-		this.state = {
-			// Offset to be applied to align rendered path to center
-			xOffset: 0,
-		};
-	}
-
-	setBBoxRef(ref) {
-		this.BBoxRef = ref;
-	}
-
-	setMotionPathAnim(ref) {
-		this.MotionPathAnim = ref;
-	}
-	setFadeInAnim(ref) {
-		this.FadeInAnim = ref;
-	}
-	setFadeOutAnim(ref) {
-		this.FadeOutAnim = ref;
-	}
-
-	componentDidMount() {
-		// Align center
-		this.setState({
-			xOffset: -this.BBoxRef.getBoundingClientRect().width / 2
-		});
-
-		// Start animation after align
-		this.MotionPathAnim.runAnimation();
-		this.FadeInAnim.runAnimation();
-		this.FadeOutAnim.runAnimation();
 	}
 
 	render() {
@@ -94,44 +115,36 @@ export default class GoldChangeText extends React.Component {
 				x={this.props.x}
 				y={this.props.y}
 			>
-				<g transform={`translate(${this.state.xOffset}, 0)`}>
+				<VelocityComponent
+					runOnMount={true}
+					animation={{ opacity: [1, "ease-in", 0] }}
+					queue={false}
+					duration={GoldChangeText.FADE_DURATION}
+				>
 					<VelocityComponent
-						ref={this.setFadeInAnim}
-						animation={{ opacity: [1, "ease-in", 0] }}
+						runOnMount={true}
+						animation={this.animateMotionPath}
 						queue={false}
-						duration={GoldChangeText.FADE_DURATION}
+						duration={this.lifespan}
 					>
 						<VelocityComponent
-							ref={this.setMotionPathAnim}
-							animation={this.animateMotionPath}
+							runOnMount={true}
+							animation={{ opacity: [0, "ease-out"] }}
 							queue={false}
-							duration={this.lifespan}
+							delay={this.lifespan - GoldChangeText.FADE_DURATION - 1000}
+							duration={GoldChangeText.FADE_DURATION}
+						    complete={this.callbackComplete}
 						>
-							<VelocityComponent
-								ref={this.setFadeOutAnim}
-								animation={{ opacity: [0, "ease-out"] }}
-								queue={false}
-								delay={this.lifespan - GoldChangeText.FADE_DURATION - 1000}
-								duration={GoldChangeText.FADE_DURATION}
-							    complete={this.callbackComplete}
-							>
-								<g
-									ref={this.setBBoxRef}
-									style={{
-										fill: this.props.color,
-										stroke: "rgba(0, 0, 0, 0.3)",
-										strokeWidth: 0.5,
-										opacity: 0,
-									}}
-									dangerouslySetInnerHTML={{
-										__html: this.textAsPath,
-									}}
-									filter="url(#GoldChangeTextInnerShadow)"
-								/>
-							</VelocityComponent>
+							<g
+								style={this.styles}
+								dangerouslySetInnerHTML={{
+									__html: this.textAsPath,
+								}}
+								filter="url(#GoldChangeTextInnerShadow)"
+							/>
 						</VelocityComponent>
 					</VelocityComponent>
-				</g>
+				</VelocityComponent>
 			</WorldCanvas>
 		);
 	}
