@@ -4,6 +4,7 @@ module.exports = {
 	entry: {
 		vendor: [
 			"classnames",
+			"opentype.js",
 			"react",
 			"react-dom",
 			"react-redux",
