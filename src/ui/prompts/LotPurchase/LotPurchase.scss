@@ -24,7 +24,9 @@
 }
 
 .price {
-	composes: label-text from "../components/PromptBox/ActionButton/ActionButton.scss";
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit;
 	vertical-align: bottom;
 }
 
