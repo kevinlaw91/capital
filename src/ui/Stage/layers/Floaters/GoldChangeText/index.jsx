@@ -1,7 +1,6 @@
 import { VelocityComponent } from "velocity-react";
 import WorldCanvas from "ui/Stage/layers/components/WorldCanvas";
 import { getFont } from "game/resources/fonts";
-import { removeFloaterById } from "ui/Stage/controllers/floater";
 
 /**
  * Convert text to SVG path (in string)
@@ -106,7 +105,7 @@ export default class GoldChangeText extends React.Component {
 		};
 
 		// Animation complete callback
-		this.callbackComplete = () => removeFloaterById(this.props.id);
+		this.handleAnimationComplete = () => this.props.removeItem(this.props.id);
 	}
 
 	render() {
@@ -133,7 +132,7 @@ export default class GoldChangeText extends React.Component {
 							queue={false}
 							delay={this.lifespan - GoldChangeText.FADE_DURATION - 1000}
 							duration={GoldChangeText.FADE_DURATION}
-						    complete={this.callbackComplete}
+						    complete={this.handleAnimationComplete}
 						>
 							<g
 								style={this.styles}
@@ -158,4 +157,5 @@ GoldChangeText.propTypes = {
 	y: React.PropTypes.number,
 	text: React.PropTypes.string,
 	color: React.PropTypes.string,
+	removeItem: React.PropTypes.func,
 };

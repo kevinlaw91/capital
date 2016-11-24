@@ -5,6 +5,10 @@ import {
 	setViewportElement,
 	init,
 } from "game/camera";
+import {
+	register,
+	unregister,
+} from "game/session/stage";
 import Defs from "./Defs";
 import Floaters from "./layers/Floaters";
 import FloorLayer from "./layers/FloorLayer";
@@ -13,11 +17,32 @@ import GroundMarkerLayer from "./layers/GroundMarkerLayer";
 import styles from "./Stage.scss";
 
 class Stage extends React.Component {
+	constructor(props) {
+		super(props);
+
+		/**
+		 * @public
+		 * @type {?Floaters}
+		 */
+		this.floaters = null;
+		this.setRef_floaters = ref => {
+			this.floaters = ref.getWrappedInstance();
+		};
+	}
+
 	componentDidMount() {
+		// Register stage instance
+		register(this);
+
 		// At this point StageCanvas was alredy mounted and refs was stored in module
 		// Now wait for DOM painting to finish before initialize svg-pan-zoom
 		// http://stackoverflow.com/a/28748160/585371
 		setTimeout(() => window.requestAnimationFrame(init), 0);
+	}
+
+	componentWillUnmount() {
+		// Unregister stage instance
+		unregister();
 	}
 
 	render() {
@@ -46,7 +71,7 @@ class Stage extends React.Component {
 					<TokenLayer />
 
 					{ /* Floaters */}
-					<Floaters />
+					<Floaters ref={this.setRef_floaters} />
 				</g>
 			</svg>
 		);

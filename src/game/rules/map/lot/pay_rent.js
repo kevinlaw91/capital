@@ -3,7 +3,8 @@ import dispatch from "redux/dispatch";
 import { actions as playerActions } from "redux/player";
 import { selectPlayerById } from "redux/game/session/players";
 import { selectEntityById } from "redux/game/session/map";
-import { renderGoldChangeText } from "ui/Stage/controllers/floater";
+import { getStageInstance } from "game/session/stage";
+import { templates } from "redux/game/stage/floaters";
 import { getScreenOffset } from "game/map/tile/tokenPosition";
 
 export default (location, player) => {
@@ -23,7 +24,7 @@ export default (location, player) => {
 	let x, y;
 	({ x, y } = getScreenOffset(location));
 
-	renderGoldChangeText({
+	getStageInstance().floaters.addItem(templates.GOLD_CHANGE_TEXT, {
 		x, y,
 		text: `-${amount}`,
 		color: resolvedPlayer.color,
