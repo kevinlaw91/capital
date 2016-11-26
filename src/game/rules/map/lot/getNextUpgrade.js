@@ -1,9 +1,11 @@
 /**
  * Get next upgrade tier
- * @param {number} [currentTier=0]
+ * @param {Object} location
  * @return {number|undefined} - Next tier (if upgradable) or undefined (if not possible)
  */
-export default (currentTier = 0) => {
+export default location => {
+	const currentTier = location.tier || 0;
+
 	// Maxed to tier 4
 	const nextTier = Math.min(currentTier + 1, 4);
 

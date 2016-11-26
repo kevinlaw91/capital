@@ -7,6 +7,7 @@ import queueMove from "game/rules/player/queueMove";
 import roll from "game/rules/dice/roll";
 import { subscribe as waitForDiceOnClick } from "game/rules/dice/click";
 import { selectPlayerById } from "redux/game/session/players";
+import { selectEntityById } from "redux/game/session/map";
 import { selectActivePlayerId } from "redux/game/session/turn";
 import { actions as diceButtonActions } from "redux/ui/dice";
 import { actions as tokenActions } from "redux/player/token";
@@ -59,10 +60,13 @@ export default function () {
 				// Hide dice button
 				dispatch(diceButtonActions.hide());
 
-				// Execute player stay rules
-				const currentPos = selectPlayerById(getState(), activePlayerId).position;
+				// Resolve entities
+				const state = getState();
+				const resolvedPlayer = selectPlayerById(state, activePlayerId);
+				const resolvedLocation = selectEntityById(state, resolvedPlayer.position);
 
-				return stay(activePlayerId, currentPos);
+				// Execute player stay rules
+				return stay(resolvedPlayer, resolvedLocation);
 			})
 			// Wait before passing the turn
 			.then(wait(animation.ACTION_DELAY))
