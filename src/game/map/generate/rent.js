@@ -1,26 +1,26 @@
 import round100 from "./utils/round100";
 import summation from "./utils/summation";
 
-// Rental rates were influenced by cost
-// Cost of each tier were incremental
-export default function (cost) {
-	// Import generated cost for calculation
-	const COST_BUY = cost["TIER_0"];
-	const COST_UPG1 = cost["TIER_1"];
-	const COST_UPG2 = cost["TIER_2"];
-	const COST_UPG3 = cost["TIER_3"];
-	const COST_UPG4 = cost["TIER_4"];
-
-	// Rates
+/**
+ * Generate rent
+ * @param {number} price - Purchase price
+ * @param {Object.<Tier, number>} upgrades - Upgrade cost by tier
+ * @return {Object.<Tier, number>} Rent of all tiers
+ */
+export default function (price, upgrades) {
+	// Rent were influenced by upgrade cost/purchase price
 	let rent = [
-		COST_BUY * (Math.random() + 0.5),
-		COST_UPG1 * (Math.random() / 2),
-		COST_UPG2 * (Math.random() / 1.8),
-		COST_UPG3 * (Math.random() / 1.4),
-		COST_UPG4 * (Math.random() / 1.1),
+		// Purchase price
+		price * (Math.random() + 0.5),
+		// Upgrades
+		upgrades["1"] * (Math.random() / 2),
+		upgrades["2"] * (Math.random() / 1.8),
+		upgrades["3"] * (Math.random() / 1.4),
+		upgrades["4"] * (Math.random() / 1.1),
 	];
 
-	rent = rent.map(function (v, idx, arr) {
+	// Stack rent of each tiers to make it incremental
+	let output = rent.map(function (v, idx, arr) {
 		// An array of every value from index 0 to idx
 		const prevValues = arr.slice(0, idx + 1);
 
@@ -31,11 +31,6 @@ export default function (cost) {
 		return round100(sum);
 	});
 
-	return {
-		TIER_0: rent[0],
-		TIER_1: rent[1],
-		TIER_2: rent[2],
-		TIER_3: rent[3],
-		TIER_4: rent[4],
-	};
+	// Convert to object
+	return Object.assign({}, output);
 }

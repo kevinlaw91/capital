@@ -20,18 +20,8 @@ export default function () {
 	Object.keys(map).forEach(id => {
 		// Price
 		const price = generatePrice();
-
-		// Upgrade cost
-		let upgradeCost = generateUpgrades();
-		upgradeCost = {
-			TIER_1: upgradeCost[0],
-			TIER_2: upgradeCost[1],
-			TIER_3: upgradeCost[2],
-			TIER_4: upgradeCost[3],
-		};
-
-		// Rent
-		const rent = generateRent({ TIER_0: price, ...upgradeCost });
+		const upgradeCost = generateUpgrades();
+		const rent = generateRent(price, upgradeCost);
 
 		batch.push(
 			batchActions([
