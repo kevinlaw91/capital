@@ -2,43 +2,56 @@ import { connect } from "react-redux";
 import { actions as tooltipActions } from "redux/ui/tooltip";
 import FloorTile from "./FloorTile";
 
-function TooltipFloorTile(props) {
-	const {
-		tooltip,
-		dispatch,
-		...otherProps,
-	} = props;
+class TooltipFloorTile extends React.Component {
+	constructor(props) {
+		super(props);
 
-	const handleMouseEnter = () => {
+		this.handleMouseEnter = this.handleMouseEnter.bind(this);
+		this.handleMouseMove = this.handleMouseMove.bind(this);
+		this.handleMouseOut = this.handleMouseOut.bind(this);
+	}
+
+	handleMouseEnter(evt) {
 		// Show Tooltip
-		dispatch(
-			tooltipActions.show("LotTooltip", tooltip)
+		this.props.dispatch(
+			tooltipActions.show("LotTooltip", this.props.tooltip)
 		);
-	};
+	}
 
-	const handleMouseMove = evt => {
+	handleMouseMove(evt) {
 		// Move tooltip
 		const { left, top, width, height } = evt.target.getBoundingClientRect();
-		dispatch(
+		this.props.dispatch(
 			tooltipActions.move(left + (width / 2), top + (height / 2))
 		);
-	};
+	}
 
-	const handleMouseOut = () => {
-		dispatch(
+	handleMouseOut(evt) {
+		this.props.dispatch(
 			tooltipActions.hide()
 		);
-	};
+	}
 
-	return (
-		<g
-			onMouseEnter={handleMouseEnter}
-			onMouseMove={handleMouseMove}
-			onMouseOut={handleMouseOut}
-		>
-			<FloorTile {...otherProps} />
-		</g>
-	);
+	render() {
+		const {
+			/* eslint-disable no-unused-vars */
+			// Consumed
+			tooltip,
+			dispatch,
+			/* eslint-enable no-unused-vars */
+			...otherProps,
+		} = this.props;
+
+		return (
+			<g
+				onMouseEnter={this.handleMouseEnter}
+				onMouseMove={this.handleMouseMove}
+				onMouseOut={this.handleMouseOut}
+			>
+				<FloorTile {...otherProps} />
+			</g>
+		);
+	}
 }
 
 TooltipFloorTile.propTypes = {
