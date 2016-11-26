@@ -6,4 +6,5 @@ export default {
 	"SET_UPGRADE_COST": "lot/SET_UPGRADE_COST",
 	"SET_RENT": "lot/SET_RENT",
 	"SET_OWNER": "lot/SET_OWNER",
+	"SET_TIER": "lot/SET_TIER",
 };

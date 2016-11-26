@@ -1,0 +1,79 @@
+.wrapper {
+	border: 2px solid #ff8a00;
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+	background: linear-gradient(
+		to right,
+		transparent 0%,
+		rgba(255, 138, 0, 0.1) 10%,
+		transparent 30%,
+		transparent 60%,
+		rgba(255, 138, 0, 0.1) 85%,
+		transparent 100%
+	) no-repeat local rgba(0, 0, 0, 0.8);
+	animation: glint-bg 5s infinite;
+	:at-root {
+		@keyframes glint-bg {
+			0% {
+				background-position: -1000px 0;
+			}
+			70%, to {
+				background-position: 1000px 0;
+			}
+		}
+	}
+}
+
+.cost {
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+	vertical-align: bottom;
+}
+
+.icon-cash {
+	vertical-align: middle;
+}
+
+.button-upgrade {
+	text-align: right;
+	background: #ff8a00;
+	color: rgba(0, 0, 0, 0.9);
+	transition: min-width 100ms;
+	animation: glow 1000ms alternate infinite;
+	:at-root {
+		@keyframes glow {
+			to {
+				background: #ffb900;
+				box-shadow: 0 0 10px #f5ff80;
+			}
+		}
+	}
+
+	&:hover {
+		min-width: 150px;
+		background: linear-gradient(
+			to right,
+			transparent 0%,
+			transparent 30%,
+			rgba(255, 255, 255, 1) 60%,
+			transparent 85%,
+			transparent 100%
+		) no-repeat local #ffb900;
+		animation: glint-button 2s;
+		animation-fill-mode: forwards;
+		:at-root {
+			@keyframes glint-button {
+				0% {
+					background-position: -200px 0;
+				}
+				70%, to {
+					background-position: 500px 0;
+				}
+			}
+		}
+	}
+
+	&:active {
+		background: #bd8800;
+	}
+}

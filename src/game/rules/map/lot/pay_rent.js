@@ -14,8 +14,7 @@ export default (location, player) => {
 	const resolvedPlayer = selectPlayerById(state, player);
 
 	// Amount
-	// TODO: Replace with current tier
-	const amount = resolvedLocation.rent["0"];
+	const amount = resolvedLocation.rent[resolvedLocation.tier];
 
 	// Deduct gold
 	dispatch(playerActions.deductGold(player, amount));

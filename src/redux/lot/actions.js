@@ -37,4 +37,10 @@ export default {
 		id,
 		owner,
 	}),
+
+	setTier: (id, tier) => ({
+		type: types.SET_TIER,
+		id,
+		tier,
+	})
 };
