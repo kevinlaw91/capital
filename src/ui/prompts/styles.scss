@@ -1,0 +1,24 @@
+.prompt_lot {
+	border: 2px solid #ff8a00;
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+	background: linear-gradient(
+			to right,
+			transparent 0%,
+			rgba(255, 138, 0, 0.1) 10%,
+			transparent 30%,
+			transparent 60%,
+			rgba(255, 138, 0, 0.1) 85%,
+			transparent 100%
+	) no-repeat local rgba(0, 0, 0, 0.8);
+	animation: glint-bg 5s infinite;
+	:at-root {
+		@keyframes glint-bg {
+			0% {
+				background-position: -1000px 0;
+			}
+			70%, to {
+				background-position: 1000px 0;
+			}
+		}
+	}
+}
