@@ -1,5 +1,11 @@
 import Immutable from "seamless-immutable";
 
+// Prompt templates
+export const templates = {
+	"LOT_PURCHASE": "LOT_PURCHASE",
+	"LOT_UPGRADE": "LOT_UPGRADE",
+};
+
 // Types
 export const types = {
 	"CREATE": "game/prompts/CREATE",

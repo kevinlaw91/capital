@@ -4,7 +4,7 @@ import { actions as lotActions } from "redux/lot";
 import { actions as promptsAction } from "redux/ui/prompts";
 import { createOffer } from "game/session/player/offers";
 import playerCanBuyLot from "game/rules/map/lot/condition/can_buy";
-import { LotPurchase } from "ui/prompts/templates";
+import { templates as t } from "redux/ui/prompts";
 
 /**
  * @param {Object} location
@@ -25,7 +25,7 @@ export function prompt(location, player) {
 			location: location.id,
 		};
 
-		dispatch(promptsAction.create(LotPurchase, offer.id, fields));
+		dispatch(promptsAction.create(t.LOT_PURCHASE, offer.id, fields));
 
 		function onAccept() {
 			// Re-evaluate requirements

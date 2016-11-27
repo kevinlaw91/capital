@@ -1,10 +1,10 @@
-import * as t from "ui/prompts/templates";
+import { templates as t } from "redux/ui/prompts";
 import LotPurchase from "ui/prompts/LotPurchase";
 import LotUpgrade from "ui/prompts/LotUpgrade";
 
 export default function inflate([promptId, { template, ...data }]) {
 	switch (template) {
-		case t.LotPurchase:
+		case t.LOT_PURCHASE:
 			return (
 				<LotPurchase
 					key={promptId}
@@ -14,7 +14,7 @@ export default function inflate([promptId, { template, ...data }]) {
 				/>
 			);
 
-		case t.LotUpgrade:
+		case t.LOT_UPGRADE:
 			return (
 				<LotUpgrade
 					key={promptId}

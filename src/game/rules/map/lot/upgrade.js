@@ -5,7 +5,7 @@ import { actions as promptsAction } from "redux/ui/prompts";
 import { createOffer } from "game/session/player/offers";
 import playerCanUpgradeLot from "game/rules/map/lot/condition/can_upgrade";
 import getNextUpgrade from "game/rules/map/lot/getNextUpgrade";
-import { LotUpgrade } from "ui/prompts/templates";
+import { templates as t } from "redux/ui/prompts";
 
 /**
  * @param {Object} location
@@ -28,7 +28,7 @@ export function prompt(location, player) {
 			cost: upgrade_cost,
 		};
 
-		dispatch(promptsAction.create(LotUpgrade, offer.id, fields));
+		dispatch(promptsAction.create(t.LOT_UPGRADE, offer.id, fields));
 
 		function onAccept() {
 			if (playerCanUpgradeLot(player, location)) {
