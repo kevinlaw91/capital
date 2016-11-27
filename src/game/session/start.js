@@ -1,5 +1,7 @@
 import dispatch from "redux/dispatch";
 import { actions as playerActions } from "redux/player";
+import { panToSubject } from "game/camera";
+import { getStageInstance } from "game/session/stage";
 import {
 	GameStatus,
 	actions as gameStatusActions
@@ -27,6 +29,11 @@ export default function () {
 		// In dev build only
 		require("game/dev");
 	}
+
+	// Pan to token of first player
+	const firstPlayerId = getNextActivePlayer();
+	const firstPlayerToken = getStageInstance().tokens.find(firstPlayerId);
+	panToSubject(firstPlayerToken);
 
 	// Start game logic loop
 	// Listen to dice button click etc...

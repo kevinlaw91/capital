@@ -6,6 +6,7 @@ import clamp from "js/utils/clamp";
 import { getStageInstance } from "game/session/stage";
 
 // Pan Zoom Configurations
+const SETTING_ZOOM_INITIAL = 1.5;
 const SETTING_ZOOM_MIN = 0.8;
 const SETTING_ZOOM_MAX = 3.5;
 const SETTING_ZOOM_SENSITIVITY = 0.3;
@@ -111,6 +112,7 @@ export function init() {
 	// Cache initial contents and set initial zoom
 	camera.updateBBox();
 	camera.resize();
+	camera.zoom(SETTING_ZOOM_INITIAL);
 	camera.center();
 
 	// Resize svg-pan-zoom viewport
@@ -127,7 +129,7 @@ export function init() {
 	return Promise.resolve();
 }
 
-export function panToSubject(subject) {
+function centerCameraTo(x, y) {
 	// Get viewport element of Stage component
 	const { viewportElement } = getStageInstance();
 
@@ -135,13 +137,9 @@ export function panToSubject(subject) {
 	const { x: fromX, y: fromY } = camera.getPan();
 	const { width, height, realZoom: zoom } = camera.getSizes();
 
-	// Get subject position
-	const subjectX = subject.x.baseVal.value;
-	const subjectY = subject.y.baseVal.value;
-
 	// Calculate new pan position
-	const toX = -(subjectX * zoom) + (width / 2);
-	const toY = -(subjectY * zoom) + (height / 2);
+	const toX = -(x * zoom) + (width / 2);
+	const toY = -(y * zoom) + (height / 2);
 
 	// Delta
 	const dX = toX - fromX;
@@ -165,4 +163,32 @@ export function panToSubject(subject) {
 			_isPanning = false;
 		}
 	});
+}
+
+export function panToSubject(subject) {
+	if (subject) {
+		// Subject is a React sprite component
+		const isSprite = Boolean(
+			subject.props &&
+			!isNaN(subject.props.x) &&
+			!isNaN(subject.props.y)
+		);
+
+		/*
+		// Subject is a SVG element
+		const isSVGElement = Boolean(
+			subject.x && typeof subject.x.baseVal === "object" &&
+			subject.y && typeof subject.y.baseVal === "object"
+		);
+		*/
+
+		if (isSprite) {
+			centerCameraTo(subject.props.x, subject.props.y);
+		}
+		/*
+		else if (isSVGElement) {
+			centerCameraTo(subject.x.baseVal.value, subject.y.baseVal.value);
+		}
+		*/
+	}
 }
