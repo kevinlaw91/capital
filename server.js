@@ -39,5 +39,13 @@ new WebpackDevServer(webpack(config), {
 	hot: true,
 	publicPath: "http://localhost:8080/",
 	historyApiFallback: true,
-	stats: { colors: true }
+	stats: {
+		version: true,
+		timings: true,
+		assets: false,
+		chunks: true,
+		chunkModules: false,
+		errorDetails: true,
+		colors: true
+	},
 }).listen(8080);
