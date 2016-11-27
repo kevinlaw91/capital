@@ -9,9 +9,10 @@ const SETTING_ZOOM_MIN = 0.8;
 const SETTING_ZOOM_MAX = 3.5;
 const SETTING_ZOOM_SENSITIVITY = 0.3;
 
-/** @public */
 let camera = null;
-export default camera;
+
+// Get instance
+export const getCameraInstance = () => camera;
 
 /**
  * Indicates panning mode is active
