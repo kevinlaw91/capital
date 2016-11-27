@@ -1,13 +1,9 @@
 import { connect } from "react-redux";
 import { isGrabbing } from "redux/ui/camera";
 import {
-	setSVGElement,
-	setViewportElement,
-	init,
-} from "game/camera";
-import {
 	register,
 	unregister,
+	setAsReady,
 } from "game/session/stage";
 import Defs from "./Defs";
 import Floaters from "./layers/Floaters";
@@ -25,17 +21,37 @@ class Stage extends React.Component {
 		 * @type {?Floaters}
 		 */
 		this.floaters = null;
-		this.setRef_floaters = ref => {
-			this.floaters = ref.getWrappedInstance();
-		};
 
 		/**
 		 * @public
 		 * @type {?TokenLayer}
 		 */
 		this.tokens = null;
-		this.setRef_tokens = ref => {
-			this.tokens = ref.getWrappedInstance();
+
+		/**
+		 * SVG element of stage
+		 * @public
+		 * @type {?SVGSVGElement}
+		 */
+		this.svgElement = null;
+
+		/**
+		 * Viewport element
+		 * @public
+		 * @type {?SVGGElement}
+		 */
+		this.viewportElement = null;
+
+		// Set reference
+		this.setRef = {
+			floaters: ref => {
+				this.floaters = ref ? ref.getWrappedInstance() : null;
+			},
+			tokens: ref => {
+				this.tokens = ref ? ref.getWrappedInstance() : null;
+			},
+			viewportElement: ref => { this.viewportElement = ref; },
+			svgElement: ref => { this.svgElement = ref; },
 		};
 	}
 
@@ -43,10 +59,14 @@ class Stage extends React.Component {
 		// Register stage instance
 		register(this);
 
-		// At this point StageCanvas was alredy mounted and refs was stored in module
-		// Now wait for DOM painting to finish before initialize svg-pan-zoom
+		// At this point:
+		// - StageCanvas was alredy mounted
+		// - Refs were stored
+		// We want to setup camera so stage needs to be ready
+		// i.e. painted with width + height etc...
+		// Wait for DOM painting to finish before setting state as ready
 		// http://stackoverflow.com/a/28748160/585371
-		setTimeout(() => window.requestAnimationFrame(init), 0);
+		setTimeout(() => window.requestAnimationFrame(setAsReady));
 	}
 
 	componentWillUnmount() {
@@ -59,13 +79,13 @@ class Stage extends React.Component {
 			<svg
 				width="100%"
 				height="100%"
-				ref={setSVGElement}
+				ref={this.setRef.svgElement}
 				className={this.props.grabbing ? styles["cursor-grabbing"] : styles["cursor-grab"]}
 				onMouseDown={this.handleMouseDown}
 				onMouseUp={this.handleMouseUp}
 			>
 				<Defs />
-				<g ref={ setViewportElement }>
+				<g ref={this.setRef.viewportElement}>
 					<rect width="1" height="1" fill="transparent">
 						{ /* Placeholder element to prevent svg-pan-zoom from generating errors if content is empty */ }
 					</rect>
@@ -77,10 +97,10 @@ class Stage extends React.Component {
 					<GroundMarkerLayer />
 
 					{ /* Tokens */ }
-					<TokenLayer ref={this.setRef_tokens} />
+					<TokenLayer ref={this.setRef.tokens} />
 
 					{ /* Floaters */}
-					<Floaters ref={this.setRef_floaters} />
+					<Floaters ref={this.setRef.floaters} />
 				</g>
 			</svg>
 		);

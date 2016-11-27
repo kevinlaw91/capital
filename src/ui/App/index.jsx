@@ -82,7 +82,7 @@ class App extends React.Component {
 				})}
 
 			>
-				{ this.props.gameState === GameStatus.ACTIVE && gameScreen}
+				{ this.props.gameState !== GameStatus.NONE && gameScreen}
 				<VelocityTransitionGroup
 					leave={{
 						animation: {

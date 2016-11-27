@@ -3,6 +3,7 @@ import Velocity from "velocity-animate";
 import dispatch from "redux/dispatch";
 import { actions } from "redux/ui/camera";
 import clamp from "js/utils/clamp";
+import { getStageInstance } from "game/session/stage";
 
 // Pan Zoom Configurations
 const SETTING_ZOOM_MIN = 0.8;
@@ -22,22 +23,6 @@ export const getCameraInstance = () => camera;
  */
 let _isPanning = false;
 let _mouseDownHolding = false;
-
-/**
- * Root svg element
- * @type {SVGSVGElement|null}
- * @private
- */
-let svgElement = null;
-export const setSVGElement = el => { svgElement = el; };
-
-/**
- * Viewport element
- * @type {SVGGElement|null}
- * @private
- */
-let viewportElement = null;
-export const setViewportElement = el => { viewportElement = el; };
 
 // Called after panning
 function onAfterPan() {
@@ -63,7 +48,17 @@ function onMouseUp() {
 	_mouseDownHolding = false;
 }
 
+/**
+ * Setup camera
+ * @return {Promise}
+ */
 export function init() {
+	// Get DOM elements of Stage component
+	const {
+		svgElement,
+		viewportElement,
+	} = getStageInstance();
+
 	if (!svgElement || !viewportElement) {
 		throw "Unable to hook camera instance to SVG viewport. Element not found.";
 	}
@@ -128,9 +123,14 @@ export function init() {
 
 	// Attach event listener to update panning state
 	window.addEventListener("mouseup", onMouseUp);
+
+	return Promise.resolve();
 }
 
 export function panToSubject(subject) {
+	// Get viewport element of Stage component
+	const { viewportElement } = getStageInstance();
+
 	// Get current pan position
 	const { x: fromX, y: fromY } = camera.getPan();
 	const { width, height, realZoom: zoom } = camera.getSizes();

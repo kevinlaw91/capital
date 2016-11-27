@@ -3,6 +3,7 @@ import Immutable from "seamless-immutable";
 // Game statuses
 export const GameStatus = Immutable({
 	NONE: "NONE",
+	INIT: "INIT",
 	PREGAME: "PREGAME",
 	ACTIVE: "ACTIVE",
 	POSTGAME: "POSTGAME",
