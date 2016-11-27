@@ -1,5 +1,9 @@
 import Immutable from "seamless-immutable";
-import playerReducer, { types as playerTypes } from "redux/player";
+import {
+	default as playerReducer,
+	initialState as playerInitialState,
+	types as playerTypes,
+} from "redux/player";
 
 // Types
 export const types = {
@@ -27,7 +31,12 @@ export function reducer(state = initialState, action = {}) {
 	switch (action.type) {
 		case types.ADD:
 			if (action.id) {
-				return state.set(action.id, playerReducer());
+				return state.set(
+					action.id,
+					playerReducer(
+						playerInitialState.set("id", action.id)
+					)
+				);
 			}
 
 			return state;

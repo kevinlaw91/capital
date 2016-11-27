@@ -1,5 +1,9 @@
 import Immutable from "seamless-immutable";
-import lotReducer, { types as lotTypes } from "redux/lot";
+import {
+	default as lotReducer,
+	initialState as lotInitialState,
+	types as lotTypes,
+} from "redux/lot";
 
 // Types
 export const types = {
@@ -19,7 +23,8 @@ for (let side of ["S", "W", "N", "E"]) {
 	// Each side has 9 lot
 	for (let i = 0; i < 9; i++) {
 		// Store entry
-		map[`LOT-${side}${i}`] = lotReducer();
+		const id = `LOT-${side}${i}`;
+		map[id] = lotReducer(lotInitialState.set("id", id));
 	}
 }
 

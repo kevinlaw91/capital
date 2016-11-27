@@ -7,6 +7,7 @@ export { default as actions } from "./actions";
 
 // Initial state
 const initialState = Immutable({});
+export { initialState };
 
 // Reducer
 export default function reducer(state = initialState, action = {}) {
