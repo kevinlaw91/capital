@@ -4,6 +4,7 @@ import Immutable from "seamless-immutable";
 export const types = {
 	"GRAB": "game/camera/GRAB",
 	"PAN": "game/camera/PAN",
+	"ZOOM": "game/camera/ZOOM",
 };
 
 // Actions
@@ -17,6 +18,11 @@ export const actions = {
 		type: types.PAN,
 		pan,
 	}),
+
+	setZoom: zoom => ({
+		type: types.ZOOM,
+		zoom,
+	})
 };
 
 // Initial state
@@ -34,6 +40,9 @@ export function reducer(state = initialState, action = {}) {
 		case types.PAN:
 			return state.set("panning", action.pan);
 
+		case types.ZOOM:
+			return state.set("zoom", action.zoom);
+
 		default: return state;
 	}
 }
@@ -41,3 +50,4 @@ export function reducer(state = initialState, action = {}) {
 // Selectors
 export const isGrabbing = state => state.ui.camera.grabbing;
 export const isPanning = state => state.ui.camera.panning;
+export const getZoom = state => state.ui.camera.zoom;

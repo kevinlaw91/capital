@@ -99,6 +99,9 @@ export function init() {
 				y: clamp(newPan.y, verticalLimits[0], verticalLimits[1])
 			};
 		},
+		onZoom: function (scale) {
+			dispatch(actions.setZoom(scale));
+		},
 		customEventsHandler: {
 			init: function (options) {
 				options.svgElement.addEventListener("mousedown", onMouseDown);
