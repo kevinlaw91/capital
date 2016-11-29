@@ -5,7 +5,7 @@ import { selectEntityById } from "redux/game/session/map";
 import { acceptOffer, rejectOffer } from "game/session/player/offers";
 import styles from "./LotPurchase.scss";
 
-class PromptBuyLot extends React.Component {
+class LotPurchasePrompt extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -38,15 +38,35 @@ class PromptBuyLot extends React.Component {
 	}
 }
 
-PromptBuyLot.propTypes = {
+LotPurchasePrompt.defaultProps = {
+	title: "LOCATION_NAME",
+	price: 0,
+};
+
+LotPurchasePrompt.propTypes = {
 	promptId: React.PropTypes.string,
+	data: React.PropTypes.object,
 	title: React.PropTypes.string,
 	price: React.PropTypes.number,
 };
 
 const mapStateToProps = (state, props) => ({
-	title: selectEntityById(state, props.location).name,
-	price: selectEntityById(state, props.location).price,
+	location: selectEntityById(state, props.data.location)
 });
 
-export default connect(mapStateToProps)(PromptBuyLot);
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
+	const mergedProps = {
+		promptId: ownProps.promptId,
+	};
+
+	if (stateProps.location) {
+		Object.assign(mergedProps, {
+			title: stateProps.location.name,
+			price: stateProps.location.price,
+		});
+	}
+
+	return mergedProps;
+};
+
+export default connect(mapStateToProps, null, mergeProps)(LotPurchasePrompt);

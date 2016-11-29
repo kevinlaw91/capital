@@ -5,7 +5,7 @@ import { selectEntityById } from "redux/game/session/map";
 import { acceptOffer, rejectOffer } from "game/session/player/offers";
 import styles from "./LotUpgrade.scss";
 
-class PromptLotUpgrade extends React.Component {
+class LotUpgradePrompt extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -38,14 +38,39 @@ class PromptLotUpgrade extends React.Component {
 	}
 }
 
-PromptLotUpgrade.propTypes = {
+LotUpgradePrompt.defaultProps = {
+	title: "LOCATION_NAME",
+	cost: 0,
+};
+
+LotUpgradePrompt.propTypes = {
 	promptId: React.PropTypes.string,
 	title: React.PropTypes.string,
 	cost: React.PropTypes.number,
 };
 
 const mapStateToProps = (state, props) => ({
-	title: selectEntityById(state, props.location).name,
+	location: selectEntityById(state, props.data.location),
 });
 
-export default connect(mapStateToProps)(PromptLotUpgrade);
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
+	const mergedProps = {
+		promptId: ownProps.promptId,
+	};
+
+	if (ownProps.data && ownProps.data.cost) {
+		Object.assign(mergedProps, {
+			cost: ownProps.data.cost,
+		});
+	}
+
+	if (stateProps.location) {
+		Object.assign(mergedProps, {
+			title: stateProps.location.name,
+		});
+	}
+
+	return mergedProps;
+};
+
+export default connect(mapStateToProps, null, mergeProps)(LotUpgradePrompt);

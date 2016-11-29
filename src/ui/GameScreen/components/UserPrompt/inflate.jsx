@@ -1,27 +1,20 @@
 import { templates as t } from "redux/ui/prompts";
-import LotPurchase from "ui/prompts/LotPurchase";
-import LotUpgrade from "ui/prompts/LotUpgrade";
+import LotPurchasePrompt from "ui/prompts/LotPurchase";
+import LotUpgradePrompt from "ui/prompts/LotUpgrade";
 
-export default function inflate([promptId, { template, ...data }]) {
-	switch (template) {
-		case t.LOT_PURCHASE:
-			return (
-				<LotPurchase
-					key={promptId}
-					promptId={promptId}
-					location={data.location}
-					price={data.price}
-				/>
-			);
+const map = {
+	[t.LOT_PURCHASE]: LotPurchasePrompt,
+	[t.LOT_UPGRADE]: LotUpgradePrompt
+};
 
-		case t.LOT_UPGRADE:
-			return (
-				<LotUpgrade
-					key={promptId}
-					promptId={promptId}
-					location={data.location}
-					cost={data.cost}
-				/>
-			);
-	}
+export default function inflate([promptId, { template: templateId, ...data }]) {
+	let PromptTemplate = map[templateId];
+
+	return (
+		<PromptTemplate
+			key={promptId}
+			promptId={promptId}
+			data={data}
+		/>
+	);
 }
