@@ -11,6 +11,17 @@ const cx = classnames.bind({
 	"translucent": styles["translucent"],
 });
 
+const DEFAULT_TRANSITION_DURATION = 200;
+let duration = DEFAULT_TRANSITION_DURATION;
+
+export function enableTransitions() {
+	duration = DEFAULT_TRANSITION_DURATION;
+}
+
+export function disableTransitions() {
+	duration = 0;
+}
+
 function UserPrompt(props) {
 	return (
 		<div
@@ -22,11 +33,11 @@ function UserPrompt(props) {
 			<VelocityTransitionGroup
 				enter={{
 					animation: "transition.slideLeftBigIn",
-					duration: 200,
+					duration,
 				}}
 				leave={{
 					animation: "transition.slideLeftBigOut",
-					duration: 200,
+					duration,
 				}}
 				component="div"
 			>
