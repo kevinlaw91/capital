@@ -76,7 +76,7 @@ export function getBoundingOffset(row, col, to) {
 }
 
 /**
- * Calculate offset to a vertex
+ * Calculate screen offset of a vertex in a 1x1 tile
  * <pre>
  *        . N .
  *     W         E
@@ -84,13 +84,11 @@ export function getBoundingOffset(row, col, to) {
  *     L         R
  *       `  B  `
  * </pre>
- * @param {number} row - Row position of the tile
- * @param {number} col - Column position of the tile
  * @param {string} vertex - Vertex (Refer diagram)
  * @returns {number[]} Offset in the form of [x,y]
  */
-export function getVertexOffset(row, col, vertex) {
-	let [x, y] = coordinates[row][col];
+export function getVertexOffset(vertex) {
+	let x = 0, y = 0;
 
 	// Cache calculated values
 	const FULL = GRID_TILESIZE;
@@ -126,6 +124,23 @@ export function getVertexOffset(row, col, vertex) {
 	}
 
 	return [x, y];
+}
+
+/**
+ * Calculate screen offset to a vertex in world
+ * This method will add screen offset to a tile.
+ * To obtain local offset only, use {@link getVertexOffset}.
+ * See {@link getVertexOffset} for vertex diagram.
+ * @param {number} row - Row position of the tile
+ * @param {number} col - Column position of the tile
+ * @param {string} vertex - Vertex
+ * @returns {number[]} Offset in the form of [x,y]
+ */
+export function getScreenVertexOffset(row, col, vertex) {
+	const [tileOffsetX, tileOffsetY] = coordinates[row][col];
+	const [localOffsetX, localOffsetY] = getVertexOffset(vertex);
+
+	return [tileOffsetX + localOffsetX, tileOffsetY + localOffsetY];
 }
 
 /**
